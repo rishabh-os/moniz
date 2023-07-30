@@ -17,9 +17,9 @@ jobs:
         with:
           flutter-version: "3.10.2"
       - run: flutter pub get
-      - run: flutter build apk --split-per-abi
+      - run: flutter build apk --split-per-abi --no-tree-shake-icons
       - run: |
-          flutter build ios --release --no-codesign
+          flutter build ios --release --no-codesign --no-tree-shake-icons
           cd build/ios/iphoneos
           mkdir Payload
           cd Payload
@@ -31,4 +31,3 @@ jobs:
         with:
           artifacts: "build/app/outputs/flutter-apk/*.apk,build/ios/iphoneos/app.ipa"
           tag: v1.0
-          # token: ${{ secrets.TOKEN }}
