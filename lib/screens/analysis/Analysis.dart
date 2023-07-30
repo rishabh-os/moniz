@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/Analysis/LineGraph.dart';
-import 'package:moniz/Analysis/PieChart.dart';
+import 'package:moniz/screens/analysis/LineGraph.dart';
+import 'package:moniz/screens/analysis/PieChart.dart';
 import 'package:moniz/data/SimpleStore/tutorialStore.dart';
 import 'package:moniz/data/transactions.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -47,7 +47,7 @@ class _AnalysisState extends ConsumerState<Analysis>
                   key: listOfKeys[0],
                   onVisibilityChanged: (info) {
                     if (ref.watch(analysisTutorialCompletedProvider)()) {
-                      Future.delayed(const Duration(milliseconds: 100), () {
+                      Future.delayed(const Duration(milliseconds: 200), () {
                         if (info.visibleFraction == 1) {
                           ref.read(tutorialProvider)(context, Screen.analysis);
                         }

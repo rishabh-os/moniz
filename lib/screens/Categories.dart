@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/accounts/AccountEditor.dart';
+import 'package:moniz/screens/accounts/AccountEditor.dart';
 import 'package:moniz/data/category.dart';
-import 'package:moniz/small_components/deleteRoute.dart';
+import 'package:moniz/components/deleteRoute.dart';
 
 class Categories extends ConsumerStatefulWidget {
   const Categories({super.key});

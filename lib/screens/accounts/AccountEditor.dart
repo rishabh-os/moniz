@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/components/InputComponents.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/data/transactions.dart';
-import 'package:moniz/small_components/ColorPicker.dart';
-import 'package:moniz/small_components/IconPicker.dart';
+import 'package:moniz/components/ColorPicker.dart';
+import 'package:moniz/components/IconPicker.dart';
 import 'package:moniz/data/account.dart';
 import 'package:uuid/uuid.dart';
 

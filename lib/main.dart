@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/data/SimpleStore/themeStore.dart';
-import 'package:moniz/screens/HomeScreen.dart';
+import 'package:moniz/screens/homescreen/HomeScreen.dart';
 import 'package:moniz/data/account.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
@@ -86,7 +86,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: "/home",
+      initialRoute: GetStorage().read("welcome") == null ? "/welcome" : "/home",
       routes: {
         "/welcome": (context) => const Welcome(),
         // ? Why not just "/"? Because that causes duplicate GlobalKeys for reasons unknown

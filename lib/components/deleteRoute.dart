@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moniz/accounts/AccountEditor.dart';
+import 'package:moniz/screens/accounts/AccountEditor.dart';
 import 'dart:math' show sqrt, max;
 import 'dart:ui' show lerpDouble;
 
-import 'package:moniz/components/EntryEditor.dart';
+import 'package:moniz/screens/entries/EntryEditor.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/data/transactions.dart';
 
