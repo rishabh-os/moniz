@@ -15,7 +15,7 @@ import 'package:moniz/screens/Welcome.dart';
 import 'package:window_manager/window_manager.dart';
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  // Override behavior methods and getters like dragDevices
+  // ? Enables the mouse to drag, makes debugging easier on Linux
   @override
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
@@ -61,9 +61,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     // ? This part should just be run on first app startup to make sure the database itself is not empty
     await ref.read(dbProvider).initAccounts();
     await ref.read(dbProvider).initCategories();
-    // ? Reset scroll position on app launch
-    GetStorage().write("overviewScrollPosition", 0.0);
-    GetStorage().write("accountScrollPosition", 0.0);
     // ? This loads the data from the database into the app
     await ref.read(categoriesProvider.notifier).loadCategories();
     await ref.read(accountsProvider.notifier).loadAccounts();

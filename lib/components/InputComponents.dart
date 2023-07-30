@@ -47,7 +47,7 @@ class _AmountFieldState extends State<AmountField> {
     return TextFormField(
       autofocus: false,
       onChanged: (value) {
-        // ? Handles the case when the input field is empty
+        // ? Handles the case when the input field is empty and just -
         double returnAmount = 0;
         if (value.isNotEmpty && value != "-") {
           returnAmount = double.parse(value);

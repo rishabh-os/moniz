@@ -19,7 +19,7 @@ class _WelcomeState extends ConsumerState<Welcome> {
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
-      done: const Text("Done"),
+      done: const Text("Start"),
       next: const Text("Next"),
       skip: const Text("Skip"),
       onDone: goHome,

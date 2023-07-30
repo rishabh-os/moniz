@@ -252,9 +252,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               Center(
                 child: Text("Account".toUpperCase(),
                     style: const TextStyle(
-                      // fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      // color: Colors.white
                     )),
               ),
               SizedBox(
@@ -316,7 +314,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                   )
                 ],
               ),
-              // * Not sure why it needs to be this big, when the actual space is a lot less
+              // * Not sure why it needs to be this big, when the actual space it gives is a lot less
               const SizedBox(height: 40),
               TextFormField(
                 decoration: const InputDecoration(

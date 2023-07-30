@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moniz/small_components/AccountIcon.dart';
+import 'package:moniz/accounts/AccountIcon.dart';
 import 'package:moniz/components/MoneyDisplay.dart';
 import 'package:moniz/data/account.dart';
 import 'package:moniz/small_components/deleteRoute.dart';

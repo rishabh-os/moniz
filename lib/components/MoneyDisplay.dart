@@ -53,9 +53,6 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
             ],
           ),
         ),
-        // CounterTest(
-        //   count: widget.amount,
-        // )
       ],
     );
   }
