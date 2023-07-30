@@ -25,3 +25,4 @@ samples, guidance on mobile development, and a full API reference.
 - Support dynamic themes
 - Make categories reorderable
 - Solve the middle nav icon getting selected on transition
+- Quick filters state inconsistency
