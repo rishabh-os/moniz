@@ -10,7 +10,7 @@ final entriesTargetProvider = Provider((ref) {
   return {
     GlobalKey(debugLabel: "entries0"): [
       "Date Range",
-      "This is the range for which all transactions are shown. Defaults to showing the past month."
+      "This is the range for which all transactions are shown. Defaults to showing the past calendar month."
     ],
     GlobalKey(debugLabel: "entries1"): [
       "Change Range",
@@ -31,7 +31,6 @@ final entriesTargetProvider = Provider((ref) {
   };
 });
 
-// ? Not working on mobile properly
 final entriesTutorialCompletedProvider = StateProvider<Function>((ref) {
   bool newMethod() {
     if (GetStorage().hasData("entriesTutorialCompleted")) {

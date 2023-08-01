@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/data/SimpleStore/themeStore.dart';
@@ -32,16 +31,16 @@ void main() async {
     WindowOptions windowOptions = const WindowOptions(
       size: Size(400, 700),
       center: false,
-      // ! Turn off when in production
+      title: "Moniz",
       alwaysOnTop: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.normal,
     );
     await windowManager.ensureInitialized();
-    windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
+    await windowManager.waitUntilReadyToShow(windowOptions, () {
+      windowManager.show();
+      windowManager.focus();
     });
   }
   runApp(const ProviderScope(

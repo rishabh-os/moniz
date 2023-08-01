@@ -45,6 +45,7 @@ class _AmountFieldState extends State<AmountField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: const Key("AMOUNT"),
       autofocus: false,
       onChanged: (value) {
         // ? Handles the case when the input field is empty and just -
