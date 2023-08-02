@@ -17,12 +17,12 @@ samples, guidance on mobile development, and a full API reference.
 
 ## TODOs:
 
-- A lot of clean up
-- Add testing
-- Make accounts and categories part of same parent class?
-- Animate transaction amount update
-- Different appearance for numbers after decimal while editing
-- Support dynamic themes
-- Make categories reorderable
-- Solve the middle nav icon getting selected on transition
-- Quick filters state inconsistency
+- [ ] A lot of clean up
+- [x] Add testing
+- [ ] Make accounts and categories part of same parent class?
+- [ ] Animate transaction amount update
+- [ ] Different appearance for numbers after decimal while editing
+- [ ] Support dynamic themes
+- [ ] Make categories reorderable
+- [ ] Solve the middle nav icon getting selected on transition
+- [ ] Quick filters state inconsistency
