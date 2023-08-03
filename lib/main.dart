@@ -69,6 +69,12 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       scrollBehavior: MyCustomScrollBehavior(),
