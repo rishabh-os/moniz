@@ -1,32 +1,28 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:moniz/data/category.dart';
 import 'package:moniz/data/database/db.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
 
-class Account {
-  const Account({
-    required this.id,
-    required this.name,
-    required this.iconCodepoint,
-    required this.color,
-    required this.balance,
-    this.netTransactions = 0,
-  });
-
-  final String id;
-  final String name;
-  final int iconCodepoint;
-  final int color;
-  final double balance;
+class Account extends TransactionCategory {
+  Account(
+      {required super.id,
+      required super.name,
+      required super.iconCodepoint,
+      required super.color,
+      required this.balance,
+      this.netTransactions = 0});
+  double balance;
+  // ? Here because I don't want to write a db migration
   final double netTransactions;
 
-  Account copyWith({
-    String? name,
-    int? iconCodepoint,
-    int? color,
-    double? balance,
-    double? netTransactions,
-  }) {
+  @override
+  Account copyWith(
+      {String? name,
+      int? iconCodepoint,
+      int? color,
+      double? balance,
+      double? netTransactions}) {
     return Account(
         id: id,
         name: name ?? this.name,

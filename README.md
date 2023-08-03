@@ -22,7 +22,6 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] App icon
 - [ ] Make accounts and categories part of same parent class?
 - [ ] Animate transaction amount update
-- [ ] Different appearance for numbers after decimal while editing
 - [ ] Support dynamic themes
 - [ ] Make categories reorderable
 - [ ] Solve the middle nav icon getting selected on transition

@@ -66,27 +66,27 @@ class MyDatabase extends _$MyDatabase {
     if (allCategories.isEmpty) {
       await batch((batch) => batch.insertAll(categoriesTable, [
             CategoriesTableCompanion.insert(
-                id: "Default",
+                id: "id1",
                 name: "Default",
                 iconCodepoint: m.Icons.account_circle_rounded.codePoint,
                 color: m.Colors.blue.value),
             CategoriesTableCompanion.insert(
-                id: "Food",
+                id: "id2",
                 name: "Food",
                 iconCodepoint: m.Icons.wine_bar.codePoint,
                 color: m.Colors.orange.value),
             CategoriesTableCompanion.insert(
-                id: "Rent",
+                id: "id3",
                 name: "Rent",
                 iconCodepoint: m.Icons.house_rounded.codePoint,
                 color: m.Colors.green.value),
             CategoriesTableCompanion.insert(
-                id: "Shopping",
+                id: "id4",
                 name: "Shopping",
                 iconCodepoint: m.Icons.shopping_bag_rounded.codePoint,
                 color: m.Colors.lime.value),
             CategoriesTableCompanion.insert(
-                id: "Utility",
+                id: "id5",
                 name: "Utility",
                 iconCodepoint: m.Icons.electrical_services_rounded.codePoint,
                 color: m.Colors.pink.value),
@@ -100,7 +100,7 @@ class MyDatabase extends _$MyDatabase {
     if (allAccounts.isEmpty) {
       await batch((batch) => batch.insertAll(accountsTable, [
             AccountsTableCompanion.insert(
-                id: "Cash",
+                id: "accId1",
                 name: "Cash",
                 iconCodepoint: m.Icons.monetization_on.codePoint,
                 color: m.Colors.green.value,

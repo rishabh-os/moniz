@@ -37,7 +37,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
       List<TransactionCategory> catergoryList = ref.watch(categoriesProvider);
       // ? Init a dict with spends from all categories
       Map<String, double> spendsByCat = {
-        for (var v in catergoryList) v.name: 0.0
+        for (var v in catergoryList) v.id: 0.0
       };
       for (var trans in transactionList) {
         if (trans.amount < 0) {
@@ -50,11 +50,9 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
 
     (List, Map<String, double>) spendsByAcc() {
       List<Transaction> transactionList = ref.watch(transactionsProvider);
-      List<Account> accountList = ref.read(accountsProvider);
+      List<Account> accountList = ref.watch(accountsProvider);
       // ? Init a dict with spends from all categories
-      Map<String, double> spendsByAcc = {
-        for (var v in accountList) v.name: 0.0
-      };
+      Map<String, double> spendsByAcc = {for (var v in accountList) v.id: 0.0};
       for (var trans in transactionList) {
         if (trans.amount < 0) {
           spendsByAcc.update(trans.accountID,
@@ -66,7 +64,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
 
     var spends = showCat ? spendsByCat() : spendsByAcc();
     data = spends.$2.entries.map((e) {
-      var cat = spends.$1.firstWhere((element) => element.name == e.key);
+      var cat = spends.$1.firstWhere((element) => element.id == e.key);
       return PieChartSectionData(
           // ? If null it shows the value by default
           title: "",
@@ -111,6 +109,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
 
     // ? AspectRatio prevents overflow errors in a Column
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
