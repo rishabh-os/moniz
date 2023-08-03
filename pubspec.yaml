@@ -56,7 +56,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.9
   visibility_detector: ^0.4.0+2
   dynamic_color: ^1.6.6
-  device_info_plus: ^9.0.2
+  flutter_native_splash: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +74,26 @@ dev_dependencies:
   drift_dev: ^2.9.0
   build_runner: ^2.4.5
   patrol: ^2.1.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/coin2.png
+  color_dark: "#212121"
+  android: true
+  ios: true
+  android_12:
+    image: assets/coin2.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/coin2.png
+    icon_background_color_dark: "#212121"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/coin2.png"
+  # adaptive_icon_background: "#212121"
+  # adaptive_icon_foreground: "assets/coin2.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

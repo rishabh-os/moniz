@@ -19,6 +19,7 @@ samples, guidance on mobile development, and a full API reference.
 
 - [ ] A lot of clean up
 - [x] Add testing
+- [ ] App icon
 - [ ] Make accounts and categories part of same parent class?
 - [ ] Animate transaction amount update
 - [ ] Different appearance for numbers after decimal while editing

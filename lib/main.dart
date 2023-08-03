@@ -12,6 +12,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:moniz/screens/Settings.dart';
 import 'package:moniz/screens/Welcome.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // ? Enables the mouse to drag, makes debugging easier on Linux
@@ -23,7 +24,9 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await GetStorage.init();
 
   // Must add this line.
@@ -64,6 +67,8 @@ class _MyAppState extends ConsumerState<MyApp> {
     await ref.read(categoriesProvider.notifier).loadCategories();
     await ref.read(accountsProvider.notifier).loadAccounts();
     await ref.read(transactionsProvider.notifier).loadTransactions();
+
+    FlutterNativeSplash.remove();
   }
 
   late Future<void> _dataLoaded;
