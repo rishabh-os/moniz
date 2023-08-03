@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/data/database/db.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
+import 'package:moniz/data/database/db.dart';
 
 class Transaction {
   const Transaction({

@@ -2,15 +2,15 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:moniz/screens/accounts/Accounts.dart';
-import 'package:moniz/screens/entries/EntryEditor.dart';
-import 'package:moniz/screens/analysis/Analysis.dart';
+import 'package:moniz/components/DateTimePickers.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/SimpleStore/tutorialStore.dart';
+import 'package:moniz/screens/accounts/Accounts.dart';
+import 'package:moniz/screens/analysis/Analysis.dart';
+import 'package:moniz/screens/entries/Entries.dart';
+import 'package:moniz/screens/entries/EntryEditor.dart';
 import 'package:moniz/screens/homescreen/DotsMenu.dart';
 import 'package:moniz/screens/homescreen/QuickFilters.dart';
-import 'package:moniz/components/DateTimePickers.dart';
-import 'package:moniz/screens/entries/Entries.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

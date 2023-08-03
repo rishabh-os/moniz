@@ -1,18 +1,18 @@
 import 'dart:io';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/SimpleStore/themeStore.dart';
-import 'package:moniz/screens/homescreen/HomeScreen.dart';
 import 'package:moniz/data/account.dart';
 import 'package:moniz/data/category.dart';
-import 'package:moniz/data/SimpleStore/basicStore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:moniz/data/transactions.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:moniz/screens/Settings.dart';
 import 'package:moniz/screens/Welcome.dart';
+import 'package:moniz/screens/homescreen/HomeScreen.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // ? Enables the mouse to drag, makes debugging easier on Linux
@@ -26,11 +26,8 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
   await GetStorage.init();
-
-  // Must add this line.
-  if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+  if (Platform.isLinux) {
     WindowOptions windowOptions = const WindowOptions(
       size: Size(400, 700),
       center: false,
@@ -71,13 +68,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     FlutterNativeSplash.remove();
   }
 
-  late Future<void> _dataLoaded;
-  @override
-  void initState() {
-    super.initState();
-    _dataLoaded = loadData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -94,45 +84,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       routes: {
         "/welcome": (context) => const Welcome(),
         // ? Why not just "/"? Because that causes duplicate GlobalKeys for reasons unknown
-        "/home": (context) => FutureBuilder(
-              future: _dataLoaded,
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return const LoadingScreen();
-                  case ConnectionState.done:
-                    return const HomeScreen();
-                  default:
-                    return const Text("A catastropic error has occurred.");
-                }
-              },
-            ),
+        "/home": (context) => const HomeScreen(),
         "/settings": (context) => const Settings(),
       },
-    );
-  }
-}
-
-class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        // ? Shows the loading indicator only if the app takes more than 200ms to load
-        child: FutureBuilder(
-            future: Future.delayed(const Duration(milliseconds: 200)),
-            builder: (c, s) => s.connectionState == ConnectionState.done
-                ? Transform.scale(
-                    scale: 3,
-                    child: const CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ))
-                : Container()),
-      ),
     );
   }
 }

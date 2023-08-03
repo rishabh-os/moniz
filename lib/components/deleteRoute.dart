@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:moniz/screens/accounts/AccountEditor.dart';
 import 'dart:math' show sqrt, max;
 import 'dart:ui' show lerpDouble;
-
-import 'package:moniz/screens/entries/EntryEditor.dart';
+import 'package:flutter/material.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/data/transactions.dart';
+import 'package:moniz/screens/accounts/AccountEditor.dart';
+import 'package:moniz/screens/entries/EntryEditor.dart';
 
 class DeleteRoute<T> extends MaterialPageRoute<T> {
   final Widget page;
@@ -27,16 +26,6 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
           fraction: animation.value, centerAlignment: startPositionGlobal),
       child: child,
     );
-    // ? This Align widget fixes SizeTransitions, thanks stackoverflow
-    // return Align(
-    //   child: SizeTransition(
-    //     sizeFactor: animation.drive(Tween<double>(begin: 0, end: 1)),
-    //     axis: Axis.horizontal,
-    //     // axisAlignment: -0.1,
-    //     child: page,
-    //   ),
-    // );
-    // return FadeTransition(opacity: animation, child: child);
   }
 }
 

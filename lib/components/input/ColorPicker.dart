@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:moniz/data/SimpleStore/themeStore.dart';
 
 class ColorPicker extends ConsumerStatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/components/MoneyDisplay.dart';
-import 'package:moniz/screens/entries/TransactionList.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/SimpleStore/themeStore.dart';
+import 'package:moniz/screens/entries/TransactionList.dart';
 
 class Overview extends ConsumerStatefulWidget {
   const Overview({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-import 'package:moniz/screens/accounts/AccountIcon.dart';
 import 'package:moniz/data/AllIcons.dart';
+import 'package:moniz/screens/accounts/AccountIcon.dart';
 
 class IconPicker extends StatefulWidget {
   const IconPicker({

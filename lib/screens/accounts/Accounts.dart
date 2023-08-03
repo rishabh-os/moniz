@@ -2,11 +2,11 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:moniz/screens/accounts/AccountCard.dart';
-import 'package:moniz/screens/accounts/AccountEditor.dart';
 import 'package:moniz/data/SimpleStore/tutorialStore.dart';
 import 'package:moniz/data/account.dart';
 import 'package:moniz/data/transactions.dart';
+import 'package:moniz/screens/accounts/AccountCard.dart';
+import 'package:moniz/screens/accounts/AccountEditor.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class Accounts extends ConsumerStatefulWidget {
