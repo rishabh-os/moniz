@@ -55,9 +55,11 @@ class _AccountCardState extends State<AccountCard> {
                       ),
                       const Expanded(child: SizedBox()),
                       IconButton(
-                          onPressed: () =>
-                              handleTap(widget.key, context, widget.account),
-                          icon: const Icon(Icons.edit))
+                        onPressed: () =>
+                            handleTap(widget.key, context, widget.account),
+                        icon: const Icon(Icons.edit),
+                        tooltip: "Edit account",
+                      )
                     ],
                   ),
                   Padding(

@@ -60,7 +60,44 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
 
     if (widget.transaction != null) {
       appBarTitle = "Edit";
-      actions.add(deleteAction());
+      actions = deleteAction(() {
+        void deleteTransaction() {
+          ref
+              .read(transactionsProvider.notifier)
+              .deleteTransaction(widget.transaction!.id);
+          Navigator.of(context).pop();
+          // ? Update account balance on delete
+          var targetAccount = accounts.firstWhere(
+              (element) => element.id == widget.transaction!.accountID);
+          ref.read(accountsProvider.notifier).editAccount(
+              targetAccount.copyWith(
+                  balance: targetAccount.balance - widget.transaction!.amount));
+        }
+
+        ref.watch(transDeleteProvider)
+            ? showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  // title: const Text("Are you sure?"),
+                  content: const Text(
+                      "Are you sure you want to delete this transaction?"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          deleteTransaction();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Yes")),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("No"))
+                  ],
+                ),
+              )
+            : deleteTransaction();
+      });
       _entryType = widget.transaction!.amount > 0 ? 0 : 1;
       _title = widget.transaction!.title;
       _amount = widget.transaction!.amount.abs();
@@ -105,49 +142,50 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
         text: _amount.toString() == "0.0" ? null : _amount.toString());
   }
 
-  IconButton deleteAction() {
-    return IconButton.filledTonal(
-        onPressed: () {
-          void deleteTransaction() {
-            ref
-                .read(transactionsProvider.notifier)
-                .deleteTransaction(widget.transaction!.id);
-            Navigator.of(context).pop();
-            // ? Update account balance on delete
-            var targetAccount = accounts.firstWhere(
-                (element) => element.id == widget.transaction!.accountID);
-            ref.read(accountsProvider.notifier).editAccount(
-                targetAccount.copyWith(
-                    balance:
-                        targetAccount.balance - widget.transaction!.amount));
-          }
+  // IconButton deleteAction() {
+  //   return IconButton.filledTonal(
+  //     onPressed: () {
+  //       void deleteTransaction() {
+  //         ref
+  //             .read(transactionsProvider.notifier)
+  //             .deleteTransaction(widget.transaction!.id);
+  //         Navigator.of(context).pop();
+  //         // ? Update account balance on delete
+  //         var targetAccount = accounts.firstWhere(
+  //             (element) => element.id == widget.transaction!.accountID);
+  //         ref.read(accountsProvider.notifier).editAccount(
+  //             targetAccount.copyWith(
+  //                 balance: targetAccount.balance - widget.transaction!.amount));
+  //       }
 
-          ref.watch(transDeleteProvider)
-              ? showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    // title: const Text("Are you sure?"),
-                    content: const Text(
-                        "Are you sure you want to delete this transaction?"),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            deleteTransaction();
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("Yes")),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("No"))
-                    ],
-                  ),
-                )
-              : deleteTransaction();
-        },
-        icon: const Icon(Icons.dangerous));
-  }
+  //       ref.watch(transDeleteProvider)
+  //           ? showDialog(
+  //               context: context,
+  //               builder: (context) => AlertDialog(
+  //                 // title: const Text("Are you sure?"),
+  //                 content: const Text(
+  //                     "Are you sure you want to delete this transaction?"),
+  //                 actions: [
+  //                   TextButton(
+  //                       onPressed: () {
+  //                         deleteTransaction();
+  //                         Navigator.of(context).pop();
+  //                       },
+  //                       child: const Text("Yes")),
+  //                   TextButton(
+  //                       onPressed: () {
+  //                         Navigator.of(context).pop();
+  //                       },
+  //                       child: const Text("No"))
+  //                 ],
+  //               ),
+  //             )
+  //           : deleteTransaction();
+  //     },
+  //     icon: const Icon(Icons.delete_forever_rounded),
+  //     tooltip: "Delete entry",
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

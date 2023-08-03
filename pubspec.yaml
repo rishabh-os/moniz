@@ -47,8 +47,6 @@ dependencies:
   get_storage: ^2.1.1
   flutter_iconpicker: ^3.2.4
   window_manager: ^0.3.4
-  animated_digit: ^3.2.1
-  animated_flip_counter: ^0.2.5
   fl_chart: ^0.63.0
   currency_picker: ^2.0.16
   share_plus: ^7.0.2

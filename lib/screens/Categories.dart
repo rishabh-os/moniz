@@ -52,6 +52,7 @@ class _CategoriesState extends ConsumerState<Categories> {
               trailing: IconButton(
                 icon: const Icon(Icons.edit_rounded),
                 onPressed: () => handleTap(key, context, e),
+                tooltip: "Edit category",
               ),
             );
           },

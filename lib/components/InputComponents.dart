@@ -74,3 +74,14 @@ class _AmountFieldState extends State<AmountField> {
     );
   }
 }
+
+List<Widget> deleteAction(void Function() onTap) {
+  return [
+    IconButton.filledTonal(
+      onPressed: onTap,
+      icon: const Icon(Icons.delete_forever_outlined),
+      tooltip: "Delete",
+    ),
+    const SizedBox(width: 10)
+  ];
+}

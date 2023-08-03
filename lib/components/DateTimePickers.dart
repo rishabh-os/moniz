@@ -128,6 +128,7 @@ class _DateRangePickerState extends ConsumerState<DateRangePicker> {
         }
       },
       icon: const Icon(Icons.calendar_today),
+      tooltip: "Date range picker",
     );
   }
 }

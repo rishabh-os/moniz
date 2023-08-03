@@ -27,7 +27,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   int _selectedIcon = Icons.abc.codePoint;
   late TextEditingController balanceController;
   late Function saveAction;
-  Widget deleteItem = Container();
+  List<Widget> deleteItem = [];
 
   @override
   void initState() {
@@ -48,16 +48,14 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         _selectedIcon = widget.editedAccount!.iconCodepoint;
         _balance = widget.editedAccount!.balance;
         saveAction = ref.read(accountsProvider.notifier).editAccount;
-        deleteItem = IconButton(
-            onPressed: handleAccountDelete, icon: const Icon(Icons.dangerous));
+        deleteItem = deleteAction(() => handleAccountDelete());
       } else {
         title += "Category";
         _accountName = widget.editedCategory!.name;
         _selectedColor = widget.editedCategory!.color;
         _selectedIcon = widget.editedCategory!.iconCodepoint;
         saveAction = ref.read(categoriesProvider.notifier).editCategory;
-        deleteItem = IconButton(
-            onPressed: handleCategoryDelete, icon: const Icon(Icons.dangerous));
+        deleteItem = deleteAction(() => handleCategoryDelete());
       }
     }
     accountNameController =
@@ -192,7 +190,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        actions: [deleteItem],
+        actions: deleteItem,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
