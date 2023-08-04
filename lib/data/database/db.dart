@@ -43,7 +43,6 @@ class AccountsTable extends Table {
   IntColumn get color => integer()();
   // ? Real means double
   RealColumn get balance => real()();
-  RealColumn get netTransactions => real()();
 }
 
 @DriftDatabase(tables: [TransactionTable, CategoriesTable, AccountsTable])
@@ -100,12 +99,12 @@ class MyDatabase extends _$MyDatabase {
     if (allAccounts.isEmpty) {
       await batch((batch) => batch.insertAll(accountsTable, [
             AccountsTableCompanion.insert(
-                id: "accId1",
-                name: "Cash",
-                iconCodepoint: m.Icons.monetization_on.codePoint,
-                color: m.Colors.green.value,
-                balance: 0,
-                netTransactions: 0),
+              id: "accId1",
+              name: "Cash",
+              iconCodepoint: m.Icons.monetization_on.codePoint,
+              color: m.Colors.green.value,
+              balance: 0,
+            ),
           ]));
     }
     // ? Use batch to perform inserts as there is an inbuilt unique checker (happy little discovery)
@@ -121,7 +120,6 @@ class MyDatabase extends _$MyDatabase {
         iconCodepoint: Value(target.iconCodepoint),
         color: Value(target.color),
         balance: Value(target.balance),
-        netTransactions: Value(target.netTransactions),
       ),
     );
   }

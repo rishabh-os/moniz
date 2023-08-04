@@ -5,13 +5,13 @@ import 'package:moniz/data/category.dart';
 import 'package:moniz/data/database/db.dart';
 
 class Account extends Classifier {
-  Account(
-      {required this.id,
-      required this.name,
-      required this.iconCodepoint,
-      required this.color,
-      required this.balance,
-      this.netTransactions = 0});
+  Account({
+    required this.id,
+    required this.name,
+    required this.iconCodepoint,
+    required this.color,
+    required this.balance,
+  });
 
   @override
   final String id;
@@ -22,8 +22,6 @@ class Account extends Classifier {
   @override
   final int color;
   double balance;
-  // ? Here because I don't want to write a db migration
-  final double netTransactions;
 
   @override
   Account copyWith(
@@ -33,12 +31,12 @@ class Account extends Classifier {
       double? balance,
       double? netTransactions}) {
     return Account(
-        id: id,
-        name: name ?? this.name,
-        iconCodepoint: iconCodepoint ?? this.iconCodepoint,
-        color: color ?? this.color,
-        balance: balance ?? this.balance,
-        netTransactions: netTransactions ?? this.netTransactions);
+      id: id,
+      name: name ?? this.name,
+      iconCodepoint: iconCodepoint ?? this.iconCodepoint,
+      color: color ?? this.color,
+      balance: balance ?? this.balance,
+    );
   }
 }
 
@@ -55,7 +53,6 @@ class AccountNotifier extends StateNotifier<List<Account>> {
               iconCodepoint: e.iconCodepoint,
               color: e.color,
               balance: e.balance,
-              netTransactions: e.netTransactions,
             ))
         .toList();
     state = loadedAccounts;
@@ -71,7 +68,6 @@ class AccountNotifier extends StateNotifier<List<Account>> {
             iconCodepoint: editedAccount.iconCodepoint,
             color: editedAccount.color,
             balance: editedAccount.balance,
-            netTransactions: editedAccount.netTransactions,
           )
         else
           acc,
@@ -86,7 +82,6 @@ class AccountNotifier extends StateNotifier<List<Account>> {
           iconCodepoint: newAccount.iconCodepoint,
           color: newAccount.color,
           balance: newAccount.balance,
-          netTransactions: newAccount.netTransactions,
         ));
   }
 

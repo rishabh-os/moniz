@@ -474,15 +474,9 @@ class $AccountsTableTable extends AccountsTable
   late final GeneratedColumn<double> balance = GeneratedColumn<double>(
       'balance', aliasedName, false,
       type: DriftSqlType.double, requiredDuringInsert: true);
-  static const VerificationMeta _netTransactionsMeta =
-      const VerificationMeta('netTransactions');
-  @override
-  late final GeneratedColumn<double> netTransactions = GeneratedColumn<double>(
-      'net_transactions', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, iconCodepoint, color, balance, netTransactions];
+      [id, name, iconCodepoint, color, balance];
   @override
   String get aliasedName => _alias ?? 'accounts_table';
   @override
@@ -523,14 +517,6 @@ class $AccountsTableTable extends AccountsTable
     } else if (isInserting) {
       context.missing(_balanceMeta);
     }
-    if (data.containsKey('net_transactions')) {
-      context.handle(
-          _netTransactionsMeta,
-          netTransactions.isAcceptableOrUnknown(
-              data['net_transactions']!, _netTransactionsMeta));
-    } else if (isInserting) {
-      context.missing(_netTransactionsMeta);
-    }
     return context;
   }
 
@@ -550,8 +536,6 @@ class $AccountsTableTable extends AccountsTable
           .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
       balance: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}balance'])!,
-      netTransactions: attachedDatabase.typeMapping.read(
-          DriftSqlType.double, data['${effectivePrefix}net_transactions'])!,
     );
   }
 
@@ -567,7 +551,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
   final Value<int> iconCodepoint;
   final Value<int> color;
   final Value<double> balance;
-  final Value<double> netTransactions;
   final Value<int> rowid;
   const AccountsTableCompanion({
     this.id = const Value.absent(),
@@ -575,7 +558,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     this.iconCodepoint = const Value.absent(),
     this.color = const Value.absent(),
     this.balance = const Value.absent(),
-    this.netTransactions = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AccountsTableCompanion.insert({
@@ -584,21 +566,18 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     required int iconCodepoint,
     required int color,
     required double balance,
-    required double netTransactions,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         iconCodepoint = Value(iconCodepoint),
         color = Value(color),
-        balance = Value(balance),
-        netTransactions = Value(netTransactions);
+        balance = Value(balance);
   static Insertable<Account> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<int>? iconCodepoint,
     Expression<int>? color,
     Expression<double>? balance,
-    Expression<double>? netTransactions,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -607,7 +586,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       if (iconCodepoint != null) 'icon_codepoint': iconCodepoint,
       if (color != null) 'color': color,
       if (balance != null) 'balance': balance,
-      if (netTransactions != null) 'net_transactions': netTransactions,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -618,7 +596,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       Value<int>? iconCodepoint,
       Value<int>? color,
       Value<double>? balance,
-      Value<double>? netTransactions,
       Value<int>? rowid}) {
     return AccountsTableCompanion(
       id: id ?? this.id,
@@ -626,7 +603,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       iconCodepoint: iconCodepoint ?? this.iconCodepoint,
       color: color ?? this.color,
       balance: balance ?? this.balance,
-      netTransactions: netTransactions ?? this.netTransactions,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -649,9 +625,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     if (balance.present) {
       map['balance'] = Variable<double>(balance.value);
     }
-    if (netTransactions.present) {
-      map['net_transactions'] = Variable<double>(netTransactions.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -666,7 +639,6 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
           ..write('iconCodepoint: $iconCodepoint, ')
           ..write('color: $color, ')
           ..write('balance: $balance, ')
-          ..write('netTransactions: $netTransactions, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
