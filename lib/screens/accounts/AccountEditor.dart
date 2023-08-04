@@ -35,9 +35,9 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     super.initState();
 
     if (widget.type == "Account") {
-      saveAction = ref.read(accountsProvider.notifier).addAccount;
+      saveAction = ref.read(accountsProvider.notifier).add;
     } else {
-      saveAction = ref.read(categoriesProvider.notifier).addCategory;
+      saveAction = ref.read(categoriesProvider.notifier).add;
     }
     title += widget.type;
     if (widget.editedAccount != null || widget.editedCategory != null) {
@@ -48,14 +48,14 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         _selectedColor = widget.editedAccount!.color;
         _selectedIcon = widget.editedAccount!.iconCodepoint;
         _balance = widget.editedAccount!.balance;
-        saveAction = ref.read(accountsProvider.notifier).editAccount;
+        saveAction = ref.read(accountsProvider.notifier).edit;
         deleteItem = deleteAction(() => handleAccountDelete());
       } else {
         title += "Category";
         _accountName = widget.editedCategory!.name;
         _selectedColor = widget.editedCategory!.color;
         _selectedIcon = widget.editedCategory!.iconCodepoint;
-        saveAction = ref.read(categoriesProvider.notifier).editCategory;
+        saveAction = ref.read(categoriesProvider.notifier).edit;
         deleteItem = deleteAction(() => handleCategoryDelete());
       }
     }
@@ -67,9 +67,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
 
   void handleAccountDelete() {
     void delete() {
-      ref
-          .read(accountsProvider.notifier)
-          .deleteAccount(widget.editedAccount!.id);
+      ref.read(accountsProvider.notifier).delete(widget.editedAccount!.id);
       Navigator.popUntil(context, ModalRoute.withName('/home'));
     }
 
@@ -106,7 +104,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                               if (trans.accountID == widget.editedAccount!.id) {
                                 ref
                                     .watch(transactionsProvider.notifier)
-                                    .deleteTransaction(trans.id);
+                                    .delete(trans.id);
                               }
                               delete();
                             }
@@ -127,9 +125,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
 
   void handleCategoryDelete() {
     void delete() {
-      ref
-          .read(categoriesProvider.notifier)
-          .deleteCategory(widget.editedCategory!.id);
+      ref.read(categoriesProvider.notifier).delete(widget.editedCategory!.id);
       Navigator.pop(context);
     }
 
@@ -167,7 +163,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                                   widget.editedCategory!.name) {
                                 ref
                                     .watch(transactionsProvider.notifier)
-                                    .deleteTransaction(trans.id);
+                                    .delete(trans.id);
                               }
                               delete();
                             }

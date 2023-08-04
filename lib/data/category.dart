@@ -44,7 +44,7 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
     state = loadedCategories;
   }
 
-  void editCategory(TransactionCategory editedCategory) {
+  void edit(TransactionCategory editedCategory) {
     db.updateCategory(editedCategory);
     state = [
       for (final trans in state)
@@ -59,7 +59,7 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
     ];
   }
 
-  void addCategory(TransactionCategory newCategory) async {
+  void add(TransactionCategory newCategory) async {
     state = [...state, newCategory];
     await db.into(db.categoriesTable).insert(CategoriesTableCompanion.insert(
         id: newCategory.id,
@@ -68,7 +68,7 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
         color: newCategory.color));
   }
 
-  void deleteCategory(String categoryID) async {
+  void delete(String categoryID) async {
     state = [
       for (final category in state)
         if (category.id != categoryID) category,

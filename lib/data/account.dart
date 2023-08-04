@@ -52,7 +52,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
     state = loadedAccounts;
   }
 
-  void editAccount(Account editedAccount) {
+  void edit(Account editedAccount) {
     db.updateAccount(editedAccount);
     state = [
       for (final acc in state)
@@ -69,7 +69,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
     ];
   }
 
-  void addAccount(Account newAccount) async {
+  void add(Account newAccount) async {
     state = [...state, newAccount];
     await db.into(db.accountsTable).insert(AccountsTableCompanion.insert(
           id: newAccount.id,
@@ -81,7 +81,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
         ));
   }
 
-  void deleteAccount(String accountID) async {
+  void delete(String accountID) async {
     state = [
       for (final account in state)
         if (account.id != accountID) account,

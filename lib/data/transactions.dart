@@ -75,7 +75,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
     state = loadedTransactions;
   }
 
-  void editTransaction(Transaction editedTransaction) async {
+  void edit(Transaction editedTransaction) async {
     await db.updateTransaction(editedTransaction);
     state = [
       for (final trans in state)
@@ -93,7 +93,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
     ];
   }
 
-  void addTransaction(Transaction newTransaction) async {
+  void add(Transaction newTransaction) async {
     state = [newTransaction, ...state];
     await db.into(db.transactionTable).insert(TransactionTableCompanion.insert(
         id: newTransaction.id,
@@ -105,7 +105,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
         additionalInfo: newTransaction.additionalInfo));
   }
 
-  void deleteTransaction(String transactionID) async {
+  void delete(String transactionID) async {
     state = [
       for (final transaction in state)
         if (transaction.id != transactionID) transaction,

@@ -50,12 +50,12 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
     categories = ref.read(categoriesProvider);
 
     saveAction = (transaction) {
-      ref.read(transactionsProvider.notifier).addTransaction(transaction);
+      ref.read(transactionsProvider.notifier).add(transaction);
 
       // ? Update account balance on add
       var targetAccount =
           accounts.firstWhere((element) => element.id == transaction.accountID);
-      ref.read(accountsProvider.notifier).editAccount(targetAccount.copyWith(
+      ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
           balance: targetAccount.balance + transaction.amount));
     };
 
@@ -65,14 +65,13 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
         void deleteTransaction() {
           ref
               .read(transactionsProvider.notifier)
-              .deleteTransaction(widget.transaction!.id);
+              .delete(widget.transaction!.id);
           Navigator.of(context).pop();
           // ? Update account balance on delete
           var targetAccount = accounts.firstWhere(
               (element) => element.id == widget.transaction!.accountID);
-          ref.read(accountsProvider.notifier).editAccount(
-              targetAccount.copyWith(
-                  balance: targetAccount.balance - widget.transaction!.amount));
+          ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
+              balance: targetAccount.balance - widget.transaction!.amount));
         }
 
         ref.watch(transDeleteProvider)
@@ -113,7 +112,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
           minute: widget.transaction!.recorded.minute);
       _additionalInfo = widget.transaction!.additionalInfo;
       saveAction = (transaction) {
-        ref.read(transactionsProvider.notifier).editTransaction(transaction);
+        ref.read(transactionsProvider.notifier).edit(transaction);
         // ? Handle all the cases when the transaction is edited
         var targetAccount = accounts
             .firstWhere((element) => element.id == transaction.accountID);
@@ -124,13 +123,13 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
             .firstWhere((element) => element.id == oldTransaction.accountID);
         if (oldTransaction.accountID == transaction.accountID) {
           var changedAmount = transaction.amount - oldTransaction.amount;
-          ref.read(accountsProvider.notifier).editAccount(targetAccount
-              .copyWith(balance: targetAccount.balance + changedAmount));
+          ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
+              balance: targetAccount.balance + changedAmount));
         } else {
-          ref.read(accountsProvider.notifier).editAccount(oldAccount.copyWith(
+          ref.read(accountsProvider.notifier).edit(oldAccount.copyWith(
               balance: oldAccount.balance - oldTransaction.amount));
-          ref.read(accountsProvider.notifier).editAccount(targetAccount
-              .copyWith(balance: targetAccount.balance + transaction.amount));
+          ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
+              balance: targetAccount.balance + transaction.amount));
         }
       };
     }
