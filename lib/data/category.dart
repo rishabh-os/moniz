@@ -3,18 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/database/db.dart';
 
-class TransactionCategory {
-  const TransactionCategory(
+class TransactionCategory extends Classifier {
+  TransactionCategory(
       {required this.id,
       required this.name,
       required this.iconCodepoint,
       required this.color});
 
+  @override
   final String id;
+  @override
   final String name;
+  @override
   final int iconCodepoint;
+  @override
   final int color;
 
+  @override
   TransactionCategory copyWith({String? name, int? iconCodepoint, int? color}) {
     return TransactionCategory(
       id: id,
@@ -81,3 +86,12 @@ final categoriesProvider =
     StateNotifierProvider<CategoryNotifier, List<TransactionCategory>>((ref) {
   return CategoryNotifier(ref.read(dbProvider));
 });
+
+abstract class Classifier {
+  String get id;
+  String get name;
+  int get iconCodepoint;
+  int get color;
+
+  Classifier copyWith({String? name, int? iconCodepoint, int? color});
+}

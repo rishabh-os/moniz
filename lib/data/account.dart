@@ -4,14 +4,23 @@ import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/data/database/db.dart';
 
-class Account extends TransactionCategory {
+class Account extends Classifier {
   Account(
-      {required super.id,
-      required super.name,
-      required super.iconCodepoint,
-      required super.color,
+      {required this.id,
+      required this.name,
+      required this.iconCodepoint,
+      required this.color,
       required this.balance,
       this.netTransactions = 0});
+
+  @override
+  final String id;
+  @override
+  final String name;
+  @override
+  final int iconCodepoint;
+  @override
+  final int color;
   double balance;
   // ? Here because I don't want to write a db migration
   final double netTransactions;

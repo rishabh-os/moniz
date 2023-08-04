@@ -4,6 +4,7 @@ import 'package:moniz/components/IconPicker.dart';
 import 'package:moniz/components/input/AmountField.dart';
 import 'package:moniz/components/input/ColorPicker.dart';
 import 'package:moniz/components/input/SaveFAB.dart';
+import 'package:moniz/components/input/deleteFunctions.dart';
 import 'package:moniz/data/account.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/data/transactions.dart';
@@ -85,41 +86,17 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     }
     acList.isEmpty
         ? delete()
-        : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                const Text("There are still transactions under this account"),
-            action: SnackBarAction(
-              label: "Delete",
-              onPressed: () => {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text("Are you sure?"),
-                    content: const Text(
-                        "This will delete all transactions associated with this account."),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            for (var trans in transactionList) {
-                              if (trans.accountID == widget.editedAccount!.id) {
-                                ref
-                                    .watch(transactionsProvider.notifier)
-                                    .delete(trans.id);
-                              }
-                              delete();
-                            }
-                          },
-                          child: const Text("Yes")),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("No"))
-                    ],
-                  ),
-                )
-              },
-            ),
+        : ScaffoldMessenger.of(context).showSnackBar(deleteSnack(
+            context,
+            widget.type,
+            () {
+              for (var trans in transactionList) {
+                if (trans.accountID == widget.editedAccount!.id) {
+                  ref.watch(transactionsProvider.notifier).delete(trans.id);
+                }
+                delete();
+              }
+            },
           ));
   }
 
@@ -143,43 +120,15 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     }
     acList.isEmpty
         ? delete()
-        : ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                const Text("There are still transactions under this account"),
-            action: SnackBarAction(
-              label: "Delete",
-              onPressed: () => {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text("Are you sure?"),
-                    content: const Text(
-                        "This will delete all transactions associated with this account."),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            for (var trans in transactionList) {
-                              if (trans.categoryID ==
-                                  widget.editedCategory!.name) {
-                                ref
-                                    .watch(transactionsProvider.notifier)
-                                    .delete(trans.id);
-                              }
-                              delete();
-                            }
-                          },
-                          child: const Text("Yes")),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text("No"))
-                    ],
-                  ),
-                )
-              },
-            ),
-          ));
+        : ScaffoldMessenger.of(context)
+            .showSnackBar(deleteSnack(context, widget.type, () {
+            for (var trans in transactionList) {
+              if (trans.categoryID == widget.editedCategory!.name) {
+                ref.watch(transactionsProvider.notifier).delete(trans.id);
+              }
+              delete();
+            }
+          }));
   }
 
   @override
