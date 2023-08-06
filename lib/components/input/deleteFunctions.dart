@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 SnackBar deleteSnack(BuildContext context, String type, Function onPressed) {
+  type = type.toLowerCase();
   return SnackBar(
     content: Text("There are still transactions under this $type"),
     action: SnackBarAction(
