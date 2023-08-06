@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/components/IconPicker.dart';
 import 'package:moniz/components/input/AmountField.dart';
 import 'package:moniz/components/input/ColorPicker.dart';
+import 'package:moniz/components/input/Header.dart';
 import 'package:moniz/components/input/SaveFAB.dart';
 import 'package:moniz/components/input/deleteFunctions.dart';
 import 'package:moniz/data/account.dart';
@@ -73,7 +74,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     }
 
     List<Transaction> transactionList = ref.watch(transactionsProvider);
-    List<Transaction> acList = transactionList
+    List<Transaction> activeTransactions = transactionList
         .where((e) => e.accountID == widget.editedAccount!.id)
         .toList();
     List<Account> accounts = ref.watch(accountsProvider);
@@ -84,7 +85,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
       ));
       return;
     }
-    acList.isEmpty
+    activeTransactions.isEmpty
         ? delete()
         : ScaffoldMessenger.of(context).showSnackBar(deleteSnack(
             context,
@@ -107,25 +108,27 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     }
 
     List<Transaction> transactionList = ref.watch(transactionsProvider);
-    List<Transaction> acList = transactionList
-        .where((e) => e.categoryID == widget.editedCategory!.name)
+    List<Transaction> activeTransactions = transactionList
+        .where((e) => e.categoryID == widget.editedCategory!.id)
         .toList();
     List<TransactionCategory> categories = ref.watch(categoriesProvider);
 
     if (categories.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("You can't delete the last account"),
+        content: Text("You can't delete the last category"),
       ));
       return;
     }
-    acList.isEmpty
+    activeTransactions.isEmpty
         ? delete()
         : ScaffoldMessenger.of(context)
             .showSnackBar(deleteSnack(context, widget.type, () {
             for (var trans in transactionList) {
-              if (trans.categoryID == widget.editedCategory!.name) {
+              if (trans.categoryID == widget.editedCategory!.id) {
                 ref.watch(transactionsProvider.notifier).delete(trans.id);
               }
+              // ? Not sure why, but this is needed for categories
+              Navigator.of(context).pop();
               delete();
             }
           }));
@@ -145,6 +148,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
           runSpacing: 10,
           children: [
             TextFormField(
+              key: const Key("name"),
               controller: accountNameController,
               onChanged: (value) {
                 _accountName = value;
@@ -156,23 +160,13 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
               textCapitalization: TextCapitalization.sentences,
             ),
             if (widget.type == "Account") ...[
-              Center(
-                child: Text("Current Balance".toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    )),
-              ),
+              const Header(text: "Current Balance"),
               AmountField(
                 amountController: balanceController,
                 amountCallback: (amount) => _balance = amount,
               )
             ],
-            Center(
-              child: Text("${widget.type} color".toUpperCase(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                  )),
-            ),
+            Header(text: "${widget.type} color"),
             ColorPicker(
               colorCallback: (selectedColor) {
                 setState(() {
@@ -180,15 +174,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                 });
               },
             ),
-            Center(
-              child: Text("${widget.type} icon".toUpperCase(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                  )),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
+            Header(text: "${widget.type} icon"),
             IconPicker(
               iconCodepoint: _selectedIcon,
               color: _selectedColor,

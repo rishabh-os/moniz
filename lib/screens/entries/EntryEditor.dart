@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moniz/components/DateTimePickers.dart';
 import 'package:moniz/components/input/AmountField.dart';
+import 'package:moniz/components/input/ChipSelector.dart';
+import 'package:moniz/components/input/Header.dart';
 import 'package:moniz/components/input/SaveFAB.dart';
 import 'package:moniz/components/input/deleteFunctions.dart';
 import 'package:moniz/data/SimpleStore/settingsStore.dart';
@@ -102,7 +104,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       _entryType = widget.transaction!.amount > 0 ? 0 : 1;
       _title = widget.transaction!.title;
       _amount = widget.transaction!.amount.abs();
-      // ? This complicated code brought to you by having to store only the name in the database
+      // ? This complicated code brought to you by having to store only the id in the database
       _selectedCategory = categories.indexOf(categories.firstWhere(
           (element) => element.id == widget.transaction!.categoryID));
       _selectedAccount = accounts.indexOf(accounts.firstWhere(
@@ -142,51 +144,6 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
     amountController = TextEditingController(
         text: _amount.toString() == "0.0" ? null : _amount.toString());
   }
-
-  // IconButton deleteAction() {
-  //   return IconButton.filledTonal(
-  //     onPressed: () {
-  //       void deleteTransaction() {
-  //         ref
-  //             .read(transactionsProvider.notifier)
-  //             .deleteTransaction(widget.transaction!.id);
-  //         Navigator.of(context).pop();
-  //         // ? Update account balance on delete
-  //         var targetAccount = accounts.firstWhere(
-  //             (element) => element.id == widget.transaction!.accountID);
-  //         ref.read(accountsProvider.notifier).editAccount(
-  //             targetAccount.copyWith(
-  //                 balance: targetAccount.balance - widget.transaction!.amount));
-  //       }
-
-  //       ref.watch(transDeleteProvider)
-  //           ? showDialog(
-  //               context: context,
-  //               builder: (context) => AlertDialog(
-  //                 // title: const Text("Are you sure?"),
-  //                 content: const Text(
-  //                     "Are you sure you want to delete this transaction?"),
-  //                 actions: [
-  //                   TextButton(
-  //                       onPressed: () {
-  //                         deleteTransaction();
-  //                         Navigator.of(context).pop();
-  //                       },
-  //                       child: const Text("Yes")),
-  //                   TextButton(
-  //                       onPressed: () {
-  //                         Navigator.of(context).pop();
-  //                       },
-  //                       child: const Text("No"))
-  //                 ],
-  //               ),
-  //             )
-  //           : deleteTransaction();
-  //     },
-  //     icon: const Icon(Icons.delete_forever_rounded),
-  //     tooltip: "Delete entry",
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -246,92 +203,27 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                 amountController: amountController,
                 amountCallback: (amount) => _amount = amount,
               ),
-              // ? This Center widget is technically not needed since both widgets
-              // ? above and below it are too big to fit in a single line
-              Center(
-                child: Text("Category".toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    )),
+              const Header(text: "Category"),
+              ChipSelector(
+                items: categories,
+                selection: _selectedCategory,
+                returnSelected: (selected) {
+                  setState(() {
+                    _selectedCategory = selected;
+                  });
+                },
               ),
-              SizedBox(
-                height: 44,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children:
-                      List<Widget>.generate(categories.length, (int index) {
-                    TransactionCategory cat = categories[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: ChoiceChip(
-                        label: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 8,
-                          children: [
-                            Icon(
-                              IconData(cat.iconCodepoint,
-                                  fontFamily: 'MaterialIcons'),
-                              color: Color(cat.color),
-                            ),
-                            Text(categories[index].name),
-                          ],
-                        ),
-                        selected: _selectedCategory == index,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            _selectedCategory = index;
-                          });
-                        },
-                      ),
-                    );
-                  }, growable: false)
-                          .toList(),
-                ),
+              const Header(text: "Account"),
+              ChipSelector(
+                items: accounts,
+                selection: _selectedAccount,
+                returnSelected: (selected) {
+                  setState(() {
+                    _selectedAccount = selected;
+                  });
+                },
               ),
-              Center(
-                child: Text("Account".toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    )),
-              ),
-              SizedBox(
-                height: 44,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List<Widget>.generate(accounts.length, (int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: ChoiceChip(
-                        label: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 8,
-                          children: [
-                            Icon(
-                              IconData(accounts[index].iconCodepoint,
-                                  fontFamily: 'MaterialIcons'),
-                              color: Color(accounts[index].color),
-                            ),
-                            Text(accounts[index].name),
-                          ],
-                        ),
-                        selected: _selectedAccount == index,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            _selectedAccount = index;
-                          });
-                        },
-                      ),
-                    );
-                  }, growable: false)
-                      .toList(),
-                ),
-              ),
-              Center(
-                child: Text("Date and time".toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    )),
-              ),
+              const Header(text: "Date and Time"),
               Wrap(
                 spacing: 5,
                 children: [

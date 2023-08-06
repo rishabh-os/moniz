@@ -40,6 +40,7 @@ class _AnalysisState extends ConsumerState<Analysis>
       display = DefaultTabController(
         length: 2,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TabBar(
               tabs: [
@@ -61,8 +62,8 @@ class _AnalysisState extends ConsumerState<Analysis>
                     icon: const Icon(Icons.bar_chart_rounded)),
               ],
             ),
-            const SizedBox(
-              height: 500,
+            const Expanded(
+              // height: MediaQuery.of(context).size.height - 200,
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
