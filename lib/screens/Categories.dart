@@ -1,7 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:moniz/components/deleteRoute.dart';
+import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/category.dart';
 import 'package:moniz/screens/accounts/AccountEditor.dart';
 
@@ -16,17 +18,30 @@ class _CategoriesState extends ConsumerState<Categories> {
   @override
   Widget build(BuildContext context) {
     List<TransactionCategory> categories = ref.watch(categoriesProvider);
+    List<int> order = ref.watch(categoryOrderProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // TODO: Make it reorderable later
-        ListView.builder(
-          // buildDefaultDragHandles: false,
+        ReorderableListView.builder(
+          buildDefaultDragHandles: false,
           itemCount: categories.length,
           shrinkWrap: true,
-          // onReorder: (oldIndex, newIndex) => {},
+          onReorder: (oldIndex, newIndex) => {
+            setState(() {
+              if (newIndex > oldIndex) {
+                newIndex -= 1;
+              }
+              final items = order.removeAt(oldIndex);
+              order.insert(newIndex, items);
+              ref
+                  .watch(categoryOrderProvider.notifier)
+                  .update((state) => order);
+              GetStorage().write("order", order.toString());
+            })
+          },
           itemBuilder: (context, index) {
-            var e = categories[index];
+            var e = categories[order[index]];
+            // ? Not a regular key so that I can use the edit animation
             final key = GlobalObjectKey(index);
             return ListTile(
               key: key,
@@ -34,12 +49,12 @@ class _CategoriesState extends ConsumerState<Categories> {
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // ReorderableDragStartListener(
-                  //     index: index,
-                  //     child: const Icon(Icons.drag_indicator_rounded)),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
+                  ReorderableDragStartListener(
+                      index: index,
+                      child: const Icon(Icons.drag_indicator_rounded)),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Icon(
                     IconData(
                       e.iconCodepoint,

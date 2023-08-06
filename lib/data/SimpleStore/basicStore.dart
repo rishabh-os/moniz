@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:moniz/data/category.dart';
 import 'package:moniz/data/database/db.dart';
 import 'package:moniz/data/transactions.dart';
 
@@ -39,3 +43,14 @@ final overviewExpenseProvider = StateProvider<double>((ref) {
 });
 
 final dbProvider = Provider<MyDatabase>((ref) => MyDatabase());
+
+final categoryOrderProvider = StateProvider<List<int>>((ref) {
+  // ? Errors out if not writted and decoded as a string
+  GetStorage().writeIfNull(
+      "order",
+      <int>[for (var i = 0; i <= ref.watch(categoriesProvider).length; i++) i]
+          .toString());
+  String x = GetStorage().read("order");
+  List<int> test = (jsonDecode(x) as List).cast<int>();
+  return test;
+});

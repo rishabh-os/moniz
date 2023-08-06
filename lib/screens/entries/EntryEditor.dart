@@ -6,6 +6,7 @@ import 'package:moniz/components/input/ChipSelector.dart';
 import 'package:moniz/components/input/Header.dart';
 import 'package:moniz/components/input/SaveFAB.dart';
 import 'package:moniz/components/input/deleteFunctions.dart';
+import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/SimpleStore/settingsStore.dart';
 import 'package:moniz/data/SimpleStore/themeStore.dart';
 import 'package:moniz/data/account.dart';
@@ -205,7 +206,11 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               ),
               const Header(text: "Category"),
               ChipSelector(
-                items: categories,
+                // ? Reorders the categories based on the order provided
+                items: List.generate(
+                    categories.length,
+                    (index) =>
+                        categories[ref.read(categoryOrderProvider)[index]]),
                 selection: _selectedCategory,
                 returnSelected: (selected) {
                   setState(() {

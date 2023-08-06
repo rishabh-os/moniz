@@ -19,14 +19,12 @@ final themeColorProvider = StateProvider<Color>((ref) {
 });
 final brightnessProvider = StateProvider<Brightness>((ref) {
   GetStorage().read("isDark") ??
-      // ? Colors.blueGrey is the default app color
+      // ? App is light by default
       GetStorage().write("isDark", false);
   return GetStorage().read("isDark") ? Brightness.light : Brightness.dark;
 });
 
 final dynamicProvider = StateProvider<bool>((ref) {
-  GetStorage().read("isDynamic") ??
-      // ? Colors.blueGrey is the default app color
-      GetStorage().write("isDynamic", false);
+  GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", false);
   return GetStorage().read("isDynamic");
 });
