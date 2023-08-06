@@ -78,7 +78,7 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
       for (final category in state)
         if (category.id != categoryID) category,
     ];
-    await db.categoriesTable.deleteWhere((tbl) => tbl.name.equals(categoryID));
+    await db.categoriesTable.deleteWhere((tbl) => tbl.id.equals(categoryID));
   }
 }
 
