@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,12 +46,28 @@ final overviewExpenseProvider = StateProvider<double>((ref) {
 final dbProvider = Provider<MyDatabase>((ref) => MyDatabase());
 
 final categoryOrderProvider = StateProvider<List<int>>((ref) {
-  // ? Errors out if not writted and decoded as a string
+  // ? Errors out if not written and decoded as a string
+  var catLen = ref.watch(categoriesProvider).length;
   GetStorage().writeIfNull(
       "order",
       <int>[for (var i = 0; i <= ref.watch(categoriesProvider).length; i++) i]
           .toString());
   String x = GetStorage().read("order");
   List<int> test = (jsonDecode(x) as List).cast<int>();
+  try {
+    assert(test.length == catLen);
+  } catch (e) {
+    // ? Handles adding and removing of categories
+    if (test.length < catLen) {
+      while (test.length < catLen) {
+        test.add(test.reduce(max) + 1);
+      }
+    } else if (test.length > catLen) {
+      while (test.length > catLen) {
+        test.removeWhere((element) => element == test.reduce(max));
+      }
+    }
+  }
+  GetStorage().write("order", test.toString());
   return test;
 });

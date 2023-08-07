@@ -22,10 +22,9 @@ class _TransactionListState extends ConsumerState<TransactionList> {
     final List<Transaction> transactions = ref.watch(transactionsProvider);
     // ? Convert to an AnimatedList someday
     return ListView.custom(
+      physics: const NeverScrollableScrollPhysics(),
       cacheExtent: 10,
       shrinkWrap: true,
-      // itemCount: transactions.length + 1,
-
       childrenDelegate: SliverChildBuilderDelegate(
           findChildIndexCallback: (key) {
             final ValueKey<String> valueKey = key as ValueKey<String>;
@@ -61,7 +60,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                             const BorderRadius.all(Radius.circular(6)),
                         color: ColorScheme.fromSeed(
                                 seedColor: Color(transAccount.color),
-                                // ? This value updates but the ref higher up does not if there is no parent Builder
+                                // ? The color does not update properly, that's why I need to manually specify the brightness
                                 brightness: ref.watch(brightnessProvider))
                             .primaryContainer,
                       ),
@@ -74,7 +73,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                   ],
                 ),
                 leading: Icon(
-                  // ? The global key is attached here to prevent the entire ListView from rebuiling, which enables using the counting animation properly
+                  // ? The global key is attached here to prevent the entire ListView from rebuiling
                   key: key,
                   IconData(transCategory.iconCodepoint,
                       fontFamily: 'MaterialIcons'),
