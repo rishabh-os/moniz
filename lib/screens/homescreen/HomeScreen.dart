@@ -11,6 +11,7 @@ import 'package:moniz/screens/entries/Entries.dart';
 import 'package:moniz/screens/entries/EntryEditor.dart';
 import 'package:moniz/screens/homescreen/DotsMenu.dart';
 import 'package:moniz/screens/homescreen/QuickFilters.dart';
+import 'package:scroll_to_hide/scroll_to_hide.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -116,16 +117,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           openBuilder: (_, closeContainer) {
             return const EntryEditor();
           }),
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (int index) {
-          setState(() {
-            _selectedIndex = index;
-            _onItemTapped(index);
-          });
-        },
-        selectedIndex: _selectedIndex,
-        destinations: navDestinations,
+      bottomNavigationBar: ScrollToHide(
+        scrollController: ref.read(scrollProvider),
+        height: 80,
+        duration: const Duration(milliseconds: 200),
+        child: NavigationBar(
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          onDestinationSelected: (int index) {
+            setState(() {
+              _selectedIndex = index;
+              _onItemTapped(index);
+            });
+          },
+          selectedIndex: _selectedIndex,
+          destinations: navDestinations,
+        ),
       ),
       body: PageView(
         controller: _pageController,

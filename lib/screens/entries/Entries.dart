@@ -21,6 +21,7 @@ class _OverviewState extends ConsumerState<Overview>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
+      controller: ref.read(scrollProvider),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -41,7 +42,12 @@ class _OverviewState extends ConsumerState<Overview>
               ),
             ],
           ),
-          const TransactionList()
+          const TransactionList(),
+          // ? Provides space so that the FAB doesn't block the last transaction
+          const ListTile(
+            isThreeLine: true,
+            subtitle: Text(""),
+          ),
         ],
       ),
     );

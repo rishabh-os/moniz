@@ -9,6 +9,8 @@ import 'package:moniz/data/database/db.dart';
 import 'package:moniz/data/transactions.dart';
 
 final nameProvider = StateProvider<String>((ref) => 'Rishabh');
+final scrollProvider =
+    StateProvider<ScrollController>((ref) => ScrollController());
 final globalDateRangeProvider =
     StateProvider<DateTimeRange>((ref) => DateTimeRange(
           start: DateTime.now().copyWith(
