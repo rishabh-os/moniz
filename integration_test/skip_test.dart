@@ -1,18 +1,18 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:moniz/main.dart';
-import 'package:patrol/patrol.dart';
-import 'package:window_manager/window_manager.dart';
+import "dart:io";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_test/flutter_test.dart";
+import "package:integration_test/integration_test.dart";
+import "package:moniz/main.dart";
+import "package:patrol/patrol.dart";
+import "package:window_manager/window_manager.dart";
 
 // ! Note: individual tests work but executing them using a single command on Linux throws a debugger error. Best to run them natively on Android.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   initWindow();
-  patrolTest('Skip welcome', config: config, (PatrolTester $) async {
+  patrolTest("Skip welcome", config: config, (PatrolTester $) async {
     await initApp($, skipWelcome: true);
   });
 }
@@ -23,7 +23,7 @@ void initWindow() {
     windowManager.waitUntilReadyToShow(
       const WindowOptions(
         size: Size(400, 700),
-        title: 'Test 1',
+        title: "Test 1",
       ),
       () async {
         await windowManager.show();
@@ -41,8 +41,8 @@ const config = PatrolTesterConfig(
 
 Future<void> initApp(PatrolTester $, {bool skipWelcome = true}) async {
   await $.pumpWidget(const ProviderScope(child: MyApp()));
-  await $('Welcome to Moniz!').waitUntilVisible();
-  await $('meh')
+  await $("Welcome to Moniz!").waitUntilVisible();
+  await $("meh")
       .waitUntilVisible(timeout: const Duration(seconds: 1))
       .tap()
       .onError((error, stackTrace) {});

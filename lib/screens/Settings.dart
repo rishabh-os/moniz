@@ -1,8 +1,8 @@
-import 'package:currency_picker/currency_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/data/SimpleStore/basicStore.dart';
-import 'package:moniz/data/SimpleStore/settingsStore.dart';
+import "package:currency_picker/currency_picker.dart";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});

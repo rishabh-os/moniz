@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:patrol/patrol.dart';
-import 'skip_test.dart';
+import "package:flutter/material.dart";
+import "package:integration_test/integration_test.dart";
+import "package:patrol/patrol.dart";
+import "skip_test.dart";
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   initWindow();
-  patrolTest('Complete tutorial', config: config, (PatrolTester $) async {
+  patrolTest("Complete tutorial", config: config, (PatrolTester $) async {
     initApp($);
-    await $('Next').tap();
-    await $('Start').tap();
+    await $("Next").tap();
+    await $("Start").tap();
     await $("NEXT").tap();
     await $("NEXT").tap();
     await $("NEXT").tap();

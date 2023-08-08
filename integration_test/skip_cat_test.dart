@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:patrol/patrol.dart';
-import 'skip_test.dart';
+import "package:flutter/material.dart";
+import "package:flutter_test/flutter_test.dart";
+import "package:integration_test/integration_test.dart";
+import "package:patrol/patrol.dart";
+import "skip_test.dart";
 
 // ! Note: individual tests work but executing them using a single command on Linux throws a debugger error. Best to run them natively on Android.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   initWindow();
   const String categoryName = "test cat";
-  patrolTest('Skip welcome and account delete', config: config,
+  patrolTest("Skip welcome and account delete", config: config,
       (PatrolTester $) async {
     await initApp($);
     await $("Entries").tap();

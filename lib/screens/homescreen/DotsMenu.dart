@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:moniz/components/ThemePicker.dart';
-import 'package:moniz/screens/Categories.dart';
+import "package:flutter/material.dart";
+import "package:moniz/components/ThemePicker.dart";
+import "package:moniz/screens/Categories.dart";
 
 class DotsMenu extends StatelessWidget {
   const DotsMenu({

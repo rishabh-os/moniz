@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/components/input/ColorPicker.dart';
-import 'package:moniz/data/SimpleStore/themeStore.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/input/ColorPicker.dart";
+import "package:moniz/data/SimpleStore/themeStore.dart";
 
 class ThemePicker extends ConsumerStatefulWidget {
   const ThemePicker({super.key});

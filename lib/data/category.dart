@@ -1,7 +1,7 @@
-import 'package:drift/drift.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/data/SimpleStore/basicStore.dart';
-import 'package:moniz/data/database/db.dart';
+import "package:drift/drift.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/database/db.dart";
 
 class TransactionCategory extends Classifier {
   TransactionCategory(

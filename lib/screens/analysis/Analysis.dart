@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/data/SimpleStore/tutorialStore.dart';
-import 'package:moniz/data/transactions.dart';
-import 'package:moniz/screens/analysis/LineGraph.dart';
-import 'package:moniz/screens/analysis/PieChart.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/tutorialStore.dart";
+import "package:moniz/data/transactions.dart";
+import "package:moniz/screens/analysis/LineGraph.dart";
+import "package:moniz/screens/analysis/PieChart.dart";
+import "package:visibility_detector/visibility_detector.dart";
 
 class Analysis extends ConsumerStatefulWidget {
   const Analysis({super.key});

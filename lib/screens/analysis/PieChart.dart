@@ -1,12 +1,12 @@
-import 'dart:math';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:moniz/data/SimpleStore/settingsStore.dart';
-import 'package:moniz/data/account.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
+import "dart:math";
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:intl/intl.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
+import "package:moniz/data/account.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
 
 class CategoryChart extends ConsumerStatefulWidget {
   const CategoryChart({super.key});
@@ -68,7 +68,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
           // ? If null it shows the value by default
           title: "",
           badgeWidget: Icon(
-            IconData(cat.iconCodepoint, fontFamily: 'MaterialIcons'),
+            IconData(cat.iconCodepoint, fontFamily: "MaterialIcons"),
             color: Color(cat.color),
           ),
           badgePositionPercentageOffset: 1.4,

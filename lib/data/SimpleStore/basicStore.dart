@@ -1,13 +1,13 @@
-import 'dart:convert';
-import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/database/db.dart';
-import 'package:moniz/data/transactions.dart';
+import "dart:convert";
+import "dart:math";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:get_storage/get_storage.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/database/db.dart";
+import "package:moniz/data/transactions.dart";
 
-final nameProvider = StateProvider<String>((ref) => 'Rishabh');
+final nameProvider = StateProvider<String>((ref) => "Rishabh");
 final scrollProvider =
     StateProvider<ScrollController>((ref) => ScrollController());
 final globalDateRangeProvider =

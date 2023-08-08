@@ -1,18 +1,18 @@
-import 'dart:math' show sqrt, max;
-import 'dart:ui' show lerpDouble;
-import 'package:flutter/material.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
-import 'package:moniz/screens/accounts/AccountEditor.dart';
-import 'package:moniz/screens/entries/EntryEditor.dart';
+import "dart:math" show sqrt, max;
+import "dart:ui" show lerpDouble;
+import "package:flutter/material.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
+import "package:moniz/screens/accounts/AccountEditor.dart";
+import "package:moniz/screens/entries/EntryEditor.dart";
 
 class DeleteRoute<T> extends MaterialPageRoute<T> {
   final Widget page;
-  DeleteRoute(
-      {required this.page,
-      this.duration = const Duration(milliseconds: 400),
-      required this.startPositionGlobal})
-      : super(builder: (_) => page);
+  DeleteRoute({
+    required this.page,
+    this.duration = const Duration(milliseconds: 400),
+    required this.startPositionGlobal,
+  }) : super(builder: (_) => page);
   final Duration duration;
   final Alignment startPositionGlobal;
 
@@ -23,7 +23,9 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
   Widget buildTransitions(context, animation, secondaryAnimation, child) {
     return ClipPath(
       clipper: CircularRevealClipper(
-          fraction: animation.value, centerAlignment: startPositionGlobal),
+        fraction: animation.value,
+        centerAlignment: startPositionGlobal,
+      ),
       child: child,
     );
   }
@@ -31,8 +33,10 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
 
 @immutable
 class CircularRevealClipper extends CustomClipper<Path> {
-  const CircularRevealClipper(
-      {required this.fraction, required this.centerAlignment});
+  const CircularRevealClipper({
+    required this.fraction,
+    required this.centerAlignment,
+  });
   final double fraction;
   final Alignment centerAlignment;
   final Offset centerOffset = const Offset(0, 0);
@@ -74,21 +78,22 @@ void handleTap(GlobalKey widgetKey, BuildContext context, dynamic content) {
   Navigator.push(
     context,
     DeleteRoute(
-        // * Yes I know this is bad code (nested ternaries)
-        page: content.runtimeType == Transaction
-            ? EntryEditor(transaction: content)
-            : content.runtimeType == TransactionCategory
-                ? AccountEditor(
-                    editedCategory: content,
-                    type: "Category",
-                  )
-                : AccountEditor(
-                    editedAccount: content,
-                    type: "Account",
-                  ),
-        startPositionGlobal:
-            // ? Convert and scale global coordinates to Alignment values
-            // ? This makes the animation start from the center of the widget
-            Alignment(0, (y + heightW / 2) / height * 2 - 1)),
+      // * Yes I know this is bad code (nested ternaries)
+      page: content.runtimeType == Transaction
+          ? EntryEditor(transaction: content)
+          : content.runtimeType == TransactionCategory
+              ? AccountEditor(
+                  editedCategory: content,
+                  type: "Category",
+                )
+              : AccountEditor(
+                  editedAccount: content,
+                  type: "Account",
+                ),
+      startPositionGlobal:
+          // ? Convert and scale global coordinates to Alignment values
+          // ? This makes the animation start from the center of the widget
+          Alignment(0, (y + heightW / 2) / height * 2 - 1),
+    ),
   );
 }

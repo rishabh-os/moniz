@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class AccountIcon extends StatelessWidget {
   const AccountIcon(
@@ -15,7 +15,7 @@ class AccountIcon extends StatelessWidget {
               seedColor: Color(color), brightness: Theme.of(context).brightness)
           .primaryContainer,
       child: Icon(
-        IconData(iconCodepoint, fontFamily: 'MaterialIcons'),
+        IconData(iconCodepoint, fontFamily: "MaterialIcons"),
         color: ColorScheme.fromSeed(
                 seedColor: Color(color),
                 brightness: Theme.of(context).brightness)

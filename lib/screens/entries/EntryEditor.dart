@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/components/DateTimePickers.dart';
-import 'package:moniz/components/input/AmountField.dart';
-import 'package:moniz/components/input/ChipSelector.dart';
-import 'package:moniz/components/input/Header.dart';
-import 'package:moniz/components/input/SaveFAB.dart';
-import 'package:moniz/components/input/deleteFunctions.dart';
-import 'package:moniz/data/SimpleStore/basicStore.dart';
-import 'package:moniz/data/SimpleStore/settingsStore.dart';
-import 'package:moniz/data/SimpleStore/themeStore.dart';
-import 'package:moniz/data/account.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
-import 'package:uuid/uuid.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/DateTimePickers.dart";
+import "package:moniz/components/input/AmountField.dart";
+import "package:moniz/components/input/ChipSelector.dart";
+import "package:moniz/components/input/Header.dart";
+import "package:moniz/components/input/SaveFAB.dart";
+import "package:moniz/components/input/deleteFunctions.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
+import "package:moniz/data/SimpleStore/themeStore.dart";
+import "package:moniz/data/account.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
+import "package:uuid/uuid.dart";
 
 class EntryEditor extends ConsumerStatefulWidget {
   const EntryEditor({
@@ -198,7 +198,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                 },
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Title',
+                  labelText: "Title",
                 ),
                 textCapitalization: TextCapitalization.sentences,
               ),
@@ -255,7 +255,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               TextFormField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Additional Information',
+                    labelText: "Additional Information",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     hintText: "Optional"),
                 controller: addInfoController,
@@ -273,7 +273,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
         onPressed: () {
           if (_amount == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please enter a non zero amount')),
+              const SnackBar(content: Text("Please enter a non zero amount")),
             );
           } else {
             DateTime recorded = DateTime(

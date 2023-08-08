@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:introduction_screen/introduction_screen.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:get_storage/get_storage.dart";
+import "package:introduction_screen/introduction_screen.dart";
 
 class Welcome extends ConsumerStatefulWidget {
   const Welcome({super.key});

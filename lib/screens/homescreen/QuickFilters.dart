@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/data/transactions.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/transactions.dart";
 
 class QuickFilters extends ConsumerStatefulWidget {
   const QuickFilters({
@@ -69,17 +69,12 @@ class _QuickFiltersState extends ConsumerState<QuickFilters> {
         }
       },
       itemBuilder: (context) => ["Last week", "Last 2 weeks", "Last month"]
-          .map(
-            (e) => PopupMenuItem(
+          .map((e) => PopupMenuItem(
               value: e,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(
-                  e,
-                ),
-              ),
-            ),
-          )
+                child: Text(e),
+              )))
           .toList(),
     );
   }

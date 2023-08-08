@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/data/SimpleStore/settingsStore.dart';
-import 'package:moniz/data/category.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
+import "package:moniz/data/category.dart";
+import "package:scrollable_positioned_list/scrollable_positioned_list.dart";
 
 class ChipSelector extends ConsumerStatefulWidget {
   const ChipSelector(
@@ -64,7 +64,7 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
           spacing: 8,
           children: [
             Icon(
-              IconData(clas.iconCodepoint, fontFamily: 'MaterialIcons'),
+              IconData(clas.iconCodepoint, fontFamily: "MaterialIcons"),
               color: Color(clas.color),
             ),
             Text(widget.items[index].name),

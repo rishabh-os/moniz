@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:get_storage/get_storage.dart";
+import "package:tutorial_coach_mark/tutorial_coach_mark.dart";
 
 final entriesGkListProvider = Provider<List<GlobalKey>>(
     (ref) => ref.read(entriesTargetProvider).keys.toList());

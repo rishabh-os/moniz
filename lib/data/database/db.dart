@@ -1,16 +1,16 @@
-import 'dart:io';
-import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
+import "dart:io";
+import "package:drift/drift.dart";
+import "package:drift/native.dart";
 // ? This prevents everything from erroring out
-import 'package:flutter/material.dart' as m;
-import 'package:moniz/data/account.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+import "package:flutter/material.dart" as m;
+import "package:moniz/data/account.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
+import "package:path/path.dart" as p;
+import "package:path_provider/path_provider.dart";
+import "package:share_plus/share_plus.dart";
 
-part 'db.g.dart';
+part "db.g.dart";
 
 @UseRowClass(Transaction)
 class TransactionTable extends Table {
@@ -155,7 +155,7 @@ class MyDatabase extends _$MyDatabase {
 
   void shareDB() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final dbXFile = XFile(p.join(dbFolder.path, 'db.sqlite'));
+    final dbXFile = XFile(p.join(dbFolder.path, "db.sqlite"));
     Share.shareXFiles([dbXFile]);
   }
 }
@@ -163,7 +163,7 @@ class MyDatabase extends _$MyDatabase {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, "db.sqlite"));
     return NativeDatabase.createInBackground(file);
   });
 }

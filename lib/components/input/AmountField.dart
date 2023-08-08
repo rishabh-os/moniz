@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 class AmountField extends StatefulWidget {
   const AmountField({
@@ -37,7 +37,7 @@ class _AmountFieldState extends State<AmountField> {
       style: const TextStyle(fontFamily: "VictorMono", fontSize: 50),
       inputFormatters: [
         // ? Allows only proper decimals upto 2 places
-        FilteringTextInputFormatter.allow(RegExp(r'^-?(\d+)?\.?\d{0,2}'))
+        FilteringTextInputFormatter.allow(RegExp(r"^-?(\d+)?\.?\d{0,2}"))
       ],
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       decoration: const InputDecoration(

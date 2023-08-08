@@ -1,9 +1,9 @@
-import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:moniz/data/SimpleStore/settingsStore.dart';
-import 'package:moniz/data/listOfCurrencies.dart';
+import "dart:ui";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:intl/intl.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
+import "package:moniz/data/listOfCurrencies.dart";
 
 class MoneyDisplay extends ConsumerStatefulWidget {
   const MoneyDisplay({

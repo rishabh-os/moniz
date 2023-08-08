@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moniz/components/IconPicker.dart';
-import 'package:moniz/components/input/AmountField.dart';
-import 'package:moniz/components/input/ColorPicker.dart';
-import 'package:moniz/components/input/Header.dart';
-import 'package:moniz/components/input/SaveFAB.dart';
-import 'package:moniz/components/input/deleteFunctions.dart';
-import 'package:moniz/data/account.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
-import 'package:uuid/uuid.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/IconPicker.dart";
+import "package:moniz/components/input/AmountField.dart";
+import "package:moniz/components/input/ColorPicker.dart";
+import "package:moniz/components/input/Header.dart";
+import "package:moniz/components/input/SaveFAB.dart";
+import "package:moniz/components/input/deleteFunctions.dart";
+import "package:moniz/data/account.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
+import "package:uuid/uuid.dart";
 
 class AccountEditor extends ConsumerStatefulWidget {
   const AccountEditor(
@@ -70,7 +70,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   void handleAccountDelete() {
     void delete() {
       ref.read(accountsProvider.notifier).delete(widget.editedAccount!.id);
-      Navigator.popUntil(context, ModalRoute.withName('/home'));
+      Navigator.popUntil(context, ModalRoute.withName("/home"));
     }
 
     List<Transaction> transactionList = ref.watch(transactionsProvider);
@@ -153,7 +153,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
               },
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                labelText: '${widget.type} Name',
+                labelText: "${widget.type} Name",
               ),
               textCapitalization: TextCapitalization.sentences,
             ),
@@ -190,7 +190,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         onPressed: () {
           if (_accountName == "") {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please enter name')),
+              const SnackBar(content: Text("Please enter name")),
             );
           } else {
             if (widget.type == "Account") {

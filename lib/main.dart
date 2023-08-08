@@ -1,18 +1,18 @@
-import 'dart:io';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:moniz/data/SimpleStore/basicStore.dart';
-import 'package:moniz/data/SimpleStore/themeStore.dart';
-import 'package:moniz/data/account.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
-import 'package:moniz/screens/Settings.dart';
-import 'package:moniz/screens/Welcome.dart';
-import 'package:moniz/screens/homescreen/HomeScreen.dart';
-import 'package:window_manager/window_manager.dart';
+import "dart:io";
+import "package:flutter/gestures.dart";
+import "package:flutter/material.dart";
+import "package:flutter_native_splash/flutter_native_splash.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:get_storage/get_storage.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/themeStore.dart";
+import "package:moniz/data/account.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
+import "package:moniz/screens/Settings.dart";
+import "package:moniz/screens/Welcome.dart";
+import "package:moniz/screens/homescreen/HomeScreen.dart";
+import "package:window_manager/window_manager.dart";
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // ? Enables the mouse to drag, makes debugging easier on Linux
@@ -78,7 +78,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       scrollBehavior: MyCustomScrollBehavior(),
-      title: 'Money Tracker',
+      title: "Money Tracker",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: ref.watch(themeColorProvider),

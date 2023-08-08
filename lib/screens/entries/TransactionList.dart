@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:moniz/components/MoneyDisplay.dart';
-import 'package:moniz/components/deleteRoute.dart';
-import 'package:moniz/data/SimpleStore/themeStore.dart';
-import 'package:moniz/data/account.dart';
-import 'package:moniz/data/category.dart';
-import 'package:moniz/data/transactions.dart';
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:intl/intl.dart";
+import "package:moniz/components/MoneyDisplay.dart";
+import "package:moniz/components/deleteRoute.dart";
+import "package:moniz/data/SimpleStore/themeStore.dart";
+import "package:moniz/data/account.dart";
+import "package:moniz/data/category.dart";
+import "package:moniz/data/transactions.dart";
 
 class TransactionList extends ConsumerStatefulWidget {
   const TransactionList({super.key});
@@ -76,7 +76,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                   // ? The global key is attached here to prevent the entire ListView from rebuiling
                   key: key,
                   IconData(transCategory.iconCodepoint,
-                      fontFamily: 'MaterialIcons'),
+                      fontFamily: "MaterialIcons"),
                   color: Color(transCategory.color),
                 ),
                 title: Text(trans.title),
