@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:moniz/components/input/ColorPicker.dart';
 import 'package:moniz/data/SimpleStore/themeStore.dart';
 
@@ -32,10 +31,9 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
         ),
         ColorPicker(
           colorCallback: (selectedColor) {
-            ref.read(themeColorProvider.notifier).update((state) {
-              GetStorage().write("themeColor", selectedColor.value);
-              return selectedColor;
-            });
+            ref
+                .read(themeColorProvider.notifier)
+                .update((state) => selectedColor);
           },
         ),
         SwitchListTile(
@@ -43,7 +41,6 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
           value: isDark,
           onChanged: (value) {
             ref.watch(brightnessProvider.notifier).update((state) {
-              GetStorage().write("isDark", isDark);
               return isDark ? Brightness.light : Brightness.dark;
             });
             setState(() {

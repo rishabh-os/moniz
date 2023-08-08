@@ -12,12 +12,19 @@ final expenseColorSchemeProvider = StateProvider((ref) {
       seedColor: Colors.red, brightness: ref.watch(brightnessProvider));
 });
 final themeColorProvider = StateProvider<Color>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("themeColor", next.value),
+  );
   GetStorage().read("themeColor") ??
       // ? Colors.blueGrey is the default app color
       GetStorage().write("themeColor", Colors.blueGrey.value);
   return Color(GetStorage().read("themeColor"));
 });
 final brightnessProvider = StateProvider<Brightness>((ref) {
+  ref.listenSelf(
+    (previous, next) =>
+        GetStorage().write("isDark", next == Brightness.dark ? false : true),
+  );
   GetStorage().read("isDark") ??
       // ? App is light by default
       GetStorage().write("isDark", false);

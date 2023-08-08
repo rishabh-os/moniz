@@ -36,7 +36,6 @@ class _CategoriesState extends ConsumerState<Categories> {
               ref
                   .watch(categoryOrderProvider.notifier)
                   .update((state) => order);
-              GetStorage().write("order", order.toString());
             })
           },
           itemBuilder: (context, index) {

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
@@ -48,6 +47,9 @@ final overviewExpenseProvider = StateProvider<double>((ref) {
 final dbProvider = Provider<MyDatabase>((ref) => MyDatabase());
 
 final categoryOrderProvider = StateProvider<List<int>>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("order", next.toString()),
+  );
   // ? Errors out if not written and decoded as a string
   var catLen = ref.watch(categoriesProvider).length;
   GetStorage().writeIfNull(

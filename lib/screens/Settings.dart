@@ -1,7 +1,6 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/SimpleStore/settingsStore.dart';
 
@@ -16,6 +15,7 @@ class _SettingsState extends ConsumerState<Settings> {
   @override
   Widget build(BuildContext context) {
     bool transDeleteConfirmation = ref.watch(transDeleteProvider);
+    bool chipsScroll = ref.watch(chipsMultiLineProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
@@ -29,11 +29,18 @@ class _SettingsState extends ConsumerState<Settings> {
               ref.watch(transDeleteProvider.notifier).update((state) => e);
             },
           ),
+          SwitchListTile(
+            title:
+                const Text("Show category and account chips on multiple lines"),
+            value: chipsScroll,
+            onChanged: (e) {
+              ref.watch(chipsMultiLineProvider.notifier).update((state) => e);
+            },
+          ),
           InkWell(
             onTap: () => showCurrencyPicker(
                 context: context,
                 onSelect: (e) {
-                  GetStorage().write("currency", e.code);
                   ref
                       .watch(currencyProvider.notifier)
                       .update((state) => e.code);
