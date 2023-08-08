@@ -136,7 +136,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
               }),
         ]),
         AspectRatio(
-          aspectRatio: 1.3,
+          aspectRatio: 1.4,
           child: PieChart(
             PieChartData(
               borderData:

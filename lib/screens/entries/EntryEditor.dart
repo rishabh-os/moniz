@@ -42,6 +42,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   late DateTime _selectedDate = DateTime.now();
   late List<Account> accounts;
   late List<TransactionCategory> categories;
+  late List<int> order;
   String _additionalInfo = "None";
   late TextEditingController addInfoController;
   late Function(Transaction transaction) saveAction;
@@ -52,6 +53,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
     super.initState();
     accounts = ref.read(accountsProvider);
     categories = ref.read(categoriesProvider);
+    order = ref.read(categoryOrderProvider);
 
     saveAction = (transaction) {
       ref.read(transactionsProvider.notifier).add(transaction);
@@ -106,8 +108,8 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       _title = widget.transaction!.title;
       _amount = widget.transaction!.amount.abs();
       // ? This complicated code brought to you by having to store only the id in the database
-      _selectedCategory = categories.indexOf(categories.firstWhere(
-          (element) => element.id == widget.transaction!.categoryID));
+      _selectedCategory = order[categories.indexOf(categories.firstWhere(
+          (element) => element.id == widget.transaction!.categoryID))];
       _selectedAccount = accounts.indexOf(accounts.firstWhere(
           (element) => element.id == widget.transaction!.accountID));
       _selectedDate = widget.transaction!.recorded;
@@ -208,9 +210,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               ChipSelector(
                 // ? Reorders the categories based on the order provided
                 items: List.generate(
-                    categories.length,
-                    (index) =>
-                        categories[ref.read(categoryOrderProvider)[index]]),
+                    categories.length, (index) => categories[order[index]]),
                 selection: _selectedCategory,
                 returnSelected: (selected) {
                   setState(() {
@@ -288,7 +288,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                 id: uuid,
                 title: _title,
                 additionalInfo: _additionalInfo,
-                categoryID: categories[_selectedCategory].id,
+                categoryID: categories[order[_selectedCategory]].id,
                 accountID: accounts[_selectedAccount].id,
                 amount: _entryType == 1 ? _amount * -1 : _amount,
                 recorded: recorded));

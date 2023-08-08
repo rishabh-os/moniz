@@ -39,7 +39,8 @@ class _ChipSelectorState extends State<ChipSelector> {
           Classifier clas = widget.items[index];
           return Padding(
             padding: const EdgeInsets.all(2.0),
-            child: ChoiceChip(
+            child: FilterChip(
+              showCheckmark: false,
               label: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 spacing: 8,
