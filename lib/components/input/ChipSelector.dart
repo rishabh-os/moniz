@@ -27,7 +27,7 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
     if (!chipsMultiLine) {
       // ? Scrolls to the selected chip on render
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        itemScrollController.jumpTo(index: widget.selection, alignment: 0.5);
+        itemScrollController.jumpTo(index: widget.selection);
       });
     }
   }

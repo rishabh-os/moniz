@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hidable/hidable.dart';
 import 'package:intl/intl.dart';
 import 'package:moniz/components/DateTimePickers.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
@@ -11,7 +12,6 @@ import 'package:moniz/screens/entries/Entries.dart';
 import 'package:moniz/screens/entries/EntryEditor.dart';
 import 'package:moniz/screens/homescreen/DotsMenu.dart';
 import 'package:moniz/screens/homescreen/QuickFilters.dart';
-import 'package:scroll_to_hide/scroll_to_hide.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -117,10 +117,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           openBuilder: (_, closeContainer) {
             return const EntryEditor();
           }),
-      bottomNavigationBar: ScrollToHide(
-        scrollController: ref.read(scrollProvider),
-        height: 80,
-        duration: const Duration(milliseconds: 200),
+      bottomNavigationBar: Hidable(
+        preferredWidgetSize: const Size.fromHeight(80),
+        wOpacity: false,
+        controller: ref.read(scrollProvider),
         child: NavigationBar(
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           onDestinationSelected: (int index) {

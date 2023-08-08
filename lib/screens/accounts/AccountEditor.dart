@@ -127,7 +127,6 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
               if (trans.categoryID == widget.editedCategory!.id) {
                 ref.watch(transactionsProvider.notifier).delete(trans.id);
               }
-              Navigator.of(context).pop();
               delete();
             }
           }));

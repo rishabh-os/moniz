@@ -1,7 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:moniz/components/deleteRoute.dart';
 import 'package:moniz/data/SimpleStore/basicStore.dart';
 import 'package:moniz/data/category.dart';
