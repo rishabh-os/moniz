@@ -26,70 +26,56 @@ class _QuickFiltersState extends ConsumerState<QuickFilters> {
       icon: const Icon(Icons.filter_alt_rounded),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onSelected: (value) async {
-        if (value == "week") {
-          widget.y((state) => DateTimeRange(
-              start: DateTime.now().copyWith(
-                  day: DateTime.now().day - 7,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0),
-              // ? This allows entries on the selected day to be shown
-              end: DateTime.now().add(const Duration(days: 1))));
-          await ref.read(transactionsProvider.notifier).loadTransactions();
-        } else if (value == "week2") {
-          widget.y((state) => DateTimeRange(
-              start: DateTime.now().copyWith(
-                  day: DateTime.now().day - 14,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0),
-              // ? This allows entries on the selected day to be shown
-              end: DateTime.now().add(const Duration(days: 1))));
-          await ref.read(transactionsProvider.notifier).loadTransactions();
-        } else if (value == "month") {
-          widget.y((state) => DateTimeRange(
-              start: DateTime.now().copyWith(
-                  month: DateTime.now().month - 1,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0),
-              // ? This allows entries on the selected day to be shown
-              end: DateTime.now().add(const Duration(days: 1))));
-          await ref.read(transactionsProvider.notifier).loadTransactions();
-        } else if (value == "month2") {
-          widget.y((state) => DateTimeRange(
-              start: DateTime.now().copyWith(
-                  month: DateTime.now().month - 2,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0),
-              // ? This allows entries on the selected day to be shown
-              end: DateTime.now().add(const Duration(days: 1))));
-          await ref.read(transactionsProvider.notifier).loadTransactions();
+        switch (value) {
+          case "Last week":
+            widget.y((state) => DateTimeRange(
+                start: DateTime.now().copyWith(
+                    day: DateTime.now().day - 7,
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                    microsecond: 0),
+                // ? This allows entries on the selected day to be shown
+                end: DateTime.now().add(const Duration(days: 1))));
+            await ref.read(transactionsProvider.notifier).loadTransactions();
+            break;
+          case "Last 2 weeks":
+            widget.y((state) => DateTimeRange(
+                start: DateTime.now().copyWith(
+                    day: DateTime.now().day - 14,
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                    microsecond: 0),
+                // ? This allows entries on the selected day to be shown
+                end: DateTime.now().add(const Duration(days: 1))));
+            await ref.read(transactionsProvider.notifier).loadTransactions();
+            break;
+          case "Last month":
+            widget.y((state) => DateTimeRange(
+                start: DateTime.now().copyWith(
+                    month: DateTime.now().month - 1,
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                    microsecond: 0),
+                // ? This allows entries on the selected day to be shown
+                end: DateTime.now().add(const Duration(days: 1))));
+            await ref.read(transactionsProvider.notifier).loadTransactions();
+            break;
         }
       },
-      itemBuilder: (context) => {
-        "week": "Last week",
-        "week2": "Last 2 weeks",
-        "month": "Last month",
-        "month2": "Last 2 months"
-      }
-          .entries
+      itemBuilder: (context) => ["Last week", "Last 2 weeks", "Last month"]
           .map(
             (e) => PopupMenuItem(
-              value: e.key,
+              value: e,
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  e.value,
+                  e,
                 ),
               ),
             ),
