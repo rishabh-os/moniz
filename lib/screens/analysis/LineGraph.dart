@@ -76,89 +76,91 @@ class _SpendsByDayState extends ConsumerState<SpendsByDay> {
         .map((e) => FlSpot(days.indexOf(e.key).toDouble(), e.value))
         .toList();
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-          child: AspectRatio(
-            aspectRatio: 1.4,
-            child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 18,
-                  left: 12,
-                  bottom: 18,
-                ),
-                child: LineChart(
-                  LineChartData(
-                    lineTouchData: LineTouchData(
-                        touchTooltipData: LineTouchTooltipData(
-                            tooltipBgColor: Theme.of(context)
-                                .colorScheme
-                                .secondaryContainer)),
-                    gridData: FlGridData(
-                      show: false,
-                      drawVerticalLine: true,
-                      horizontalInterval: 1,
-                      verticalInterval: 1,
-                      getDrawingHorizontalLine: (value) {
-                        return const FlLine(
-                          color: Colors.grey,
-                          strokeWidth: 1,
-                        );
-                      },
-                      getDrawingVerticalLine: (value) {
-                        return const FlLine(
-                          color: Colors.grey,
-                          strokeWidth: 1,
-                        );
-                      },
-                    ),
-                    titlesData: FlTitlesData(
-                      show: true,
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 30,
-                          getTitlesWidget: bottomTitleWidgets,
-                        ),
-                      ),
-                    ),
-                    borderData: FlBorderData(show: false),
-                    minY: 0,
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: data,
-                        isCurved: true,
-                        preventCurveOverShooting: true,
-                        barWidth: 5,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(0.8),
-                        isStrokeCapRound: true,
-                        showingIndicators: [],
-                        dotData: const FlDotData(
-                          show: false,
-                        ),
-                        belowBarData: BarAreaData(
-                            show: true,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withOpacity(0.2)),
-                      ),
-                    ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+            child: AspectRatio(
+              aspectRatio: 1.4,
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 18,
+                    left: 12,
+                    bottom: 18,
                   ),
-                )),
+                  child: LineChart(
+                    LineChartData(
+                      lineTouchData: LineTouchData(
+                          touchTooltipData: LineTouchTooltipData(
+                              tooltipBgColor: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer)),
+                      gridData: FlGridData(
+                        show: false,
+                        drawVerticalLine: true,
+                        horizontalInterval: 1,
+                        verticalInterval: 1,
+                        getDrawingHorizontalLine: (value) {
+                          return const FlLine(
+                            color: Colors.grey,
+                            strokeWidth: 1,
+                          );
+                        },
+                        getDrawingVerticalLine: (value) {
+                          return const FlLine(
+                            color: Colors.grey,
+                            strokeWidth: 1,
+                          );
+                        },
+                      ),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 30,
+                            getTitlesWidget: bottomTitleWidgets,
+                          ),
+                        ),
+                      ),
+                      borderData: FlBorderData(show: false),
+                      minY: 0,
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: data,
+                          isCurved: true,
+                          preventCurveOverShooting: true,
+                          barWidth: 5,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(0.8),
+                          isStrokeCapRound: true,
+                          showingIndicators: [],
+                          dotData: const FlDotData(
+                            show: false,
+                          ),
+                          belowBarData: BarAreaData(
+                              show: true,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.2)),
+                        ),
+                      ],
+                    ),
+                  )),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

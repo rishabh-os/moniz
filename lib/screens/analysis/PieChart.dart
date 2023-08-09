@@ -95,6 +95,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
                       const SizedBox(width: 4),
                       Text(
                         numberFormat.format(label.value),
+                        style: Theme.of(context).textTheme.bodyLarge,
                       )
                     ],
                   ))
@@ -104,52 +105,55 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
     );
 
     // ? AspectRatio prevents overflow errors in a Column
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-            "Show spends by",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          const SizedBox(width: 5),
-          DropdownButton(
-              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-              alignment: Alignment.center,
-              borderRadius: BorderRadius.circular(15),
-              underline: Container(),
-              value: showCat.toString(),
-              items: [true, false].map<DropdownMenuItem>((value) {
-                return DropdownMenuItem(
-                  value: value.toString(),
-                  child: Text(value ? "Category" : "Account"),
-                );
-              }).toList(),
-              onChanged: (e) {
-                var x = bool.parse(e!);
-                setState(() {
-                  showCat = x;
-                });
-              }),
-        ]),
-        AspectRatio(
-          aspectRatio: 1.4,
-          child: PieChart(
-            PieChartData(
-              borderData:
-                  FlBorderData(show: true, border: Border.all(width: 40)),
-              startDegreeOffset: 270,
-              sections: data,
-              centerSpaceRadius: centerRadius,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "Show spends by",
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-            swapAnimationCurve: Curves.easeOut,
-            swapAnimationDuration: const Duration(milliseconds: 300),
+            const SizedBox(width: 5),
+            DropdownButton(
+                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                alignment: Alignment.center,
+                borderRadius: BorderRadius.circular(15),
+                underline: Container(),
+                value: showCat.toString(),
+                items: [true, false].map<DropdownMenuItem>((value) {
+                  return DropdownMenuItem(
+                    value: value.toString(),
+                    child: Text(value ? "Category" : "Account"),
+                  );
+                }).toList(),
+                onChanged: (e) {
+                  var x = bool.parse(e!);
+                  setState(() {
+                    showCat = x;
+                  });
+                }),
+          ]),
+          AspectRatio(
+            aspectRatio: 1.4,
+            child: PieChart(
+              PieChartData(
+                borderData:
+                    FlBorderData(show: true, border: Border.all(width: 40)),
+                startDegreeOffset: 270,
+                sections: data,
+                centerSpaceRadius: centerRadius,
+              ),
+              swapAnimationCurve: Curves.easeOut,
+              swapAnimationDuration: const Duration(milliseconds: 300),
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200), child: _legend)
-      ],
+          const SizedBox(height: 20),
+          AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200), child: _legend),
+          const SizedBox(height: 50),
+        ],
+      ),
     );
   }
 }
