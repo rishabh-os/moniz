@@ -31,17 +31,13 @@ final entriesTargetProvider = Provider((ref) {
   };
 });
 
-final entriesTutorialCompletedProvider = StateProvider<Function>((ref) {
-  bool newMethod() {
-    if (GetStorage().hasData("entriesTutorialCompleted")) {
-      return false;
-    } else {
-      GetStorage().write("entriesTutorialCompleted", true);
-      return true;
-    }
-  }
-
-  return newMethod;
+final entriesTutorialCompletedProvider = StateProvider<bool>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("entriesTutorialCompleted", next),
+  );
+  GetStorage().read("entriesTutorialCompleted") ??
+      GetStorage().write("entriesTutorialCompleted", false);
+  return GetStorage().read("entriesTutorialCompleted");
 });
 
 final accountsGkListProvider = Provider<List<GlobalKey>>(
@@ -54,17 +50,13 @@ final accountsTargetListProvider = Provider((ref) => {
       ],
     });
 
-final accountsTutorialCompletedProvider = StateProvider<Function>((ref) {
-  bool newMethod() {
-    if (GetStorage().hasData("accountsTutorialCompleted")) {
-      return false;
-    } else {
-      GetStorage().write("accountsTutorialCompleted", true);
-      return true;
-    }
-  }
-
-  return newMethod;
+final accountsTutorialCompletedProvider = StateProvider<bool>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("accountsTutorialCompleted", next),
+  );
+  GetStorage().read("accountsTutorialCompleted") ??
+      GetStorage().write("accountsTutorialCompleted", false);
+  return GetStorage().read("accountsTutorialCompleted");
 });
 
 final analysisGkListProvider = Provider<List<GlobalKey>>(
@@ -81,17 +73,13 @@ final analysisTargetListProvider = Provider((ref) => {
       ],
     });
 
-final analysisTutorialCompletedProvider = StateProvider<Function>((ref) {
-  bool newMethod() {
-    if (GetStorage().hasData("analysisTutorialCompleted")) {
-      return false;
-    } else {
-      GetStorage().write("analysisTutorialCompleted", true);
-      return true;
-    }
-  }
-
-  return newMethod;
+final analysisTutorialCompletedProvider = StateProvider<bool>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("analysisTutorialCompleted", next),
+  );
+  GetStorage().read("analysisTutorialCompleted") ??
+      GetStorage().write("analysisTutorialCompleted", false);
+  return GetStorage().read("analysisTutorialCompleted");
 });
 
 enum Screen { entries, accounts, analysis }

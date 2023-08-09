@@ -8,26 +8,24 @@ import "skip_test.dart";
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   initWindow();
-  const String categoryName = "test cat";
+  const String accountName = "test account";
   patrolTest("Skip welcome and account delete", config: config,
       (PatrolTester $) async {
     await initApp($);
-    await $("Entries").tap();
-    await $($(Icons.more_vert)).tap();
-    await $("Manage categories").tap();
-    await $("Add Category").tap();
-    await $(#name).enterText(categoryName);
+    await $("Accounts").tap();
+    await $("Add Account").tap();
+    await $(#name).enterText(accountName);
     await $.tester.testTextInput.receiveAction(TextInputAction.done);
     await $("Save").tap();
-    await $.tester.drag(find.text("Add Category"), const Offset(0, 300));
 
+    await $("Entries").tap();
     await $("New Entry").tap();
     await $(#amount).enterText("300");
     await $.tester.testTextInput.receiveAction(TextInputAction.done);
     // ? Patrol finder can't find the text in the chip
     await $("Default")
         .scrollTo(
-      view: $(#chips).first,
+      view: $(#chips).last,
       scrollDirection: AxisDirection.right,
       maxScrolls: 1,
       step: 800,
@@ -36,15 +34,15 @@ void main() {
       return $("Edit");
     });
     // ? So I go back to the native tester
-    await $.tester.tap(find.text(categoryName), warnIfMissed: false);
+    await $.tester.tap(find.text(accountName), warnIfMissed: false);
     await $("Save").tap();
 
-    await $($(Icons.more_vert)).tap();
-    await $("Manage categories").tap();
-    await $(Icons.edit_rounded).last.tap();
-    await $($(Icons.delete_forever_outlined)).tap();
+    await $("Accounts").tap();
+    await $($(Icons.edit)).last.tap();
+    await $($(Icons.delete_forever_rounded)).tap();
     await $("Delete").tap();
     await $("Yes").tap();
-    expect($(categoryName), findsNothing);
+    await $("Entries").tap();
+    expect($(accountName), findsNothing);
   });
 }

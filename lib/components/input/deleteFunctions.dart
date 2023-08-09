@@ -16,7 +16,11 @@ SnackBar deleteSnack(BuildContext context, String type, Function onPressed) {
                 "This will delete all transactions associated with this $type."),
             actions: [
               TextButton(
-                  onPressed: () => onPressed(), child: const Text("Yes")),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onPressed();
+                  },
+                  child: const Text("Yes")),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();

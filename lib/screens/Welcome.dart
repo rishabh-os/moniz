@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:get_storage/get_storage.dart";
 import "package:introduction_screen/introduction_screen.dart";
+import "package:moniz/data/SimpleStore/tutorialStore.dart";
 
 class Welcome extends ConsumerStatefulWidget {
   const Welcome({super.key});
@@ -25,9 +26,19 @@ class _WelcomeState extends ConsumerState<Welcome> {
       onDone: goHome,
       onSkip: () {
         goHome();
-        GetStorage().write("entriesTutorialCompleted", true);
-        GetStorage().write("accountsTutorialCompleted", true);
-        GetStorage().write("analysisTutorialCompleted", true);
+        ref
+            .read(entriesTutorialCompletedProvider.notifier)
+            .update((state) => true);
+        ref
+            .read(accountsTutorialCompletedProvider.notifier)
+            .update((state) => true);
+        ref
+            .read(analysisTutorialCompletedProvider.notifier)
+            .update((state) => true);
+
+        //  GetStorage().write("entriesTutorialCompleted", true);
+        //  GetStorage().write("accountsTutorialCompleted", true);
+        //  GetStorage().write("analysisTutorialCompleted", true);
       },
       showSkipButton: true,
       pages: [

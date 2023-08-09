@@ -8,7 +8,7 @@ void main() {
 
   initWindow();
   patrolTest("Complete tutorial", config: config, (PatrolTester $) async {
-    initApp($);
+    await initApp($, skipWelcome: false);
     await $("Next").tap();
     await $("Start").tap();
     await $("NEXT").tap();

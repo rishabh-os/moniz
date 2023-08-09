@@ -47,12 +47,15 @@ class _AnalysisState extends ConsumerState<Analysis>
                 VisibilityDetector(
                   key: listOfKeys[0],
                   onVisibilityChanged: (info) {
-                    if (ref.watch(analysisTutorialCompletedProvider)()) {
+                    if (!ref.watch(analysisTutorialCompletedProvider)) {
                       Future.delayed(const Duration(milliseconds: 200), () {
                         if (info.visibleFraction == 1) {
                           ref.read(tutorialProvider)(context, Screen.analysis);
                         }
                       });
+                      ref
+                          .watch(analysisTutorialCompletedProvider.notifier)
+                          .update((state) => true);
                     }
                   },
                   child: const Tab(icon: Icon(Icons.pie_chart_rounded)),

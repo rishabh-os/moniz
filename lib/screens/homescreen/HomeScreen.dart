@@ -62,9 +62,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     // ? It's read here and watch elsewhere because this code is executed only once while the others are part of build
     listOfKeys = ref.read(entriesGkListProvider);
-    if (ref.read(entriesTutorialCompletedProvider)()) {
-      Future.delayed(const Duration(milliseconds: 100),
-          () => ref.read(tutorialProvider)(context, Screen.entries));
+    if (!ref.read(entriesTutorialCompletedProvider)) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        ref.read(tutorialProvider)(context, Screen.entries);
+        ref
+            .read(entriesTutorialCompletedProvider.notifier)
+            .update((state) => true);
+      });
     }
   }
 
@@ -135,7 +139,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        // physics: const NeverScrollableScrollPhysics(),
+        physics: newMethod(),
         // TODO Solve the middle nav icon getting selected on transition
         onPageChanged: (value) {
           setState(() {
@@ -145,5 +149,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: widgetOptions,
       ),
     );
+  }
+
+  ScrollPhysics? newMethod() {
+    // ? Disables scrolling unless the tutorials have been completed
+    if (ref.watch(entriesTutorialCompletedProvider) &&
+        ref.watch(accountsTutorialCompletedProvider) &&
+        ref.watch(analysisTutorialCompletedProvider)) {
+      return null;
+    } else {
+      return const NeverScrollableScrollPhysics();
+    }
   }
 }

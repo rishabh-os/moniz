@@ -68,11 +68,13 @@ class _AccountsState extends ConsumerState<Accounts>
               key: listOfKeys[0],
               onVisibilityChanged: (info) {
                 // ? It is still possible to misalign this if one swipes fast enough, but that's a problem for later
-                if (ref.watch(accountsTutorialCompletedProvider)()) {
+                if (!ref.watch(accountsTutorialCompletedProvider)) {
                   Future.delayed(const Duration(milliseconds: 100), () {
                     if (info.visibleFraction == 1) {
                       ref.read(tutorialProvider)(context, Screen.accounts);
-                      GetStorage().write("accountsTutorialCompleted", true);
+                      ref
+                          .watch(accountsTutorialCompletedProvider.notifier)
+                          .update((state) => true);
                     }
                   });
                 }

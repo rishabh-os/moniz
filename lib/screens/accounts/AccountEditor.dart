@@ -104,7 +104,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   void handleCategoryDelete() {
     void delete() {
       ref.read(categoriesProvider.notifier).delete(widget.editedCategory!.id);
-      Navigator.pop(context);
+      Navigator.of(context).maybePop();
     }
 
     List<Transaction> transactionList = ref.watch(transactionsProvider);
