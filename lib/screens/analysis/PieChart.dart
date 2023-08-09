@@ -17,13 +17,7 @@ class CategoryChart extends ConsumerStatefulWidget {
 class _CategoryChartState extends ConsumerState<CategoryChart> {
   bool showCat = true;
   late List<PieChartSectionData> data;
-  @override
-  void initState() {
-    super.initState();
-    // ? According to this in debug mode it takes ~100microseconds for 10 entries
-    // final stopwatch = Stopwatch()..start();
-    // print('doSomething() executed in ${stopwatch.elapsed}');
-  }
+  late Widget _legend;
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +73,14 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
     // ? This puts the largest spends first
     data = data.reversed.toList();
 
-    Widget legend() {
-      NumberFormat numberFormat = ref.watch(numberFormatProvider);
-      return Padding(
+    NumberFormat numberFormat = ref.watch(numberFormatProvider);
+    _legend = SizedBox(
+      height: 100,
+      key: Key(showCat.toString()),
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
+          runAlignment: WrapAlignment.start,
           direction: Axis.horizontal,
           alignment: WrapAlignment.spaceEvenly,
           spacing: 16,
@@ -103,8 +100,8 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
                   ))
               .toList(),
         ),
-      );
-    }
+      ),
+    );
 
     // ? AspectRatio prevents overflow errors in a Column
     return Column(
@@ -149,7 +146,9 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
             swapAnimationDuration: const Duration(milliseconds: 300),
           ),
         ),
-        legend()
+        const SizedBox(height: 20),
+        AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200), child: _legend)
       ],
     );
   }

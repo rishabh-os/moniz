@@ -24,22 +24,26 @@ class _ColorPickerState extends ConsumerState<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 10,
-      runSpacing: 10,
-      children: [
-        ...List.generate(
-            listOfColors.length,
-            (index) => IconButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(listOfColors[index])),
-                onPressed: () => widget.colorCallback(listOfColors[index]),
-                icon: Container(
-                  width: 2,
-                ))),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 10,
+        runSpacing: 10,
+        children: [
+          ...List.generate(
+              listOfColors.length,
+              (index) => IconButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(listOfColors[index])),
+                  onPressed: () => widget.colorCallback(listOfColors[index]),
+                  icon: Container(
+                    width: 2,
+                  )),
+              growable: false),
+        ],
+      ),
     );
   }
 }

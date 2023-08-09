@@ -23,8 +23,8 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Make accounts and categories part of same parent class
   - [ ] Done, but this needs more work
 - [ ] Animate transaction amount update
-- [ ] Support dynamic themes
+- [x] Support dynamic themes
 - [x] Make categories reorderable
 - [ ] Solve the middle nav icon getting selected on transition
-- [ ] Quick filters state inconsistency
+- [x] Quick filters state inconsistency
 - [ ] Import databases

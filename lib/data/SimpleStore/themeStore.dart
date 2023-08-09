@@ -31,7 +31,10 @@ final brightnessProvider = StateProvider<Brightness>((ref) {
   return GetStorage().read("isDark") ? Brightness.light : Brightness.dark;
 });
 
-final dynamicProvider = StateProvider<bool>((ref) {
+StateProvider<bool> dynamicProvider = StateProvider<bool>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("isDynamic", next),
+  );
   GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", false);
   return GetStorage().read("isDynamic");
 });

@@ -1,6 +1,8 @@
 import "dart:io";
+import "package:dynamic_color/dynamic_color.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
+import "package:flutter/scheduler.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:get_storage/get_storage.dart";
@@ -76,22 +78,46 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      scrollBehavior: MyCustomScrollBehavior(),
-      title: "Money Tracker",
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: ref.watch(themeColorProvider),
-            brightness: ref.watch(brightnessProvider)),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: GetStorage().read("welcome") == null ? "/welcome" : "/home",
-      routes: {
-        "/welcome": (context) => const Welcome(),
-        // ? Why not just "/"? Because that causes duplicate GlobalKeys for reasons unknown
-        "/home": (context) => const HomeScreen(),
-        "/settings": (context) => const Settings(),
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        ThemeData theme;
+        if (lightDynamic != null && ref.watch(dynamicProvider)) {
+          var platformBrightness =
+              SchedulerBinding.instance.platformDispatcher.platformBrightness;
+          ColorScheme dynamicScheme = platformBrightness == Brightness.dark
+              ? darkDynamic!
+              : lightDynamic;
+          theme = ThemeData(
+            colorScheme: dynamicScheme,
+            useMaterial3: true,
+          );
+          Future.delayed(const Duration(milliseconds: 1), () {
+            ref
+                .watch(brightnessProvider.notifier)
+                .update((state) => platformBrightness);
+          });
+        } else {
+          theme = ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: ref.watch(themeColorProvider),
+                brightness: ref.watch(brightnessProvider)),
+            useMaterial3: true,
+          );
+        }
+        return MaterialApp(
+          scrollBehavior: MyCustomScrollBehavior(),
+          title: "Money Tracker",
+          theme: theme,
+          debugShowCheckedModeBanner: false,
+          initialRoute:
+              GetStorage().read("welcome") == null ? "/welcome" : "/home",
+          routes: {
+            "/welcome": (context) => const Welcome(),
+            // ? Why not just "/"? Because that causes duplicate GlobalKeys for reasons unknown
+            "/home": (context) => const HomeScreen(),
+            "/settings": (context) => const Settings(),
+          },
+        );
       },
     );
   }
