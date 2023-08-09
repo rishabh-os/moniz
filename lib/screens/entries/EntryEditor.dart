@@ -108,8 +108,10 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       _title = widget.transaction!.title;
       _amount = widget.transaction!.amount.abs();
       // ? This complicated code brought to you by having to store only the id in the database
-      _selectedCategory = order[categories.indexOf(categories.firstWhere(
-          (element) => element.id == widget.transaction!.categoryID))];
+
+      _selectedCategory = order.indexOf(categories.indexOf(
+          categories.firstWhere(
+              (element) => element.id == widget.transaction!.categoryID)));
       _selectedAccount = accounts.indexOf(accounts.firstWhere(
           (element) => element.id == widget.transaction!.accountID));
       _selectedDate = widget.transaction!.recorded;
