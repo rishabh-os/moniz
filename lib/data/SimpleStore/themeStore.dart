@@ -35,6 +35,6 @@ StateProvider<bool> dynamicProvider = StateProvider<bool>((ref) {
   ref.listenSelf(
     (previous, next) => GetStorage().write("isDynamic", next),
   );
-  GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", false);
+  GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", true);
   return GetStorage().read("isDynamic");
 });

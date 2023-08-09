@@ -1,3 +1,6 @@
+import "dart:io";
+
+import "package:device_info_plus/device_info_plus.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/input/ColorPicker.dart";
@@ -13,13 +16,27 @@ class ThemePicker extends ConsumerStatefulWidget {
 class _ThemePickerState extends ConsumerState<ThemePicker> {
   late bool isDark;
   late bool isDynamic;
+  late bool showDynamic;
 
   @override
   void initState() {
     super.initState();
+    supportsDynamic().then((value) => showDynamic = value);
+  }
 
-    // isDark = ref.read(brightnessProvider) == Brightness.dark;
-    // isDynamic = ref.read(dynamicProvider);
+  Future<bool> supportsDynamic() async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      var release = androidInfo.version.release;
+      return int.parse(release) >= 12 ? true : false;
+    }
+    // ? For development only
+    else if (Platform.isLinux) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
