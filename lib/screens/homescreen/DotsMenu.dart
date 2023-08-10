@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:moniz/components/ThemePicker.dart";
+import "package:moniz/screens/Budget.dart";
 import "package:moniz/screens/Categories.dart";
 
 class DotsMenu extends StatelessWidget {
@@ -30,6 +31,10 @@ class DotsMenu extends StatelessWidget {
                 context: context,
                 builder: (context) => const Categories());
             break;
+          // case "Budget":
+          //   Navigator.of(context)
+          //       .push(MaterialPageRoute(builder: (context) => const Budget()));
+          //   break;
           case "Settings":
             Navigator.of(context).pushNamed("/settings");
             break;
@@ -38,6 +43,7 @@ class DotsMenu extends StatelessWidget {
       itemBuilder: (context) => {
         "Theme": Icons.palette_rounded,
         "Categories": Icons.folder_open_rounded,
+        // "Budget": Icons.wallet_rounded,
         "Settings": Icons.settings_rounded,
       }
           .entries
