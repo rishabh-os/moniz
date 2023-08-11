@@ -71,6 +71,15 @@ class _SettingsState extends ConsumerState<Settings> {
               leading: Icon(Icons.file_upload_outlined),
             ),
           ),
+          InkWell(
+            onTap: () => ref.read(dbProvider).importDB(),
+            child: const ListTile(
+              title: Text("Import data"),
+              subtitle: Text(
+                  "File must be a compatible sqlite database.\nApp requires restart after import"),
+              leading: Icon(Icons.file_download_outlined),
+            ),
+          ),
         ],
       ),
     );

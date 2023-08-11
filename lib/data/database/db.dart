@@ -1,6 +1,7 @@
 import "dart:io";
 import "package:drift/drift.dart";
 import "package:drift/native.dart";
+import "package:file_picker/file_picker.dart";
 // ? This prevents everything from erroring out
 import "package:flutter/material.dart" as m;
 import "package:moniz/data/account.dart";
@@ -157,6 +158,21 @@ class MyDatabase extends _$MyDatabase {
     final dbFolder = await getApplicationDocumentsDirectory();
     final dbXFile = XFile(p.join(dbFolder.path, "db.sqlite"));
     Share.shareXFiles([dbXFile]);
+  }
+
+  void importDB() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        // type: FileType.custom,
+        // allowedExtensions: ["sqlite"],
+        );
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      final dbFolder = await getApplicationDocumentsDirectory();
+      final oldFile = File(p.join(dbFolder.path, "db.sqlite"));
+      oldFile.delete();
+      file.copy(p.join(dbFolder.path, "db.sqlite"));
+    }
   }
 }
 
