@@ -2,7 +2,9 @@ import "dart:math";
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:graphic/graphic.dart";
 import "package:intl/intl.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
@@ -14,13 +16,17 @@ class CategoryChart extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CategoryChartState();
 }
 
-class _CategoryChartState extends ConsumerState<CategoryChart> {
+class _CategoryChartState extends ConsumerState<CategoryChart>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   bool showCat = true;
   late List<PieChartSectionData> data;
   late Widget _legend;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final double smallestLength = min(
         MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
     final totalSize = smallestLength * 0.3;
@@ -28,6 +34,8 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
     (List, Map<String, double>) spendsByCat() {
       List<Transaction> transactionList = ref.watch(transactionsProvider);
       List<TransactionCategory> catergoryList = ref.watch(categoriesProvider);
+      catergoryList = List.generate(catergoryList.length,
+          (index) => catergoryList[ref.watch(categoryOrderProvider)[index]]);
       // ? Init a dict with spends from all categories
       Map<String, double> spendsByCat = {
         for (var v in catergoryList) v.id: 0.0
@@ -74,33 +82,41 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
     data = data.reversed.toList();
 
     NumberFormat numberFormat = ref.watch(numberFormatProvider);
-    _legend = SizedBox(
-      height: 100,
-      key: Key(showCat.toString()),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          runAlignment: WrapAlignment.start,
-          direction: Axis.horizontal,
-          alignment: WrapAlignment.spaceEvenly,
-          spacing: 16,
-          children: data
-              .map((label) => Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.square_rounded,
-                        color: label.color,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        numberFormat.format(label.value),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )
-                    ],
-                  ))
-              .toList(),
-        ),
+    _legend = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: GridView.count(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        crossAxisCount: 3,
+        childAspectRatio: 2.5,
+        children: spends.$2.entries.map((label) {
+          var cat = spends.$1.firstWhere((element) => element.id == label.key);
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                        width: 3)),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Icon(
+                    IconData(cat.iconCodepoint, fontFamily: "MaterialIcons"),
+                    size: 24,
+                    color: Color(cat.color),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                numberFormat.format(label.value),
+                style: Theme.of(context).textTheme.bodyLarge,
+              )
+            ],
+          );
+        }).toList(),
       ),
     );
 
@@ -136,22 +152,53 @@ class _CategoryChartState extends ConsumerState<CategoryChart> {
           ]),
           AspectRatio(
             aspectRatio: 1.4,
-            child: PieChart(
-              PieChartData(
-                borderData:
-                    FlBorderData(show: true, border: Border.all(width: 40)),
-                startDegreeOffset: 270,
-                sections: data,
-                centerSpaceRadius: centerRadius,
-              ),
-              swapAnimationCurve: Curves.easeOut,
-              swapAnimationDuration: const Duration(milliseconds: 300),
+            child: Chart(
+              data: spends.$2.entries
+                  .map((e) => {"genre": e.key, "sold": e.value})
+                  .toList(),
+              variables: {
+                "genre": Variable(
+                  accessor: (Map map) => map["genre"] as String,
+                ),
+                "sold": Variable(
+                  accessor: (Map map) => map["sold"] as num,
+                  scale: LinearScale(min: 0),
+                ),
+              },
+              transforms: [
+                Proportion(
+                  variable: "sold",
+                  as: "percent",
+                ),
+              ],
+              marks: [
+                IntervalMark(
+                  shape: ShapeEncode(
+                      value: RectShape(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  )),
+                  position: Varset("percent") / Varset("genre"),
+                  color: ColorEncode(
+                      variable: "genre",
+                      values: spends.$1.map((e) => Color(e.color)).toList()),
+                  modifiers: [StackModifier()],
+                  transition: Transition(
+                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.easeOutCubic),
+                  entrance: {MarkEntrance.opacity, MarkEntrance.y},
+                )
+              ],
+              coord: PolarCoord(
+                  transposed: true,
+                  dimCount: 1,
+                  startRadius: 0.4,
+                  endRadius: 0.9),
             ),
           ),
           const SizedBox(height: 20),
           AnimatedSwitcher(
               duration: const Duration(milliseconds: 200), child: _legend),
-          const SizedBox(height: 50),
+          const SizedBox(height: 100),
         ],
       ),
     );

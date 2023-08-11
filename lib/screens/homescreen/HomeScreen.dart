@@ -140,7 +140,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: PageView(
         controller: _pageController,
         physics: newMethod(),
-        // TODO Solve the middle nav icon getting selected on transition
         onPageChanged: (value) {
           setState(() {
             _selectedIndex = value;

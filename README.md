@@ -27,4 +27,4 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Make categories reorderable
 - [ ] Solve the middle nav icon getting selected on transition
 - [x] Quick filters state inconsistency
-- [ ] Import databases
+- [x] Import databases

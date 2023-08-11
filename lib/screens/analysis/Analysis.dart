@@ -13,15 +13,10 @@ class Analysis extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _AnalysisState();
 }
 
-class _AnalysisState extends ConsumerState<Analysis>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _AnalysisState extends ConsumerState<Analysis> {
   late Widget display;
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     if (ref.watch(transactionsProvider).isEmpty) {
       display = Padding(
         padding: const EdgeInsets.all(24.0),

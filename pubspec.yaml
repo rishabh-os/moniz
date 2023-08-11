@@ -59,6 +59,7 @@ dependencies:
   hidable: ^1.0.4
   device_info_plus: ^9.0.3
   file_picker: ^5.3.3
+  graphic: ^2.2.0
 
 dev_dependencies:
   flutter_test:
