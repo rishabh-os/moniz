@@ -180,11 +180,19 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                   position: Varset("percent") / Varset("genre"),
                   color: ColorEncode(
                       variable: "genre",
-                      values: spends.$1.map((e) => Color(e.color)).toList()),
+                      // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
+                      values:
+                          spends.$1.map((e) => Color(e.color)).toList().length >
+                                  1
+                              ? spends.$1.map((e) => Color(e.color)).toList()
+                              : [
+                                  spends.$1.map((e) => Color(e.color)).first,
+                                  Colors.blue
+                                ]),
                   modifiers: [StackModifier()],
                   transition: Transition(
                       duration: const Duration(milliseconds: 800),
-                      curve: Curves.easeOutCubic),
+                      curve: Curves.easeOutQuint),
                   entrance: {MarkEntrance.opacity, MarkEntrance.y},
                 )
               ],

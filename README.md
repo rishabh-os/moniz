@@ -26,5 +26,5 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Support dynamic themes
 - [x] Make categories reorderable
 - [ ] Solve the middle nav icon getting selected on transition
-- [x] Quick filters state inconsistency
+- [ ] Quick filters state inconsistency - still present, hard to reproduce reliably
 - [x] Import databases
