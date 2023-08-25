@@ -17,20 +17,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
   late Widget display;
   @override
   Widget build(BuildContext context) {
-    if (ref.watch(transactionsProvider).isEmpty) {
-      display = Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Center(
-          child: Text(
-            "No entries found! Try adding a new transaction below or changing the date range above",
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.85)),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    } else {
+    if (ref.watch(transactionsProvider).isNotEmpty) {
       List<GlobalKey> listOfKeys = ref.read(analysisGkListProvider);
       display = DefaultTabController(
         length: 2,
@@ -71,6 +58,19 @@ class _AnalysisState extends ConsumerState<Analysis> {
               ),
             ),
           ],
+        ),
+      );
+    } else {
+      display = Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: Text(
+            "No entries found! Try adding a new transaction below or changing the date range above",
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.85)),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }

@@ -48,31 +48,40 @@ class Transaction {
 }
 
 class TransactionNotifier extends StateNotifier<List<Transaction>> {
-  TransactionNotifier(this.db, this.globalDateRange) : super([]);
+  TransactionNotifier(this.db, this.globalDateRange, this.allTransactions)
+      : super([]);
   final MyDatabase db;
   final DateTimeRange globalDateRange;
-  Future<void> loadTransactions() async {
-    final allTransactions = await db.select(db.transactionTable).get();
+  final List<Transaction> allTransactions;
 
-    List<Transaction> loadedTransactions = allTransactions
-        .map((e) => Transaction(
-            id: e.id,
-            title: e.title,
-            categoryID: e.categoryID,
-            accountID: e.accountID,
-            amount: e.amount,
-            recorded: e.recorded,
-            additionalInfo: e.additionalInfo))
-        .toList()
-        .reversed
-        .toList();
-    loadedTransactions = loadedTransactions
+  // ? This method is only called once at app start up
+  Future<void> loadAllTransactions() async {
+    List<Transaction> loadedTransactions =
+        (await db.select(db.transactionTable).get())
+            .map((e) => Transaction(
+                id: e.id,
+                title: e.title,
+                categoryID: e.categoryID,
+                accountID: e.accountID,
+                amount: e.amount,
+                recorded: e.recorded,
+                additionalInfo: e.additionalInfo))
+            .toList()
+            .reversed
+            .toList();
+    // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
+    state = loadedTransactions;
+    print(loadedTransactions.length);
+  }
+
+  void filterTransactions() {
+    List<Transaction> filteredTransactions = allTransactions
         .where((element) =>
             element.recorded.isAfter(globalDateRange.start) &&
             element.recorded.isBefore(globalDateRange.end))
         .toList();
-    // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
-    state = loadedTransactions;
+    state = filteredTransactions;
+    print(allTransactions.length);
   }
 
   void edit(Transaction editedTransaction) async {
@@ -117,6 +126,8 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
 
 final transactionsProvider =
     StateNotifierProvider<TransactionNotifier, List<Transaction>>((ref) {
-  return TransactionNotifier(
-      ref.read(dbProvider), ref.watch(globalDateRangeProvider));
+  return TransactionNotifier(ref.read(dbProvider),
+      ref.watch(globalDateRangeProvider), ref.watch(allTransProvider));
 });
+
+final allTransProvider = StateProvider<List<Transaction>>((ref) => []);

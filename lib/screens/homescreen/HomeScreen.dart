@@ -21,10 +21,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   final PageController _pageController = PageController(
-    initialPage: 0,
+    initialPage: 2,
   );
   void _onItemTapped(int index) {
     _pageController.animateToPage(index,

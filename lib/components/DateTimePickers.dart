@@ -124,7 +124,7 @@ class _DateRangePickerState extends ConsumerState<DateRangePicker> {
           ref
               .watch(globalDateRangeProvider.notifier)
               .update((state) => selectedRange);
-          await ref.read(transactionsProvider.notifier).loadTransactions();
+          ref.read(transactionsProvider.notifier).filterTransactions();
         }
       },
       icon: const Icon(Icons.calendar_today),

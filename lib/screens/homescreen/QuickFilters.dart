@@ -38,7 +38,6 @@ class _QuickFiltersState extends ConsumerState<QuickFilters> {
                     microsecond: 0),
                 // ? This allows entries on the selected day to be shown
                 end: DateTime.now().add(const Duration(days: 1))));
-            await ref.read(transactionsProvider.notifier).loadTransactions();
             break;
           case "Last 2 weeks":
             widget.y((state) => DateTimeRange(
@@ -51,7 +50,6 @@ class _QuickFiltersState extends ConsumerState<QuickFilters> {
                     microsecond: 0),
                 // ? This allows entries on the selected day to be shown
                 end: DateTime.now().add(const Duration(days: 1))));
-            await ref.read(transactionsProvider.notifier).loadTransactions();
             break;
           case "Last month":
             widget.y((state) => DateTimeRange(
@@ -64,9 +62,9 @@ class _QuickFiltersState extends ConsumerState<QuickFilters> {
                     microsecond: 0),
                 // ? This allows entries on the selected day to be shown
                 end: DateTime.now().add(const Duration(days: 1))));
-            await ref.read(transactionsProvider.notifier).loadTransactions();
             break;
         }
+        ref.read(transactionsProvider.notifier).filterTransactions();
       },
       itemBuilder: (context) => ["Last week", "Last 2 weeks", "Last month"]
           .map((e) => PopupMenuItem(
