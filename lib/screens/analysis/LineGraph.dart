@@ -1,7 +1,8 @@
 import "dart:math";
-import "package:fl_chart/fl_chart.dart";
+import "dart:ui";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:graphic/graphic.dart";
 import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/transactions.dart";
@@ -47,9 +48,6 @@ class _SpendsByDayState extends ConsumerState<SpendsByDay> {
         );
       }
     }
-    List<FlSpot> spotData = spotsByDay.entries
-        .map((e) => FlSpot(days.indexOf(e.key).toDouble(), e.value))
-        .toList();
 
     return SingleChildScrollView(
         child: Column(children: [
@@ -63,107 +61,124 @@ class _SpendsByDayState extends ConsumerState<SpendsByDay> {
                   left: 12,
                   bottom: 18,
                 ),
-                child: TotalLineChart(
-                  data: spotData,
-                  days: days,
-                )),
+                child: LineChart(data: spotsByDay)),
           ))
     ]));
   }
 }
 
-class TotalLineChart extends StatelessWidget {
-  const TotalLineChart({super.key, required this.data, required this.days});
-  final List<FlSpot> data;
-  final List days;
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    Widget text;
-    if (value % 1 == 0 && days.isNotEmpty) {
-      try {
-        var x = days[value.toInt()];
-        text = Text(DateFormat("d MMM").format(DateTime.parse(x)));
-      } on RangeError catch (_) {
-        text = Container();
-      }
-    } else {
-      text = Container();
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: Transform.translate(
-        offset: const Offset(0, 10),
-        child: Transform.rotate(
-          angle: -pi / 2.5,
-          child: text,
-        ),
-      ),
-    );
-  }
+class LineChart extends StatelessWidget {
+  const LineChart({super.key, required this.data});
+  final Map data;
 
   @override
   Widget build(BuildContext context) {
-    return LineChart(
-      LineChartData(
-        lineTouchData: LineTouchData(
-            getTouchedSpotIndicator: (barData, spotIndexes) {
-              return spotIndexes.map((spotIndex) {
-                return TouchedSpotIndicatorData(
-                  const FlLine(strokeWidth: 0),
-                  FlDotData(
-                    getDotPainter: (spot, percent, barData, index) =>
-                        FlDotCirclePainter(
-                            radius: 6,
-                            color: Theme.of(context).colorScheme.secondary,
-                            strokeWidth: 0),
-                  ),
-                );
-              }).toList();
-            },
-            touchTooltipData: LineTouchTooltipData(
-                tooltipRoundedRadius: 20,
-                tooltipBgColor:
-                    Theme.of(context).colorScheme.secondaryContainer)),
-        gridData: const FlGridData(show: false),
-        titlesData: FlTitlesData(
-          show: true,
-          rightTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 30,
-              getTitlesWidget: bottomTitleWidgets,
-            ),
-          ),
+    return Chart(
+      rebuild: true,
+      data: data.entries.toList(),
+      variables: {
+        "day": Variable(
+          accessor: (MapEntry spot) =>
+              DateFormat("d MMM").format(DateTime.parse(spot.key)),
         ),
-        borderData: FlBorderData(show: false),
-        minY: 0,
-        lineBarsData: [
-          LineChartBarData(
-            spots: data,
-            isCurved: true,
-            preventCurveOverShooting: true,
-            barWidth: 5,
-            color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-            isStrokeCapRound: true,
-            showingIndicators: [],
-            dotData: const FlDotData(
-              show: false,
-            ),
-            belowBarData: BarAreaData(
-                show: true,
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.2)),
+        "amount": Variable(
+          accessor: (MapEntry spot) => spot.value as double,
+        ),
+      },
+      marks: [
+        LineMark(
+          size: SizeEncode(value: 5),
+          shape: ShapeEncode(value: BasicLineShape(smooth: true)),
+          color: ColorEncode(
+              value: Theme.of(context).colorScheme.secondary.withOpacity(0.8)),
+          transition: Transition(
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeOutQuint),
+          entrance: {MarkEntrance.opacity, MarkEntrance.y},
+        ),
+        AreaMark(
+          shape: ShapeEncode(value: BasicAreaShape(smooth: true)),
+          color: ColorEncode(
+            value: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           ),
-        ],
+          transition: Transition(
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeOutQuint),
+          entrance: {MarkEntrance.opacity, MarkEntrance.y},
+        )
+      ],
+      axes: [
+        AxisGuide(
+            label: LabelStyle(
+                offset: const Offset(0, 20),
+                rotation: -pi / 2,
+                textStyle: Theme.of(context).textTheme.bodySmall)),
+        AxisGuide(
+            label: LabelStyle(
+                offset: const Offset(-10, 0),
+                textStyle: Theme.of(context).textTheme.bodySmall)),
+      ],
+      coord: RectCoord(
+        horizontalRange: [-0.5, 2.55],
+        horizontalRangeUpdater: Defaults.horizontalRangeEvent,
+        // verticalRangeUpdater: Defaults.verticalRangeEvent
       ),
-      duration: const Duration(milliseconds: 300),
+      selections: {
+        "tap": PointSelection(
+          dim: Dim.x,
+          on: {GestureType.longPress, GestureType.longPressMoveUpdate},
+          nearest: false,
+        ),
+        "tooltipMouse": PointSelection(
+          on: {
+            GestureType.hover,
+          },
+          devices: {PointerDeviceKind.mouse},
+          nearest: false,
+        ),
+        "tooltipTouch": PointSelection(
+          on: {
+            GestureType.scaleUpdate,
+            GestureType.tapDown,
+            GestureType.longPressMoveUpdate
+          },
+          devices: {PointerDeviceKind.touch},
+          nearest: false,
+        ),
+      },
+      tooltip: TooltipGuide(
+        selections: {"tooltipTouch", "tooltipMouse"},
+        followPointer: [false, false],
+        renderer: (size, anchor, selectedTuples) {
+          var amount = (selectedTuples.entries.first.value["amount"]);
+          Offset labelOffset = anchor + const Offset(0, -30);
+          return [
+            OvalElement(
+              oval: Rect.fromCircle(center: anchor, radius: 5),
+              style: PaintStyle(
+                fillColor: Theme.of(context).colorScheme.secondary,
+                strokeWidth: 2,
+              ),
+            ),
+            RectElement(
+                rect:
+                    Rect.fromCenter(center: labelOffset, width: 60, height: 30),
+                borderRadius: BorderRadius.circular(15),
+                style: PaintStyle(
+                    fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                    strokeWidth: 2)),
+            LabelElement(
+                text: amount.toString(),
+                anchor: labelOffset,
+                style: LabelStyle(
+                  textStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ))
+          ];
+        },
+      ),
     );
   }
 }
