@@ -50,32 +50,38 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
         const SizedBox(
           height: 40,
         ),
-        ColorPicker(
-          colorCallback: (selectedColor) {
-            ref
-                .read(themeColorProvider.notifier)
-                .update((state) => selectedColor);
-          },
-        ),
         AnimatedOpacity(
           opacity: isDynamic ? 0 : 1,
           duration: const Duration(milliseconds: 200),
-          child: AnimatedContainer(
-            // ? 48 is from the Material 2 spec
-            height: isDynamic ? 0 : 48,
+          child: AnimatedSize(
             duration: const Duration(milliseconds: 200),
-            child: SwitchListTile(
-              key: const Key("Dark Mode"),
-              title: const Text("Dark Mode"),
-              value: isDark,
-              onChanged: (value) {
-                ref.watch(brightnessProvider.notifier).update((state) {
-                  return isDark ? Brightness.light : Brightness.dark;
-                });
-                setState(() {
-                  isDark = value;
-                });
-              },
+            child: SizedBox(
+              height: isDynamic ? 0 : null,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ColorPicker(
+                    colorCallback: (selectedColor) {
+                      ref
+                          .read(themeColorProvider.notifier)
+                          .update((state) => selectedColor);
+                    },
+                  ),
+                  SwitchListTile(
+                    key: const Key("Dark Mode"),
+                    title: const Text("Dark Mode"),
+                    value: isDark,
+                    onChanged: (value) {
+                      ref.watch(brightnessProvider.notifier).update((state) {
+                        return isDark ? Brightness.light : Brightness.dark;
+                      });
+                      setState(() {
+                        isDark = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

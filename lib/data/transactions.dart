@@ -14,8 +14,6 @@ class Transaction {
     required this.amount,
     required this.recorded,
   });
-
-  // All properties should be `final` on our class.
   final String id;
   final String title;
   // ? additionalInfo should be optional
@@ -71,7 +69,6 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
             .toList();
     // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
     state = loadedTransactions;
-    print(loadedTransactions.length);
   }
 
   void filterTransactions() {
@@ -81,7 +78,6 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
             element.recorded.isBefore(globalDateRange.end))
         .toList();
     state = filteredTransactions;
-    print(allTransactions.length);
   }
 
   void edit(Transaction editedTransaction) async {
@@ -130,4 +126,5 @@ final transactionsProvider =
       ref.watch(globalDateRangeProvider), ref.watch(allTransProvider));
 });
 
+// ? Load all the transactions on startup, and quickly filter them in UI
 final allTransProvider = StateProvider<List<Transaction>>((ref) => []);
