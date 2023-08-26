@@ -48,6 +48,10 @@ final accountsTargetListProvider = Provider((ref) => {
         "Accounts",
         "You can add different accounts to keep track of here."
       ],
+      GlobalKey(debugLabel: "accounts1"): [
+        "Categories",
+        "Manage various categories to organize your transactions here. Categories can also be reordered."
+      ],
     });
 
 final accountsTutorialCompletedProvider = StateProvider<bool>((ref) {

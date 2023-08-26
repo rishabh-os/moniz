@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
+import "package:moniz/data/SimpleStore/tutorialStore.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -37,7 +38,7 @@ class _SettingsState extends ConsumerState<Settings> {
               ref.watch(chipsMultiLineProvider.notifier).update((state) => e);
             },
           ),
-          InkWell(
+          ListTile(
             onTap: () => showCurrencyPicker(
                 context: context,
                 onSelect: (e) {
@@ -45,41 +46,52 @@ class _SettingsState extends ConsumerState<Settings> {
                       .watch(currencyProvider.notifier)
                       .update((state) => e.code);
                 }),
-            child: ListTile(
-              title: const Text("Change currency"),
-              trailing: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Theme.of(context).colorScheme.primaryContainer),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    ref.watch(currencyProvider),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color:
-                            Theme.of(context).colorScheme.onPrimaryContainer),
-                  ),
+            title: const Text("Change currency"),
+            trailing: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Theme.of(context).colorScheme.primaryContainer),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  ref.watch(currencyProvider),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer),
                 ),
               ),
             ),
           ),
-          InkWell(
+          ListTile(
             onTap: () => ref.read(dbProvider).shareDB(),
-            child: const ListTile(
-              title: Text("Export data"),
-              leading: Icon(Icons.file_upload_outlined),
-            ),
+            title: const Text("Export data"),
+            leading: const Icon(Icons.file_upload_outlined),
           ),
-          InkWell(
+          ListTile(
             onTap: () => ref.read(dbProvider).importDB(),
-            child: const ListTile(
-              title: Text("Import data"),
-              subtitle: Text(
-                  "File must be a compatible sqlite database.\nApp requires restart after import"),
-              leading: Icon(Icons.file_download_outlined),
-            ),
+            title: const Text("Import data"),
+            subtitle: const Text(
+                "File must be a compatible sqlite database.\nApp requires restart after import"),
+            leading: const Icon(Icons.file_download_outlined),
           ),
+          ListTile(
+            title: const Text("Rerun the tutorial"),
+            onTap: () {
+              ref
+                  .read(entriesTutorialCompletedProvider.notifier)
+                  .update((state) => false);
+              ref
+                  .read(accountsTutorialCompletedProvider.notifier)
+                  .update((state) => false);
+              ref
+                  .read(analysisTutorialCompletedProvider.notifier)
+                  .update((state) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/welcome",
+                (route) => false,
+              );
+            },
+          )
         ],
       ),
     );

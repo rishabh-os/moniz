@@ -6,12 +6,12 @@ import "package:intl/intl.dart";
 import "package:moniz/components/DateTimePickers.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
-import "package:moniz/screens/accounts/Accounts.dart";
 import "package:moniz/screens/analysis/Analysis.dart";
 import "package:moniz/screens/entries/Entries.dart";
 import "package:moniz/screens/entries/EntryEditor.dart";
 import "package:moniz/screens/homescreen/DotsMenu.dart";
 import "package:moniz/screens/homescreen/QuickFilters.dart";
+import "package:moniz/screens/manage/Manage.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -21,10 +21,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   final PageController _pageController = PageController(
-    initialPage: 2,
+    initialPage: 0,
   );
   void _onItemTapped(int index) {
     _pageController.animateToPage(index,
@@ -38,21 +38,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       label: "Entries",
     ),
     NavigationDestination(
-      icon: Icon(Icons.account_balance_wallet_outlined),
-      selectedIcon: Icon(Icons.account_balance_wallet_rounded),
-      label: "Accounts",
-    ),
-    NavigationDestination(
       icon: Icon(Icons.pie_chart_outline_rounded),
       selectedIcon: Icon(Icons.pie_chart_rounded),
       label: "Analysis",
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.category_outlined),
+      selectedIcon: Icon(Icons.category_rounded),
+      label: "Manage",
     ),
   ];
 
   List<Widget> widgetOptions = <Widget>[
     const Overview(),
-    const Accounts(),
     const Analysis(),
+    const Manage(),
   ];
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late final List<GlobalKey> listOfKeys;

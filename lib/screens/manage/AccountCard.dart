@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/components/deleteRoute.dart";
 import "package:moniz/data/account.dart";
-import "package:moniz/screens/accounts/AccountIcon.dart";
+import "package:moniz/screens/manage/AccountIcon.dart";
 
 class AccountCard extends StatefulWidget {
   const AccountCard({

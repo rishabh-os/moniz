@@ -35,10 +35,6 @@ class _WelcomeState extends ConsumerState<Welcome> {
         ref
             .read(analysisTutorialCompletedProvider.notifier)
             .update((state) => true);
-
-        //  GetStorage().write("entriesTutorialCompleted", true);
-        //  GetStorage().write("accountsTutorialCompleted", true);
-        //  GetStorage().write("analysisTutorialCompleted", true);
       },
       showSkipButton: true,
       pages: [

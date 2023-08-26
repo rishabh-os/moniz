@@ -1,10 +1,11 @@
 import "dart:math" show sqrt, max;
 import "dart:ui" show lerpDouble;
+
 import "package:flutter/material.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
-import "package:moniz/screens/accounts/AccountEditor.dart";
 import "package:moniz/screens/entries/EntryEditor.dart";
+import "package:moniz/screens/manage/AccountEditor.dart";
 
 class DeleteRoute<T> extends MaterialPageRoute<T> {
   final Widget page;
