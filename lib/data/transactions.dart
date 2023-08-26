@@ -64,8 +64,6 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
                 amount: e.amount,
                 recorded: e.recorded,
                 additionalInfo: e.additionalInfo))
-            .toList()
-            .reversed
             .toList();
     // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
     state = loadedTransactions;
@@ -78,6 +76,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
             element.recorded.isBefore(globalDateRange.end))
         .toList();
     state = filteredTransactions;
+    state.sort((a, b) => b.recorded.compareTo(a.recorded));
   }
 
   void edit(Transaction editedTransaction) async {
@@ -96,10 +95,12 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
         else
           trans,
     ];
+    state.sort((a, b) => b.recorded.compareTo(a.recorded));
   }
 
   void add(Transaction newTransaction) async {
     state = [newTransaction, ...state];
+    state.sort((a, b) => b.recorded.compareTo(a.recorded));
     await db.into(db.transactionTable).insert(TransactionTableCompanion.insert(
         id: newTransaction.id,
         title: newTransaction.title,

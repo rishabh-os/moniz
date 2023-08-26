@@ -92,7 +92,7 @@ class LineChart extends StatelessWidget {
           color: ColorEncode(
               value: Theme.of(context).colorScheme.secondary.withOpacity(0.8)),
           transition: Transition(
-              duration: const Duration(milliseconds: 800),
+              duration: const Duration(milliseconds: 500),
               curve: Curves.easeOutQuint),
           entrance: {MarkEntrance.opacity, MarkEntrance.y},
         ),
@@ -102,7 +102,7 @@ class LineChart extends StatelessWidget {
             value: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
           ),
           transition: Transition(
-              duration: const Duration(milliseconds: 800),
+              duration: const Duration(milliseconds: 500),
               curve: Curves.easeOutQuint),
           entrance: {MarkEntrance.opacity, MarkEntrance.y},
         )
@@ -130,9 +130,7 @@ class LineChart extends StatelessWidget {
           nearest: false,
         ),
         "tooltipMouse": PointSelection(
-          on: {
-            GestureType.hover,
-          },
+          on: {GestureType.hover, GestureType.doubleTap},
           devices: {PointerDeviceKind.mouse},
           nearest: false,
         ),
