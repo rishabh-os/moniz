@@ -9,7 +9,8 @@ import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 
 class TransactionList extends ConsumerStatefulWidget {
-  const TransactionList({super.key});
+  const TransactionList({super.key, required this.transactions});
+  final List<Transaction> transactions;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -19,7 +20,6 @@ class TransactionList extends ConsumerStatefulWidget {
 class _TransactionListState extends ConsumerState<TransactionList> {
   @override
   Widget build(BuildContext context) {
-    final List<Transaction> transactions = ref.watch(transactionsProvider);
     // ? Convert to an AnimatedList someday
     return ListView.custom(
       physics: const NeverScrollableScrollPhysics(),
@@ -29,12 +29,12 @@ class _TransactionListState extends ConsumerState<TransactionList> {
           findChildIndexCallback: (key) {
             final ValueKey<String> valueKey = key as ValueKey<String>;
             final index =
-                transactions.indexWhere((m) => m.id == valueKey.value);
+                widget.transactions.indexWhere((m) => m.id == valueKey.value);
             return index;
           },
-          childCount: transactions.length,
+          childCount: widget.transactions.length,
           (context, index) {
-            final trans = transactions[index];
+            final trans = widget.transactions[index];
             final transAccount = ref
                 .watch(accountsProvider)
                 .firstWhere((element) => element.id == trans.accountID);

@@ -11,6 +11,7 @@ import "package:moniz/screens/entries/Entries.dart";
 import "package:moniz/screens/entries/EntryEditor.dart";
 import "package:moniz/screens/homescreen/DotsMenu.dart";
 import "package:moniz/screens/homescreen/QuickFilters.dart";
+import "package:moniz/screens/homescreen/Search.dart";
 import "package:moniz/screens/manage/Manage.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -74,21 +75,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var x = ref.watch(globalDateRangeProvider);
-    var y = ref.watch(globalDateRangeProvider.notifier).update;
+    var globalRange = ref.watch(globalDateRangeProvider);
+    var globalRangeUpdater = ref.watch(globalDateRangeProvider.notifier).update;
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         // ? Hides the back button when the bottom sheet pops up
         automaticallyImplyLeading: false,
         title: Text(
-          "${DateFormat("d MMM yy").format(x.start)} - ${DateFormat("d MMM yy").format(x.end)}",
+          "${DateFormat("d MMM yy").format(globalRange.start)} - ${DateFormat("d MMM yy").format(globalRange.end)}",
           key: listOfKeys[0],
         ),
 
         actions: [
-          Container(key: listOfKeys[1], child: const DateRangePicker()),
-          QuickFilters(listOfKeys: listOfKeys, y: y),
+          IconButton.filledTonal(
+            tooltip: "Search",
+            icon: const Icon(Icons.search_rounded),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const Search(),
+              ));
+            },
+          ),
+          QuickFilters(
+              listOfKeys: listOfKeys, globalRangeUpdater: globalRangeUpdater),
           DotsMenu(listOfKeys: listOfKeys, scaffoldKey: scaffoldKey),
         ],
       ),

@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
+import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/entries/TransactionList.dart";
 
 class Overview extends ConsumerStatefulWidget {
@@ -20,6 +21,7 @@ class _OverviewState extends ConsumerState<Overview>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final List<Transaction> transactions = ref.watch(transactionsProvider);
     return SingleChildScrollView(
       controller: ref.read(scrollProvider),
       child: Column(
@@ -42,7 +44,7 @@ class _OverviewState extends ConsumerState<Overview>
               ),
             ],
           ),
-          const TransactionList(),
+          TransactionList(transactions: transactions),
           // ? Provides space so that the FAB doesn't block the last transaction
           const ListTile(
             isThreeLine: true,

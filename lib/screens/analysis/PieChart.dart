@@ -1,4 +1,3 @@
-import "dart:math";
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -27,10 +26,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final double smallestLength = min(
-        MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
-    final totalSize = smallestLength * 0.3;
-    final centerRadius = totalSize * 0.5;
     (List, Map<String, double>) spendsByCat() {
       List<Transaction> transactionList = ref.watch(transactionsProvider);
       List<TransactionCategory> catergoryList = ref.watch(categoriesProvider);
@@ -64,22 +59,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
     }
 
     var spends = showCat ? spendsByCat() : spendsByAcc();
-    data = spends.$2.entries.map((e) {
-      var cat = spends.$1.firstWhere((element) => element.id == e.key);
-      return PieChartSectionData(
-          // ? If null it shows the value by default
-          title: "",
-          badgeWidget: Icon(
-            IconData(cat.iconCodepoint, fontFamily: "MaterialIcons"),
-            color: Color(cat.color),
-          ),
-          badgePositionPercentageOffset: 1.4,
-          value: e.value,
-          radius: totalSize - centerRadius,
-          color: Color(cat.color));
-    }).toList();
-    // ? This puts the largest spends first
-    data = data.reversed.toList();
 
     NumberFormat numberFormat = ref.watch(numberFormatProvider);
     _legend = Padding(
@@ -153,6 +132,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
           AspectRatio(
             aspectRatio: 1.4,
             child: Chart(
+              rebuild: true,
               data: spends.$2.entries
                   .map((e) => {"genre": e.key, "sold": e.value})
                   .toList(),

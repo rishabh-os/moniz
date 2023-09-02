@@ -3,7 +3,6 @@ import "dart:ui";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:graphic/graphic.dart";
-import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
