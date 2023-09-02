@@ -53,7 +53,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
     super.initState();
     accounts = ref.read(accountsProvider);
     categories = ref.read(categoriesProvider);
-    order = ref.read(categoryOrderProvider);
+    order = ref.read(catOrderProvider);
 
     saveAction = (transaction) {
       ref.read(transactionsProvider.notifier).add(transaction);

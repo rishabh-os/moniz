@@ -25,6 +25,13 @@ StateProvider<bool> chipsMultiLineProvider = StateProvider<bool>((ref) {
       GetStorage().write("chipsMultiLine", false);
   return GetStorage().read("chipsMultiLine");
 });
+StateProvider<int> initialPageProvider = StateProvider<int>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("initialPage", next),
+  );
+  GetStorage().read("initialPage") ?? GetStorage().write("initialPage", 0);
+  return GetStorage().read("initialPage");
+});
 final numberFormatProvider = StateProvider<NumberFormat>((ref) {
   return NumberFormat("#,##0.00", "en_US");
 });

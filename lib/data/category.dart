@@ -84,7 +84,9 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
 
 final categoriesProvider =
     StateNotifierProvider<CategoryNotifier, List<TransactionCategory>>((ref) {
-  return CategoryNotifier(ref.read(dbProvider));
+  return CategoryNotifier(
+    ref.read(dbProvider),
+  );
 });
 
 abstract class Classifier {

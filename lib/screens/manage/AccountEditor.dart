@@ -6,6 +6,7 @@ import "package:moniz/components/input/ColorPicker.dart";
 import "package:moniz/components/input/Header.dart";
 import "package:moniz/components/input/SaveFAB.dart";
 import "package:moniz/components/input/deleteFunctions.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
@@ -104,6 +105,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   void handleCategoryDelete() {
     void delete() {
       ref.read(categoriesProvider.notifier).delete(widget.editedCategory!.id);
+      ref.read(catOrderProvider.notifier).handleCatChange();
       Navigator.of(context).maybePop();
     }
 
@@ -210,6 +212,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                 iconCodepoint: _selectedIcon,
                 color: _selectedColor,
               ));
+              ref.read(catOrderProvider.notifier).handleCatChange();
             }
             Navigator.pop(context);
           }

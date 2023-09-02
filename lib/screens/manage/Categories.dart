@@ -17,7 +17,7 @@ class _CategoriesState extends ConsumerState<Categories> {
   @override
   Widget build(BuildContext context) {
     List<TransactionCategory> categories = ref.watch(categoriesProvider);
-    List<int> order = ref.watch(categoryOrderProvider);
+    List<int> order = ref.watch(catOrderProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -32,9 +32,7 @@ class _CategoriesState extends ConsumerState<Categories> {
               }
               final items = order.removeAt(oldIndex);
               order.insert(newIndex, items);
-              ref
-                  .watch(categoryOrderProvider.notifier)
-                  .update((state) => order);
+              ref.watch(catOrderProvider.notifier).updateOrder(order);
             })
           },
           itemBuilder: (context, index) {

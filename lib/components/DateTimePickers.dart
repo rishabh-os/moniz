@@ -1,8 +1,5 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
-import "package:moniz/data/SimpleStore/basicStore.dart";
-import "package:moniz/data/transactions.dart";
 
 class DatePicker extends StatefulWidget {
   const DatePicker({

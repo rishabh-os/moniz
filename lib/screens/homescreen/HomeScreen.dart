@@ -3,8 +3,8 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:hidable/hidable.dart";
 import "package:intl/intl.dart";
-import "package:moniz/components/DateTimePickers.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
 import "package:moniz/screens/analysis/Analysis.dart";
 import "package:moniz/screens/entries/Entries.dart";
@@ -22,11 +22,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
-  final PageController _pageController = PageController(
-    initialPage: 0,
-  );
+  late PageController _pageController;
   void _onItemTapped(int index) {
     _pageController.animateToPage(index,
         duration: const Duration(milliseconds: 200), curve: Curves.ease);
@@ -61,6 +59,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _selectedIndex = ref.read(initialPageProvider);
+    _pageController = PageController(
+      initialPage: _selectedIndex,
+    );
     // ? It's read here and watch elsewhere because this code is executed only once while the others are part of build
     listOfKeys = ref.read(entriesGkListProvider);
     if (!ref.read(entriesTutorialCompletedProvider)) {

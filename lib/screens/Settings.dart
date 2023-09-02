@@ -17,6 +17,7 @@ class _SettingsState extends ConsumerState<Settings> {
   Widget build(BuildContext context) {
     bool transDeleteConfirmation = ref.watch(transDeleteProvider);
     bool chipsScroll = ref.watch(chipsMultiLineProvider);
+    List<String> initalPages = ["Entries", "Analysis", "Manage"];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
@@ -37,6 +38,26 @@ class _SettingsState extends ConsumerState<Settings> {
             onChanged: (e) {
               ref.watch(chipsMultiLineProvider.notifier).update((state) => e);
             },
+          ),
+          ListTile(
+            title: const Text("Default view on app start"),
+            trailing: DropdownButton(
+              alignment: Alignment.center,
+              borderRadius: BorderRadius.circular(15),
+              underline: Container(),
+              value: initalPages[ref.watch(initialPageProvider)],
+              onChanged: (value) {
+                ref
+                    .watch(initialPageProvider.notifier)
+                    .update((state) => initalPages.indexOf(value!));
+              },
+              items: initalPages
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ))
+                  .toList(),
+            ),
           ),
           ListTile(
             onTap: () => showCurrencyPicker(
@@ -70,8 +91,7 @@ class _SettingsState extends ConsumerState<Settings> {
           ListTile(
             onTap: () => ref.read(dbProvider).importDB(),
             title: const Text("Import data"),
-            subtitle: const Text(
-                "File must be a compatible sqlite database.\nApp requires restart after import"),
+            subtitle: const Text("App requires restart after import"),
             leading: const Icon(Icons.file_download_outlined),
           ),
           ListTile(
