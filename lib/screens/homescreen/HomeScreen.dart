@@ -135,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           }),
       bottomNavigationBar: Hidable(
         preferredWidgetSize: const Size.fromHeight(80),
-        wOpacity: false,
+        enableOpacityAnimation: false,
         controller: ref.read(scrollProvider),
         child: NavigationBar(
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,

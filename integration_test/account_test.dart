@@ -10,7 +10,7 @@ void main() {
   initWindow();
   const String accountName = "test account";
   patrolTest("Skip welcome and account delete", config: config,
-      (PatrolTester $) async {
+      (PatrolIntegrationTester $) async {
     await initApp($);
     await $("Accounts").tap();
     await $("Add Account").tap();

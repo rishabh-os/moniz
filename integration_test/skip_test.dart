@@ -12,7 +12,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   initWindow();
-  patrolTest("Skip welcome", config: config, (PatrolTester $) async {
+  patrolTest("Skip welcome", config: config, (PatrolIntegrationTester $) async {
     await initApp($, skipWelcome: true);
   });
 }
@@ -39,7 +39,8 @@ const config = PatrolTesterConfig(
   settleTimeout: Duration(seconds: 5),
 );
 
-Future<void> initApp(PatrolTester $, {bool skipWelcome = true}) async {
+Future<void> initApp(PatrolIntegrationTester $,
+    {bool skipWelcome = true}) async {
   await $.pumpWidget(const ProviderScope(child: MyApp()));
   await $("Welcome to Moniz!").waitUntilVisible();
   await $("meh")

@@ -176,7 +176,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                             entryTypeStrings[index] == "Income"
                                 ? incomeColorSchemeProvider
                                 : expenseColorSchemeProvider)),
-                    child: ChoiceChip(
+                    child: ChoiceChip.elevated(
                       label: Text(
                         entryTypeStrings[index].toUpperCase(),
                         style: const TextStyle(

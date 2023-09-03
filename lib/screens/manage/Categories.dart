@@ -22,6 +22,7 @@ class _CategoriesState extends ConsumerState<Categories> {
       mainAxisSize: MainAxisSize.min,
       children: [
         ReorderableListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           buildDefaultDragHandles: false,
           itemCount: categories.length,
           shrinkWrap: true,

@@ -10,7 +10,7 @@ void main() {
   initWindow();
   const String categoryName = "test cat";
   patrolTest("Skip welcome and category delete", config: config,
-      (PatrolTester $) async {
+      (PatrolIntegrationTester $) async {
     await initApp($);
     await $("Entries").tap();
     await $($(Icons.more_vert)).tap();

@@ -59,19 +59,18 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   Future<void> loadData() async {
+    // ? This part should just be run on first app startup to make sure the database itself is not empty
+    await ref.read(dbProvider).initAccounts();
+    await ref.read(dbProvider).initCategories();
     // ? This loads the data from the database into the app
     await ref.read(categoriesProvider.notifier).loadCategories();
     await ref.read(catOrderProvider.notifier).loadOrder();
     await ref.read(accountsProvider.notifier).loadAccounts();
     await ref.read(transactionsProvider.notifier).loadAllTransactions();
-
     ref
         .read(allTransProvider.notifier)
         .update((state) => ref.read(transactionsProvider));
     ref.read(transactionsProvider.notifier).filterTransactions();
-    // ? This part should just be run on first app startup to make sure the database itself is not empty
-    await ref.read(dbProvider).initAccounts();
-    await ref.read(dbProvider).initCategories();
     FlutterNativeSplash.remove();
   }
 

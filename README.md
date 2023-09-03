@@ -17,7 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ## TODOs:
 
-- [ ] A lot of clean up
+- [x] A lot of clean up
 - [x] Add testing
 - [x] App icon
 - [x] Make accounts and categories part of same parent class
@@ -29,3 +29,4 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Quick filters state inconsistency - still present, hard to reproduce reliably
   - This was due to the loading being done on every call
 - [x] Import databases
+- [ ] Fix the tutorial after the layout changes

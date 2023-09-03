@@ -7,7 +7,8 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   initWindow();
-  patrolTest("Complete tutorial", config: config, (PatrolTester $) async {
+  patrolTest("Complete tutorial", config: config,
+      (PatrolIntegrationTester $) async {
     await initApp($, skipWelcome: false);
     await $("Next").tap();
     await $("Start").tap();

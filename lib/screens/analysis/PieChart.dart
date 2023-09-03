@@ -77,10 +77,10 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                        color: Theme.of(context).colorScheme.surfaceVariant,
                         width: 3)),
                 child: Padding(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(6),
                   child: Icon(
                     IconData(cat.iconCodepoint, fontFamily: "MaterialIcons"),
                     size: 24,

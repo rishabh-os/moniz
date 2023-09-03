@@ -20,6 +20,7 @@ class _AccountsState extends ConsumerState<Accounts> {
     return Column(
       children: [
         ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: accounts.length,
           itemBuilder: (context, index) {
