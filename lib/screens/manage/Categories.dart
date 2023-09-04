@@ -87,9 +87,6 @@ class _CategoriesState extends ConsumerState<Categories> {
             openBuilder: (context, action) => const AccountEditor(
                   type: "Category",
                 )),
-        const SizedBox(
-          height: 50,
-        )
       ],
     );
   }

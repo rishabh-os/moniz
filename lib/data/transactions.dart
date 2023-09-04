@@ -1,5 +1,3 @@
-import "dart:isolate";
-
 import "package:drift/drift.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -53,23 +51,6 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
   final MyDatabase db;
   final DateTimeRange globalDateRange;
   final List<Transaction> allTransactions;
-
-  // ? This method is only called once at app start up
-  Future<void> loadAllTransactions() async {
-    List<Transaction> loadedTransactions =
-        (await db.select(db.transactionTable).get())
-            .map((e) => Transaction(
-                id: e.id,
-                title: e.title,
-                categoryID: e.categoryID,
-                accountID: e.accountID,
-                amount: e.amount,
-                recorded: e.recorded,
-                additionalInfo: e.additionalInfo))
-            .toList();
-    // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
-    state = loadedTransactions;
-  }
 
   void filterTransactions() {
     List<Transaction> filteredTransactions = allTransactions
@@ -129,5 +110,33 @@ final transactionsProvider =
       ref.watch(globalDateRangeProvider), ref.watch(allTransProvider));
 });
 
-// ? Load all the transactions on startup, and quickly filter them in UI
-final allTransProvider = StateProvider<List<Transaction>>((ref) => []);
+class AllTransactionNotifier extends StateNotifier<List<Transaction>> {
+  AllTransactionNotifier(this.db) : super([]);
+  final MyDatabase db;
+
+  // ? This method is only called once at app start up
+  Future<void> loadAllTransactions() async {
+    List<Transaction> loadedTransactions =
+        (await db.select(db.transactionTable).get())
+            .map((e) => Transaction(
+                id: e.id,
+                title: e.title,
+                categoryID: e.categoryID,
+                accountID: e.accountID,
+                amount: e.amount,
+                recorded: e.recorded,
+                additionalInfo: e.additionalInfo))
+            .toList();
+    // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
+    state = loadedTransactions;
+  }
+}
+
+final allTransProvider =
+    StateNotifierProvider<AllTransactionNotifier, List<Transaction>>((ref) {
+  return AllTransactionNotifier(ref.read(dbProvider));
+});
+
+final searchedTransProvider = StateProvider<List<Transaction>?>((ref) {
+  return null;
+});

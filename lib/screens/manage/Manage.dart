@@ -61,9 +61,11 @@ class _ManageState extends ConsumerState<Manage>
           ),
           const SizedBox(height: 20),
           const Categories(),
-          const SizedBox(
-            height: 100,
-          )
+          // ? Provides space so that the FAB doesn't block elements
+          const ListTile(
+            isThreeLine: true,
+            subtitle: Text(""),
+          ),
         ],
       ),
     );

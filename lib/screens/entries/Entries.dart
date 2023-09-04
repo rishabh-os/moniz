@@ -21,7 +21,8 @@ class _OverviewState extends ConsumerState<Overview>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final List<Transaction> transactions = ref.watch(transactionsProvider);
+    final List<Transaction> transactions =
+        ref.watch(searchedTransProvider) ?? ref.watch(transactionsProvider);
     return SingleChildScrollView(
       controller: ref.read(scrollProvider),
       child: Column(

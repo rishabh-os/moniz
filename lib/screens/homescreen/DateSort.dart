@@ -3,8 +3,8 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/transactions.dart";
 
-class QuickFilters extends ConsumerStatefulWidget {
-  const QuickFilters({
+class DateSort extends ConsumerStatefulWidget {
+  const DateSort({
     super.key,
     required this.listOfKeys,
     required this.globalRangeUpdater,
@@ -15,10 +15,10 @@ class QuickFilters extends ConsumerStatefulWidget {
       globalRangeUpdater;
 
   @override
-  ConsumerState<QuickFilters> createState() => _QuickFiltersState();
+  ConsumerState<DateSort> createState() => _DateSortState();
 }
 
-class _QuickFiltersState extends ConsumerState<QuickFilters> {
+class _DateSortState extends ConsumerState<DateSort> {
   List<PopupMenuItem<String>> items =
       ["Last week", "Last 2 weeks", "Last month", "Everything", "Custom"]
           .map((e) => PopupMenuItem(

@@ -10,8 +10,8 @@ import "package:moniz/screens/analysis/Analysis.dart";
 import "package:moniz/screens/entries/Entries.dart";
 import "package:moniz/screens/entries/EntryEditor.dart";
 import "package:moniz/screens/homescreen/DotsMenu.dart";
-import "package:moniz/screens/homescreen/QuickFilters.dart";
-import "package:moniz/screens/homescreen/Search.dart";
+import 'package:moniz/screens/homescreen/DateSort.dart';
+import 'package:moniz/screens/homescreen/Filters.dart';
 import "package:moniz/screens/manage/Manage.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -90,16 +90,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
 
         actions: [
-          IconButton.filledTonal(
-            tooltip: "Search",
-            icon: const Icon(Icons.search_rounded),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const Search(),
-              ));
-            },
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: _selectedIndex == 0
+                ? IconButton.filledTonal(
+                    tooltip: "Search",
+                    icon: const Icon(Icons.filter_list_rounded),
+                    onPressed: () {
+                      scaffoldKey.currentState!
+                          .showBottomSheet((context) => const Filters());
+                    },
+                  )
+                : Container(),
           ),
-          QuickFilters(
+          DateSort(
               listOfKeys: listOfKeys, globalRangeUpdater: globalRangeUpdater),
           DotsMenu(listOfKeys: listOfKeys, scaffoldKey: scaffoldKey),
         ],
@@ -141,7 +145,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           onDestinationSelected: (int index) {
             setState(() {
-              _selectedIndex = index;
               _onItemTapped(index);
             });
           },

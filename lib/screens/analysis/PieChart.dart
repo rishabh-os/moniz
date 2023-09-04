@@ -186,7 +186,11 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
           const SizedBox(height: 20),
           AnimatedSwitcher(
               duration: const Duration(milliseconds: 200), child: _legend),
-          const SizedBox(height: 100),
+          // ? Provides space so that the FAB doesn't block elements
+          const ListTile(
+            isThreeLine: true,
+            subtitle: Text(""),
+          ),
         ],
       ),
     );
