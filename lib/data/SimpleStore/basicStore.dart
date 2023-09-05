@@ -88,3 +88,9 @@ final catOrderProvider =
     StateNotifierProvider<CatOrderNotifier, List<int>>((ref) {
   return CatOrderNotifier(ref.watch(categoriesProvider).length);
 });
+
+final chartScrollProvider = StateProvider<bool>((ref) => true);
+
+final graphByCatProvider = StateProvider<bool>((ref) {
+  return false;
+});

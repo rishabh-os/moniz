@@ -53,7 +53,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   CategoryChart(),
-                  SpendsByDay(),
+                  LineGraph(),
                 ],
               ),
             ),

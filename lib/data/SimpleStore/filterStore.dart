@@ -6,7 +6,7 @@ import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 
 final filterQueryProvider = StateProvider<String>((ref) {
-  return "test";
+  return "";
 });
 
 final sliderMaxProvider = StateProvider<double>((ref) => ref

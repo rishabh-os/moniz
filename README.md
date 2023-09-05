@@ -30,3 +30,4 @@ samples, guidance on mobile development, and a full API reference.
   - This was due to the loading being done on every call
 - [x] Import databases
 - [ ] Fix the tutorial after the layout changes
+- [ ] Graph transition animation bugs

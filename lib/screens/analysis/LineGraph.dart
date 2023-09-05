@@ -7,17 +7,15 @@ import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 
-class SpendsByDay extends ConsumerStatefulWidget {
-  const SpendsByDay({super.key});
+class LineGraph extends ConsumerStatefulWidget {
+  const LineGraph({super.key});
 
   @override
-  ConsumerState<SpendsByDay> createState() => _SpendsByDayState();
+  ConsumerState<LineGraph> createState() => _LineGraphState();
 }
 
-class _SpendsByDayState extends ConsumerState<SpendsByDay> {
+class _LineGraphState extends ConsumerState<LineGraph> {
   List<String> days = [];
-
-  bool showByCat = true;
 
   String getDTString(DateTime trans) {
     // ? This type is needed so that sorting works easily
@@ -28,6 +26,7 @@ class _SpendsByDayState extends ConsumerState<SpendsByDay> {
 
   @override
   Widget build(BuildContext context) {
+    bool showByCat = ref.watch(graphByCatProvider);
     List<Transaction> transactionList = ref.watch(transactionsProvider);
     final range = ref.watch(globalDateRangeProvider);
     final numberOfDays = range.end.difference(range.start).inDays;
@@ -82,9 +81,7 @@ class _SpendsByDayState extends ConsumerState<SpendsByDay> {
       SwitchListTile.adaptive(
         value: showByCat,
         onChanged: (value) {
-          setState(() {
-            showByCat = value;
-          });
+          ref.watch(graphByCatProvider.notifier).state = value;
         },
         title: const Text("Show category-wise spends"),
       ),
@@ -127,14 +124,9 @@ class _LineChartState extends ConsumerState<LineChart> {
   @override
   Widget build(BuildContext context) {
     var selections2 = {
-      "tap": PointSelection(
-        dim: Dim.x,
-        on: {GestureType.longPress, GestureType.longPressMoveUpdate},
-        nearest: false,
-      ),
       "tooltipMouse": PointSelection(
-        on: {GestureType.hover, GestureType.doubleTap},
-        devices: {PointerDeviceKind.mouse},
+        on: {GestureType.hover},
+        devices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
         nearest: false,
       ),
       "tooltipTouch": PointSelection(
@@ -143,7 +135,7 @@ class _LineChartState extends ConsumerState<LineChart> {
           GestureType.tapDown,
           GestureType.longPressMoveUpdate
         },
-        devices: {PointerDeviceKind.touch},
+        devices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
         nearest: false,
       ),
     };
@@ -203,7 +195,7 @@ class _LineChartState extends ConsumerState<LineChart> {
               accessor: (List spot) => spot[2] as double,
               scale: LinearScale(
                 min: 0,
-                max: widget.maxY * 1.10,
+                max: widget.maxY * 1.30,
               ),
             ),
           }
@@ -215,7 +207,7 @@ class _LineChartState extends ConsumerState<LineChart> {
               accessor: (List spot) => spot[1] as double,
               scale: LinearScale(
                 min: 0,
-                max: widget.maxY * 1.10,
+                max: widget.maxY * 1.30,
               ),
             ),
           };
@@ -264,20 +256,37 @@ class _LineChartState extends ConsumerState<LineChart> {
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
             ),
           ];
+// ? Here I do some maths to scale the graph to the number of days
+    List days = [];
+    for (var element in widget.data) {
+      days.add(element[0]);
+    }
+    int nDays = days.toSet().length;
+    // ? Cutoff assumes 12 bars can fit on screen comfortably
+    int cutOff = 12;
     var rectCoord = RectCoord(
-      horizontalRange: [-0.5, 2.55],
+      horizontalRange:
+          nDays >= cutOff ? [0, 1 + (1 / cutOff) * (nDays - cutOff)] : [0, 1],
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,
       // verticalRangeUpdater: Defaults.verticalRangeEvent
     );
-    return Chart(
-      rebuild: true,
-      data: widget.data,
-      variables: variables,
-      marks: marks,
-      axes: axes2,
-      coord: rectCoord,
-      selections: selections2,
-      tooltip: tooltipGuide,
+    // ? The mouse region allows the chart interaction to take priority
+    return MouseRegion(
+      onHover: (event) {
+        ref.read(chartScrollProvider.notifier).update((state) => false);
+      },
+      onExit: (event) =>
+          ref.read(chartScrollProvider.notifier).update((state) => true),
+      child: Chart(
+        rebuild: true,
+        data: widget.data,
+        variables: variables,
+        marks: marks,
+        axes: axes2,
+        coord: rectCoord,
+        selections: selections2,
+        tooltip: tooltipGuide,
+      ),
     );
   }
 }

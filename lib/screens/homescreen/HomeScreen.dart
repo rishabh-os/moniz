@@ -169,7 +169,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // ? Disables scrolling unless the tutorials have been completed
     if (ref.watch(entriesTutorialCompletedProvider) &&
         ref.watch(accountsTutorialCompletedProvider) &&
-        ref.watch(analysisTutorialCompletedProvider)) {
+        ref.watch(analysisTutorialCompletedProvider) &&
+        ref.watch(chartScrollProvider)) {
       return null;
     } else {
       return const NeverScrollableScrollPhysics();
