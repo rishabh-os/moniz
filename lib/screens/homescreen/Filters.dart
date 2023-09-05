@@ -38,8 +38,8 @@ class _FiltersState extends ConsumerState<Filters> {
     accounts = ref.read(accountsProvider);
     transactions = ref.read(transactionsProvider);
     filterQuery = ref.watch(filterQueryProvider);
-    sliderMax = ref.read(sliderMaxProvider);
-    rangeValues = ref.read(rangeProvider);
+    sliderMax = ref.watch(sliderMaxProvider);
+    rangeValues = ref.watch(rangeProvider);
     titleController.value = TextEditingValue(text: filterQuery);
     selectedCategory = ref.watch(filterCategoryProvider);
     selectedAccount = ref.watch(filterAccountProvider);
@@ -109,6 +109,7 @@ class _FiltersState extends ConsumerState<Filters> {
             DropdownMenu<TransactionCategory>(
               // ? Manual width because using expanded doesn't work
               width: MediaQuery.of(context).size.width * 0.5 - 20,
+              requestFocusOnTap: true,
               controller: catController,
               inputDecorationTheme: const InputDecorationTheme(
                   border: OutlineInputBorder(
@@ -124,6 +125,7 @@ class _FiltersState extends ConsumerState<Filters> {
             ),
             DropdownMenu<Account>(
               width: MediaQuery.of(context).size.width * 0.5 - 20,
+              requestFocusOnTap: true,
               controller: accController,
               label: const Text("Account"),
               inputDecorationTheme: const InputDecorationTheme(
@@ -152,9 +154,7 @@ class _FiltersState extends ConsumerState<Filters> {
             max: sliderMax,
             values: rangeValues,
             onChanged: (value) {
-              setState(() {
-                ref.read(rangeProvider.notifier).update((state) => value);
-              });
+              ref.read(rangeProvider.notifier).update((state) => value);
             },
             labels: RangeLabels(
               rangeValues.start.round().toString(),

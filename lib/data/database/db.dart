@@ -4,6 +4,7 @@ import "package:drift/native.dart";
 import "package:file_picker/file_picker.dart";
 // ? This prevents everything from erroring out
 import "package:flutter/material.dart" as m;
+import "package:get_storage/get_storage.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
@@ -172,6 +173,7 @@ class MyDatabase extends _$MyDatabase {
       final oldFile = File(p.join(dbFolder.path, "db.sqlite"));
       oldFile.delete();
       file.copy(p.join(dbFolder.path, "db.sqlite"));
+      GetStorage().remove("order");
     }
   }
 }

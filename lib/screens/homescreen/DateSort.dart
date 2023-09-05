@@ -75,6 +75,7 @@ class _DateSortState extends ConsumerState<DateSort> {
                 end: DateTime.now().add(const Duration(days: 1))));
             break;
           case "Everything":
+            // ! This throws an error on a completely empty app
             DateTime oldestDate = ref
                 .read(allTransProvider)
                 .map<DateTime>((e) => e.recorded)

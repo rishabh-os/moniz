@@ -137,6 +137,6 @@ final allTransProvider =
   return AllTransactionNotifier(ref.read(dbProvider));
 });
 
-final searchedTransProvider = StateProvider<List<Transaction>?>((ref) {
-  return null;
+final searchedTransProvider = StateProvider<List<Transaction>>((ref) {
+  return ref.watch(transactionsProvider);
 });

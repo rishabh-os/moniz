@@ -92,8 +92,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
+            reverseDuration: const Duration(milliseconds: 200),
             child: _selectedIndex == 0
                 ? IconButton.filledTonal(
+                    key: const Key("0"),
                     tooltip: "Filters",
                     icon: const Icon(Icons.filter_list_rounded),
                     onPressed: () {
@@ -101,7 +103,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           .showBottomSheet((context) => const Filters());
                     },
                   )
-                : Container(),
+                : Container(
+                    key: const Key("1"),
+                  ),
           ),
           DateSort(
               listOfKeys: listOfKeys, globalRangeUpdater: globalRangeUpdater),
@@ -109,7 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       floatingActionButton: OpenContainer(
           // transitionDuration: Duration(seconds: 2),
           closedColor: Theme.of(context).colorScheme.primaryContainer,
