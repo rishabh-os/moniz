@@ -66,7 +66,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     await ref.read(categoriesProvider.notifier).loadCategories();
     await ref.read(catOrderProvider.notifier).loadOrder();
     await ref.read(accountsProvider.notifier).loadAccounts();
-    await ref.read(allTransProvider.notifier).loadAllTransactions();
+    await ref.read(transactionsProvider.notifier).loadAllTransationsFromDB();
     ref.read(transactionsProvider.notifier).filterTransactions();
     FlutterNativeSplash.remove();
   }

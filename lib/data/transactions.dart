@@ -46,20 +46,34 @@ class Transaction {
 }
 
 class TransactionNotifier extends StateNotifier<List<Transaction>> {
-  TransactionNotifier(this.db, this.globalDateRange, this.allTransactions)
-      : super([]);
+  TransactionNotifier(this.db, this.globalDateRange) : super([]);
   final MyDatabase db;
   final DateTimeRange globalDateRange;
-  final List<Transaction> allTransactions;
 
-  void filterTransactions() {
-    List<Transaction> filteredTransactions = allTransactions
+  void filterTransactions() async {
+    List<Transaction> loadedTransactions = await loadAllTransationsFromDB();
+    List<Transaction> filteredTransactions = loadedTransactions
         .where((element) =>
             element.recorded.isAfter(globalDateRange.start) &&
             element.recorded.isBefore(globalDateRange.end))
         .toList();
     state = filteredTransactions;
     state.sort((a, b) => b.recorded.compareTo(a.recorded));
+  }
+
+  Future<List<Transaction>> loadAllTransationsFromDB() async {
+    List<Transaction> loadedTransactions =
+        (await db.select(db.transactionTable).get())
+            .map((e) => Transaction(
+                id: e.id,
+                title: e.title,
+                categoryID: e.categoryID,
+                accountID: e.accountID,
+                amount: e.amount,
+                recorded: e.recorded,
+                additionalInfo: e.additionalInfo))
+            .toList();
+    return loadedTransactions;
   }
 
   void edit(Transaction editedTransaction) async {
@@ -106,35 +120,8 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
 
 final transactionsProvider =
     StateNotifierProvider<TransactionNotifier, List<Transaction>>((ref) {
-  return TransactionNotifier(ref.read(dbProvider),
-      ref.watch(globalDateRangeProvider), ref.watch(allTransProvider));
-});
-
-class AllTransactionNotifier extends StateNotifier<List<Transaction>> {
-  AllTransactionNotifier(this.db) : super([]);
-  final MyDatabase db;
-
-  // ? This method is only called once at app start up
-  Future<void> loadAllTransactions() async {
-    List<Transaction> loadedTransactions =
-        (await db.select(db.transactionTable).get())
-            .map((e) => Transaction(
-                id: e.id,
-                title: e.title,
-                categoryID: e.categoryID,
-                accountID: e.accountID,
-                amount: e.amount,
-                recorded: e.recorded,
-                additionalInfo: e.additionalInfo))
-            .toList();
-    // ? Stuff is stored chronologically in the database but loaded in the reverse order in the app
-    state = loadedTransactions;
-  }
-}
-
-final allTransProvider =
-    StateNotifierProvider<AllTransactionNotifier, List<Transaction>>((ref) {
-  return AllTransactionNotifier(ref.read(dbProvider));
+  return TransactionNotifier(
+      ref.read(dbProvider), ref.watch(globalDateRangeProvider));
 });
 
 final searchedTransProvider = StateProvider<List<Transaction>>((ref) {

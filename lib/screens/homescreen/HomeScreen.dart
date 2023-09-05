@@ -9,9 +9,9 @@ import "package:moniz/data/SimpleStore/tutorialStore.dart";
 import "package:moniz/screens/analysis/Analysis.dart";
 import "package:moniz/screens/entries/Entries.dart";
 import "package:moniz/screens/entries/EntryEditor.dart";
+import "package:moniz/screens/homescreen/DateSort.dart";
 import "package:moniz/screens/homescreen/DotsMenu.dart";
-import 'package:moniz/screens/homescreen/DateSort.dart';
-import 'package:moniz/screens/homescreen/Filters.dart';
+import "package:moniz/screens/homescreen/Filters.dart";
 import "package:moniz/screens/manage/Manage.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -103,8 +103,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           .showBottomSheet((context) => const Filters());
                     },
                   )
-                : Container(
-                    key: const Key("1"),
+                : const SizedBox(
+                    key: Key("1"),
                   ),
           ),
           DateSort(

@@ -76,8 +76,9 @@ class _DateSortState extends ConsumerState<DateSort> {
             break;
           case "Everything":
             // ! This throws an error on a completely empty app
-            DateTime oldestDate = ref
-                .read(allTransProvider)
+            DateTime oldestDate = (await ref
+                    .read(transactionsProvider.notifier)
+                    .loadAllTransationsFromDB())
                 .map<DateTime>((e) => e.recorded)
                 .reduce((min, e) => e.isBefore(min) ? e : min);
             widget.globalRangeUpdater((state) => DateTimeRange(
@@ -91,6 +92,7 @@ class _DateSortState extends ConsumerState<DateSort> {
                 end: DateTime.now().add(const Duration(days: 1))));
             break;
           case "Custom":
+            if (!context.mounted) return;
             final DateTimeRange? selectedRange = await showDateRangePicker(
               context: context,
               firstDate: DateTime(2000),
