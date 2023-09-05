@@ -94,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             duration: const Duration(milliseconds: 200),
             child: _selectedIndex == 0
                 ? IconButton.filledTonal(
-                    tooltip: "Search",
+                    tooltip: "Filters",
                     icon: const Icon(Icons.filter_list_rounded),
                     onPressed: () {
                       scaffoldKey.currentState!
