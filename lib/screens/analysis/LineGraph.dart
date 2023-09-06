@@ -3,6 +3,7 @@ import "dart:ui";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:graphic/graphic.dart";
+import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
@@ -145,11 +146,24 @@ class _LineChartState extends ConsumerState<LineChart> {
       renderer: (size, anchor, selectedTuples) {
         var amount = (selectedTuples.entries.first.value["amount"]);
         Offset labelOffset = anchor + const Offset(0, -30);
+        Color textColor = Theme.of(context).colorScheme.secondary;
+        Color backgroundColor =
+            Theme.of(context).colorScheme.secondaryContainer;
+        Color? borderColor;
+        if (widget.showCat) {
+          borderColor = Color(ref
+              .read(categoriesProvider)
+              .firstWhere((element) =>
+                  element.name ==
+                  selectedTuples.entries.first.value["category"])
+              .color);
+          // y = Color()
+        }
         return [
           OvalElement(
             oval: Rect.fromCircle(center: anchor, radius: 5),
             style: PaintStyle(
-              fillColor: Theme.of(context).colorScheme.secondary,
+              fillColor: textColor,
               strokeWidth: 2,
             ),
           ),
@@ -157,14 +171,16 @@ class _LineChartState extends ConsumerState<LineChart> {
               rect: Rect.fromCenter(center: labelOffset, width: 60, height: 30),
               borderRadius: BorderRadius.circular(15),
               style: PaintStyle(
-                  fillColor: Theme.of(context).colorScheme.secondaryContainer,
-                  strokeWidth: 2)),
+                fillColor: backgroundColor,
+                strokeWidth: 4,
+                strokeColor: borderColor,
+              )),
           LabelElement(
               text: amount.toString(),
               anchor: labelOffset,
               style: LabelStyle(
                 textStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.bold),
               ))
@@ -174,7 +190,7 @@ class _LineChartState extends ConsumerState<LineChart> {
     var axes2 = [
       AxisGuide(
           label: LabelStyle(
-              offset: const Offset(-10, 40),
+              offset: const Offset(-10, 30),
               rotation: -pi / 2,
               textStyle: Theme.of(context).textTheme.bodySmall)),
       AxisGuide(
@@ -186,7 +202,11 @@ class _LineChartState extends ConsumerState<LineChart> {
     Map<String, Variable<List<dynamic>, dynamic>> variables = widget.showCat
         ? {
             "day": Variable(
-              accessor: (List spot) => spot[0] as String,
+              accessor: (List spot) {
+                String dayMonth = DateFormat("d MMM")
+                    .format(DateTime.parse(spot[0] as String));
+                return dayMonth;
+              },
             ),
             "category": Variable(
               accessor: (List spot) => spot[1].name as String,
@@ -201,7 +221,11 @@ class _LineChartState extends ConsumerState<LineChart> {
           }
         : {
             "day": Variable(
-              accessor: (List spot) => spot[0] as String,
+              accessor: (List spot) {
+                String dayMonth = DateFormat("d MMM")
+                    .format(DateTime.parse(spot[0] as String));
+                return dayMonth;
+              },
             ),
             "amount": Variable(
               accessor: (List spot) => spot[1] as double,
