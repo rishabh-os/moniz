@@ -157,7 +157,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        physics: newMethod(),
+        physics: enableScroll(),
         onPageChanged: (value) {
           setState(() {
             _selectedIndex = value;
@@ -168,7 +168,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  ScrollPhysics? newMethod() {
+  ScrollPhysics? enableScroll() {
     // ? Disables scrolling unless the tutorials have been completed
     if (ref.watch(entriesTutorialCompletedProvider) &&
         ref.watch(analysisTutorialCompletedProvider) &&

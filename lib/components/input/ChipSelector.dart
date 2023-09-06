@@ -36,7 +36,7 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
   Widget build(BuildContext context) {
     if (chipsMultiLine) {
       return Wrap(alignment: WrapAlignment.center, children: [
-        for (var i = 0; i < widget.items.length; i += 1) newMethod(i)
+        for (var i = 0; i < widget.items.length; i += 1) customChip(i)
       ]);
     } else {
       // ? SizedBox needed so that it doens't cause render overflow errors
@@ -47,13 +47,13 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
           scrollDirection: Axis.horizontal,
           itemScrollController: itemScrollController,
           itemCount: widget.items.length,
-          itemBuilder: (context, index) => newMethod(index),
+          itemBuilder: (context, index) => customChip(index),
         ),
       );
     }
   }
 
-  Widget newMethod(index) {
+  Widget customChip(index) {
     Classifier clas = widget.items[index];
     return Padding(
       padding: const EdgeInsets.all(2.0),

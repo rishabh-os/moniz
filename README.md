@@ -29,5 +29,8 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Quick filters state inconsistency - still present, hard to reproduce reliably
   - This was due to the loading being done on every call
 - [x] Import databases
-- [ ] Fix the tutorial after the layout changes
+- [x] Fix the tutorial after the layout changes
+  - [ ] Manage tutorial still has legibility issues
+- [ ] Rewrite tests
 - [ ] Graph transition animation bugs
+- [ ] Better no transactions found handling on analysis page

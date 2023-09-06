@@ -31,7 +31,7 @@ void main() async {
   await GetStorage.init();
   if (Platform.isLinux) {
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(400, 700),
+      size: Size(400, (18 / 9) * 400),
       center: false,
       title: "Moniz",
       alwaysOnTop: true,
