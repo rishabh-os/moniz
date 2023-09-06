@@ -101,7 +101,7 @@ class _SettingsState extends ConsumerState<Settings> {
                   .read(entriesTutorialCompletedProvider.notifier)
                   .update((state) => false);
               ref
-                  .read(accountsTutorialCompletedProvider.notifier)
+                  .read(manageTutorialCompletedProvider.notifier)
                   .update((state) => false);
               ref
                   .read(analysisTutorialCompletedProvider.notifier)

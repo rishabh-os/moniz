@@ -6,7 +6,6 @@ import "package:moniz/components/input/ChipSelector.dart";
 import "package:moniz/components/input/Header.dart";
 import "package:moniz/components/input/SaveFAB.dart";
 import "package:moniz/components/input/deleteFunctions.dart";
-import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
 import "package:moniz/data/account.dart";

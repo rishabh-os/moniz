@@ -95,7 +95,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             reverseDuration: const Duration(milliseconds: 200),
             child: _selectedIndex == 0
                 ? IconButton.filledTonal(
-                    key: const Key("0"),
+                    key: listOfKeys[3],
                     tooltip: "Filters",
                     icon: const Icon(Icons.filter_list_rounded),
                     onPressed: () {
@@ -107,9 +107,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     key: Key("1"),
                   ),
           ),
-          DateSort(
-              listOfKeys: listOfKeys, globalRangeUpdater: globalRangeUpdater),
-          DotsMenu(listOfKeys: listOfKeys, scaffoldKey: scaffoldKey),
+          DateSort(key: listOfKeys[1], globalRangeUpdater: globalRangeUpdater),
+          DotsMenu(key: listOfKeys[2], scaffoldKey: scaffoldKey),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -172,8 +171,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ScrollPhysics? newMethod() {
     // ? Disables scrolling unless the tutorials have been completed
     if (ref.watch(entriesTutorialCompletedProvider) &&
-        ref.watch(accountsTutorialCompletedProvider) &&
         ref.watch(analysisTutorialCompletedProvider) &&
+        ref.watch(manageTutorialCompletedProvider) &&
         ref.watch(chartScrollProvider)) {
       return null;
     } else {

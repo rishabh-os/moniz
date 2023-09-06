@@ -13,16 +13,16 @@ final entriesTargetProvider = Provider((ref) {
       "This is the range for which all transactions are shown. Defaults to showing the past calendar month."
     ],
     GlobalKey(debugLabel: "entries1"): [
-      "Change Range",
-      "You can change the range here"
+      "Change Date Range",
+      "You can change the range here. Chose from a few options or pick your own custom range."
     ],
     GlobalKey(debugLabel: "entries2"): [
-      "Change Range Quickly",
-      "Don't want to pick a range every time? Here are some quick options for you to pick from"
+      "Settings",
+      "You can change the application theme and access other settings here"
     ],
     GlobalKey(debugLabel: "entries3"): [
-      "Settings",
-      "You can change the application theme, manage categories and access other settings here"
+      "Filter",
+      "You can filter the transactions shown here by amount, category, or account. You can also search by text."
     ],
     GlobalKey(debugLabel: "entries4"): [
       "New Transactions",
@@ -40,27 +40,27 @@ final entriesTutorialCompletedProvider = StateProvider<bool>((ref) {
   return GetStorage().read("entriesTutorialCompleted");
 });
 
-final accountsGkListProvider = Provider<List<GlobalKey>>(
-    (ref) => ref.read(accountsTargetListProvider).keys.toList());
+final manageGkListProvider = Provider<List<GlobalKey>>(
+    (ref) => ref.read(manageTargetListProvider).keys.toList());
 
-final accountsTargetListProvider = Provider((ref) => {
-      GlobalKey(debugLabel: "accounts0"): [
+final manageTargetListProvider = Provider((ref) => {
+      GlobalKey(debugLabel: "manage0"): [
         "Accounts",
         "You can add different accounts to keep track of here."
       ],
-      GlobalKey(debugLabel: "accounts1"): [
+      GlobalKey(debugLabel: "manage1"): [
         "Categories",
         "Manage various categories to organize your transactions here. Categories can also be reordered."
       ],
     });
 
-final accountsTutorialCompletedProvider = StateProvider<bool>((ref) {
+final manageTutorialCompletedProvider = StateProvider<bool>((ref) {
   ref.listenSelf(
-    (previous, next) => GetStorage().write("accountsTutorialCompleted", next),
+    (previous, next) => GetStorage().write("manageTutorialCompleted", next),
   );
-  GetStorage().read("accountsTutorialCompleted") ??
-      GetStorage().write("accountsTutorialCompleted", false);
-  return GetStorage().read("accountsTutorialCompleted");
+  GetStorage().read("manageTutorialCompleted") ??
+      GetStorage().write("manageTutorialCompleted", false);
+  return GetStorage().read("manageTutorialCompleted");
 });
 
 final analysisGkListProvider = Provider<List<GlobalKey>>(
@@ -86,7 +86,7 @@ final analysisTutorialCompletedProvider = StateProvider<bool>((ref) {
   return GetStorage().read("analysisTutorialCompleted");
 });
 
-enum Screen { entries, accounts, analysis }
+enum Screen { entries, manage, analysis }
 
 final tutorialProvider = Provider((ref) {
   void showTutorial(
@@ -98,8 +98,8 @@ final tutorialProvider = Provider((ref) {
       case Screen.entries:
         targetDetails = ref.read(entriesTargetProvider);
         break;
-      case Screen.accounts:
-        targetDetails = ref.read(accountsTargetListProvider);
+      case Screen.manage:
+        targetDetails = ref.read(manageTargetListProvider);
         break;
       case Screen.analysis:
         targetDetails = ref.read(analysisTargetListProvider);

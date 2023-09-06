@@ -5,17 +5,14 @@ import "package:moniz/components/ThemePicker.dart";
 class DotsMenu extends StatelessWidget {
   const DotsMenu({
     super.key,
-    required this.listOfKeys,
     required this.scaffoldKey,
   });
 
-  final List<GlobalKey<State<StatefulWidget>>> listOfKeys;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      key: listOfKeys[3],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onSelected: (value) {
         switch (value) {

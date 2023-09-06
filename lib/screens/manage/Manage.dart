@@ -22,7 +22,7 @@ class _ManageState extends ConsumerState<Manage>
   @override
   void initState() {
     super.initState();
-    listOfKeys = ref.read(accountsGkListProvider);
+    listOfKeys = ref.read(manageGkListProvider);
   }
 
   @override
@@ -36,12 +36,12 @@ class _ManageState extends ConsumerState<Manage>
               key: listOfKeys[0],
               onVisibilityChanged: (info) {
                 // ? It is still possible to misalign this if one swipes fast enough, but that's a problem for later
-                if (!ref.watch(accountsTutorialCompletedProvider)) {
+                if (!ref.watch(manageTutorialCompletedProvider)) {
                   Future.delayed(const Duration(milliseconds: 100), () {
                     if (info.visibleFraction == 1) {
-                      ref.read(tutorialProvider)(context, Screen.accounts);
+                      ref.read(tutorialProvider)(context, Screen.manage);
                       ref
-                          .watch(accountsTutorialCompletedProvider.notifier)
+                          .watch(manageTutorialCompletedProvider.notifier)
                           .update((state) => true);
                     }
                   });

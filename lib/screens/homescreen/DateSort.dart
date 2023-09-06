@@ -6,11 +6,9 @@ import "package:moniz/data/transactions.dart";
 class DateSort extends ConsumerStatefulWidget {
   const DateSort({
     super.key,
-    required this.listOfKeys,
     required this.globalRangeUpdater,
   });
 
-  final List<GlobalKey<State<StatefulWidget>>> listOfKeys;
   final DateTimeRange Function(DateTimeRange Function(DateTimeRange state) cb)
       globalRangeUpdater;
 
@@ -32,7 +30,6 @@ class _DateSortState extends ConsumerState<DateSort> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      key: widget.listOfKeys[2],
       tooltip: "Select a range",
       icon: const Icon(Icons.calendar_today_rounded),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -75,7 +72,7 @@ class _DateSortState extends ConsumerState<DateSort> {
                 end: DateTime.now().add(const Duration(days: 1))));
             break;
           case "Everything":
-            // ! This throws an error on a completely empty app
+            // ! This throws an error on a completely empty app because there are no entries so no oldest date
             DateTime oldestDate = (await ref
                     .read(transactionsProvider.notifier)
                     .loadAllTransationsFromDB())

@@ -6,7 +6,6 @@ import "package:moniz/components/input/ColorPicker.dart";
 import "package:moniz/components/input/Header.dart";
 import "package:moniz/components/input/SaveFAB.dart";
 import "package:moniz/components/input/deleteFunctions.dart";
-import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
@@ -68,18 +67,20 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         text: _balance.toString() == "0.0" ? null : _balance.toString());
   }
 
-  void handleAccountDelete() {
+  void handleAccountDelete() async {
     void delete() {
       ref.read(accountsProvider.notifier).delete(widget.editedAccount!.id);
       Navigator.popUntil(context, ModalRoute.withName("/home"));
     }
 
-    List<Transaction> transactionList = ref.watch(transactionsProvider);
+    List<Transaction> transactionList = await ref
+        .watch(transactionsProvider.notifier)
+        .loadAllTransationsFromDB();
     List<Transaction> activeTransactions = transactionList
         .where((e) => e.accountID == widget.editedAccount!.id)
         .toList();
     List<Account> accounts = ref.watch(accountsProvider);
-
+    if (!context.mounted) return;
     if (accounts.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You can't delete the last account"),
@@ -102,19 +103,22 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
           ));
   }
 
-  void handleCategoryDelete() {
+  void handleCategoryDelete() async {
     void delete() {
       ref.read(categoriesProvider.notifier).delete(widget.editedCategory!.id);
       ref.read(catOrderProvider.notifier).handleCatChange();
       Navigator.of(context).maybePop();
     }
 
-    List<Transaction> transactionList = ref.watch(transactionsProvider);
+    List<Transaction> transactionList = await ref
+        .watch(transactionsProvider.notifier)
+        .loadAllTransationsFromDB();
     List<Transaction> activeTransactions = transactionList
         .where((e) => e.categoryID == widget.editedCategory!.id)
         .toList();
     List<TransactionCategory> categories = ref.watch(categoriesProvider);
 
+    if (!context.mounted) return;
     if (categories.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You can't delete the last category"),

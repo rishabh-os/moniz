@@ -30,10 +30,10 @@ class _WelcomeState extends ConsumerState<Welcome> {
             .read(entriesTutorialCompletedProvider.notifier)
             .update((state) => true);
         ref
-            .read(accountsTutorialCompletedProvider.notifier)
+            .read(analysisTutorialCompletedProvider.notifier)
             .update((state) => true);
         ref
-            .read(analysisTutorialCompletedProvider.notifier)
+            .read(manageTutorialCompletedProvider.notifier)
             .update((state) => true);
       },
       showSkipButton: true,
