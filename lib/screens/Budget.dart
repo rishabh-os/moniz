@@ -153,7 +153,7 @@ class _CategoryBudgetListState extends ConsumerState<CategoryBudgetList> {
                     },
                   )));
         },
-      ).toList()
+      )
     ]);
   }
 }

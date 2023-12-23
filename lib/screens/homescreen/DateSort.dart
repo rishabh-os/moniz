@@ -18,7 +18,7 @@ class DateSort extends ConsumerStatefulWidget {
 
 class _DateSortState extends ConsumerState<DateSort> {
   List<PopupMenuItem<String>> items =
-      ["Last week", "Last 2 weeks", "Last month", "Everything", "Custom"]
+      ["Last week", "Last month", "Everything", "Custom"]
           .map((e) => PopupMenuItem(
               value: e,
               child: Align(
@@ -39,18 +39,6 @@ class _DateSortState extends ConsumerState<DateSort> {
             widget.globalRangeUpdater((state) => DateTimeRange(
                 start: DateTime.now().copyWith(
                     day: DateTime.now().day - 7,
-                    hour: 0,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0,
-                    microsecond: 0),
-                // ? This allows entries on the selected day to be shown
-                end: DateTime.now().add(const Duration(days: 1))));
-            break;
-          case "Last 2 weeks":
-            widget.globalRangeUpdater((state) => DateTimeRange(
-                start: DateTime.now().copyWith(
-                    day: DateTime.now().day - 14,
                     hour: 0,
                     minute: 0,
                     second: 0,
