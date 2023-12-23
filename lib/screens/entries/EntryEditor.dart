@@ -254,16 +254,17 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               // * Not sure why it needs to be this big, when the actual space it gives is a lot less
               const SizedBox(height: 40),
               TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Additional Information",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                    hintText: "Optional"),
-                controller: addInfoController,
-                onChanged: (value) {
-                  _additionalInfo = value;
-                },
-              ),
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Additional Information",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintText: "Optional"),
+                  controller: addInfoController,
+                  onChanged: (value) {
+                    _additionalInfo = value;
+                  },
+                  minLines: 1,
+                  maxLines: 5),
               const SizedBox(height: 100),
             ],
           ),

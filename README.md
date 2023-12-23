@@ -34,3 +34,8 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] Rewrite tests
 - [ ] Graph transition animation bugs
 - [ ] Better no transactions found handling on analysis page
+- [ ] A way to add and manage events
+  - [ ] Add transactions to events
+- [x] Make additional info multiline
+- [ ] Make accounts and categories orderable
+  - [ ] Make them archivable or hideable
