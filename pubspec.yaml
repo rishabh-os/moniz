@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.2.0
 
 environment:
-  sdk: ">=3.0.2 <4.0.0"
+  sdk: ">=3.2.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,18 +36,18 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_riverpod: ^2.3.6
   animations: ^2.0.7
-  intl: ^0.18.1
+  intl: ^0.19.0
   # * Database
   drift: ^2.9.0
   sqlite3_flutter_libs: ^0.5.0
   path_provider: ^2.0.0
   path: ^1.8.3
-  uuid: ^3.0.7
+  uuid: ^4.2.2
   shared_preferences: ^2.1.2
   get_storage: ^2.1.1
   flutter_iconpicker: ^3.2.4
   window_manager: ^0.3.4
-  fl_chart: ^0.63.0
+  fl_chart: ^0.65.0
   currency_picker: ^2.0.16
   share_plus: ^7.0.2
   introduction_screen: ^3.1.11
@@ -58,7 +58,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   hidable: ^1.0.4
   device_info_plus: ^9.0.3
-  file_picker: ^5.3.3
+  file_picker: ^6.1.1
   graphic: ^2.2.0
 
 dev_dependencies:
@@ -72,11 +72,11 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
   # * Database
   drift_dev: ^2.9.0
   build_runner: ^2.4.5
-  patrol: ^2.1.0
+  patrol: ^3.3.0
   flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
