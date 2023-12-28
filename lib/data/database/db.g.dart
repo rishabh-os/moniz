@@ -23,8 +23,8 @@ class $TransactionTableTable extends TransactionTable
       const VerificationMeta('additionalInfo');
   @override
   late final GeneratedColumn<String> additionalInfo = GeneratedColumn<String>(
-      'additional_info', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'additional_info', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _categoryIDMeta =
       const VerificationMeta('categoryID');
   @override
@@ -52,9 +52,10 @@ class $TransactionTableTable extends TransactionTable
   List<GeneratedColumn> get $columns =>
       [id, title, additionalInfo, categoryID, accountID, amount, recorded];
   @override
-  String get aliasedName => _alias ?? 'transaction_table';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'transaction_table';
+  String get actualTableName => $name;
+  static const String $name = 'transaction_table';
   @override
   VerificationContext validateIntegrity(Insertable<Transaction> instance,
       {bool isInserting = false}) {
@@ -76,8 +77,6 @@ class $TransactionTableTable extends TransactionTable
           _additionalInfoMeta,
           additionalInfo.isAcceptableOrUnknown(
               data['additional_info']!, _additionalInfoMeta));
-    } else if (isInserting) {
-      context.missing(_additionalInfoMeta);
     }
     if (data.containsKey('category_i_d')) {
       context.handle(
@@ -120,8 +119,8 @@ class $TransactionTableTable extends TransactionTable
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      additionalInfo: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}additional_info'])!,
+      additionalInfo: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}additional_info']),
       categoryID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}category_i_d'])!,
       accountID: attachedDatabase.typeMapping
@@ -142,7 +141,7 @@ class $TransactionTableTable extends TransactionTable
 class TransactionTableCompanion extends UpdateCompanion<Transaction> {
   final Value<String> id;
   final Value<String> title;
-  final Value<String> additionalInfo;
+  final Value<String?> additionalInfo;
   final Value<String> categoryID;
   final Value<String> accountID;
   final Value<double> amount;
@@ -161,7 +160,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
   TransactionTableCompanion.insert({
     required String id,
     required String title,
-    required String additionalInfo,
+    this.additionalInfo = const Value.absent(),
     required String categoryID,
     required String accountID,
     required double amount,
@@ -169,7 +168,6 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         title = Value(title),
-        additionalInfo = Value(additionalInfo),
         categoryID = Value(categoryID),
         accountID = Value(accountID),
         amount = Value(amount),
@@ -199,7 +197,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
   TransactionTableCompanion copyWith(
       {Value<String>? id,
       Value<String>? title,
-      Value<String>? additionalInfo,
+      Value<String?>? additionalInfo,
       Value<String>? categoryID,
       Value<String>? accountID,
       Value<double>? amount,
@@ -290,12 +288,28 @@ class $CategoriesTableTable extends CategoriesTable
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
       'color', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _orderMeta = const VerificationMeta('order');
   @override
-  List<GeneratedColumn> get $columns => [id, name, iconCodepoint, color];
+  late final GeneratedColumn<int> order = GeneratedColumn<int>(
+      'order', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _isArchivedMeta =
+      const VerificationMeta('isArchived');
   @override
-  String get aliasedName => _alias ?? 'categories_table';
+  late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
+      'is_archived', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_archived" IN (0, 1))'));
   @override
-  String get actualTableName => 'categories_table';
+  List<GeneratedColumn> get $columns =>
+      [id, name, iconCodepoint, color, order, isArchived];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'categories_table';
   @override
   VerificationContext validateIntegrity(
       Insertable<TransactionCategory> instance,
@@ -327,6 +341,20 @@ class $CategoriesTableTable extends CategoriesTable
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
+    if (data.containsKey('order')) {
+      context.handle(
+          _orderMeta, order.isAcceptableOrUnknown(data['order']!, _orderMeta));
+    } else if (isInserting) {
+      context.missing(_orderMeta);
+    }
+    if (data.containsKey('is_archived')) {
+      context.handle(
+          _isArchivedMeta,
+          isArchived.isAcceptableOrUnknown(
+              data['is_archived']!, _isArchivedMeta));
+    } else if (isInserting) {
+      context.missing(_isArchivedMeta);
+    }
     return context;
   }
 
@@ -344,6 +372,10 @@ class $CategoriesTableTable extends CategoriesTable
           .read(DriftSqlType.int, data['${effectivePrefix}icon_codepoint'])!,
       color: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
+      order: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
+      isArchived: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
     );
   }
 
@@ -358,12 +390,16 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
   final Value<String> name;
   final Value<int> iconCodepoint;
   final Value<int> color;
+  final Value<int> order;
+  final Value<bool> isArchived;
   final Value<int> rowid;
   const CategoriesTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.iconCodepoint = const Value.absent(),
     this.color = const Value.absent(),
+    this.order = const Value.absent(),
+    this.isArchived = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   CategoriesTableCompanion.insert({
@@ -371,16 +407,22 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
     required String name,
     required int iconCodepoint,
     required int color,
+    required int order,
+    required bool isArchived,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         iconCodepoint = Value(iconCodepoint),
-        color = Value(color);
+        color = Value(color),
+        order = Value(order),
+        isArchived = Value(isArchived);
   static Insertable<TransactionCategory> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<int>? iconCodepoint,
     Expression<int>? color,
+    Expression<int>? order,
+    Expression<bool>? isArchived,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -388,6 +430,8 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
       if (name != null) 'name': name,
       if (iconCodepoint != null) 'icon_codepoint': iconCodepoint,
       if (color != null) 'color': color,
+      if (order != null) 'order': order,
+      if (isArchived != null) 'is_archived': isArchived,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -397,12 +441,16 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
       Value<String>? name,
       Value<int>? iconCodepoint,
       Value<int>? color,
+      Value<int>? order,
+      Value<bool>? isArchived,
       Value<int>? rowid}) {
     return CategoriesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       iconCodepoint: iconCodepoint ?? this.iconCodepoint,
       color: color ?? this.color,
+      order: order ?? this.order,
+      isArchived: isArchived ?? this.isArchived,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -422,6 +470,12 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
     if (color.present) {
       map['color'] = Variable<int>(color.value);
     }
+    if (order.present) {
+      map['order'] = Variable<int>(order.value);
+    }
+    if (isArchived.present) {
+      map['is_archived'] = Variable<bool>(isArchived.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -435,6 +489,8 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
           ..write('name: $name, ')
           ..write('iconCodepoint: $iconCodepoint, ')
           ..write('color: $color, ')
+          ..write('order: $order, ')
+          ..write('isArchived: $isArchived, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -474,13 +530,28 @@ class $AccountsTableTable extends AccountsTable
   late final GeneratedColumn<double> balance = GeneratedColumn<double>(
       'balance', aliasedName, false,
       type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _orderMeta = const VerificationMeta('order');
+  @override
+  late final GeneratedColumn<int> order = GeneratedColumn<int>(
+      'order', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _isArchivedMeta =
+      const VerificationMeta('isArchived');
+  @override
+  late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
+      'is_archived', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_archived" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, iconCodepoint, color, balance];
+      [id, name, iconCodepoint, color, balance, order, isArchived];
   @override
-  String get aliasedName => _alias ?? 'accounts_table';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'accounts_table';
+  String get actualTableName => $name;
+  static const String $name = 'accounts_table';
   @override
   VerificationContext validateIntegrity(Insertable<Account> instance,
       {bool isInserting = false}) {
@@ -517,6 +588,20 @@ class $AccountsTableTable extends AccountsTable
     } else if (isInserting) {
       context.missing(_balanceMeta);
     }
+    if (data.containsKey('order')) {
+      context.handle(
+          _orderMeta, order.isAcceptableOrUnknown(data['order']!, _orderMeta));
+    } else if (isInserting) {
+      context.missing(_orderMeta);
+    }
+    if (data.containsKey('is_archived')) {
+      context.handle(
+          _isArchivedMeta,
+          isArchived.isAcceptableOrUnknown(
+              data['is_archived']!, _isArchivedMeta));
+    } else if (isInserting) {
+      context.missing(_isArchivedMeta);
+    }
     return context;
   }
 
@@ -536,6 +621,10 @@ class $AccountsTableTable extends AccountsTable
           .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
       balance: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}balance'])!,
+      order: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
+      isArchived: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
     );
   }
 
@@ -551,6 +640,8 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
   final Value<int> iconCodepoint;
   final Value<int> color;
   final Value<double> balance;
+  final Value<int> order;
+  final Value<bool> isArchived;
   final Value<int> rowid;
   const AccountsTableCompanion({
     this.id = const Value.absent(),
@@ -558,6 +649,8 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     this.iconCodepoint = const Value.absent(),
     this.color = const Value.absent(),
     this.balance = const Value.absent(),
+    this.order = const Value.absent(),
+    this.isArchived = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   AccountsTableCompanion.insert({
@@ -566,18 +659,24 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     required int iconCodepoint,
     required int color,
     required double balance,
+    required int order,
+    required bool isArchived,
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         iconCodepoint = Value(iconCodepoint),
         color = Value(color),
-        balance = Value(balance);
+        balance = Value(balance),
+        order = Value(order),
+        isArchived = Value(isArchived);
   static Insertable<Account> custom({
     Expression<String>? id,
     Expression<String>? name,
     Expression<int>? iconCodepoint,
     Expression<int>? color,
     Expression<double>? balance,
+    Expression<int>? order,
+    Expression<bool>? isArchived,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -586,6 +685,8 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       if (iconCodepoint != null) 'icon_codepoint': iconCodepoint,
       if (color != null) 'color': color,
       if (balance != null) 'balance': balance,
+      if (order != null) 'order': order,
+      if (isArchived != null) 'is_archived': isArchived,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -596,6 +697,8 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       Value<int>? iconCodepoint,
       Value<int>? color,
       Value<double>? balance,
+      Value<int>? order,
+      Value<bool>? isArchived,
       Value<int>? rowid}) {
     return AccountsTableCompanion(
       id: id ?? this.id,
@@ -603,6 +706,8 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       iconCodepoint: iconCodepoint ?? this.iconCodepoint,
       color: color ?? this.color,
       balance: balance ?? this.balance,
+      order: order ?? this.order,
+      isArchived: isArchived ?? this.isArchived,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -625,6 +730,12 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     if (balance.present) {
       map['balance'] = Variable<double>(balance.value);
     }
+    if (order.present) {
+      map['order'] = Variable<int>(order.value);
+    }
+    if (isArchived.present) {
+      map['is_archived'] = Variable<bool>(isArchived.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -639,6 +750,8 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
           ..write('iconCodepoint: $iconCodepoint, ')
           ..write('color: $color, ')
           ..write('balance: $balance, ')
+          ..write('order: $order, ')
+          ..write('isArchived: $isArchived, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

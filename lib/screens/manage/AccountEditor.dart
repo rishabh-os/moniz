@@ -206,7 +206,9 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                   name: _accountName,
                   iconCodepoint: _selectedIcon,
                   color: _selectedColor,
-                  balance: _balance));
+                  balance: _balance,
+                  order: 0,
+                  isArchived: false));
             } else {
               final String uuid =
                   widget.editedCategory?.id ?? const Uuid().v1();
@@ -215,6 +217,8 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                 name: _accountName,
                 iconCodepoint: _selectedIcon,
                 color: _selectedColor,
+                order: 0,
+                isArchived: false,
               ));
               ref.read(catOrderProvider.notifier).handleCatChange();
             }

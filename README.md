@@ -39,3 +39,4 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Make additional info multiline
 - [ ] Make accounts and categories orderable
   - [ ] Make them archivable or hideable
+- [ ] Add location to entries (optional)

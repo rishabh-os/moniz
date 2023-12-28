@@ -18,7 +18,7 @@ part "db.g.dart";
 class TransactionTable extends Table {
   TextColumn get id => text()();
   TextColumn get title => text()();
-  TextColumn get additionalInfo => text()();
+  TextColumn get additionalInfo => text().nullable()();
   TextColumn get categoryID => text()();
   TextColumn get accountID => text()();
   RealColumn get amount => real()();
@@ -29,10 +29,10 @@ class TransactionTable extends Table {
 class CategoriesTable extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
-  // ? Use Icons.name.codepoint and Icon(codepoint)
   IntColumn get iconCodepoint => integer()();
-  // ? Use Colors.blue.value and Color(value)
   IntColumn get color => integer()();
+  IntColumn get order => integer()();
+  BoolColumn get isArchived => boolean()();
 }
 
 @UseRowClass(Account)
@@ -45,6 +45,8 @@ class AccountsTable extends Table {
   IntColumn get color => integer()();
   // ? Real means double
   RealColumn get balance => real()();
+  IntColumn get order => integer()();
+  BoolColumn get isArchived => boolean()();
 }
 
 @DriftDatabase(tables: [TransactionTable, CategoriesTable, AccountsTable])
@@ -70,27 +72,37 @@ class MyDatabase extends _$MyDatabase {
                 id: "id1",
                 name: "Default",
                 iconCodepoint: m.Icons.account_circle_rounded.codePoint,
-                color: m.Colors.blue.value),
+                color: m.Colors.blue.value,
+                order: 0,
+                isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id2",
                 name: "Food",
                 iconCodepoint: m.Icons.wine_bar.codePoint,
-                color: m.Colors.orange.value),
+                color: m.Colors.orange.value,
+                order: 1,
+                isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id3",
                 name: "Rent",
                 iconCodepoint: m.Icons.house_rounded.codePoint,
-                color: m.Colors.green.value),
+                color: m.Colors.green.value,
+                order: 2,
+                isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id4",
                 name: "Shopping",
                 iconCodepoint: m.Icons.shopping_bag_rounded.codePoint,
-                color: m.Colors.lime.value),
+                color: m.Colors.lime.value,
+                order: 3,
+                isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id5",
                 name: "Utility",
                 iconCodepoint: m.Icons.electrical_services_rounded.codePoint,
-                color: m.Colors.pink.value),
+                color: m.Colors.pink.value,
+                order: 4,
+                isArchived: false),
           ]));
     }
   }
@@ -105,6 +117,8 @@ class MyDatabase extends _$MyDatabase {
               name: "Cash",
               iconCodepoint: m.Icons.monetization_on.codePoint,
               color: m.Colors.green.value,
+              order: 0,
+              isArchived: false,
               balance: 0,
             ),
           ]));

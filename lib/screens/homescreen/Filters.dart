@@ -48,7 +48,7 @@ class _FiltersState extends ConsumerState<Filters> {
     var transResults = transactions
         .where((element) => filterQuery != ""
             ? element.title.toLowerCase().contains(filterQuery.toLowerCase()) ||
-                element.additionalInfo
+                element.additionalInfo!
                     .toLowerCase()
                     .contains(filterQuery.toLowerCase())
             : true)

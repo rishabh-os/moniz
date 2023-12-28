@@ -12,7 +12,9 @@ class TransactionCategory extends Classifier {
       {required this.id,
       required this.name,
       required this.iconCodepoint,
-      required this.color});
+      required this.color,
+      required this.order,
+      required this.isArchived});
 
   @override
   final String id;
@@ -22,14 +24,25 @@ class TransactionCategory extends Classifier {
   final int iconCodepoint;
   @override
   final int color;
+  @override
+  final int order;
+  @override
+  final bool isArchived;
 
   @override
-  TransactionCategory copyWith({String? name, int? iconCodepoint, int? color}) {
+  TransactionCategory copyWith(
+      {String? name,
+      int? iconCodepoint,
+      int? color,
+      int? order,
+      bool? isArchived}) {
     return TransactionCategory(
       id: id,
       name: name ?? this.name,
       iconCodepoint: iconCodepoint ?? this.iconCodepoint,
       color: color ?? this.color,
+      order: order ?? this.order,
+      isArchived: isArchived ?? this.isArchived,
     );
   }
 }
@@ -48,7 +61,9 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
             id: e.id,
             name: e.name,
             iconCodepoint: e.iconCodepoint,
-            color: e.color))
+            color: e.color,
+            order: e.order,
+            isArchived: e.isArchived))
         .toList();
     state = loadedCategories;
   }
@@ -62,6 +77,8 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
             name: editedCategory.name,
             iconCodepoint: editedCategory.iconCodepoint,
             color: editedCategory.color,
+            order: editedCategory.order,
+            isArchived: editedCategory.isArchived,
           )
         else
           trans,
@@ -74,7 +91,9 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
         id: newCategory.id,
         name: newCategory.name,
         iconCodepoint: newCategory.iconCodepoint,
-        color: newCategory.color));
+        color: newCategory.color,
+        order: newCategory.order,
+        isArchived: newCategory.isArchived));
   }
 
   void delete(String categoryID) async {
@@ -98,8 +117,15 @@ abstract class Classifier {
   String get name;
   int get iconCodepoint;
   int get color;
+  int get order;
+  bool get isArchived;
 
-  Classifier copyWith({String? name, int? iconCodepoint, int? color});
+  Classifier copyWith(
+      {String? name,
+      int? iconCodepoint,
+      int? color,
+      int? order,
+      bool? isArchived});
 }
 
 class CatOrderNotifier extends StateNotifier<List<int>> {

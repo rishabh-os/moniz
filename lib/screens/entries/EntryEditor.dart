@@ -28,7 +28,6 @@ class EntryEditor extends ConsumerStatefulWidget {
 class _EntryEditorState extends ConsumerState<EntryEditor> {
   List<String> entryTypeStrings = ["Income", "Expense"];
   int _entryType = 1;
-  // * Both title and addInfo should be nullable, but currently I am unable to implement this in the database, so this will have to do for now
   String _title = "Untitled";
   late TextEditingController titleController;
   double _amount = 0;
@@ -42,7 +41,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   late List<Account> accounts;
   late List<TransactionCategory> categories;
   late List<int> order;
-  String _additionalInfo = "None";
+  String? _additionalInfo;
   late TextEditingController addInfoController;
   late Function(Transaction transaction) saveAction;
   List<Widget> actions = [];

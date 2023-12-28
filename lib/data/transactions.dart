@@ -8,7 +8,7 @@ class Transaction {
   const Transaction({
     required this.id,
     required this.title,
-    required this.additionalInfo,
+    this.additionalInfo,
     required this.categoryID,
     required this.accountID,
     required this.amount,
@@ -16,8 +16,7 @@ class Transaction {
   });
   final String id;
   final String title;
-  // ? additionalInfo should be optional
-  final String additionalInfo;
+  final String? additionalInfo;
   final String categoryID;
   final String accountID;
   final double amount;
@@ -105,7 +104,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
         accountID: newTransaction.accountID,
         amount: newTransaction.amount,
         recorded: newTransaction.recorded,
-        additionalInfo: newTransaction.additionalInfo));
+        additionalInfo: Value(newTransaction.additionalInfo)));
   }
 
   void delete(String transactionID) async {

@@ -11,6 +11,8 @@ class Account extends Classifier {
     required this.iconCodepoint,
     required this.color,
     required this.balance,
+    required this.order,
+    required this.isArchived,
   });
 
   @override
@@ -21,6 +23,10 @@ class Account extends Classifier {
   final int iconCodepoint;
   @override
   final int color;
+  @override
+  final int order;
+  @override
+  final bool isArchived;
   double balance;
 
   @override
@@ -29,14 +35,17 @@ class Account extends Classifier {
       int? iconCodepoint,
       int? color,
       double? balance,
-      double? netTransactions}) {
+      double? netTransactions,
+      int? order,
+      bool? isArchived}) {
     return Account(
-      id: id,
-      name: name ?? this.name,
-      iconCodepoint: iconCodepoint ?? this.iconCodepoint,
-      color: color ?? this.color,
-      balance: balance ?? this.balance,
-    );
+        id: id,
+        name: name ?? this.name,
+        iconCodepoint: iconCodepoint ?? this.iconCodepoint,
+        color: color ?? this.color,
+        balance: balance ?? this.balance,
+        order: order ?? this.order,
+        isArchived: isArchived ?? this.isArchived);
   }
 }
 
@@ -48,12 +57,13 @@ class AccountNotifier extends StateNotifier<List<Account>> {
 
     List<Account> loadedAccounts = allAccounts
         .map((e) => Account(
-              id: e.id,
-              name: e.name,
-              iconCodepoint: e.iconCodepoint,
-              color: e.color,
-              balance: e.balance,
-            ))
+            id: e.id,
+            name: e.name,
+            iconCodepoint: e.iconCodepoint,
+            color: e.color,
+            balance: e.balance,
+            order: e.order,
+            isArchived: e.isArchived))
         .toList();
     state = loadedAccounts;
   }
@@ -64,11 +74,12 @@ class AccountNotifier extends StateNotifier<List<Account>> {
       for (final acc in state)
         if (acc.id == editedAccount.id)
           acc.copyWith(
-            name: editedAccount.name,
-            iconCodepoint: editedAccount.iconCodepoint,
-            color: editedAccount.color,
-            balance: editedAccount.balance,
-          )
+              name: editedAccount.name,
+              iconCodepoint: editedAccount.iconCodepoint,
+              color: editedAccount.color,
+              balance: editedAccount.balance,
+              order: editedAccount.order,
+              isArchived: editedAccount.isArchived)
         else
           acc,
     ];
@@ -82,6 +93,8 @@ class AccountNotifier extends StateNotifier<List<Account>> {
           iconCodepoint: newAccount.iconCodepoint,
           color: newAccount.color,
           balance: newAccount.balance,
+          order: newAccount.order,
+          isArchived: newAccount.isArchived,
         ));
   }
 
