@@ -4,6 +4,7 @@ import "package:moniz/components/DateTimePickers.dart";
 import "package:moniz/components/input/AmountField.dart";
 import "package:moniz/components/input/ChipSelector.dart";
 import "package:moniz/components/input/Header.dart";
+import "package:moniz/components/input/Location.dart";
 import "package:moniz/components/input/SaveFAB.dart";
 import "package:moniz/components/input/deleteFunctions.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
@@ -228,9 +229,11 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                   });
                 },
               ),
-              const Header(text: "Date and Time"),
+              const Header(text: "Location and Time"),
               Wrap(
                 spacing: 5,
+                runSpacing: 5,
+                alignment: WrapAlignment.center,
                 children: [
                   DatePicker(
                     initialDate: _selectedDate,
@@ -247,7 +250,8 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                         _selectedTime = selectedTime;
                       });
                     },
-                  )
+                  ),
+                  const LocationPicker()
                 ],
               ),
               // * Not sure why it needs to be this big, when the actual space it gives is a lot less
