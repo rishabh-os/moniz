@@ -48,9 +48,25 @@ class $TransactionTableTable extends TransactionTable
   late final GeneratedColumn<DateTime> recorded = GeneratedColumn<DateTime>(
       'recorded', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _locationMeta =
+      const VerificationMeta('location');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, title, additionalInfo, categoryID, accountID, amount, recorded];
+  late final GeneratedColumnWithTypeConverter<LocationFeature?, String>
+      location = GeneratedColumn<String>('location', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<LocationFeature?>(
+              $TransactionTableTable.$converterlocationn);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        title,
+        additionalInfo,
+        categoryID,
+        accountID,
+        amount,
+        recorded,
+        location
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -106,6 +122,7 @@ class $TransactionTableTable extends TransactionTable
     } else if (isInserting) {
       context.missing(_recordedMeta);
     }
+    context.handle(_locationMeta, const VerificationResult.success());
     return context;
   }
 
@@ -129,6 +146,9 @@ class $TransactionTableTable extends TransactionTable
           .read(DriftSqlType.double, data['${effectivePrefix}amount'])!,
       recorded: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}recorded'])!,
+      location: $TransactionTableTable.$converterlocationn.fromSql(
+          attachedDatabase.typeMapping
+              .read(DriftSqlType.string, data['${effectivePrefix}location'])),
     );
   }
 
@@ -136,6 +156,11 @@ class $TransactionTableTable extends TransactionTable
   $TransactionTableTable createAlias(String alias) {
     return $TransactionTableTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<LocationFeature, String> $converterlocation =
+      const LocationFeatureConverter();
+  static TypeConverter<LocationFeature?, String?> $converterlocationn =
+      NullAwareTypeConverter.wrap($converterlocation);
 }
 
 class TransactionTableCompanion extends UpdateCompanion<Transaction> {
@@ -146,6 +171,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
   final Value<String> accountID;
   final Value<double> amount;
   final Value<DateTime> recorded;
+  final Value<LocationFeature?> location;
   final Value<int> rowid;
   const TransactionTableCompanion({
     this.id = const Value.absent(),
@@ -155,6 +181,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     this.accountID = const Value.absent(),
     this.amount = const Value.absent(),
     this.recorded = const Value.absent(),
+    this.location = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TransactionTableCompanion.insert({
@@ -165,6 +192,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     required String accountID,
     required double amount,
     required DateTime recorded,
+    this.location = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         title = Value(title),
@@ -180,6 +208,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     Expression<String>? accountID,
     Expression<double>? amount,
     Expression<DateTime>? recorded,
+    Expression<String>? location,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -190,6 +219,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
       if (accountID != null) 'account_i_d': accountID,
       if (amount != null) 'amount': amount,
       if (recorded != null) 'recorded': recorded,
+      if (location != null) 'location': location,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -202,6 +232,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
       Value<String>? accountID,
       Value<double>? amount,
       Value<DateTime>? recorded,
+      Value<LocationFeature?>? location,
       Value<int>? rowid}) {
     return TransactionTableCompanion(
       id: id ?? this.id,
@@ -211,6 +242,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
       accountID: accountID ?? this.accountID,
       amount: amount ?? this.amount,
       recorded: recorded ?? this.recorded,
+      location: location ?? this.location,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -239,6 +271,10 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     if (recorded.present) {
       map['recorded'] = Variable<DateTime>(recorded.value);
     }
+    if (location.present) {
+      map['location'] = Variable<String>(
+          $TransactionTableTable.$converterlocationn.toSql(location.value));
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -255,6 +291,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
           ..write('accountID: $accountID, ')
           ..write('amount: $amount, ')
           ..write('recorded: $recorded, ')
+          ..write('location: $location, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

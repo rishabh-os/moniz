@@ -6,6 +6,7 @@ import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart" as m;
 import "package:get_storage/get_storage.dart";
 import "package:moniz/data/account.dart";
+import "package:moniz/data/api/response.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 import "package:path/path.dart" as p;
@@ -23,6 +24,8 @@ class TransactionTable extends Table {
   TextColumn get accountID => text()();
   RealColumn get amount => real()();
   DateTimeColumn get recorded => dateTime()();
+  TextColumn get location =>
+      text().map(const LocationFeatureConverter()).nullable()();
 }
 
 @UseRowClass(TransactionCategory)

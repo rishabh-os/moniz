@@ -15,23 +15,46 @@ import "package:moniz/data/api/response.dart";
 import "package:moniz/env/env.dart";
 
 class LocationPicker extends ConsumerStatefulWidget {
-  const LocationPicker({super.key});
+  const LocationPicker(
+      {super.key,
+      required this.initialLocation,
+      required this.returnSelectedLocation});
+  final LocationFeature? initialLocation;
+  final Function(LocationFeature location) returnSelectedLocation;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LocationPickerState();
 }
 
 class _LocationPickerState extends ConsumerState<LocationPicker> {
+  LocationFeature? selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedLocation = widget.initialLocation;
+  }
+
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
+        onPressed: () async {
+          LocationFeature? result = await Navigator.push(context,
+              MaterialPageRoute(builder: (context) {
             return const LocationMap();
           }));
+          print(result?.placeName);
+          if (result != null) {
+            setState(() {
+              selectedLocation = result;
+              widget.returnSelectedLocation(selectedLocation!);
+            });
+          }
         },
-        label: const Text("Pick Location"),
-        icon: const Icon(Icons.add_location_rounded));
+        label: selectedLocation == null
+            ? const Text("Pick Location")
+            : Text(selectedLocation!.text ?? ""),
+        icon: const Icon(Icons.location_on_outlined));
   }
 }
 
@@ -75,7 +98,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
     }
   }
 
-  Features? selectedLocation;
+  LocationFeature? selectedLocation;
   late final Future<MapBoxGeocoding?> Function(String) debouncedSearch;
 
   @override
@@ -156,7 +179,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
                           [];
                       controller.text.isNotEmpty
                           ? resultList.add(resultTile(
-                              Features(
+                              LocationFeature(
                                 text: controller.text,
                                 placeName: "Custom Location",
                               ),
@@ -173,7 +196,8 @@ class _LocationMapState extends ConsumerState<LocationMap>
                       color: Theme.of(context).colorScheme.background,
                     ),
                     child: ListTile(
-                      onTap: () => {Navigator.of(context).pop()},
+                      onTap: () =>
+                          {Navigator.of(context).pop(selectedLocation)},
                       title: Text(
                         selectedLocation?.text ?? "",
                         overflow: TextOverflow.ellipsis,
@@ -232,7 +256,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
     );
   }
 
-  ListTile resultTile(Features location, SearchController controller) {
+  ListTile resultTile(LocationFeature location, SearchController controller) {
     return ListTile(
       onTap: () {
         animatedMapController.animateTo(

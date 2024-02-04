@@ -2,6 +2,7 @@ import "package:drift/drift.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/api/response.dart";
 import "package:moniz/data/database/db.dart";
 
 class Transaction {
@@ -13,6 +14,7 @@ class Transaction {
     required this.accountID,
     required this.amount,
     required this.recorded,
+    this.location,
   });
   final String id;
   final String title;
@@ -21,6 +23,7 @@ class Transaction {
   final String accountID;
   final double amount;
   final DateTime recorded;
+  final LocationFeature? location;
 
   Transaction copyWith({
     String? transactionType,
@@ -30,6 +33,7 @@ class Transaction {
     String? accountID,
     double? amount,
     DateTime? recorded,
+    LocationFeature? location,
   }) {
     return Transaction(
       // ? This makes the ID field unchangeable
@@ -40,6 +44,7 @@ class Transaction {
       accountID: accountID ?? this.accountID,
       amount: amount ?? this.amount,
       recorded: recorded ?? this.recorded,
+      location: location ?? this.location,
     );
   }
 }
@@ -64,13 +69,15 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
     List<Transaction> loadedTransactions =
         (await db.select(db.transactionTable).get())
             .map((e) => Transaction(
-                id: e.id,
-                title: e.title,
-                categoryID: e.categoryID,
-                accountID: e.accountID,
-                amount: e.amount,
-                recorded: e.recorded,
-                additionalInfo: e.additionalInfo))
+                  id: e.id,
+                  title: e.title,
+                  categoryID: e.categoryID,
+                  accountID: e.accountID,
+                  amount: e.amount,
+                  recorded: e.recorded,
+                  additionalInfo: e.additionalInfo,
+                  location: e.location,
+                ))
             .toList();
     return loadedTransactions;
   }
@@ -87,6 +94,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
             accountID: editedTransaction.accountID,
             amount: editedTransaction.amount,
             recorded: editedTransaction.recorded,
+            location: editedTransaction.location,
           )
         else
           trans,
@@ -104,7 +112,8 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
         accountID: newTransaction.accountID,
         amount: newTransaction.amount,
         recorded: newTransaction.recorded,
-        additionalInfo: Value(newTransaction.additionalInfo)));
+        additionalInfo: Value(newTransaction.additionalInfo),
+        location: Value(newTransaction.location)));
   }
 
   void delete(String transactionID) async {

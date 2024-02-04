@@ -1,7 +1,11 @@
+import "dart:convert";
+import "package:drift/drift.dart";
+import "package:json_annotation/json_annotation.dart" as j;
+
 class MapBoxGeocoding {
   String? type;
   List<String>? query;
-  List<Features>? features;
+  List<LocationFeature>? features;
   String? attribution;
 
   MapBoxGeocoding({this.type, this.query, this.features, this.attribution});
@@ -10,9 +14,9 @@ class MapBoxGeocoding {
     type = json["type"];
     query = json["query"].cast<String>();
     if (json["features"] != null) {
-      features = <Features>[];
+      features = <LocationFeature>[];
       json["features"].forEach((v) {
-        features!.add(Features.fromJson(v));
+        features!.add(LocationFeature.fromJson(v));
       });
     }
     attribution = json["attribution"];
@@ -30,7 +34,8 @@ class MapBoxGeocoding {
   }
 }
 
-class Features {
+@j.JsonSerializable()
+class LocationFeature {
   String? id;
   String? type;
   List<String>? placeType;
@@ -43,7 +48,7 @@ class Features {
   List<Context>? context;
   List<double>? bbox;
 
-  Features(
+  LocationFeature(
       {this.id,
       this.type,
       this.placeType,
@@ -56,7 +61,7 @@ class Features {
       this.context,
       this.bbox});
 
-  Features.fromJson(Map<String, dynamic> json) {
+  LocationFeature.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     type = json["type"];
     placeType = json["place_type"].cast<String>();
@@ -100,6 +105,22 @@ class Features {
     }
     data["bbox"] = bbox;
     return data;
+  }
+}
+
+// stores preferences as strings
+class LocationFeatureConverter extends TypeConverter<LocationFeature, String> {
+  const LocationFeatureConverter();
+
+  @override
+  LocationFeature fromSql(String fromDb) {
+    return LocationFeature.fromJson(
+        json.decode(fromDb) as Map<String, dynamic>);
+  }
+
+  @override
+  String toSql(LocationFeature value) {
+    return json.encode(value.toJson());
   }
 }
 

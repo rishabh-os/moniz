@@ -10,6 +10,7 @@ import "package:moniz/components/input/deleteFunctions.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
 import "package:moniz/data/account.dart";
+import "package:moniz/data/api/response.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 import "package:uuid/uuid.dart";
@@ -43,6 +44,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   late List<TransactionCategory> categories;
   late List<int> order;
   String? _additionalInfo;
+  LocationFeature? _selectedLocation;
   late TextEditingController addInfoController;
   late Function(Transaction transaction) saveAction;
   List<Widget> actions = [];
@@ -118,6 +120,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
           hour: widget.transaction!.recorded.hour,
           minute: widget.transaction!.recorded.minute);
       _additionalInfo = widget.transaction!.additionalInfo;
+      _selectedLocation = widget.transaction!.location;
       saveAction = (transaction) {
         ref.read(transactionsProvider.notifier).edit(transaction);
         // ? Handle all the cases when the transaction is edited
@@ -251,7 +254,14 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                       });
                     },
                   ),
-                  const LocationPicker()
+                  LocationPicker(
+                    initialLocation: _selectedLocation,
+                    returnSelectedLocation: (location) => {
+                      setState(() {
+                        _selectedLocation = location;
+                      })
+                    },
+                  )
                 ],
               ),
               // * Not sure why it needs to be this big, when the actual space it gives is a lot less
@@ -296,7 +306,8 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                 categoryID: categories[order[_selectedCategory]].id,
                 accountID: accounts[_selectedAccount].id,
                 amount: _entryType == 1 ? _amount * -1 : _amount,
-                recorded: recorded));
+                recorded: recorded,
+                location: _selectedLocation));
 
             Navigator.pop(context);
           }
