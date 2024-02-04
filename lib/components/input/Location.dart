@@ -10,6 +10,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
 import "package:location/location.dart";
+import "package:moniz/data/api/debouncer.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/env/env.dart";
 
@@ -50,12 +51,13 @@ class _LocationMapState extends ConsumerState<LocationMap>
   );
   LocationData? locationData;
   MapBoxGeocoding? suggestions;
+
   final TextEditingController searchController = TextEditingController();
 
   Future<MapBoxGeocoding?> fetchResponse(String input) async {
-    final String proximity = locationData != null
-        ? "${locationData!.latitude},${locationData!.longitude}"
-        : "ip";
+    final mapCenter = animatedMapController.mapController.camera.center;
+    print(mapCenter);
+    final String proximity = "${mapCenter.latitude},${mapCenter.longitude}";
     if (input == "") {
       return null;
     }
@@ -71,6 +73,15 @@ class _LocationMapState extends ConsumerState<LocationMap>
     } else {
       throw Exception(response.body);
     }
+  }
+
+  Features? selectedLocation;
+  late final Future<MapBoxGeocoding?> Function(String) debouncedSearch;
+
+  @override
+  void initState() {
+    super.initState();
+    debouncedSearch = debounce(fetchResponse);
   }
 
   @override
@@ -91,9 +102,34 @@ class _LocationMapState extends ConsumerState<LocationMap>
             children: [
               TileLayer(
                 urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                userAgentPackageName: "com.example.app",
+                userAgentPackageName: "com.example.moniz",
               ),
+              MarkerLayer(
+                  markers: selectedLocation != null
+                      ? [
+                          Marker(
+                              point: LatLng(
+                                  selectedLocation!.center?.last ??
+                                      animatedMapController
+                                          .mapController.camera.center.latitude,
+                                  selectedLocation!.center?.first ??
+                                      animatedMapController.mapController.camera
+                                          .center.longitude),
+                              child: Icon(
+                                Icons.place,
+                                size: 36,
+                                color: Theme.of(context).colorScheme.primary,
+                                shadows: [
+                                  Shadow(
+                                      color:
+                                          Theme.of(context).colorScheme.shadow,
+                                      blurRadius: 10)
+                                ],
+                              ))
+                        ]
+                      : []),
               const RichAttributionWidget(
+                alignment: AttributionAlignment.bottomLeft,
                 attributions: [
                   TextSourceAttribution(
                     "Mapbox",
@@ -109,97 +145,117 @@ class _LocationMapState extends ConsumerState<LocationMap>
             padding: const EdgeInsets.all(4.0),
             child: Column(
               children: [
-                TextField(
-                  autofocus: true,
-                  controller: searchController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search_rounded),
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            searchController.clear();
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.clear)),
-                      filled: true,
-                      fillColor: Theme.of(context).colorScheme.background,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      hintText: "Search for a nearby location"),
-                  onSubmitted: (value) async {
-                    suggestions = await fetchResponse(value);
-                    setState(() {});
-                  },
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).colorScheme.background,
-                  ),
-                  child: ListView(
-                      shrinkWrap: true,
-                      children: suggestions?.features
-                              ?.map((e) => ListTile(
-                                    splashColor: Colors.red,
-                                    onTap: () {},
-                                    title: Text(
-                                      e.text ?? "",
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    subtitle: Text(
-                                      e.placeName ?? "",
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ))
+                SearchAnchor.bar(
+                    barHintText: "Search for a nearby location",
+                    suggestionsBuilder: (context, controller) async {
+                      final results = await debouncedSearch(controller.text);
+                      List<ListTile> resultList = results?.features
+                              ?.map((location) =>
+                                  resultTile(location, controller))
                               .toList() ??
-                          []),
-                )
-                    .animate(target: searchController.text.isNotEmpty ? 1 : 0)
-                    .fadeIn(duration: 250.ms),
+                          [];
+                      controller.text.isNotEmpty
+                          ? resultList.add(resultTile(
+                              Features(
+                                text: controller.text,
+                                placeName: "Custom Location",
+                              ),
+                              controller))
+                          : null;
+                      return resultList;
+                    }),
+                const SizedBox(height: 4),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Theme.of(context).colorScheme.background,
+                    ),
+                    child: ListTile(
+                      onTap: () => {Navigator.of(context).pop()},
+                      title: Text(
+                        selectedLocation?.text ?? "",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        selectedLocation?.placeName ?? "",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Icon(
+                        Icons.check_circle_rounded,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  )
+                      .animate(
+                        target: selectedLocation != null ? 1 : 0,
+                      )
+                      .fadeIn(duration: 250.ms, curve: Curves.easeInOutCubic)
+                      .slideY(),
+                ),
               ],
             ),
           )
         ],
       ),
-      floatingActionButton: Wrap(
-        direction: Axis.vertical,
-        spacing: 10,
-        alignment: WrapAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              fetchResponse("central park");
-            },
-            child: const Icon(Icons.dashboard_customize_outlined),
-          ),
-          FloatingActionButton(
-              child: const Icon(Icons.my_location),
-              onPressed: () async {
-                Location location = Location();
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.my_location),
+          onPressed: () async {
+            Location location = Location();
 
-                bool serviceEnabled;
-                PermissionStatus permissionGranted;
+            bool serviceEnabled;
+            PermissionStatus permissionGranted;
 
-                serviceEnabled = await location.serviceEnabled();
-                if (!serviceEnabled) {
-                  serviceEnabled = await location.requestService();
-                  if (!serviceEnabled) {
-                    return;
-                  }
-                }
+            serviceEnabled = await location.serviceEnabled();
+            if (!serviceEnabled) {
+              serviceEnabled = await location.requestService();
+              if (!serviceEnabled) {
+                return;
+              }
+            }
 
-                permissionGranted = await location.hasPermission();
-                if (permissionGranted == PermissionStatus.denied) {
-                  permissionGranted = await location.requestPermission();
-                  if (permissionGranted != PermissionStatus.granted) {
-                    return;
-                  }
-                }
+            permissionGranted = await location.hasPermission();
+            if (permissionGranted == PermissionStatus.denied) {
+              permissionGranted = await location.requestPermission();
+              if (permissionGranted != PermissionStatus.granted) {
+                return;
+              }
+            }
 
-                locationData = await location.getLocation();
-                print(locationData);
-              }),
-        ],
+            locationData = await location.getLocation();
+            print(locationData);
+            animatedMapController.animateTo(
+                dest:
+                    LatLng(locationData!.latitude!, locationData!.longitude!));
+          }),
+    );
+  }
+
+  ListTile resultTile(Features location, SearchController controller) {
+    return ListTile(
+      onTap: () {
+        animatedMapController.animateTo(
+            dest: LatLng(
+                location.center?.last ??
+                    animatedMapController.mapController.camera.center.latitude,
+                location.center?.first ??
+                    animatedMapController
+                        .mapController.camera.center.longitude),
+            zoom: 16,
+            curve: const Cubic(0, 0, 0, 1.0));
+        controller.closeView(null);
+        setState(() {
+          selectedLocation = location;
+        });
+      },
+      title: Text(
+        location.text ?? "",
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        location.placeName ?? "",
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

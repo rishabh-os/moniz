@@ -34,7 +34,7 @@ class Features {
   String? id;
   String? type;
   List<String>? placeType;
-  int? relevance;
+  num? relevance;
   Properties? properties;
   String? text;
   String? placeName;
