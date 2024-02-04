@@ -41,9 +41,13 @@ class _DatePickerState extends State<DatePicker> {
   Widget build(BuildContext context) {
     // ? Returns the value whenever the widget is rebuilt
 
-    return OutlinedButton(
+    return OutlinedButton.icon(
+      icon: const Icon(
+        Icons.today,
+        size: 16,
+      ),
+      label: Text(DateFormat("EEE, d MMM yyyy").format(displayDate)),
       onPressed: () => _selectDate2(context),
-      child: Text(DateFormat("EEE, d MMM yyyy").format(displayDate)),
     );
   }
 }
@@ -71,8 +75,12 @@ class _TimePickerState extends State<TimePicker> {
   Widget build(BuildContext context) {
     // ? Returns the value whenever the widget is rebuilt
 
-    return OutlinedButton(
-      child: Text(
+    return OutlinedButton.icon(
+      icon: const Icon(
+        Icons.access_time_filled,
+        size: 16,
+      ),
+      label: Text(
           '${selectedTime.hourOfPeriod.toString().padLeft(2, "0")}: ${selectedTime.minute.toString().padLeft(2, "0")} ${selectedTime.period.name.toUpperCase()}'),
       onPressed: () async {
         final TimeOfDay? time = await showTimePicker(
