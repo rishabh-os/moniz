@@ -52,7 +52,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
           }
         },
         label: selectedLocation == null
-            ? const Text("Pick Location")
+            ? const Text("Add Location")
             : Text(selectedLocation!.text ?? ""),
         icon: const Icon(
           Icons.location_on,

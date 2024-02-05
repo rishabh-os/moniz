@@ -28,6 +28,8 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] Solve the middle nav icon getting selected on transition
 - [x] Quick filters state inconsistency - still present, hard to reproduce reliably
   - This was due to the loading being done on every call
+- [ ] Make filters global
+  - [ ] Make range slider values better, not linear
 - [x] Import databases
 - [x] Fix the tutorial after the layout changes
   - [ ] Manage tutorial still has legibility issues

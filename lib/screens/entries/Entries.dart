@@ -32,13 +32,13 @@ class _OverviewState extends ConsumerState<Overview>
             children: [
               Income(
                 title: "Income",
-                icon: Icons.file_download_outlined,
+                icon: Icons.arrow_circle_down,
                 colorProvider: incomeColorSchemeProvider,
                 amountProvider: overviewIncomeProvider,
               ),
               Income(
                 title: "Expense",
-                icon: Icons.file_upload_outlined,
+                icon: Icons.arrow_circle_up,
                 colorProvider: expenseColorSchemeProvider,
                 amountProvider: overviewExpenseProvider,
               ),
