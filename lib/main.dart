@@ -64,7 +64,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     await ref.read(dbProvider).initCategories();
     // ? This loads the data from the database into the app
     await ref.read(categoriesProvider.notifier).loadCategories();
-    await ref.read(catOrderProvider.notifier).loadOrder();
     await ref.read(accountsProvider.notifier).loadAccounts();
     await ref.read(transactionsProvider.notifier).loadAllTransationsFromDB();
     ref.read(transactionsProvider.notifier).filterTransactions();

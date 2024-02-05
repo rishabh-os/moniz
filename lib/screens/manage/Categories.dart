@@ -16,7 +16,6 @@ class _CategoriesState extends ConsumerState<Categories> {
   @override
   Widget build(BuildContext context) {
     List<TransactionCategory> categories = ref.watch(categoriesProvider);
-    List<int> order = ref.watch(catOrderProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -27,21 +26,25 @@ class _CategoriesState extends ConsumerState<Categories> {
           shrinkWrap: true,
           onReorder: (oldIndex, newIndex) => {
             setState(() {
-              if (newIndex > oldIndex) {
+              if (oldIndex < newIndex) {
                 newIndex -= 1;
               }
-              final items = order.removeAt(oldIndex);
-              order.insert(newIndex, items);
-              ref.watch(catOrderProvider.notifier).updateOrder(order);
+              final item = categories.removeAt(oldIndex);
+              categories.insert(newIndex, item);
+              for (int i = 0; i < categories.length; i++) {
+                ref
+                    .read(categoriesProvider.notifier)
+                    .edit(categories[i].copyWith(order: i));
+              }
             })
           },
           itemBuilder: (context, index) {
-            var e = categories[order[index]];
+            var cat = categories[index];
             // ? Not a regular key so that I can use the edit animation
             final key = GlobalObjectKey(index);
             return ListTile(
               key: key,
-              title: Text(e.name),
+              title: Text(cat.name),
               leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -53,16 +56,16 @@ class _CategoriesState extends ConsumerState<Categories> {
                   ),
                   Icon(
                     IconData(
-                      e.iconCodepoint,
+                      cat.iconCodepoint,
                       fontFamily: "MaterialIcons",
                     ),
-                    color: Color(e.color),
+                    color: Color(cat.color),
                   ),
                 ],
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.edit_rounded),
-                onPressed: () => handleTap(key, context, e),
+                onPressed: () => handleTap(key, context, cat),
                 tooltip: "Edit category",
               ),
             );

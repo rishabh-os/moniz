@@ -106,7 +106,6 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   void handleCategoryDelete() async {
     void delete() {
       ref.read(categoriesProvider.notifier).delete(widget.editedCategory!.id);
-      ref.read(catOrderProvider.notifier).handleCatChange();
       Navigator.of(context).maybePop();
     }
 
@@ -220,7 +219,6 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                 order: 0,
                 isArchived: false,
               ));
-              ref.read(catOrderProvider.notifier).handleCatChange();
             }
             Navigator.pop(context);
           }

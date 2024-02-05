@@ -139,6 +139,8 @@ class MyDatabase extends _$MyDatabase {
         iconCodepoint: Value(target.iconCodepoint),
         color: Value(target.color),
         balance: Value(target.balance),
+        order: Value(target.order),
+        isArchived: Value(target.isArchived),
       ),
     );
   }
@@ -150,6 +152,8 @@ class MyDatabase extends _$MyDatabase {
         name: Value(target.name),
         iconCodepoint: Value(target.iconCodepoint),
         color: Value(target.color),
+        order: Value(target.order),
+        isArchived: Value(target.isArchived),
       ),
     );
   }
@@ -164,6 +168,7 @@ class MyDatabase extends _$MyDatabase {
         accountID: Value(target.accountID),
         amount: Value(target.amount),
         recorded: Value(target.recorded),
+        location: Value(target.location),
       ),
     );
   }
