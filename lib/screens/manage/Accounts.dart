@@ -1,3 +1,4 @@
+import "dart:ui";
 import "package:animations/animations.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -5,6 +6,7 @@ import "package:moniz/data/account.dart";
 import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/manage/AccountCard.dart";
 import "package:moniz/screens/manage/AccountEditor.dart";
+import "package:moniz/screens/manage/Categories.dart";
 
 class Accounts extends ConsumerStatefulWidget {
   const Accounts({super.key});
@@ -19,9 +21,25 @@ class _AccountsState extends ConsumerState<Accounts> {
     List<Account> accounts = ref.watch(accountsProvider);
     return Column(
       children: [
-        ListView.builder(
+        ReorderableListView.builder(
+          onReorder: (oldIndex, newIndex) => {
+            setState(() {
+              if (oldIndex < newIndex) {
+                newIndex -= 1;
+              }
+              final item = accounts.removeAt(oldIndex);
+              accounts.insert(newIndex, item);
+              for (int i = 0; i < accounts.length; i++) {
+                ref
+                    .read(accountsProvider.notifier)
+                    .edit(accounts[i].copyWith(order: i));
+              }
+            })
+          },
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
+          buildDefaultDragHandles: false,
+          proxyDecorator: proxyDecorator,
           itemCount: accounts.length,
           itemBuilder: (context, index) {
             var acc = accounts[index];
@@ -37,7 +55,7 @@ class _AccountsState extends ConsumerState<Accounts> {
                 }
               }
             }
-            final key = GlobalKey();
+            final key = GlobalObjectKey(acc.id);
             return AccountCard(
                 key: key,
                 account: acc,

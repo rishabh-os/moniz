@@ -55,17 +55,8 @@ class AccountNotifier extends StateNotifier<List<Account>> {
   Future<void> loadAccounts() async {
     final allAccounts = await db.select(db.accountsTable).get();
 
-    List<Account> loadedAccounts = allAccounts
-        .map((e) => Account(
-            id: e.id,
-            name: e.name,
-            iconCodepoint: e.iconCodepoint,
-            color: e.color,
-            balance: e.balance,
-            order: e.order,
-            isArchived: e.isArchived))
-        .toList();
-    state = loadedAccounts;
+    allAccounts.sort((a, b) => a.order.compareTo(b.order));
+    state = allAccounts;
   }
 
   void edit(Account editedAccount) {

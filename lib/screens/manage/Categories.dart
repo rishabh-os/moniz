@@ -1,3 +1,4 @@
+import "dart:ui";
 import "package:animations/animations.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -38,10 +39,11 @@ class _CategoriesState extends ConsumerState<Categories> {
               }
             })
           },
+          proxyDecorator: proxyDecorator,
           itemBuilder: (context, index) {
             var cat = categories[index];
             // ? Not a regular key so that I can use the edit animation
-            final key = GlobalObjectKey(index);
+            final key = GlobalObjectKey(cat.id);
             return ListTile(
               key: key,
               title: Text(cat.name),
@@ -93,3 +95,18 @@ class _CategoriesState extends ConsumerState<Categories> {
     );
   }
 }
+
+Widget proxyDecorator(child, index, animation) => AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) {
+        final double animValue = Curves.easeInOut.transform(animation.value);
+        final double elevation = lerpDouble(1, 6, animValue)!;
+        return Material(
+          borderRadius: BorderRadius.circular(10),
+          elevation: elevation,
+          color: Theme.of(context).colorScheme.tertiaryContainer,
+          child: child,
+        );
+      },
+      child: child,
+    );

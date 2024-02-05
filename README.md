@@ -37,6 +37,6 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] A way to add and manage events
   - [ ] Add transactions to events
 - [x] Make additional info multiline
-- [ ] Make accounts and categories orderable
+- [x] Make accounts and categories orderable
   - [ ] Make them archivable or hideable
-- [ ] Add location to entries (optional)
+- [x] Add location to entries (optional)

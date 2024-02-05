@@ -32,7 +32,7 @@ class _AccountCardState extends State<AccountCard> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                   color: ColorScheme.fromSeed(
                           seedColor: Color(widget.account.color),
@@ -54,6 +54,9 @@ class _AccountCardState extends State<AccountCard> {
                         style: const TextStyle(fontSize: 20),
                       ),
                       const Expanded(child: SizedBox()),
+                      ReorderableDragStartListener(
+                          index: widget.account.order,
+                          child: const Icon(Icons.drag_indicator_rounded)),
                       IconButton(
                         onPressed: () =>
                             handleTap(widget.key, context, widget.account),
@@ -63,7 +66,7 @@ class _AccountCardState extends State<AccountCard> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -77,47 +80,34 @@ class _AccountCardState extends State<AccountCard> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        MoneyDisplay(amount: widget.income),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.arrow_circle_down),
-                            Text(" Income")
-                          ],
-                        ),
-                      ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.arrow_circle_down),
+                    const SizedBox(
+                      width: 4,
                     ),
+                    MoneyDisplay(amount: widget.income),
+                  ],
+                ),
+                const SizedBox(
+                  height: 60,
+                  child: VerticalDivider(
+                    thickness: 2,
                   ),
-                  const SizedBox(
-                    height: 60,
-                    child: VerticalDivider(
-                      thickness: 2,
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.arrow_circle_up),
+                    const SizedBox(
+                      width: 4,
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        MoneyDisplay(amount: widget.expense),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.arrow_circle_up),
-                            Text(" Expenses")
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                    MoneyDisplay(amount: widget.expense),
+                  ],
+                ),
+              ],
             )
           ],
         ),
