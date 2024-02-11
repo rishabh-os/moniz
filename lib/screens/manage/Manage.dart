@@ -35,7 +35,6 @@ class _ManageState extends ConsumerState<Manage>
           VisibilityDetector(
               key: listOfKeys[0],
               onVisibilityChanged: (info) {
-                // ? It is still possible to misalign this if one swipes fast enough, but that's a problem for later
                 if (!ref.watch(manageTutorialCompletedProvider)) {
                   Future.delayed(const Duration(milliseconds: 100), () {
                     if (info.visibleFraction == 1) {

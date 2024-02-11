@@ -22,36 +22,28 @@ class _OverviewState extends ConsumerState<Overview>
   Widget build(BuildContext context) {
     super.build(context);
     final List<Transaction> transactions = ref.watch(searchedTransProvider);
-    return SingleChildScrollView(
-      controller: ref.read(scrollProvider),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Income(
-                title: "Income",
-                icon: Icons.arrow_circle_down,
-                colorProvider: incomeColorSchemeProvider,
-                amountProvider: overviewIncomeProvider,
-              ),
-              Income(
-                title: "Expense",
-                icon: Icons.arrow_circle_up,
-                colorProvider: expenseColorSchemeProvider,
-                amountProvider: overviewExpenseProvider,
-              ),
-            ],
-          ),
-          TransactionList(transactions: transactions),
-          // ? Provides space so that the FAB doesn't block the last transaction
-          const ListTile(
-            isThreeLine: true,
-            subtitle: Text(""),
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Income(
+              title: "Income",
+              icon: Icons.arrow_circle_down,
+              colorProvider: incomeColorSchemeProvider,
+              amountProvider: overviewIncomeProvider,
+            ),
+            Income(
+              title: "Expense",
+              icon: Icons.arrow_circle_up,
+              colorProvider: expenseColorSchemeProvider,
+              amountProvider: overviewExpenseProvider,
+            ),
+          ],
+        ),
+        Expanded(child: TransactionList(transactions: transactions)),
+      ],
     );
   }
 }

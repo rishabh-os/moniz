@@ -1,7 +1,6 @@
 import "package:animations/animations.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:hidable/hidable.dart";
 import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
@@ -69,12 +68,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 500),
     );
     _controller.forward();
-    fadeAnimation = Tween<double>(begin: 0.4, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn),
-    );
     _selectedIndex = ref.read(initialPageProvider);
     _pageController = PageController(
       initialPage: _selectedIndex,
@@ -156,20 +152,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           openBuilder: (_, closeContainer) {
             return const EntryEditor();
           }),
-      bottomNavigationBar: Hidable(
-        preferredWidgetSize: const Size.fromHeight(80),
-        enableOpacityAnimation: false,
-        controller: ref.read(scrollProvider),
-        child: NavigationBar(
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          onDestinationSelected: (int index) {
-            setState(() {
-              _onItemTapped(index);
-            });
-          },
-          selectedIndex: _selectedIndex,
-          destinations: navDestinations,
-        ),
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _onItemTapped(index);
+          });
+        },
+        selectedIndex: _selectedIndex,
+        destinations: navDestinations,
       ),
       body: PageView(
         controller: _pageController,
@@ -182,14 +173,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         children: widgetOptions
             .map((e) => SlideTransition(
                 position:
-                    Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero)
+                    Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero)
                         .animate(
                   CurvedAnimation(
                       parent: _controller,
                       curve: Curves.easeInOutCubicEmphasized),
                 ),
                 child: FadeTransition(
-                    opacity: Tween<double>(begin: 0.4, end: 1.0).animate(
+                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
                         CurvedAnimation(
                             parent: _controller,
                             curve: Curves.easeInOutCubicEmphasized)),

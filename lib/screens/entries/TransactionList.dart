@@ -22,8 +22,8 @@ class _TransactionListState extends ConsumerState<TransactionList> {
   Widget build(BuildContext context) {
     // ? Convert to an AnimatedList someday
     return ListView.custom(
-      physics: const NeverScrollableScrollPhysics(),
-      cacheExtent: 10,
+      // physics: const NeverScrollableScrollPhysics(),
+      cacheExtent: 20,
       shrinkWrap: true,
       childrenDelegate: SliverChildBuilderDelegate(
           findChildIndexCallback: (key) {
@@ -42,6 +42,13 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                 .watch(categoriesProvider)
                 .firstWhere((element) => element.id == trans.categoryID);
             final key = GlobalKey();
+            // ? Provides space so that the FAB doesn't block the last transaction
+            if (index == widget.transactions.length - 1) {
+              return const ListTile(
+                isThreeLine: true,
+                subtitle: Text(""),
+              );
+            }
             return InkWell(
               onTap: () => handleTap(key, context, trans),
               child: ListTile(
