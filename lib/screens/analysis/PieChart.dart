@@ -28,8 +28,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
     (List, Map<String, double>) spendsByCat() {
       List<Transaction> transactionList = ref.watch(transactionsProvider);
       List<TransactionCategory> catergoryList = ref.watch(categoriesProvider);
-      catergoryList =
-          List.generate(catergoryList.length, (index) => catergoryList[index]);
       // ? Init a dict with spends from all categories
       Map<String, double> spendsByCat = {
         for (var v in catergoryList) v.id: 0.0

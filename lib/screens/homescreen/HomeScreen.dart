@@ -21,13 +21,20 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late int _selectedIndex;
 
   late PageController _pageController;
   void _onItemTapped(int index) {
-    _pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    if (index == _selectedIndex) {
+      return;
+    }
+    _pageController.jumpToPage(
+      index,
+    );
+    _controller.reset();
+    _controller.forward();
   }
 
   List<NavigationDestination> navDestinations = const [
@@ -55,10 +62,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ];
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late final List<GlobalKey> listOfKeys;
-
+  late Animation<double> fadeAnimation;
+  late AnimationController _controller;
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _controller.forward();
+    fadeAnimation = Tween<double>(begin: 0.4, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn),
+    );
     _selectedIndex = ref.read(initialPageProvider);
     _pageController = PageController(
       initialPage: _selectedIndex,
@@ -157,26 +173,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        physics: enableScroll(),
+        physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (value) {
           setState(() {
             _selectedIndex = value;
           });
         },
-        children: widgetOptions,
+        children: widgetOptions
+            .map((e) => SlideTransition(
+                position:
+                    Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero)
+                        .animate(
+                  CurvedAnimation(
+                      parent: _controller,
+                      curve: Curves.easeInOutCubicEmphasized),
+                ),
+                child: FadeTransition(
+                    opacity: Tween<double>(begin: 0.4, end: 1.0).animate(
+                        CurvedAnimation(
+                            parent: _controller,
+                            curve: Curves.easeInOutCubicEmphasized)),
+                    child: e)))
+            .toList(),
       ),
     );
-  }
-
-  ScrollPhysics? enableScroll() {
-    // ? Disables scrolling unless the tutorials have been completed
-    if (ref.watch(entriesTutorialCompletedProvider) &&
-        ref.watch(analysisTutorialCompletedProvider) &&
-        ref.watch(manageTutorialCompletedProvider) &&
-        ref.watch(chartScrollProvider)) {
-      return null;
-    } else {
-      return const NeverScrollableScrollPhysics();
-    }
   }
 }

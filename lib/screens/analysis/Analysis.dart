@@ -46,9 +46,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
             ],
           ),
           const Expanded(
-            // height: MediaQuery.of(context).size.height - 200,
             child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
               children: [
                 CategoryChart(),
                 LineGraph(),
