@@ -1,5 +1,3 @@
-import "dart:math";
-import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
@@ -9,13 +7,24 @@ final filterQueryProvider = StateProvider<String>((ref) {
   return "";
 });
 
-final sliderMaxProvider = StateProvider<double>((ref) => ref
-    .watch(transactionsProvider)
-    .map<double>((e) => e.amount.abs())
-    .reduce(max));
+final freqHistProvider = StateProvider<Map<double, int>>((ref) {
+  List transactions = ref.watch(transactionsProvider);
+  Map<double, int> frequencyHistorgram = {};
+  for (var x in transactions) {
+    var amt = x.amount.abs();
+    frequencyHistorgram[amt] = !frequencyHistorgram.containsKey(amt)
+        ? (1)
+        : (frequencyHistorgram[amt]! + 1);
+  }
+  return frequencyHistorgram;
+});
 
-final rangeProvider = StateProvider<RangeValues>(
-    (ref) => RangeValues(0, ref.watch(sliderMaxProvider)));
+final freqKeysProvider = StateProvider<List<double>>((ref) {
+  Map<double, int> frequencyHistorgram = ref.watch(freqHistProvider);
+  List<double> freqKeys = (frequencyHistorgram.keys.toList());
+  freqKeys.sort();
+  return freqKeys;
+});
 
 final filterCategoryProvider = StateProvider<TransactionCategory?>((ref) {
   return null;

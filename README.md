@@ -29,7 +29,9 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Quick filters state inconsistency - still present, hard to reproduce reliably
   - This was due to the loading being done on every call
 - [ ] Make filters global
-  - [ ] Make range slider values better, not linear
+  - [x] Make range slider values better, not linear
+
+    Some selection bugs persist when adding or removing transactions
 - [x] Import databases
 - [x] Fix the tutorial after the layout changes
   - [ ] Manage tutorial still has legibility issues

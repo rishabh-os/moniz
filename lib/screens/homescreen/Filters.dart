@@ -24,25 +24,28 @@ class _FiltersState extends ConsumerState<Filters> {
   late List<TransactionCategory> categories;
   late List<Account> accounts;
   late List<Transaction> transactions;
-  late double sliderMax;
   late RangeValues rangeValues;
-
+  Map<double, int> frequencyHistorgram = {};
+  List<double> freqKeys = [];
   @override
   void initState() {
     super.initState();
+    // ? This is a bit hacky and there probably is a better way to do this
+    frequencyHistorgram = ref.read(freqHistProvider);
+    rangeValues = RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    categories = ref.read(categoriesProvider);
-    accounts = ref.read(accountsProvider);
-    transactions = ref.read(transactionsProvider);
+    categories = ref.watch(categoriesProvider);
+    accounts = ref.watch(accountsProvider);
+    transactions = ref.watch(transactionsProvider);
     filterQuery = ref.watch(filterQueryProvider);
-    sliderMax = ref.watch(sliderMaxProvider);
-    rangeValues = ref.watch(rangeProvider);
     titleController.value = TextEditingValue(text: filterQuery);
     selectedCategory = ref.watch(filterCategoryProvider);
     selectedAccount = ref.watch(filterAccountProvider);
+    frequencyHistorgram = ref.watch(freqHistProvider);
+    freqKeys = ref.watch(freqKeysProvider);
     catController.value = TextEditingValue(text: selectedCategory?.name ?? "");
     accController.value = TextEditingValue(text: selectedAccount?.name ?? "");
     var transResults = transactions
@@ -53,8 +56,8 @@ class _FiltersState extends ConsumerState<Filters> {
                     .contains(filterQuery.toLowerCase())
             : true)
         .where((element) =>
-            rangeValues.start <= element.amount.abs() &&
-            element.amount.abs() <= rangeValues.end)
+            freqKeys[rangeValues.start.toInt()] <= element.amount.abs() &&
+            element.amount.abs() <= freqKeys[rangeValues.end.toInt()])
         .where((element) => selectedCategory != null
             ? element.categoryID == selectedCategory!.id
             : true)
@@ -151,22 +154,25 @@ class _FiltersState extends ConsumerState<Filters> {
           ),
           child: RangeSlider(
             min: 0,
-            max: sliderMax,
+            max: frequencyHistorgram.length.toDouble() - 1,
             values: rangeValues,
+            divisions: frequencyHistorgram.length - 1,
             onChanged: (value) {
-              ref.read(rangeProvider.notifier).update((state) => value);
+              setState(() {
+                rangeValues = value;
+              });
             },
             labels: RangeLabels(
-              rangeValues.start.round().toString(),
-              rangeValues.end.round().toString(),
+              freqKeys[rangeValues.start.toInt()].abs().toString(),
+              freqKeys[rangeValues.end.toInt()].abs().toString(),
             ),
           ),
         ),
         TextButton.icon(
             onPressed: () {
-              ref
-                  .read(rangeProvider.notifier)
-                  .update((state) => RangeValues(0, sliderMax));
+              // ref
+              //     .read(rangeProvider.notifier)
+              //     .update((state) => RangeValues(0, sliderMax));
               ref.read(filterQueryProvider.notifier).update((state) => "");
               ref.read(filterCategoryProvider.notifier).update((state) => null);
               ref.watch(filterAccountProvider.notifier).update((state) => null);
