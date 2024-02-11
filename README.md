@@ -31,7 +31,7 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] Make filters global
   - [x] Make range slider values better, not linear
 
-    Some selection bugs persist when adding or removing transactions
+    Thanks to https://www.howdoi.me/blog/slider-scale.html for the implementation details. Some selection bugs persist when adding or removing transactions
 - [x] Import databases
 - [x] Fix the tutorial after the layout changes
   - [ ] Manage tutorial still has legibility issues

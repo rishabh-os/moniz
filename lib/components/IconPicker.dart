@@ -29,7 +29,7 @@ class _IconPickerState extends State<IconPicker> {
   }
 
   _pickIcon() async {
-    IconData? icon = await FlutterIconPicker.showIconPicker(context,
+    IconData? icon = await showIconPicker(context,
         iconPackModes: [IconPack.custom], customIconPack: allIcons);
 
     setState(() {
