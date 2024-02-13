@@ -187,6 +187,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
             child: Column(
               children: [
                 SearchAnchor.bar(
+                    isFullScreen: false,
                     barHintText: "Search for a nearby location",
                     suggestionsBuilder: (context, controller) async {
                       final results = await debouncedSearch(controller.text);
@@ -207,10 +208,10 @@ class _LocationMapState extends ConsumerState<LocationMap>
                     }),
                 const SizedBox(height: 4),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(25),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(25),
                       color: Theme.of(context).colorScheme.background,
                     ),
                     child: ListTile(
@@ -220,7 +221,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
                         // ? Update stored mapCenter on location select
                         ref.read(initialCenterProvider.notifier).state =
                             mapCenter;
-
                         Navigator.of(context).pop(selectedLocation);
                       },
                       title: Text(
@@ -283,7 +283,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
   ListTile resultTile(LocationFeature location, SearchController controller) {
     return ListTile(
-      onTap: () {
+      onTap: () async {
         animatedMapController.animateTo(
             dest: LatLng(
                 location.center?.last ??
@@ -291,12 +291,17 @@ class _LocationMapState extends ConsumerState<LocationMap>
                 location.center?.first ??
                     animatedMapController
                         .mapController.camera.center.longitude),
-            zoom: 16,
-            curve: const Cubic(0, 0, 0, 1.0));
+            curve: Curves.easeInOutCubicEmphasized);
         controller.closeView(null);
+
         setState(() {
           selectedLocation = location;
         });
+        // ? This is very hacky but none of the other solutions work so
+        await Future.delayed(
+          50.ms,
+          () => FocusScope.of(context).unfocus(),
+        );
       },
       title: Text(
         location.text ?? "",

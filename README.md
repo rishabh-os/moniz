@@ -44,3 +44,4 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Make accounts and categories orderable
   - [ ] Make them archivable or hideable
 - [x] Add location to entries (optional)
+  - [ ] Move to Google Maps because more locations

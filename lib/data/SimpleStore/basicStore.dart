@@ -54,6 +54,6 @@ final initialCenterProvider = StateProvider<LatLng>((ref) {
   );
   GetStorage().read("mapCenter") ??
       GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
-  List latlong = GetStorage().read("mapCenter");
-  return LatLng(latlong.first, latlong.last);
+  List longlat = GetStorage().read("mapCenter");
+  return LatLng(longlat.last, longlat.first);
 });
