@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:get_storage/get_storage.dart";
+import "package:latlong2/latlong.dart";
 import "package:moniz/data/database/db.dart";
 import "package:moniz/data/transactions.dart";
 
@@ -43,4 +45,15 @@ final chartScrollProvider = StateProvider<bool>((ref) => true);
 
 final graphByCatProvider = StateProvider<bool>((ref) {
   return false;
+});
+
+final initialCenterProvider = StateProvider<LatLng>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage()
+        .write("mapCenter", <double>[next.longitude, next.latitude]),
+  );
+  GetStorage().read("mapCenter") ??
+      GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
+  List latlong = GetStorage().read("mapCenter");
+  return LatLng(latlong.first, latlong.last);
 });

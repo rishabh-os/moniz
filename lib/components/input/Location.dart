@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_print
-
 import "dart:convert";
-
 import "package:flutter/material.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_map/flutter_map.dart";
@@ -10,6 +7,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
 import "package:location/location.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/api/debouncer.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/env/env.dart";
@@ -41,9 +39,11 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
         onPressed: () async {
           LocationFeature? result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) {
-            return const LocationMap();
+            // ? This is prop drilling and bad I know
+            return LocationMap(
+              initialLocation: widget.initialLocation,
+            );
           }));
-          print(result?.placeName);
           if (result != null) {
             setState(() {
               selectedLocation = result;
@@ -62,7 +62,11 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
 }
 
 class LocationMap extends ConsumerStatefulWidget {
-  const LocationMap({super.key});
+  const LocationMap({
+    super.key,
+    required this.initialLocation,
+  });
+  final LocationFeature? initialLocation;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LocationMapState();
@@ -82,19 +86,20 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
   Future<MapBoxGeocoding?> fetchResponse(String input) async {
     final mapCenter = animatedMapController.mapController.camera.center;
-    print(mapCenter);
-    final String proximity = "${mapCenter.latitude},${mapCenter.longitude}";
+    // ? Update stored mapCenter on search
+    ref.read(initialCenterProvider.notifier).state = mapCenter;
+    // ? Notice the order of lat and long smh
+    final String proximity = "${mapCenter.longitude},${mapCenter.latitude}";
     if (input == "") {
       return null;
     }
     final response = await http.get(Uri.parse(
         "https://api.mapbox.com/geocoding/v5/mapbox.places/${Uri.encodeFull(input)}.json?&proximity=$proximity&access_token=${Env.mapboxApikey}"));
+
     if (response.statusCode == 200) {
       final responseObject = MapBoxGeocoding.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
-      responseObject.features?.forEach((element) {
-        print(element.text);
-      });
+      responseObject.features?.forEach((element) {});
       return responseObject;
     } else {
       throw Exception(response.body);
@@ -103,11 +108,21 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
   LocationFeature? selectedLocation;
   late final Future<MapBoxGeocoding?> Function(String) debouncedSearch;
+  late LatLng initialCenter;
 
   @override
   void initState() {
     super.initState();
     debouncedSearch = debounce(fetchResponse);
+    initialCenter = ref.read(initialCenterProvider);
+    if (widget.initialLocation != null) {
+      selectedLocation = widget.initialLocation;
+      List<double> selectedCenter = selectedLocation!.center!;
+      Future.delayed(0.ms, () {
+        ref.read(initialCenterProvider.notifier).state =
+            LatLng(selectedCenter.last, selectedCenter.first);
+      });
+    }
   }
 
   @override
@@ -120,9 +135,9 @@ class _LocationMapState extends ConsumerState<LocationMap>
         children: [
           FlutterMap(
             mapController: animatedMapController.mapController,
-            options: const MapOptions(
-              initialCenter: LatLng(46.0748, 11.1217),
-              initialZoom: 12,
+            options: MapOptions(
+              initialCenter: initialCenter,
+              initialZoom: 15,
               maxZoom: 19,
             ),
             children: [
@@ -199,8 +214,15 @@ class _LocationMapState extends ConsumerState<LocationMap>
                       color: Theme.of(context).colorScheme.background,
                     ),
                     child: ListTile(
-                      onTap: () =>
-                          {Navigator.of(context).pop(selectedLocation)},
+                      onTap: () {
+                        final mapCenter =
+                            animatedMapController.mapController.camera.center;
+                        // ? Update stored mapCenter on location select
+                        ref.read(initialCenterProvider.notifier).state =
+                            mapCenter;
+
+                        Navigator.of(context).pop(selectedLocation);
+                      },
                       title: Text(
                         selectedLocation?.text ?? "",
                         overflow: TextOverflow.ellipsis,
@@ -227,6 +249,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
         ],
       ),
       floatingActionButton: FloatingActionButton(
+          heroTag: null,
           child: const Icon(Icons.my_location),
           onPressed: () async {
             Location location = Location();
@@ -251,7 +274,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
             }
 
             locationData = await location.getLocation();
-            print(locationData);
             animatedMapController.animateTo(
                 dest:
                     LatLng(locationData!.latitude!, locationData!.longitude!));
