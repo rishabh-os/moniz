@@ -8,8 +8,8 @@ jobs:
     name: Build & Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: "11"
@@ -26,7 +26,7 @@ jobs:
           MAPBOX_APIKEY=${{ secrets.MAPBOX_APIKEY }}
           GOOGLE_MAPS_APIKEY=${{ secrets.GOOGLE_MAPS_APIKEY }}
           EOF
-      - run: dart run build_runner build
+      - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --split-per-abi --no-tree-shake-icons
       - name: Push to Releases
         uses: ncipollo/release-action@v1
