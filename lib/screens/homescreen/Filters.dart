@@ -152,21 +152,26 @@ class _FiltersState extends ConsumerState<Filters> {
           data: const SliderThemeData(
             showValueIndicator: ShowValueIndicator.always,
           ),
-          child: RangeSlider(
-            min: 0,
-            max: frequencyHistorgram.length.toDouble() - 1,
-            values: rangeValues,
-            divisions: frequencyHistorgram.length - 1,
-            onChanged: (value) {
-              setState(() {
-                rangeValues = value;
-              });
-            },
-            labels: RangeLabels(
-              freqKeys[rangeValues.start.toInt()].abs().toString(),
-              freqKeys[rangeValues.end.toInt()].abs().toString(),
-            ),
-          ),
+          child: frequencyHistorgram.length > 1
+              ? RangeSlider(
+                  min: 0,
+                  max: frequencyHistorgram.length.toDouble() - 1,
+                  values: rangeValues,
+                  divisions: frequencyHistorgram.length - 1,
+                  onChanged: (value) {
+                    setState(() {
+                      rangeValues = value;
+                    });
+                  },
+                  labels: RangeLabels(
+                    freqKeys[rangeValues.start.toInt()].abs().toString(),
+                    freqKeys[rangeValues.end.toInt()].abs().toString(),
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Text("Not enough data to show a range slider"),
+                ),
         ),
         TextButton.icon(
             onPressed: () {

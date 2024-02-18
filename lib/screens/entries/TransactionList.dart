@@ -32,8 +32,14 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                 widget.transactions.indexWhere((m) => m.id == valueKey.value);
             return index;
           },
-          childCount: widget.transactions.length,
+          childCount: widget.transactions.length + 1,
           (context, index) {
+            if (index == widget.transactions.length) {
+              return const ListTile(
+                isThreeLine: true,
+                subtitle: Text(""),
+              );
+            }
             final trans = widget.transactions[index];
             final transAccount = ref
                 .watch(accountsProvider)
@@ -43,12 +49,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                 .firstWhere((element) => element.id == trans.categoryID);
             final key = GlobalKey();
             // ? Provides space so that the FAB doesn't block the last transaction
-            if (index == widget.transactions.length - 1) {
-              return const ListTile(
-                isThreeLine: true,
-                subtitle: Text(""),
-              );
-            }
+
             return InkWell(
               onTap: () => handleTap(key, context, trans),
               child: ListTile(

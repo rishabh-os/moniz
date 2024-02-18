@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:fluttertoast/fluttertoast.dart";
 import "package:get_storage/get_storage.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
@@ -109,6 +110,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           title: "Money Tracker",
           theme: theme,
           debugShowCheckedModeBanner: false,
+          builder: FToastBuilder(),
           initialRoute:
               GetStorage().read("welcome") == null ? "/welcome" : "/home",
           routes: {
