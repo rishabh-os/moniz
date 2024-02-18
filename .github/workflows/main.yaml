@@ -18,10 +18,18 @@ jobs:
         with:
           channel: "stable"
           cache: true
-      - run: flutter pub get
+      - name: Install dependenices
+        run: flutter pub get
+      - name: Set up env variables
+        run: |
+          cat << EOF > .env
+          MAPBOX_APIKEY=${{ secrets.MAPBOX_APIKEY }}
+          GOOGLE_MAPS_APIKEY=${{ secrets.GOOGLE_MAPS_APIKEY }}
+          EOF
+      - run: dart run build_runner build
       - run: flutter build apk --split-per-abi --no-tree-shake-icons
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/*.apk"
-          tag: v1.2
+          tag: v1.3
