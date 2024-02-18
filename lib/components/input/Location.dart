@@ -6,26 +6,27 @@ import "package:flutter_map_animations/flutter_map_animations.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
-import "package:location/location.dart";
+import "package:location/location.dart" as location_service;
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/api/debouncer.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/env/env.dart";
+import "package:url_launcher/url_launcher.dart";
 
 class LocationPicker extends ConsumerStatefulWidget {
   const LocationPicker(
       {super.key,
       required this.initialLocation,
       required this.returnSelectedLocation});
-  final LocationFeature? initialLocation;
-  final Function(LocationFeature location) returnSelectedLocation;
+  final GMapsPlace? initialLocation;
+  final Function(GMapsPlace location) returnSelectedLocation;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LocationPickerState();
 }
 
 class _LocationPickerState extends ConsumerState<LocationPicker> {
-  LocationFeature? selectedLocation;
+  GMapsPlace? selectedLocation;
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
         onPressed: () async {
-          LocationFeature? result = await Navigator.push(context,
+          GMapsPlace? result = await Navigator.push(context,
               MaterialPageRoute(builder: (context) {
             // ? This is prop drilling and bad I know
             return LocationMap(
@@ -53,7 +54,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
         },
         label: selectedLocation == null
             ? const Text("Add Location")
-            : Text(selectedLocation!.text ?? ""),
+            : Text(selectedLocation!.displayName!.text ?? ""),
         icon: const Icon(
           Icons.location_on,
           size: 16,
@@ -66,7 +67,7 @@ class LocationMap extends ConsumerStatefulWidget {
     super.key,
     required this.initialLocation,
   });
-  final LocationFeature? initialLocation;
+  final GMapsPlace? initialLocation;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LocationMapState();
@@ -79,35 +80,55 @@ class _LocationMapState extends ConsumerState<LocationMap>
     duration: const Duration(milliseconds: 500),
     curve: Curves.easeInOut,
   );
-  LocationData? locationData;
-  MapBoxGeocoding? suggestions;
+  location_service.LocationData? locationData;
+  GMapsResponse? suggestions;
 
   final TextEditingController searchController = TextEditingController();
 
-  Future<MapBoxGeocoding?> fetchResponse(String input) async {
+  Future<GMapsResponse?> fetchResponse(String input) async {
     final mapCenter = animatedMapController.mapController.camera.center;
     // ? Update stored mapCenter on search
     ref.read(initialCenterProvider.notifier).state = mapCenter;
     // ? Notice the order of lat and long smh
-    final String proximity = "${mapCenter.longitude},${mapCenter.latitude}";
+    final Map locationBias = {
+      "circle": {
+        "center": {
+          "latitude": mapCenter.latitude,
+          "longitude": mapCenter.longitude
+        },
+        "radius": 500.0
+      }
+    };
     if (input == "") {
       return null;
     }
-    final response = await http.get(Uri.parse(
-        "https://api.mapbox.com/geocoding/v5/mapbox.places/${Uri.encodeFull(input)}.json?&proximity=$proximity&access_token=${Env.mapboxApikey}"));
+    final response = await http.post(
+        Uri.parse("https://places.googleapis.com/v1/places:searchText"),
+        body: jsonEncode({
+          "textQuery": input,
+          "maxResultCount": 5,
+          "locationBias": locationBias
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": Env.googleMapsApikey,
+          // ? Requesting only the fields we need here
+          "X-Goog-Fieldmask":
+              "places.displayName,places.formattedAddress,places.location,places.googleMapsUri"
+        });
 
     if (response.statusCode == 200) {
-      final responseObject = MapBoxGeocoding.fromJson(
+      final responseObject = GMapsResponse.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
-      responseObject.features?.forEach((element) {});
+      responseObject.places?.forEach((element) {});
       return responseObject;
     } else {
       throw Exception(response.body);
     }
   }
 
-  LocationFeature? selectedLocation;
-  late final Future<MapBoxGeocoding?> Function(String) debouncedSearch;
+  GMapsPlace? selectedLocation;
+  late final Future<GMapsResponse?> Function(String) debouncedSearch;
   late LatLng initialCenter;
 
   @override
@@ -117,10 +138,10 @@ class _LocationMapState extends ConsumerState<LocationMap>
     initialCenter = ref.read(initialCenterProvider);
     if (widget.initialLocation != null) {
       selectedLocation = widget.initialLocation;
-      List<double> selectedCenter = selectedLocation!.center!;
+      Location selectedCenter = selectedLocation!.location!;
       Future.delayed(0.ms, () {
         ref.read(initialCenterProvider.notifier).state =
-            LatLng(selectedCenter.last, selectedCenter.first);
+            LatLng(selectedCenter.latitude ?? 0, selectedCenter.longitude ?? 0);
       });
     }
   }
@@ -143,17 +164,17 @@ class _LocationMapState extends ConsumerState<LocationMap>
             children: [
               TileLayer(
                 urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                userAgentPackageName: "com.example.moniz",
+                userAgentPackageName: "com.rishabhos.moniz",
               ),
               MarkerLayer(
                   markers: selectedLocation != null
                       ? [
                           Marker(
                               point: LatLng(
-                                  selectedLocation!.center?.last ??
+                                  selectedLocation!.location!.latitude ??
                                       animatedMapController
                                           .mapController.camera.center.latitude,
-                                  selectedLocation!.center?.first ??
+                                  selectedLocation!.location!.longitude ??
                                       animatedMapController.mapController.camera
                                           .center.longitude),
                               child: Icon(
@@ -191,19 +212,11 @@ class _LocationMapState extends ConsumerState<LocationMap>
                     barHintText: "Search for a nearby location",
                     suggestionsBuilder: (context, controller) async {
                       final results = await debouncedSearch(controller.text);
-                      List<ListTile> resultList = results?.features
+                      List<ListTile> resultList = results?.places
                               ?.map((location) =>
                                   resultTile(location, controller))
                               .toList() ??
                           [];
-                      controller.text.isNotEmpty
-                          ? resultList.add(resultTile(
-                              LocationFeature(
-                                text: controller.text,
-                                placeName: "Custom Location",
-                              ),
-                              controller))
-                          : null;
                       return resultList;
                     }),
                 const SizedBox(height: 4),
@@ -212,28 +225,41 @@ class _LocationMapState extends ConsumerState<LocationMap>
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     child: ListTile(
                       onTap: () {
-                        final mapCenter =
-                            animatedMapController.mapController.camera.center;
+                        final mapCenter = LatLng(
+                            selectedLocation!.location!.latitude ?? 0,
+                            selectedLocation!.location!.longitude ?? 0);
                         // ? Update stored mapCenter on location select
                         ref.read(initialCenterProvider.notifier).state =
                             mapCenter;
                         Navigator.of(context).pop(selectedLocation);
                       },
                       title: Text(
-                        selectedLocation?.text ?? "",
+                        selectedLocation?.displayName!.text ?? "",
                         overflow: TextOverflow.ellipsis,
                       ),
                       subtitle: Text(
-                        selectedLocation?.placeName ?? "",
+                        selectedLocation?.formattedAddress ?? "",
                         overflow: TextOverflow.ellipsis,
                       ),
-                      trailing: Icon(
-                        Icons.check_circle_rounded,
-                        color: Theme.of(context).colorScheme.secondary,
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              launchUrl(
+                                  Uri.parse(selectedLocation!.googleMapsUri!));
+                            },
+                            icon: const Icon(Icons.open_in_new_rounded),
+                          ),
+                          Icon(
+                            Icons.check_circle_rounded,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ],
                       ),
                     ),
                   )
@@ -252,10 +278,10 @@ class _LocationMapState extends ConsumerState<LocationMap>
           heroTag: null,
           child: const Icon(Icons.my_location),
           onPressed: () async {
-            Location location = Location();
+            location_service.Location location = location_service.Location();
 
             bool serviceEnabled;
-            PermissionStatus permissionGranted;
+            location_service.PermissionStatus permissionGranted;
 
             serviceEnabled = await location.serviceEnabled();
             if (!serviceEnabled) {
@@ -266,9 +292,10 @@ class _LocationMapState extends ConsumerState<LocationMap>
             }
 
             permissionGranted = await location.hasPermission();
-            if (permissionGranted == PermissionStatus.denied) {
+            if (permissionGranted == location_service.PermissionStatus.denied) {
               permissionGranted = await location.requestPermission();
-              if (permissionGranted != PermissionStatus.granted) {
+              if (permissionGranted !=
+                  location_service.PermissionStatus.granted) {
                 return;
               }
             }
@@ -281,14 +308,14 @@ class _LocationMapState extends ConsumerState<LocationMap>
     );
   }
 
-  ListTile resultTile(LocationFeature location, SearchController controller) {
+  ListTile resultTile(GMapsPlace location, SearchController controller) {
     return ListTile(
       onTap: () async {
         animatedMapController.animateTo(
             dest: LatLng(
-                location.center?.last ??
+                location.location!.latitude ??
                     animatedMapController.mapController.camera.center.latitude,
-                location.center?.first ??
+                location.location!.longitude ??
                     animatedMapController
                         .mapController.camera.center.longitude),
             curve: Curves.easeInOutCubicEmphasized);
@@ -304,12 +331,18 @@ class _LocationMapState extends ConsumerState<LocationMap>
         );
       },
       title: Text(
-        location.text ?? "",
+        location.displayName!.text ?? "",
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        location.placeName ?? "",
+        location.formattedAddress ?? "",
         overflow: TextOverflow.ellipsis,
+      ),
+      trailing: IconButton(
+        onPressed: () {
+          launchUrl(Uri.parse(location.googleMapsUri!));
+        },
+        icon: const Icon(Icons.open_in_new_rounded),
       ),
     );
   }

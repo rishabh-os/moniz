@@ -23,7 +23,7 @@ class Transaction {
   final String accountID;
   final double amount;
   final DateTime recorded;
-  final LocationFeature? location;
+  final GMapsPlace? location;
 
   Transaction copyWith({
     String? transactionType,
@@ -33,7 +33,7 @@ class Transaction {
     String? accountID,
     double? amount,
     DateTime? recorded,
-    LocationFeature? location,
+    GMapsPlace? location,
   }) {
     return Transaction(
       // ? This makes the ID field unchangeable

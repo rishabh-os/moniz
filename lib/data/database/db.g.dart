@@ -51,10 +51,10 @@ class $TransactionTableTable extends TransactionTable
   static const VerificationMeta _locationMeta =
       const VerificationMeta('location');
   @override
-  late final GeneratedColumnWithTypeConverter<LocationFeature?, String>
-      location = GeneratedColumn<String>('location', aliasedName, true,
+  late final GeneratedColumnWithTypeConverter<GMapsPlace?, String> location =
+      GeneratedColumn<String>('location', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<LocationFeature?>(
+          .withConverter<GMapsPlace?>(
               $TransactionTableTable.$converterlocationn);
   @override
   List<GeneratedColumn> get $columns => [
@@ -157,9 +157,9 @@ class $TransactionTableTable extends TransactionTable
     return $TransactionTableTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<LocationFeature, String> $converterlocation =
+  static TypeConverter<GMapsPlace, String> $converterlocation =
       const LocationFeatureConverter();
-  static TypeConverter<LocationFeature?, String?> $converterlocationn =
+  static TypeConverter<GMapsPlace?, String?> $converterlocationn =
       NullAwareTypeConverter.wrap($converterlocation);
 }
 
@@ -171,7 +171,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
   final Value<String> accountID;
   final Value<double> amount;
   final Value<DateTime> recorded;
-  final Value<LocationFeature?> location;
+  final Value<GMapsPlace?> location;
   final Value<int> rowid;
   const TransactionTableCompanion({
     this.id = const Value.absent(),
@@ -232,7 +232,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
       Value<String>? accountID,
       Value<double>? amount,
       Value<DateTime>? recorded,
-      Value<LocationFeature?>? location,
+      Value<GMapsPlace?>? location,
       Value<int>? rowid}) {
     return TransactionTableCompanion(
       id: id ?? this.id,

@@ -43,7 +43,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   late List<Account> accounts;
   late List<TransactionCategory> categories;
   String? _additionalInfo;
-  LocationFeature? _selectedLocation;
+  GMapsPlace? _selectedLocation;
   late TextEditingController addInfoController;
   late Function(Transaction transaction) saveAction;
   List<Widget> actions = [];
