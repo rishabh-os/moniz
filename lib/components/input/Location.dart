@@ -4,6 +4,7 @@ import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_animations/flutter_map_animations.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:fluttertoast/fluttertoast.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
 import "package:location/location.dart" as location_service;
@@ -130,10 +131,13 @@ class _LocationMapState extends ConsumerState<LocationMap>
   GMapsPlace? selectedLocation;
   late final Future<GMapsResponse?> Function(String) debouncedSearch;
   late LatLng initialCenter;
+  late FToast fToast;
 
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
     debouncedSearch = debounce(fetchResponse);
     initialCenter = ref.read(initialCenterProvider);
     if (widget.initialLocation != null) {
@@ -296,6 +300,24 @@ class _LocationMapState extends ConsumerState<LocationMap>
               permissionGranted = await location.requestPermission();
               if (permissionGranted !=
                   location_service.PermissionStatus.granted) {
+                Widget errorToast = Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 12.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    // ignore: use_build_context_synchronously
+                    color: Theme.of(context).colorScheme.errorContainer,
+                  ),
+                  child: const Text(
+                    "Location permission denied.\n Please change it in settings.",
+                    softWrap: true,
+                  ),
+                );
+                fToast.showToast(
+                  child: errorToast,
+                  gravity: ToastGravity.BOTTOM,
+                  // toastDuration: 5.seconds,
+                );
                 return;
               }
             }
