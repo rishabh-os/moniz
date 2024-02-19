@@ -31,6 +31,8 @@ jobs:
           EOF
       - run: cat .env
       - run: dart run build_runner build --delete-conflicting-outputs
+      - name: Run tmate
+        uses: mxschmitt/action-tmate@v2
       - run: flutter build apk --split-per-abi --no-tree-shake-icons
       - name: Push to Releases
         uses: ncipollo/release-action@v1
