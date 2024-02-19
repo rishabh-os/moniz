@@ -21,10 +21,13 @@ jobs:
       - name: Install dependenices
         run: flutter pub get
       - name: Set up env variables
+        env:
+          MAPBOX_APIKEY: ${{ secrets.MAPBOX_APIKEY }}
+          GOOGLE_MAPS_APIKEY: ${{ secrets.GOOGLE_MAPS_APIKEY }}
         run: |
           cat << EOF > .env
-          MAPBOX_APIKEY=${{ secrets.MAPBOX_APIKEY }}
-          GOOGLE_MAPS_APIKEY=${{ secrets.GOOGLE_MAPS_APIKEY }}
+          MAPBOX_APIKEY=$MAPBOX_APIKEY
+          GOOGLE_MAPS_APIKEY=$GOOGLE_MAPS_APIKEY
           EOF
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --split-per-abi --no-tree-shake-icons

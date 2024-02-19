@@ -80,7 +80,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         .where((e) => e.accountID == widget.editedAccount!.id)
         .toList();
     List<Account> accounts = ref.watch(accountsProvider);
-    if (!context.mounted) return;
+    if (!mounted) return;
     if (accounts.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You can't delete the last account"),
@@ -117,7 +117,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         .toList();
     List<TransactionCategory> categories = ref.watch(categoriesProvider);
 
-    if (!context.mounted) return;
+    if (!mounted) return;
     if (categories.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("You can't delete the last category"),
