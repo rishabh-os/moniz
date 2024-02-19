@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_animations/flutter_map_animations.dart";
+import "package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:http/http.dart" as http;
@@ -79,7 +80,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
   late final animatedMapController = AnimatedMapController(
     vsync: this,
     duration: const Duration(milliseconds: 500),
-    curve: Curves.easeInOut,
+    curve: Curves.easeInOutCubicEmphasized,
   );
   location_service.LocationData? locationData;
   GMapsResponse? suggestions;
@@ -169,6 +170,8 @@ class _LocationMapState extends ConsumerState<LocationMap>
               TileLayer(
                 urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 userAgentPackageName: "com.rishabhos.moniz",
+                tileProvider:
+                    CancellableNetworkTileProvider(silenceExceptions: true),
               ),
               MarkerLayer(
                   markers: selectedLocation != null
@@ -324,6 +327,8 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
             locationData = await location.getLocation();
             animatedMapController.animateTo(
+                rotation: 0,
+                zoom: 15,
                 dest:
                     LatLng(locationData!.latitude!, locationData!.longitude!));
           }),
@@ -334,13 +339,14 @@ class _LocationMapState extends ConsumerState<LocationMap>
     return ListTile(
       onTap: () async {
         animatedMapController.animateTo(
-            dest: LatLng(
-                location.location!.latitude ??
-                    animatedMapController.mapController.camera.center.latitude,
-                location.location!.longitude ??
-                    animatedMapController
-                        .mapController.camera.center.longitude),
-            curve: Curves.easeInOutCubicEmphasized);
+          rotation: 0,
+          zoom: 15,
+          dest: LatLng(
+              location.location!.latitude ??
+                  animatedMapController.mapController.camera.center.latitude,
+              location.location!.longitude ??
+                  animatedMapController.mapController.camera.center.longitude),
+        );
         controller.closeView(null);
 
         setState(() {
