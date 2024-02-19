@@ -29,6 +29,7 @@ jobs:
           MAPBOX_APIKEY=$MAPBOX_APIKEY
           GOOGLE_MAPS_APIKEY=$GOOGLE_MAPS_APIKEY
           EOF
+      - run: cat .env
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --split-per-abi --no-tree-shake-icons
       - name: Push to Releases
