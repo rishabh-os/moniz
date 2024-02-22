@@ -4,6 +4,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
+import "package:moniz/main.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -89,27 +90,94 @@ class _SettingsState extends ConsumerState<Settings> {
             leading: const Icon(Icons.file_upload_outlined),
           ),
           ListTile(
-            onTap: () => ref.read(dbProvider).importDB(),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Are you sure?"),
+                    content: const Text(
+                        "This will delete any existing entries unless you have already exported them."),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("Cancel")),
+                      TextButton(
+                          onPressed: () async {
+                            showDialog(
+                                barrierDismissible: true,
+                                context: context,
+                                builder: (context) {
+                                  return const Dialog(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 32),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircularProgressIndicator(),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                            bool imported =
+                                await ref.read(dbProvider).importDB();
+                            if (!context.mounted) return;
+                            if (imported) {
+                              await ref.read(dbProvider).close();
+                              if (!context.mounted) return;
+                              RestartWidget.restartApp(context);
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: const Text("Import")),
+                    ],
+                  );
+                },
+              );
+            },
             title: const Text("Import data"),
-            subtitle: const Text("App requires restart after import"),
             leading: const Icon(Icons.file_download_outlined),
           ),
           ListTile(
             title: const Text("Rerun the tutorial"),
             onTap: () {
-              ref
-                  .read(entriesTutorialCompletedProvider.notifier)
-                  .update((state) => false);
-              ref
-                  .read(manageTutorialCompletedProvider.notifier)
-                  .update((state) => false);
-              ref
-                  .read(analysisTutorialCompletedProvider.notifier)
-                  .update((state) => false);
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/welcome",
-                (route) => false,
-              );
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Are you sure?"),
+                      content: const Text(
+                          "You will have to finish the tutorial again."),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("Cancel")),
+                        TextButton(
+                            onPressed: () {
+                              ref
+                                  .read(
+                                      entriesTutorialCompletedProvider.notifier)
+                                  .update((state) => false);
+                              ref
+                                  .read(
+                                      manageTutorialCompletedProvider.notifier)
+                                  .update((state) => false);
+                              ref
+                                  .read(analysisTutorialCompletedProvider
+                                      .notifier)
+                                  .update((state) => false);
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/welcome",
+                                (route) => false,
+                              );
+                            },
+                            child: const Text("Rerun")),
+                      ],
+                    );
+                  });
             },
           )
         ],

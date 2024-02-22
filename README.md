@@ -25,7 +25,7 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] Animate transaction amount update
 - [x] Support dynamic themes
 - [x] Make categories reorderable
-- [ ] Solve the middle nav icon getting selected on transition
+- [x] Solve the middle nav icon getting selected on transition - solved by removing the PageView
 - [x] Quick filters state inconsistency - still present, hard to reproduce reliably
   - This was due to the loading being done on every call
 - [ ] Make filters global
@@ -45,4 +45,5 @@ samples, guidance on mobile development, and a full API reference.
   - [ ] Make them archivable or hideable
 - [x] Add location to entries (optional)
   - [x] Move to Google Maps because more locations
-- [ ] Make app restart on data import
+- [x] Make app restart on data import
+- [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase

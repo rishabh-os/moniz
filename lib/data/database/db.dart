@@ -183,7 +183,7 @@ class MyDatabase extends _$MyDatabase {
     Share.shareXFiles([dbXFile]);
   }
 
-  void importDB() async {
+  Future<bool> importDB() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         // type: FileType.custom,
         // allowedExtensions: ["sqlite"],
@@ -193,9 +193,11 @@ class MyDatabase extends _$MyDatabase {
       File file = File(result.files.single.path!);
       final dbFolder = await getApplicationDocumentsDirectory();
       final oldFile = File(p.join(dbFolder.path, "db.sqlite"));
-      oldFile.delete();
-      file.copy(p.join(dbFolder.path, "db.sqlite"));
-      GetStorage().remove("order");
+      await oldFile.delete();
+      await file.copy(p.join(dbFolder.path, "db.sqlite"));
+      return true;
+    } else {
+      return false;
     }
   }
 }
