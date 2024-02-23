@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:flutter_iconpicker/flutter_iconpicker.dart";
-import "package:moniz/data/AllIcons.dart";
 import "package:moniz/screens/manage/AccountIcon.dart";
 
 class IconPicker extends StatefulWidget {
@@ -23,14 +22,12 @@ class _IconPickerState extends State<IconPicker> {
   @override
   void initState() {
     super.initState();
-    // ? This is a huge list, so it isn't synchronous
-    allIcons.removeWhere((key, value) => !key.contains("rounded"));
     _icon = IconData(widget.iconCodepoint);
   }
 
   _pickIcon() async {
     IconData? icon = await showIconPicker(context,
-        iconPackModes: [IconPack.custom], customIconPack: allIcons);
+        iconPackModes: [IconPack.roundedMaterial]);
 
     setState(() {
       if (icon != null) {
