@@ -8,15 +8,11 @@ class AccountCard extends StatefulWidget {
   const AccountCard({
     required this.key,
     required this.account,
-    required this.income,
-    required this.expense,
   }) : super(key: key);
   @override
   // ignore: overridden_fields
   final GlobalKey key;
   final Account account;
-  final double income;
-  final double expense;
 
   @override
   State<AccountCard> createState() => _AccountCardState();
@@ -28,7 +24,6 @@ class _AccountCardState extends State<AccountCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        surfaceTintColor: Color(widget.account.color),
         child: Column(
           children: [
             Container(
@@ -38,10 +33,10 @@ class _AccountCardState extends State<AccountCard> {
                           seedColor: Color(widget.account.color),
                           brightness: Theme.of(context).brightness)
                       .primaryContainer,
-                  borderRadius: const BorderRadius.only(
-                      // ? The number 12 from Card definition
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12))),
+                  borderRadius: const BorderRadius.all(
+                    // ? The number 12 from Card definition
+                    Radius.circular(12),
+                  )),
               child: Column(
                 children: [
                   Row(
@@ -66,12 +61,12 @@ class _AccountCardState extends State<AccountCard> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(top: 8, bottom: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Transform.scale(
-                          scale: 1.5,
+                          scale: 1.6,
                           child: MoneyDisplay(amount: widget.account.balance),
                         )
                       ],
@@ -80,35 +75,6 @@ class _AccountCardState extends State<AccountCard> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.arrow_circle_down),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    MoneyDisplay(amount: widget.income),
-                  ],
-                ),
-                const SizedBox(
-                  height: 60,
-                  child: VerticalDivider(
-                    thickness: 2,
-                  ),
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.arrow_circle_up),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    MoneyDisplay(amount: widget.expense),
-                  ],
-                ),
-              ],
-            )
           ],
         ),
       ),

@@ -2,7 +2,6 @@ import "package:animations/animations.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/account.dart";
-import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/manage/AccountCard.dart";
 import "package:moniz/screens/manage/AccountEditor.dart";
 import "package:moniz/screens/manage/Categories.dart";
@@ -42,24 +41,11 @@ class _AccountsState extends ConsumerState<Accounts> {
           itemCount: accounts.length,
           itemBuilder: (context, index) {
             var acc = accounts[index];
-            List<Transaction> transactionList = ref.watch(transactionsProvider);
-            double accountIncome = 0;
-            double accountExpense = 0;
-            for (var trans in transactionList) {
-              if (trans.accountID == acc.id) {
-                if (trans.amount > 0) {
-                  accountIncome += trans.amount;
-                } else {
-                  accountExpense += trans.amount.abs();
-                }
-              }
-            }
             final key = GlobalObjectKey(acc.id);
             return AccountCard(
-                key: key,
-                account: acc,
-                income: accountIncome,
-                expense: accountExpense);
+              key: key,
+              account: acc,
+            );
           },
         ),
         OpenContainer(
