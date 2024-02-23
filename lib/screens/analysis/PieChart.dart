@@ -8,6 +8,19 @@ import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 
+class PieChartData {
+  final Classifier classifier;
+  double amount;
+  PieChartData({
+    required this.classifier,
+    this.amount = 0,
+  });
+
+  void add(double amount) {
+    this.amount += amount;
+  }
+}
+
 class CategoryChart extends ConsumerStatefulWidget {
   const CategoryChart({super.key});
   @override
@@ -25,37 +38,27 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    (List, Map<String, double>) spendsByCat() {
-      List<Transaction> transactionList = ref.watch(transactionsProvider);
-      List<TransactionCategory> catergoryList = ref.watch(categoriesProvider);
-      // ? Init a dict with spends from all categories
-      Map<String, double> spendsByCat = {
-        for (var v in catergoryList) v.id: 0.0
-      };
+    List<Transaction> transactionList = ref.watch(transactionsProvider);
+    List<PieChartData> spendsByClassifier(bool isCat) {
+      List<Classifier> classifierList =
+          isCat ? ref.watch(categoriesProvider) : ref.watch(accountsProvider);
+      List<PieChartData> spendsByClass = [
+        for (var v in classifierList) PieChartData(classifier: v)
+      ];
       for (var trans in transactionList) {
+        String id = isCat ? trans.categoryID : trans.accountID;
         if (trans.amount < 0) {
-          spendsByCat.update(trans.categoryID,
-              (value) => spendsByCat[trans.categoryID]! + trans.amount.abs());
+          spendsByClass
+              .firstWhere((element) => element.classifier.id == id)
+              .add(trans.amount.abs());
         }
       }
-      return (catergoryList, spendsByCat);
+      return spendsByClass;
     }
 
-    (List, Map<String, double>) spendsByAcc() {
-      List<Transaction> transactionList = ref.watch(transactionsProvider);
-      List<Account> accountList = ref.watch(accountsProvider);
-      // ? Init a dict with spends from all categories
-      Map<String, double> spendsByAcc = {for (var v in accountList) v.id: 0.0};
-      for (var trans in transactionList) {
-        if (trans.amount < 0) {
-          spendsByAcc.update(trans.accountID,
-              (value) => spendsByAcc[trans.accountID]! + trans.amount.abs());
-        }
-      }
-      return (accountList, spendsByAcc);
-    }
-
-    var spends = showCat ? spendsByCat() : spendsByAcc();
+    List<PieChartData> spends = spendsByClassifier(showCat);
+    List<PieChartData> unsortedSpends = [...spends];
+    spends.sort((e1, e2) => e2.amount.compareTo(e1.amount));
 
     NumberFormat numberFormat = ref.watch(numberFormatProvider);
     _legend = Padding(
@@ -65,8 +68,8 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         shrinkWrap: true,
         crossAxisCount: 3,
         childAspectRatio: 2.5,
-        children: spends.$2.entries.map((label) {
-          var cat = spends.$1.firstWhere((element) => element.id == label.key);
+        children: unsortedSpends.map((label) {
+          Classifier classifier = label.classifier;
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -79,15 +82,16 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                 child: Padding(
                   padding: const EdgeInsets.all(6),
                   child: Icon(
-                    IconData(cat.iconCodepoint, fontFamily: "MaterialIcons"),
+                    IconData(classifier.iconCodepoint,
+                        fontFamily: "MaterialIcons"),
                     size: 24,
-                    color: Color(cat.color),
+                    color: Color(classifier.color),
                   ),
                 ),
               ),
               const SizedBox(width: 4),
               Text(
-                numberFormat.format(label.value),
+                numberFormat.format(label.amount),
                 style: Theme.of(context).textTheme.bodyLarge,
               )
             ],
@@ -95,6 +99,10 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         }).toList(),
       ),
     );
+
+    List<Map<String, dynamic>> data = spends
+        .map((e) => {"classifier": e.classifier.id, "amount": e.amount})
+        .toList();
 
     // ? AspectRatio prevents overflow errors in a Column
     return SingleChildScrollView(
@@ -130,21 +138,19 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
             aspectRatio: 1.4,
             child: Chart(
               rebuild: true,
-              data: spends.$2.entries
-                  .map((e) => {"genre": e.key, "sold": e.value})
-                  .toList(),
+              data: data,
               variables: {
-                "genre": Variable(
-                  accessor: (Map map) => map["genre"] as String,
+                "classifier": Variable(
+                  accessor: (Map map) => map["classifier"] as String,
                 ),
-                "sold": Variable(
-                  accessor: (Map map) => map["sold"] as num,
+                "amount": Variable(
+                  accessor: (Map map) => map["amount"] as num,
                   scale: LinearScale(min: 0),
                 ),
               },
               transforms: [
                 Proportion(
-                  variable: "sold",
+                  variable: "amount",
                   as: "percent",
                 ),
               ],
@@ -154,18 +160,24 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                       value: RectShape(
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
                   )),
-                  position: Varset("percent") / Varset("genre"),
+                  position: Varset("percent") / Varset("classifier"),
                   color: ColorEncode(
-                      variable: "genre",
+                      variable: "classifier",
                       // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
-                      values:
-                          spends.$1.map((e) => Color(e.color)).toList().length >
-                                  1
-                              ? spends.$1.map((e) => Color(e.color)).toList()
-                              : [
-                                  spends.$1.map((e) => Color(e.color)).first,
-                                  Colors.blue
-                                ]),
+                      values: spends
+                                  .map((e) => Color(e.classifier.color))
+                                  .toList()
+                                  .length >
+                              1
+                          ? spends
+                              .map((e) => Color(e.classifier.color))
+                              .toList()
+                          : [
+                              spends
+                                  .map((e) => Color(e.classifier.color))
+                                  .first,
+                              Colors.blue
+                            ]),
                   modifiers: [StackModifier()],
                   transition: Transition(
                       duration: const Duration(milliseconds: 800),
