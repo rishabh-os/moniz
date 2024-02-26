@@ -50,6 +50,7 @@ dependencies:
   url_launcher: ^6.2.4
   fluttertoast: ^8.2.4
   flutter_map_cancellable_tile_provider: ^2.0.0
+  glass_kit: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -91,3 +92,5 @@ flutter:
         - asset: fonts/VM/VictorMono-Regular.otf
         - asset: fonts/VM/VictorMono-SemiBold.otf
           weight: 800
+  assets:
+    - assets/coin4.png

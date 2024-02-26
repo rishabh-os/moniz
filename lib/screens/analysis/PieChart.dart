@@ -32,6 +32,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
   @override
   bool get wantKeepAlive => true;
   bool showCat = true;
+  bool showIncome = false;
   late List<PieChartSectionData> data;
   late Widget _legend;
 
@@ -47,7 +48,8 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
       ];
       for (var trans in transactionList) {
         String id = isCat ? trans.categoryID : trans.accountID;
-        if (trans.amount < 0) {
+        bool condition = showIncome ? trans.amount > 0 : trans.amount < 0;
+        if (condition) {
           spendsByClass
               .firstWhere((element) => element.classifier.id == id)
               .add(trans.amount.abs());
@@ -59,6 +61,28 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
     List<PieChartData> spends = spendsByClassifier(showCat);
     List<PieChartData> unsortedSpends = [...spends];
     spends.sort((e1, e2) => e2.amount.compareTo(e1.amount));
+
+    Padding dropdownChoice(
+        (String, String) values, bool choice, Function(bool x) onChange) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: DropdownButton(
+            alignment: Alignment.center,
+            borderRadius: BorderRadius.circular(15),
+            underline: Container(),
+            value: choice.toString(),
+            items: [true, false].map<DropdownMenuItem>((value) {
+              return DropdownMenuItem(
+                value: value.toString(),
+                child: Text(value ? values.$1 : values.$2),
+              );
+            }).toList(),
+            onChanged: (e) {
+              var x = bool.parse(e!);
+              onChange(x);
+            }),
+      );
+    }
 
     NumberFormat numberFormat = ref.watch(numberFormatProvider);
     _legend = Padding(
@@ -111,28 +135,23 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              "Show spends by",
+              "Show",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(width: 5),
-            DropdownButton(
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.center,
-                borderRadius: BorderRadius.circular(15),
-                underline: Container(),
-                value: showCat.toString(),
-                items: [true, false].map<DropdownMenuItem>((value) {
-                  return DropdownMenuItem(
-                    value: value.toString(),
-                    child: Text(value ? "Category" : "Account"),
-                  );
-                }).toList(),
-                onChanged: (e) {
-                  var x = bool.parse(e!);
-                  setState(() {
-                    showCat = x;
-                  });
-                }),
+            dropdownChoice(("Income", "Expense"), showIncome, (bool x) {
+              setState(() {
+                showIncome = x;
+              });
+            }),
+            Text(
+              "by",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            dropdownChoice(("Category", "Account"), showCat, (bool x) {
+              setState(() {
+                showCat = x;
+              });
+            }),
           ]),
           AspectRatio(
             aspectRatio: 1.4,
@@ -193,8 +212,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
             ),
           ),
           const SizedBox(height: 20),
-          AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200), child: _legend),
+          _legend,
           // ? Provides space so that the FAB doesn't block elements
           const ListTile(
             isThreeLine: true,
