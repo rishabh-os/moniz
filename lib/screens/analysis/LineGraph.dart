@@ -28,7 +28,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
   @override
   Widget build(BuildContext context) {
     bool showByCat = ref.watch(graphByCatProvider);
-    List<Transaction> transactionList = ref.watch(transactionsProvider);
+    List<Transaction> transactionList = ref.watch(searchedTransProvider);
     final range = ref.watch(globalDateRangeProvider);
     final numberOfDays = range.end.difference(range.start).inDays;
     days = List.generate(

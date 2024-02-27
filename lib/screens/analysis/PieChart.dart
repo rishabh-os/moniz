@@ -39,7 +39,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    List<Transaction> transactionList = ref.watch(transactionsProvider);
+    List<Transaction> transactionList = ref.watch(searchedTransProvider);
     List<PieChartData> spendsByClassifier(bool isCat) {
       List<Classifier> classifierList =
           isCat ? ref.watch(categoriesProvider) : ref.watch(accountsProvider);

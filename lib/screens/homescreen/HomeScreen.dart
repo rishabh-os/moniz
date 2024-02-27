@@ -105,7 +105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             reverseDuration: const Duration(milliseconds: 200),
-            child: _selectedIndex == 0
+            child: _selectedIndex <= 1
                 ? IconButton.filledTonal(
                     key: listOfKeys[3],
                     tooltip: "Filters",
