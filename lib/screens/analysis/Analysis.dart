@@ -61,3 +61,22 @@ class _AnalysisState extends ConsumerState<Analysis> {
     return display;
   }
 }
+
+class NoData extends StatelessWidget {
+  const NoData({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+        child: Text(
+      "No data",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 24,
+        letterSpacing: 1,
+      ),
+    ));
+  }
+}

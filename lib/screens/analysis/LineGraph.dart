@@ -7,6 +7,7 @@ import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
+import "package:moniz/screens/analysis/Analysis.dart";
 
 class LineGraph extends ConsumerStatefulWidget {
   const LineGraph({super.key});
@@ -86,23 +87,21 @@ class _LineGraphState extends ConsumerState<LineGraph> {
         },
         title: const Text("Show category-wise spends"),
       ),
-      Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: AspectRatio(
-            aspectRatio: 1.4,
-            child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 18,
-                  left: 12,
-                  bottom: 18,
-                ),
-                child: LineChart(
-                  data: showByCat ? spendsByCategory : spendsByDay,
-                  maxY: spendsByDay.reduce((currentDay, nextDay) =>
-                      currentDay[1] > nextDay[1] ? currentDay : nextDay)[1],
-                  showCat: showByCat,
-                )),
-          ))
+      AspectRatio(
+        aspectRatio: 1.4,
+        child: Padding(
+            // ? It different to account for how it looks with the axis labels
+            padding: const EdgeInsets.only(
+              right: 18,
+              left: 12,
+            ),
+            child: LineChart(
+              data: showByCat ? spendsByCategory : spendsByDay,
+              maxY: spendsByDay.reduce((currentDay, nextDay) =>
+                  currentDay[1] > nextDay[1] ? currentDay : nextDay)[1],
+              showCat: showByCat,
+            )),
+      )
     ]));
   }
 }
@@ -301,16 +300,18 @@ class _LineChartState extends ConsumerState<LineChart> {
       },
       onExit: (event) =>
           ref.read(chartScrollProvider.notifier).update((state) => true),
-      child: Chart(
-        rebuild: true,
-        data: widget.data,
-        variables: variables,
-        marks: marks,
-        axes: axes2,
-        coord: rectCoord,
-        selections: selections2,
-        tooltip: tooltipGuide,
-      ),
+      child: widget.data.every((element) => element.last == 0)
+          ? const NoData()
+          : Chart(
+              rebuild: true,
+              data: widget.data,
+              variables: variables,
+              marks: marks,
+              axes: axes2,
+              coord: rectCoord,
+              selections: selections2,
+              tooltip: tooltipGuide,
+            ),
     );
   }
 }

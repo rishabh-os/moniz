@@ -31,14 +31,15 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Make filters global
   - [x] Make range slider values better, not linear
 
-    Thanks to https://www.howdoi.me/blog/slider-scale.html for the implementation details. Some selection bugs persist when adding or removing transactions
+    Thanks to https://www.howdoi.me/blog/slider-scale.html for the implementation details.
+  - [ ] Some selection bugs persist when adding or removing transactions
   - [ ] Range slider remains global
 - [x] Import databases
 - [x] Fix the tutorial after the layout changes
   - [ ] Manage tutorial still has legibility issues
 - [ ] Rewrite tests
 - [ ] Graph transition animation bugs
-- [ ] Better no transactions found handling on analysis page
+- [x] Better no transactions found handling on analysis page
 - [ ] A way to add and manage events
   - [ ] Add transactions to events
 - [x] Make additional info multiline

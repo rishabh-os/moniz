@@ -7,6 +7,7 @@ import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
+import "package:moniz/screens/analysis/Analysis.dart";
 
 class PieChartData {
   final Classifier classifier;
@@ -127,7 +128,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
     List<Map<String, dynamic>> data = spends
         .map((e) => {"classifier": e.classifier.id, "amount": e.amount})
         .toList();
-
     // ? AspectRatio prevents overflow errors in a Column
     return SingleChildScrollView(
       child: Column(
@@ -155,61 +155,64 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
           ]),
           AspectRatio(
             aspectRatio: 1.4,
-            child: Chart(
-              rebuild: true,
-              data: data,
-              variables: {
-                "classifier": Variable(
-                  accessor: (Map map) => map["classifier"] as String,
-                ),
-                "amount": Variable(
-                  accessor: (Map map) => map["amount"] as num,
-                  scale: LinearScale(min: 0),
-                ),
-              },
-              transforms: [
-                Proportion(
-                  variable: "amount",
-                  as: "percent",
-                ),
-              ],
-              marks: [
-                IntervalMark(
-                  shape: ShapeEncode(
-                      value: RectShape(
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  )),
-                  position: Varset("percent") / Varset("classifier"),
-                  color: ColorEncode(
-                      variable: "classifier",
-                      // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
-                      values: spends
-                                  .map((e) => Color(e.classifier.color))
-                                  .toList()
-                                  .length >
-                              1
-                          ? spends
-                              .map((e) => Color(e.classifier.color))
-                              .toList()
-                          : [
-                              spends
-                                  .map((e) => Color(e.classifier.color))
-                                  .first,
-                              Colors.blue
-                            ]),
-                  modifiers: [StackModifier()],
-                  transition: Transition(
-                      duration: const Duration(milliseconds: 800),
-                      curve: Curves.easeOutQuint),
-                  entrance: {MarkEntrance.opacity, MarkEntrance.y},
-                )
-              ],
-              coord: PolarCoord(
-                  transposed: true,
-                  dimCount: 1,
-                  startRadius: 0.4,
-                  endRadius: 0.9),
-            ),
+            child: data.every((e) => e["amount"] == 0)
+                ? const NoData()
+                : Chart(
+                    rebuild: true,
+                    data: data,
+                    variables: {
+                      "classifier": Variable(
+                        accessor: (Map map) => map["classifier"] as String,
+                      ),
+                      "amount": Variable(
+                        accessor: (Map map) => map["amount"] as num,
+                        scale: LinearScale(min: 0),
+                      ),
+                    },
+                    transforms: [
+                      Proportion(
+                        variable: "amount",
+                        as: "percent",
+                      ),
+                    ],
+                    marks: [
+                      IntervalMark(
+                        shape: ShapeEncode(
+                            value: RectShape(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
+                        )),
+                        position: Varset("percent") / Varset("classifier"),
+                        color: ColorEncode(
+                            variable: "classifier",
+                            // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
+                            values: spends
+                                        .map((e) => Color(e.classifier.color))
+                                        .toList()
+                                        .length >
+                                    1
+                                ? spends
+                                    .map((e) => Color(e.classifier.color))
+                                    .toList()
+                                : [
+                                    spends
+                                        .map((e) => Color(e.classifier.color))
+                                        .first,
+                                    Colors.blue
+                                  ]),
+                        modifiers: [StackModifier()],
+                        transition: Transition(
+                            duration: const Duration(milliseconds: 800),
+                            curve: Curves.easeOutQuint),
+                        entrance: {MarkEntrance.opacity, MarkEntrance.y},
+                      )
+                    ],
+                    coord: PolarCoord(
+                        transposed: true,
+                        dimCount: 1,
+                        startRadius: 0.4,
+                        endRadius: 0.9),
+                  ),
           ),
           const SizedBox(height: 20),
           _legend,
