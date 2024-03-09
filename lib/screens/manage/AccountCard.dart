@@ -60,8 +60,9 @@ class _AccountCardState extends State<AccountCard>
     // ? As a result the frosted glass effect flickers while resizing but this is such a niche edge case idc
     final RenderBox? renderBox =
         infoKey.currentContext?.findRenderObject() as RenderBox?;
-    final cardW = renderBox == null ? 0.0 : renderBox.size.width;
-    final cardH = renderBox == null ? 0.0 : renderBox.size.height;
+    // ? The null value is not zero to prevent excpetions on the first few frames
+    final cardW = renderBox == null ? 100.0 : renderBox.size.width;
+    final cardH = renderBox == null ? 100.0 : renderBox.size.height;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Stack(
