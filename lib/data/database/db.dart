@@ -2,8 +2,8 @@ import "dart:io";
 import "package:drift/drift.dart";
 import "package:drift/native.dart";
 import "package:file_picker/file_picker.dart";
-// ? This prevents everything from erroring out
-import "package:flutter/material.dart" as m;
+// ? This prevents everything conflicting Table imports in db.g.dart
+import "package:flutter/material.dart" show Icons, Colors;
 import "package:moniz/data/account.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/data/category.dart";
@@ -73,36 +73,36 @@ class MyDatabase extends _$MyDatabase {
             CategoriesTableCompanion.insert(
                 id: "id1",
                 name: "Default",
-                iconCodepoint: m.Icons.account_circle_rounded.codePoint,
-                color: m.Colors.blue.value,
+                iconCodepoint: Icons.account_circle_rounded.codePoint,
+                color: Colors.blue.value,
                 order: 0,
                 isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id2",
                 name: "Food",
-                iconCodepoint: m.Icons.wine_bar.codePoint,
-                color: m.Colors.orange.value,
+                iconCodepoint: Icons.wine_bar.codePoint,
+                color: Colors.orange.value,
                 order: 1,
                 isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id3",
                 name: "Rent",
-                iconCodepoint: m.Icons.house_rounded.codePoint,
-                color: m.Colors.green.value,
+                iconCodepoint: Icons.house_rounded.codePoint,
+                color: Colors.green.value,
                 order: 2,
                 isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id4",
                 name: "Shopping",
-                iconCodepoint: m.Icons.shopping_bag_rounded.codePoint,
-                color: m.Colors.lime.value,
+                iconCodepoint: Icons.shopping_bag_rounded.codePoint,
+                color: Colors.lime.value,
                 order: 3,
                 isArchived: false),
             CategoriesTableCompanion.insert(
                 id: "id5",
                 name: "Utility",
-                iconCodepoint: m.Icons.electrical_services_rounded.codePoint,
-                color: m.Colors.pink.value,
+                iconCodepoint: Icons.electrical_services_rounded.codePoint,
+                color: Colors.pink.value,
                 order: 4,
                 isArchived: false),
           ]));
@@ -117,8 +117,8 @@ class MyDatabase extends _$MyDatabase {
             AccountsTableCompanion.insert(
               id: "accId1",
               name: "Cash",
-              iconCodepoint: m.Icons.monetization_on.codePoint,
-              color: m.Colors.green.value,
+              iconCodepoint: Icons.monetization_on.codePoint,
+              color: Colors.green.value,
               order: 0,
               isArchived: false,
               balance: 0,
