@@ -1,0 +1,3 @@
+rust_input: rust/src/api/**/*.rs
+dart_output: lib/rust
+rust_output: rust/src/frb/frb.rs
