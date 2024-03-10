@@ -48,6 +48,7 @@ class _AccountsState extends ConsumerState<Accounts> {
             );
           },
         ),
+        const SizedBox(height: 8),
         OpenContainer(
             closedColor: Theme.of(context).colorScheme.secondaryContainer,
             middleColor: Theme.of(context).colorScheme.secondaryContainer,

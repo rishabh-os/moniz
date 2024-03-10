@@ -73,7 +73,7 @@ class _CategoriesState extends ConsumerState<Categories> {
             );
           },
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         OpenContainer(
             closedColor: Theme.of(context).colorScheme.secondaryContainer,
             middleColor: Theme.of(context).colorScheme.secondaryContainer,
