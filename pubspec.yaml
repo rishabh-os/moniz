@@ -51,6 +51,9 @@ dependencies:
   fluttertoast: ^8.2.4
   flutter_map_cancellable_tile_provider: ^2.0.0
   glass_kit: ^3.0.0
+  rust_lib_moniz:
+    path: rust_builder
+  flutter_rust_bridge: 2.0.0-dev.28
 
 dev_dependencies:
   flutter_test:
@@ -94,3 +97,9 @@ flutter:
           weight: 800
   assets:
     - assets/coin4.png
+
+# put this somewhere in your pubspec.yaml
+flutter_rust_bridge:
+  rust_input: rust/src/api/**/*.rs
+  dart_output: lib/rust
+  rust_output: rust/src/generated/frb.rs

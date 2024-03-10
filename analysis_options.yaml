@@ -5,3 +5,8 @@ linter:
     file_names: false
     directives_ordering: true
     prefer_double_quotes: true
+
+analyzer:
+  exclude:
+    - lib/rust/**
+    - build/**

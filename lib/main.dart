@@ -1,4 +1,5 @@
 import "dart:io";
+
 import "package:dynamic_color/dynamic_color.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
@@ -12,6 +13,7 @@ import "package:moniz/data/SimpleStore/themeStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
+import "package:moniz/rust/frb_generated.dart";
 import "package:moniz/screens/Settings.dart";
 import "package:moniz/screens/Welcome.dart";
 import "package:moniz/screens/homescreen/HomeScreen.dart";
@@ -27,6 +29,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 void main() async {
+  await RustLib.init();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await GetStorage.init();
