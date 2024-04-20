@@ -5,18 +5,15 @@ import "package:latlong2/latlong.dart";
 import "package:moniz/data/database/db.dart";
 import "package:moniz/data/transactions.dart";
 
-final globalDateRangeProvider =
-    StateProvider<DateTimeRange>((ref) => DateTimeRange(
-          start: DateTime.now().copyWith(
-              day: 1,
-              hour: 0,
-              minute: 0,
-              second: 0,
-              millisecond: 0,
-              microsecond: 0),
-          // ? This allows entries on the selected day to be shown
-          end: DateTime.now().add(const Duration(days: 1)),
-        ));
+final globalDateRangeProvider = StateProvider<DateTimeRange>((ref) {
+  var now = DateTime.now();
+  return DateTimeRange(
+    start: now.copyWith(
+        day: 1, hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0),
+    // ? This allows entries on the selected day to be shown
+    end: now.add(const Duration(days: 1)),
+  );
+});
 
 final overviewIncomeProvider = StateProvider<double>((ref) {
   var x = ref.watch(transactionsProvider);

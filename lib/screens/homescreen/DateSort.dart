@@ -18,7 +18,7 @@ class DateSort extends ConsumerStatefulWidget {
 
 class _DateSortState extends ConsumerState<DateSort> {
   List<PopupMenuItem<String>> items =
-      ["Last week", "Last month", "Everything", "Custom"]
+      ["Last 7 days", "This month", "Last month", "Everything", "Custom"]
           .map((e) => PopupMenuItem(
               value: e,
               child: Align(
@@ -29,35 +29,58 @@ class _DateSortState extends ConsumerState<DateSort> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
     return PopupMenuButton(
       tooltip: "Select a range",
       icon: const Icon(Icons.calendar_today_rounded),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onSelected: (value) async {
         switch (value) {
-          case "Last week":
+          case "Last 7 days":
             widget.globalRangeUpdater((state) => DateTimeRange(
-                start: DateTime.now().copyWith(
-                    day: DateTime.now().day - 7,
+                start: now.copyWith(
+                    day: now.day - 7,
                     hour: 0,
                     minute: 0,
                     second: 0,
                     millisecond: 0,
                     microsecond: 0),
                 // ? This allows entries on the selected day to be shown
-                end: DateTime.now().add(const Duration(days: 1))));
+                end: now.add(const Duration(days: 1))));
+            break;
+          case "This month":
+            widget.globalRangeUpdater((state) => DateTimeRange(
+                start: now.copyWith(
+                    day: 1,
+                    hour: 0,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                    microsecond: 0),
+                // ? This allows entries on the selected day to be shown
+                end: now.add(const Duration(days: 1))));
             break;
           case "Last month":
             widget.globalRangeUpdater((state) => DateTimeRange(
-                start: DateTime.now().copyWith(
-                    month: DateTime.now().month - 1,
-                    hour: 0,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0,
-                    microsecond: 0),
-                // ? This allows entries on the selected day to be shown
-                end: DateTime.now().add(const Duration(days: 1))));
+                  start: now.copyWith(
+                      month: now.month - 1,
+                      day: 1,
+                      hour: 0,
+                      minute: 0,
+                      second: 0,
+                      millisecond: 0,
+                      microsecond: 0),
+                  // ? This allows entries on the selected day to be shown
+                  end: now.copyWith(
+                      month: now.month - 1,
+                      // * Not sure how exactly this works
+                      day: DateTime(now.year, now.month, 0).day,
+                      hour: 0,
+                      minute: 0,
+                      second: 0,
+                      millisecond: 0,
+                      microsecond: 0),
+                ));
             break;
           case "Everything":
             // ! This throws an error on a completely empty app because there are no entries so no oldest date
@@ -74,7 +97,7 @@ class _DateSortState extends ConsumerState<DateSort> {
                     millisecond: 0,
                     microsecond: 0),
                 // ? This allows entries on the selected day to be shown
-                end: DateTime.now().add(const Duration(days: 1))));
+                end: now.add(const Duration(days: 1))));
             break;
           case "Custom":
             if (!context.mounted) return;
@@ -82,7 +105,7 @@ class _DateSortState extends ConsumerState<DateSort> {
               context: context,
               firstDate: DateTime(2000),
               lastDate: DateTime(2040),
-              currentDate: DateTime.now(),
+              currentDate: now,
               initialDateRange: ref.watch(globalDateRangeProvider),
               builder: (BuildContext context, Widget? child) {
                 return child!;
