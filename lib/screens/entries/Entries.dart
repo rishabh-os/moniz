@@ -76,7 +76,7 @@ class _IncomeState extends ConsumerState<Income> {
         child: Card(
           color: ref.watch(widget.colorProvider).primaryContainer,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,

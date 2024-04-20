@@ -26,22 +26,22 @@ dependencies:
   get_storage: ^2.1.1
   flutter_iconpicker: ^3.2.4
   window_manager: ^0.3.4
-  fl_chart: ^0.66.0
+  fl_chart: ^0.67.0
   currency_picker: ^2.0.16
-  share_plus: ^7.0.2
+  share_plus: ^8.0.3
   introduction_screen: ^3.1.11
   tutorial_coach_mark: ^1.2.9
   visibility_detector: ^0.4.0+2
   dynamic_color: ^1.6.6
   flutter_native_splash: ^2.3.1
   scrollable_positioned_list: ^0.3.8
-  device_info_plus: ^9.0.3
-  file_picker: ^6.1.1
+  device_info_plus: ^10.1.0
+  file_picker: ^8.0.1
   graphic: ^2.2.0
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
-  location: ^5.0.3
-  flutter_map_animations: ^0.5.3
+  location: ^6.0.1
+  flutter_map_animations: ^0.6.0
   envied: ^0.5.2
   envied_generator: ^0.5.2
   http: ^1.1.2

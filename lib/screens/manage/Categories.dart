@@ -47,28 +47,25 @@ class _CategoriesState extends ConsumerState<Categories> {
             return ListTile(
               key: key,
               title: Text(cat.name),
-              leading: Row(
+              leading: Icon(
+                IconData(
+                  cat.iconCodepoint,
+                  fontFamily: "MaterialIcons",
+                ),
+                color: Color(cat.color),
+              ),
+              trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit_rounded),
+                    onPressed: () => handleTap(key, context, cat),
+                    tooltip: "Edit category",
+                  ),
                   ReorderableDragStartListener(
                       index: index,
                       child: const Icon(Icons.drag_indicator_rounded)),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    IconData(
-                      cat.iconCodepoint,
-                      fontFamily: "MaterialIcons",
-                    ),
-                    color: Color(cat.color),
-                  ),
                 ],
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.edit_rounded),
-                onPressed: () => handleTap(key, context, cat),
-                tooltip: "Edit category",
               ),
             );
           },
