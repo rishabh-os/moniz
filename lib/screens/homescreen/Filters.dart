@@ -51,9 +51,11 @@ class _FiltersState extends ConsumerState<Filters> {
     var transResults = transactions
         .where((element) => filterQuery != ""
             ? element.title.toLowerCase().contains(filterQuery.toLowerCase()) ||
-                element.additionalInfo!
-                    .toLowerCase()
-                    .contains(filterQuery.toLowerCase())
+                // ? Return true if additionalInfo is null
+                (element.additionalInfo
+                        ?.toLowerCase()
+                        .contains(filterQuery.toLowerCase()) ??
+                    true)
             : true)
         .where((element) =>
             freqKeys[rangeValues.start.toInt()] <= element.amount.abs() &&
