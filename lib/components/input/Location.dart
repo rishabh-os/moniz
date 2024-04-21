@@ -1,14 +1,15 @@
 import "dart:convert";
+import "dart:io";
 import "package:flutter/material.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_animations/flutter_map_animations.dart";
 import "package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart";
+import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
-import "package:location/location.dart" as location_service;
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/api/debouncer.dart";
 import "package:moniz/data/api/response.dart";
@@ -82,10 +83,8 @@ class _LocationMapState extends ConsumerState<LocationMap>
     duration: const Duration(milliseconds: 500),
     curve: Curves.easeInOutCubicEmphasized,
   );
-  location_service.LocationData? locationData;
+  AlignOnUpdate _alignPositionOnUpdate = AlignOnUpdate.once;
   GMapsResponse? suggestions;
-
-  final TextEditingController searchController = TextEditingController();
 
   Future<GMapsResponse?> fetchResponse(String input) async {
     final mapCenter = animatedMapController.mapController.camera.center;
@@ -131,6 +130,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
   GMapsPlace? selectedLocation;
   late final Future<GMapsResponse?> Function(String) debouncedSearch;
+  final SearchController _searchController = SearchController();
   late LatLng initialCenter;
   late FToast fToast;
 
@@ -163,12 +163,22 @@ class _LocationMapState extends ConsumerState<LocationMap>
             mapController: animatedMapController.mapController,
             options: MapOptions(
               initialCenter: initialCenter,
-              initialZoom: 15,
-              maxZoom: 19,
+              initialZoom: 16,
+              maxZoom: 22,
+              onPositionChanged: (position, hasGesture) => {
+                // ? Stop following the location on any gesture
+                if (hasGesture && _alignPositionOnUpdate != AlignOnUpdate.never)
+                  {
+                    setState(
+                      () => _alignPositionOnUpdate = AlignOnUpdate.never,
+                    )
+                  }
+              },
             ),
             children: [
               TileLayer(
-                urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                urlTemplate:
+                    "https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
                 userAgentPackageName: "com.rishabhos.moniz",
                 tileProvider:
                     CancellableNetworkTileProvider(silenceExceptions: true),
@@ -192,11 +202,16 @@ class _LocationMapState extends ConsumerState<LocationMap>
                                   Shadow(
                                       color:
                                           Theme.of(context).colorScheme.shadow,
-                                      blurRadius: 10)
+                                      blurRadius: 30)
                                 ],
                               ))
                         ]
                       : []),
+              // ? The underlying geolocation package doesn't support Linux
+              if (!Platform.isLinux)
+                CurrentLocationLayer(
+                  alignPositionOnUpdate: _alignPositionOnUpdate,
+                ),
               const RichAttributionWidget(
                 alignment: AttributionAlignment.bottomLeft,
                 attributions: [
@@ -215,6 +230,16 @@ class _LocationMapState extends ConsumerState<LocationMap>
             child: Column(
               children: [
                 SearchAnchor.bar(
+                    searchController: _searchController,
+                    viewLeading: IconButton(
+                        onPressed: () async {
+                          _searchController.closeView(_searchController.text);
+                          await Future.delayed(
+                            50.ms,
+                            () => FocusScope.of(context).unfocus(),
+                          );
+                        },
+                        icon: const Icon(Icons.arrow_back)),
                     isFullScreen: false,
                     barHintText: "Search for a nearby location",
                     suggestionsBuilder: (context, controller) async {
@@ -234,41 +259,8 @@ class _LocationMapState extends ConsumerState<LocationMap>
                       borderRadius: BorderRadius.circular(25),
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    child: ListTile(
-                      onTap: () {
-                        final mapCenter = LatLng(
-                            selectedLocation!.location!.latitude ?? 0,
-                            selectedLocation!.location!.longitude ?? 0);
-                        // ? Update stored mapCenter on location select
-                        ref.read(initialCenterProvider.notifier).state =
-                            mapCenter;
-                        Navigator.of(context).pop(selectedLocation);
-                      },
-                      title: Text(
-                        selectedLocation?.displayName!.text ?? "",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        selectedLocation?.formattedAddress ?? "",
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              launchUrl(
-                                  Uri.parse(selectedLocation!.googleMapsUri!));
-                            },
-                            icon: const Icon(Icons.open_in_new_rounded),
-                          ),
-                          Icon(
-                            Icons.check_circle_rounded,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: SelectedResult(
+                        selectedLocation: selectedLocation, ref: ref),
                   )
                       .animate(
                         target: selectedLocation != null ? 1 : 0,
@@ -281,57 +273,35 @@ class _LocationMapState extends ConsumerState<LocationMap>
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          heroTag: null,
-          child: const Icon(Icons.my_location),
-          onPressed: () async {
-            location_service.Location location = location_service.Location();
-
-            bool serviceEnabled;
-            location_service.PermissionStatus permissionGranted;
-
-            serviceEnabled = await location.serviceEnabled();
-            if (!serviceEnabled) {
-              serviceEnabled = await location.requestService();
-              if (!serviceEnabled) {
-                return;
-              }
-            }
-
-            permissionGranted = await location.hasPermission();
-            if (permissionGranted == location_service.PermissionStatus.denied) {
-              permissionGranted = await location.requestPermission();
-              if (permissionGranted !=
-                  location_service.PermissionStatus.granted) {
-                Widget errorToast = Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 12.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    // ignore: use_build_context_synchronously
-                    color: Theme.of(context).colorScheme.errorContainer,
-                  ),
-                  child: const Text(
-                    "Location permission denied.\n Please change it in settings.",
-                    softWrap: true,
-                  ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          IconButton.filled(
+            icon: const Icon(Icons.add),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => animatedMapController.animatedZoomIn(),
+          ),
+          IconButton.filled(
+            icon: const Icon(Icons.remove),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => animatedMapController.animatedZoomOut(),
+          ),
+          IconButton.filled(
+            icon: const Icon(Icons.restart_alt_rounded),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => animatedMapController.animatedRotateReset(),
+          ),
+          FloatingActionButton(
+              heroTag: null,
+              child: const Icon(Icons.my_location),
+              onPressed: () async {
+                // ? Follow location on tap
+                setState(
+                  () => _alignPositionOnUpdate = AlignOnUpdate.always,
                 );
-                fToast.showToast(
-                  child: errorToast,
-                  gravity: ToastGravity.BOTTOM,
-                  // toastDuration: 5.seconds,
-                );
-                return;
-              }
-            }
-
-            locationData = await location.getLocation();
-            animatedMapController.animateTo(
-                rotation: 0,
-                zoom: 15,
-                dest:
-                    LatLng(locationData!.latitude!, locationData!.longitude!));
-          }),
+              }),
+        ],
+      ),
     );
   }
 
@@ -340,7 +310,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
       onTap: () async {
         animatedMapController.animateTo(
           rotation: 0,
-          zoom: 15,
           dest: LatLng(
               location.location!.latitude ??
                   animatedMapController.mapController.camera.center.latitude,
@@ -371,6 +340,53 @@ class _LocationMapState extends ConsumerState<LocationMap>
           launchUrl(Uri.parse(location.googleMapsUri!));
         },
         icon: const Icon(Icons.open_in_new_rounded),
+      ),
+    );
+  }
+}
+
+class SelectedResult extends StatelessWidget {
+  const SelectedResult({
+    super.key,
+    required this.selectedLocation,
+    required this.ref,
+  });
+
+  final GMapsPlace? selectedLocation;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {
+        final mapCenter = LatLng(selectedLocation!.location!.latitude ?? 0,
+            selectedLocation!.location!.longitude ?? 0);
+        // ? Update stored mapCenter on location select
+        ref.read(initialCenterProvider.notifier).state = mapCenter;
+        Navigator.of(context).pop(selectedLocation);
+      },
+      title: Text(
+        selectedLocation?.displayName!.text ?? "",
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        selectedLocation?.formattedAddress ?? "",
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () {
+              launchUrl(Uri.parse(selectedLocation!.googleMapsUri!));
+            },
+            icon: const Icon(Icons.open_in_new_rounded),
+          ),
+          Icon(
+            Icons.check_circle_rounded,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ],
       ),
     );
   }
