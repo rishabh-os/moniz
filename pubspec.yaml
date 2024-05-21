@@ -26,9 +26,9 @@ dependencies:
   get_storage: ^2.1.1
   flutter_iconpicker: ^3.2.4
   window_manager: ^0.3.4
-  fl_chart: ^0.67.0
+  fl_chart: ^0.68.0
   currency_picker: ^2.0.16
-  share_plus: ^8.0.3
+  share_plus: ^9.0.0
   introduction_screen: ^3.1.11
   tutorial_coach_mark: ^1.2.9
   visibility_detector: ^0.4.0+2
@@ -59,12 +59,13 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
   # * Database
   drift_dev: ^2.9.0
   build_runner: ^2.4.5
   patrol: ^3.3.0
   flutter_launcher_icons: ^0.13.1
+  lint: ^2.0.0
+  riverpod_lint: ^2.3.10
 
 flutter_native_splash:
   # ? Insists on giving me blurry icons

@@ -21,9 +21,10 @@ class MoneyDisplay extends ConsumerStatefulWidget {
 class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
   @override
   Widget build(BuildContext context) {
-    String symbol = currencies.firstWhere(
-        (element) => element["code"] == ref.watch(currencyProvider))["symbol"];
-    NumberFormat numberFormat = ref.watch(numberFormatProvider);
+    final String symbol = currencies.firstWhere(
+      (element) => element["code"] == ref.watch(currencyProvider),
+    )["symbol"] as String;
+    final NumberFormat numberFormat = ref.watch(numberFormatProvider);
     return RichText(
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
@@ -31,19 +32,21 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
           TextSpan(
             text: symbol,
             style: TextStyle(
-                fontSize: 24,
-                fontFamily: "VictorMono",
-                fontWeight: FontWeight.w600,
-                color: widget.textColor),
+              fontSize: 24,
+              fontFamily: "VictorMono",
+              fontWeight: FontWeight.w600,
+              color: widget.textColor,
+            ),
           ),
           TextSpan(
             text: numberFormat.format(widget.amount),
             style: TextStyle(
-                fontFeatures: const [FontFeature.enable("ss02")],
-                fontFamily: "VictorMono",
-                fontSize: 24,
-                color: widget.textColor,
-                fontWeight: FontWeight.w800),
+              fontFeatures: const [FontFeature.enable("ss02")],
+              fontFamily: "VictorMono",
+              fontSize: 24,
+              color: widget.textColor,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ],
       ),

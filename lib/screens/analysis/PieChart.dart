@@ -40,16 +40,16 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    List<Transaction> transactionList = ref.watch(searchedTransProvider);
+    final List<Transaction> transactionList = ref.watch(searchedTransProvider);
     List<PieChartData> spendsByClassifier(bool isCat) {
-      List<Classifier> classifierList =
+      final List<Classifier> classifierList =
           isCat ? ref.watch(categoriesProvider) : ref.watch(accountsProvider);
-      List<PieChartData> spendsByClass = [
-        for (var v in classifierList) PieChartData(classifier: v)
+      final List<PieChartData> spendsByClass = [
+        for (final v in classifierList) PieChartData(classifier: v),
       ];
-      for (var trans in transactionList) {
-        String id = isCat ? trans.categoryID : trans.accountID;
-        bool condition = showIncome ? trans.amount > 0 : trans.amount < 0;
+      for (final trans in transactionList) {
+        final String id = isCat ? trans.categoryID : trans.accountID;
+        final bool condition = showIncome ? trans.amount > 0 : trans.amount < 0;
         if (condition) {
           spendsByClass
               .firstWhere((element) => element.classifier.id == id)
@@ -59,33 +59,37 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
       return spendsByClass;
     }
 
-    List<PieChartData> spends = spendsByClassifier(showCat);
-    List<PieChartData> unsortedSpends = [...spends];
+    final List<PieChartData> spends = spendsByClassifier(showCat);
+    final List<PieChartData> unsortedSpends = [...spends];
     spends.sort((e1, e2) => e2.amount.compareTo(e1.amount));
 
     Padding dropdownChoice(
-        (String, String) values, bool choice, Function(bool x) onChange) {
+      (String, String) values,
+      bool choice,
+      Function(bool x) onChange,
+    ) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: DropdownButton(
-            alignment: Alignment.center,
-            borderRadius: BorderRadius.circular(15),
-            underline: Container(),
-            value: choice.toString(),
-            items: [true, false].map<DropdownMenuItem>((value) {
-              return DropdownMenuItem(
-                value: value.toString(),
-                child: Text(value ? values.$1 : values.$2),
-              );
-            }).toList(),
-            onChanged: (e) {
-              var x = bool.parse(e!);
-              onChange(x);
-            }),
+          alignment: Alignment.center,
+          borderRadius: BorderRadius.circular(15),
+          underline: Container(),
+          value: choice.toString(),
+          items: [true, false].map<DropdownMenuItem>((value) {
+            return DropdownMenuItem(
+              value: value.toString(),
+              child: Text(value ? values.$1 : values.$2),
+            );
+          }).toList(),
+          onChanged: (e) {
+            final x = bool.parse(e as String);
+            onChange(x);
+          },
+        ),
       );
     }
 
-    NumberFormat numberFormat = ref.watch(numberFormatProvider);
+    final NumberFormat numberFormat = ref.watch(numberFormatProvider);
     _legend = Padding(
       padding: const EdgeInsets.all(16.0),
       child: GridView.count(
@@ -94,21 +98,25 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         crossAxisCount: 3,
         childAspectRatio: 2.5,
         children: unsortedSpends.map((label) {
-          Classifier classifier = label.classifier;
+          final Classifier classifier = label.classifier;
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
-                        width: 3)),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    width: 3,
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(6),
                   child: Icon(
-                    IconData(classifier.iconCodepoint,
-                        fontFamily: "MaterialIcons"),
+                    IconData(
+                      classifier.iconCodepoint,
+                      fontFamily: "MaterialIcons",
+                    ),
                     size: 24,
                     color: Color(classifier.color),
                   ),
@@ -118,14 +126,14 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
               Text(
                 numberFormat.format(label.amount),
                 style: Theme.of(context).textTheme.bodyLarge,
-              )
+              ),
             ],
           );
         }).toList(),
       ),
     );
 
-    List<Map<String, dynamic>> data = spends
+    final List<Map<String, dynamic>> data = spends
         .map((e) => {"classifier": e.classifier.id, "amount": e.amount})
         .toList();
     // ? AspectRatio prevents overflow errors in a Column
@@ -133,26 +141,29 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              "Show",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            dropdownChoice(("Income", "Expense"), showIncome, (bool x) {
-              setState(() {
-                showIncome = x;
-              });
-            }),
-            Text(
-              "by",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            dropdownChoice(("Category", "Account"), showCat, (bool x) {
-              setState(() {
-                showCat = x;
-              });
-            }),
-          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Show",
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              dropdownChoice(("Income", "Expense"), showIncome, (bool x) {
+                setState(() {
+                  showIncome = x;
+                });
+              }),
+              Text(
+                "by",
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              dropdownChoice(("Category", "Account"), showCat, (bool x) {
+                setState(() {
+                  showCat = x;
+                });
+              }),
+            ],
+          ),
           AspectRatio(
             aspectRatio: 1.4,
             child: data.every((e) => e["amount"] == 0)
@@ -178,40 +189,44 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                     marks: [
                       IntervalMark(
                         shape: ShapeEncode(
-                            value: RectShape(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
-                        )),
+                          value: RectShape(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                          ),
+                        ),
                         position: Varset("percent") / Varset("classifier"),
                         color: ColorEncode(
-                            variable: "classifier",
-                            // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
-                            values: spends
-                                        .map((e) => Color(e.classifier.color))
-                                        .toList()
-                                        .length >
-                                    1
-                                ? spends
-                                    .map((e) => Color(e.classifier.color))
-                                    .toList()
-                                : [
-                                    spends
-                                        .map((e) => Color(e.classifier.color))
-                                        .first,
-                                    Colors.blue
-                                  ]),
+                          variable: "classifier",
+                          // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
+                          values: spends
+                                      .map((e) => Color(e.classifier.color))
+                                      .toList()
+                                      .length >
+                                  1
+                              ? spends
+                                  .map((e) => Color(e.classifier.color))
+                                  .toList()
+                              : [
+                                  spends
+                                      .map((e) => Color(e.classifier.color))
+                                      .first,
+                                  Colors.blue,
+                                ],
+                        ),
                         modifiers: [StackModifier()],
                         transition: Transition(
-                            duration: const Duration(milliseconds: 800),
-                            curve: Curves.easeOutQuint),
+                          duration: const Duration(milliseconds: 800),
+                          curve: Curves.easeOutQuint,
+                        ),
                         entrance: {MarkEntrance.opacity, MarkEntrance.y},
-                      )
+                      ),
                     ],
                     coord: PolarCoord(
-                        transposed: true,
-                        dimCount: 1,
-                        startRadius: 0.4,
-                        endRadius: 0.9),
+                      transposed: true,
+                      dimCount: 1,
+                      startRadius: 0.4,
+                      endRadius: 0.9,
+                    ),
                   ),
           ),
           const SizedBox(height: 20),

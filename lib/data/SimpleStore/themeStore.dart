@@ -4,12 +4,16 @@ import "package:get_storage/get_storage.dart";
 
 final incomeColorSchemeProvider = StateProvider((ref) {
   return ColorScheme.fromSeed(
-      seedColor: Colors.green, brightness: ref.watch(brightnessProvider));
+    seedColor: Colors.green,
+    brightness: ref.watch(brightnessProvider),
+  );
 });
 
 final expenseColorSchemeProvider = StateProvider((ref) {
   return ColorScheme.fromSeed(
-      seedColor: Colors.red, brightness: ref.watch(brightnessProvider));
+    seedColor: Colors.red,
+    brightness: ref.watch(brightnessProvider),
+  );
 });
 final themeColorProvider = StateProvider<Color>((ref) {
   ref.listenSelf(
@@ -18,17 +22,19 @@ final themeColorProvider = StateProvider<Color>((ref) {
   GetStorage().read("themeColor") ??
       // ? Colors.blueGrey is the default app color
       GetStorage().write("themeColor", Colors.blueGrey.value);
-  return Color(GetStorage().read("themeColor"));
+  return Color(GetStorage().read("themeColor") as int);
 });
 final brightnessProvider = StateProvider<Brightness>((ref) {
   ref.listenSelf(
     (previous, next) =>
-        GetStorage().write("isDark", next == Brightness.dark ? false : true),
+        GetStorage().write("isDark", !(next == Brightness.dark) || true),
   );
   GetStorage().read("isDark") ??
       // ? App is light by default
       GetStorage().write("isDark", false);
-  return GetStorage().read("isDark") ? Brightness.light : Brightness.dark;
+  return GetStorage().read("isDark") as bool
+      ? Brightness.light
+      : Brightness.dark;
 });
 
 StateProvider<bool> dynamicProvider = StateProvider<bool>((ref) {
@@ -36,5 +42,5 @@ StateProvider<bool> dynamicProvider = StateProvider<bool>((ref) {
     (previous, next) => GetStorage().write("isDynamic", next),
   );
   GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", true);
-  return GetStorage().read("isDynamic");
+  return GetStorage().read("isDynamic") as bool;
 });

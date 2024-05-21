@@ -1,7 +1,8 @@
-import "dart:math" show sqrt, max;
+import "dart:math" show max, sqrt;
 import "dart:ui" show lerpDouble;
 
 import "package:flutter/material.dart";
+import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/entries/EntryEditor.dart";
@@ -21,7 +22,8 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
   Duration get transitionDuration => this.duration;
 
   @override
-  Widget buildTransitions(context, animation, secondaryAnimation, child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     return ClipPath(
       clipper: CircularRevealClipper(
         fraction: animation.value,
@@ -40,9 +42,9 @@ class CircularRevealClipper extends CustomClipper<Path> {
   });
   final double fraction;
   final Alignment centerAlignment;
-  final Offset centerOffset = const Offset(0, 0);
-  final double minRadius = 0;
-  final double maxRadius = 900;
+  Offset get centerOffset => Offset.zero;
+  double get minRadius => 0;
+  double get maxRadius => 900;
 
   @override
   Path getClip(Size size) {
@@ -70,25 +72,25 @@ class CircularRevealClipper extends CustomClipper<Path> {
 }
 
 void handleTap(GlobalKey widgetKey, BuildContext context, dynamic content) {
-  RenderBox renderbox =
-      widgetKey.currentContext!.findRenderObject() as RenderBox;
-  Offset position = renderbox.localToGlobal(Offset.zero);
-  double y = position.dy;
-  double heightW = renderbox.size.height;
-  double height = MediaQuery.of(context).size.height;
+  final RenderBox renderbox =
+      widgetKey.currentContext!.findRenderObject()! as RenderBox;
+  final Offset position = renderbox.localToGlobal(Offset.zero);
+  final double y = position.dy;
+  final double heightW = renderbox.size.height;
+  final double height = MediaQuery.of(context).size.height;
   Navigator.push(
     context,
     DeleteRoute(
       // * Yes I know this is bad code (nested ternaries)
       page: content.runtimeType == Transaction
-          ? EntryEditor(transaction: content)
+          ? EntryEditor(transaction: content as Transaction)
           : content.runtimeType == TransactionCategory
               ? AccountEditor(
-                  editedCategory: content,
+                  editedCategory: content as TransactionCategory,
                   type: "Category",
                 )
               : AccountEditor(
-                  editedAccount: content,
+                  editedAccount: content as Account,
                   type: "Account",
                 ),
       startPositionGlobal:

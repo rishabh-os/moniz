@@ -16,7 +16,7 @@ class Categories extends ConsumerStatefulWidget {
 class _CategoriesState extends ConsumerState<Categories> {
   @override
   Widget build(BuildContext context) {
-    List<TransactionCategory> categories = ref.watch(categoriesProvider);
+    final List<TransactionCategory> categories = ref.watch(categoriesProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -37,11 +37,11 @@ class _CategoriesState extends ConsumerState<Categories> {
                     .read(categoriesProvider.notifier)
                     .edit(categories[i].copyWith(order: i));
               }
-            })
+            }),
           },
           proxyDecorator: proxyDecorator,
           itemBuilder: (context, index) {
-            var cat = categories[index];
+            final cat = categories[index];
             // ? Not a regular key so that I can use the edit animation
             final key = GlobalObjectKey(cat.id);
             return ListTile(
@@ -63,8 +63,9 @@ class _CategoriesState extends ConsumerState<Categories> {
                     tooltip: "Edit category",
                   ),
                   ReorderableDragStartListener(
-                      index: index,
-                      child: const Icon(Icons.drag_indicator_rounded)),
+                    index: index,
+                    child: const Icon(Icons.drag_indicator_rounded),
+                  ),
                 ],
               ),
             );
@@ -72,28 +73,31 @@ class _CategoriesState extends ConsumerState<Categories> {
         ),
         const SizedBox(height: 10),
         OpenContainer(
-            closedColor: Theme.of(context).colorScheme.secondaryContainer,
-            middleColor: Theme.of(context).colorScheme.secondaryContainer,
-            openColor: Theme.of(context).colorScheme.background,
-            transitionType: ContainerTransitionType.fadeThrough,
-            closedElevation: 0,
-            openShape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            closedShape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            closedBuilder: (context, action) => TextButton.icon(
-                onPressed: action,
-                icon: const Icon(Icons.add),
-                label: const Text("Add Category")),
-            openBuilder: (context, action) => const AccountEditor(
-                  type: "Category",
-                )),
+          closedColor: Theme.of(context).colorScheme.secondaryContainer,
+          middleColor: Theme.of(context).colorScheme.secondaryContainer,
+          openColor: Theme.of(context).colorScheme.surface,
+          transitionType: ContainerTransitionType.fadeThrough,
+          closedElevation: 0,
+          openShape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          closedShape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          closedBuilder: (context, action) => TextButton.icon(
+            onPressed: action,
+            icon: const Icon(Icons.add),
+            label: const Text("Add Category"),
+          ),
+          openBuilder: (context, action) => const AccountEditor(
+            type: "Category",
+          ),
+        ),
       ],
     );
   }
 }
 
-Widget proxyDecorator(child, index, animation) => AnimatedBuilder(
+Widget proxyDecorator(Widget child, int index, Animation<double> animation) =>
+    AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget? child) {
         final double animValue = Curves.easeInOut.transform(animation.value);

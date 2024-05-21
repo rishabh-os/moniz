@@ -8,10 +8,10 @@ final filterQueryProvider = StateProvider<String>((ref) {
 });
 
 final freqHistProvider = StateProvider<Map<double, int>>((ref) {
-  List transactions = ref.watch(transactionsProvider);
-  Map<double, int> frequencyHistorgram = {};
-  for (var x in transactions) {
-    var amt = x.amount.abs();
+  final List<Transaction> transactions = ref.watch(transactionsProvider);
+  final Map<double, int> frequencyHistorgram = {};
+  for (final x in transactions) {
+    final amt = x.amount.abs();
     frequencyHistorgram[amt] = !frequencyHistorgram.containsKey(amt)
         ? (1)
         : (frequencyHistorgram[amt]! + 1);
@@ -20,8 +20,8 @@ final freqHistProvider = StateProvider<Map<double, int>>((ref) {
 });
 
 final freqKeysProvider = StateProvider<List<double>>((ref) {
-  Map<double, int> frequencyHistorgram = ref.watch(freqHistProvider);
-  List<double> freqKeys = (frequencyHistorgram.keys.toList());
+  final Map<double, int> frequencyHistorgram = ref.watch(freqHistProvider);
+  final List<double> freqKeys = frequencyHistorgram.keys.toList();
   freqKeys.sort();
   return freqKeys;
 });

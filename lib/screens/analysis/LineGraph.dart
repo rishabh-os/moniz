@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: non_bool_condition
+// ignore_for_file: argument_type_not_assignable
+
 import "dart:math";
 import "dart:ui";
 import "package:flutter/material.dart";
@@ -28,20 +32,26 @@ class _LineGraphState extends ConsumerState<LineGraph> {
 
   @override
   Widget build(BuildContext context) {
-    bool showByCat = ref.watch(graphByCatProvider);
-    List<Transaction> transactionList = ref.watch(searchedTransProvider);
+    final bool showByCat = ref.watch(graphByCatProvider);
+    final List<Transaction> transactionList = ref.watch(searchedTransProvider);
     final range = ref.watch(globalDateRangeProvider);
     final numberOfDays = range.end.difference(range.start).inDays;
     days = List.generate(
-        numberOfDays,
-        (i) => getDTString(DateTime(
-            range.start.year, range.start.month, range.start.day + (i))));
+      numberOfDays,
+      (i) => getDTString(
+        DateTime(
+          range.start.year,
+          range.start.month,
+          range.start.day + i,
+        ),
+      ),
+    );
     // ? The built-in sort method works! Ez pz
     days.sort((a, b) {
       return a.compareTo(b);
     });
-    Map<String, double> spotsByDay = {for (var v in days) v: 0};
-    for (var trans in transactionList) {
+    final Map<String, double> spotsByDay = {for (final v in days) v: 0};
+    for (final trans in transactionList) {
       if (trans.amount < 0) {
         spotsByDay.update(
           getDTString(trans.recorded),
@@ -52,13 +62,13 @@ class _LineGraphState extends ConsumerState<LineGraph> {
       }
     }
 
-    List<List> spendsByCategory = [
-      for (var x in days)
-        for (var y in ref.read(categoriesProvider)) [x, y, 0.0]
+    final List<List> spendsByCategory = [
+      for (final x in days)
+        for (final y in ref.read(categoriesProvider)) [x, y, 0.0],
     ];
 
-    for (var transaction in transactionList) {
-      for (var element in spendsByCategory) {
+    for (final transaction in transactionList) {
+      for (final element in spendsByCategory) {
         if (element[0] == getDTString(transaction.recorded) &&
             element[1].id == transaction.categoryID &&
             transaction.amount.isNegative) {
@@ -67,9 +77,9 @@ class _LineGraphState extends ConsumerState<LineGraph> {
       }
     }
 
-    List<List> spendsByDay = [];
-    for (var day in days) {
-      var x = spendsByCategory.fold(0.0, (sum, element) {
+    final List<List> spendsByDay = [];
+    for (final day in days) {
+      final x = spendsByCategory.fold(0.0, (sum, element) {
         if (element[0] == day) {
           return sum + element[2];
         }
@@ -79,39 +89,46 @@ class _LineGraphState extends ConsumerState<LineGraph> {
     }
 
     return SingleChildScrollView(
-        child: Column(children: [
-      SwitchListTile.adaptive(
-        value: showByCat,
-        onChanged: (value) {
-          ref.watch(graphByCatProvider.notifier).state = value;
-        },
-        title: const Text("Show category-wise spends"),
-      ),
-      AspectRatio(
-        aspectRatio: 1.4,
-        child: Padding(
-            // ? It different to account for how it looks with the axis labels
-            padding: const EdgeInsets.only(
-              right: 18,
-              left: 12,
+      child: Column(
+        children: [
+          SwitchListTile.adaptive(
+            value: showByCat,
+            onChanged: (value) {
+              ref.watch(graphByCatProvider.notifier).state = value;
+            },
+            title: const Text("Show category-wise spends"),
+          ),
+          AspectRatio(
+            aspectRatio: 1.4,
+            child: Padding(
+              // ? It different to account for how it looks with the axis labels
+              padding: const EdgeInsets.only(
+                right: 18,
+                left: 12,
+              ),
+              child: LineChart(
+                data: showByCat ? spendsByCategory : spendsByDay,
+                maxY: spendsByDay.reduce(
+                  (currentDay, nextDay) =>
+                      currentDay[1] > nextDay[1] ? currentDay : nextDay,
+                )[1] as double,
+                showCat: showByCat,
+              ),
             ),
-            child: LineChart(
-              data: showByCat ? spendsByCategory : spendsByDay,
-              maxY: spendsByDay.reduce((currentDay, nextDay) =>
-                  currentDay[1] > nextDay[1] ? currentDay : nextDay)[1],
-              showCat: showByCat,
-            )),
-      )
-    ]));
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class LineChart extends ConsumerStatefulWidget {
-  const LineChart(
-      {super.key,
-      required this.data,
-      required this.maxY,
-      required this.showCat});
+  const LineChart({
+    super.key,
+    required this.data,
+    required this.maxY,
+    required this.showCat,
+  });
   final List<List> data;
   final double maxY;
   final bool showCat;
@@ -123,7 +140,7 @@ class LineChart extends ConsumerStatefulWidget {
 class _LineChartState extends ConsumerState<LineChart> {
   @override
   Widget build(BuildContext context) {
-    var selections2 = {
+    final selections2 = {
       "tooltipMouse": PointSelection(
         on: {GestureType.hover},
         devices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
@@ -133,29 +150,33 @@ class _LineChartState extends ConsumerState<LineChart> {
         on: {
           GestureType.scaleUpdate,
           GestureType.tapDown,
-          GestureType.longPressMoveUpdate
+          GestureType.longPressMoveUpdate,
         },
         devices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
         nearest: false,
       ),
     };
-    var tooltipGuide = TooltipGuide(
+    final tooltipGuide = TooltipGuide(
       selections: {"tooltipTouch", "tooltipMouse"},
       followPointer: [false, false],
       renderer: (size, anchor, selectedTuples) {
-        var amount = (selectedTuples.entries.first.value["amount"]);
-        Offset labelOffset = anchor + const Offset(0, -30);
-        Color textColor = Theme.of(context).colorScheme.secondary;
-        Color backgroundColor =
+        final amount = selectedTuples.entries.first.value["amount"];
+        final Offset labelOffset = anchor + const Offset(0, -30);
+        final Color textColor = Theme.of(context).colorScheme.secondary;
+        final Color backgroundColor =
             Theme.of(context).colorScheme.secondaryContainer;
         Color? borderColor;
         if (widget.showCat) {
-          borderColor = Color(ref
-              .read(categoriesProvider)
-              .firstWhere((element) =>
-                  element.name ==
-                  selectedTuples.entries.first.value["category"])
-              .color);
+          borderColor = Color(
+            ref
+                .read(categoriesProvider)
+                .firstWhere(
+                  (element) =>
+                      element.name ==
+                      selectedTuples.entries.first.value["category"],
+                )
+                .color,
+          );
           // y = Color()
         }
         return [
@@ -167,81 +188,90 @@ class _LineChartState extends ConsumerState<LineChart> {
             ),
           ),
           RectElement(
-              rect: Rect.fromCenter(center: labelOffset, width: 60, height: 30),
-              borderRadius: BorderRadius.circular(15),
-              style: PaintStyle(
-                fillColor: backgroundColor,
-                strokeWidth: 4,
-                strokeColor: borderColor,
-              )),
+            rect: Rect.fromCenter(center: labelOffset, width: 60, height: 30),
+            borderRadius: BorderRadius.circular(15),
+            style: PaintStyle(
+              fillColor: backgroundColor,
+              strokeWidth: 4,
+              strokeColor: borderColor,
+            ),
+          ),
           LabelElement(
-              text: amount.toString(),
-              anchor: labelOffset,
-              style: LabelStyle(
-                textStyle: TextStyle(
-                    color: textColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
-              ))
+            text: amount.toString(),
+            anchor: labelOffset,
+            style: LabelStyle(
+              textStyle: TextStyle(
+                color: textColor,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ];
       },
     );
-    var axes2 = [
+    final axes2 = [
       AxisGuide(
-          label: LabelStyle(
-              offset: const Offset(-10, 30),
-              rotation: -pi / 2,
-              textStyle: Theme.of(context).textTheme.bodySmall)),
+        label: LabelStyle(
+          offset: const Offset(-10, 30),
+          rotation: -pi / 2,
+          textStyle: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
       AxisGuide(
-          label: LabelStyle(
-              offset: const Offset(-10, 0),
-              textStyle: Theme.of(context).textTheme.bodySmall)),
+        label: LabelStyle(
+          offset: const Offset(-10, 0),
+          textStyle: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
     ];
 
-    Map<String, Variable<List<dynamic>, dynamic>> variables = widget.showCat
-        ? {
-            "day": Variable(
-              accessor: (List spot) {
-                String dayMonth = DateFormat("d MMM")
-                    .format(DateTime.parse(spot[0] as String));
-                return dayMonth;
-              },
-            ),
-            "category": Variable(
-              accessor: (List spot) => spot[1].name as String,
-            ),
-            "amount": Variable(
-              accessor: (List spot) => spot[2] as double,
-              scale: LinearScale(
-                min: 0,
-                max: widget.maxY * 1.30,
-              ),
-            ),
-          }
-        : {
-            "day": Variable(
-              accessor: (List spot) {
-                String dayMonth = DateFormat("d MMM")
-                    .format(DateTime.parse(spot[0] as String));
-                return dayMonth;
-              },
-            ),
-            "amount": Variable(
-              accessor: (List spot) => spot[1] as double,
-              scale: LinearScale(
-                min: 0,
-                max: widget.maxY * 1.30,
-              ),
-            ),
-          };
+    final Map<String, Variable<List<dynamic>, dynamic>> variables =
+        widget.showCat
+            ? {
+                "day": Variable(
+                  accessor: (List spot) {
+                    final String dayMonth = DateFormat("d MMM")
+                        .format(DateTime.parse(spot[0] as String));
+                    return dayMonth;
+                  },
+                ),
+                "category": Variable(
+                  accessor: (List spot) => spot[1].name as String,
+                ),
+                "amount": Variable(
+                  accessor: (List spot) => spot[2] as double,
+                  scale: LinearScale(
+                    min: 0,
+                    max: widget.maxY * 1.30,
+                  ),
+                ),
+              }
+            : {
+                "day": Variable(
+                  accessor: (List spot) {
+                    final String dayMonth = DateFormat("d MMM")
+                        .format(DateTime.parse(spot[0] as String));
+                    return dayMonth;
+                  },
+                ),
+                "amount": Variable(
+                  accessor: (List spot) => spot[1] as double,
+                  scale: LinearScale(
+                    min: 0,
+                    max: widget.maxY * 1.30,
+                  ),
+                ),
+              };
 
-    List<Mark<Shape>> marks = widget.showCat
+    final List<Mark<Shape>> marks = widget.showCat
         ? [
             IntervalMark(
               size: SizeEncode(value: 20),
               position: Varset("day") * Varset("amount") / Varset("category"),
               shape: ShapeEncode(
-                  value: RectShape(borderRadius: BorderRadius.circular(2))),
+                value: RectShape(borderRadius: BorderRadius.circular(2)),
+              ),
               color: ColorEncode(
                 variable: "category",
                 values: ref
@@ -250,8 +280,9 @@ class _LineChartState extends ConsumerState<LineChart> {
                     .toList(),
               ),
               transition: Transition(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOutQuint),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutQuint,
+              ),
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
               modifiers: [StackModifier()],
             ),
@@ -261,11 +292,12 @@ class _LineChartState extends ConsumerState<LineChart> {
               size: SizeEncode(value: 5),
               shape: ShapeEncode(value: BasicLineShape(smooth: true)),
               color: ColorEncode(
-                  value:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8)),
+                value: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+              ),
               transition: Transition(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOutQuint),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutQuint,
+              ),
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
             ),
             AreaMark(
@@ -274,20 +306,21 @@ class _LineChartState extends ConsumerState<LineChart> {
                 value: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
               ),
               transition: Transition(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOutQuint),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutQuint,
+              ),
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
             ),
           ];
 // ? Here I do some maths to scale the graph to the number of days
-    List days = [];
-    for (var element in widget.data) {
+    final List days = [];
+    for (final element in widget.data) {
       days.add(element[0]);
     }
-    int nDays = days.toSet().length;
+    final int nDays = days.toSet().length;
     // ? Cutoff assumes 12 bars can fit on screen comfortably
-    int cutOff = 12;
-    var rectCoord = RectCoord(
+    const int cutOff = 12;
+    final rectCoord = RectCoord(
       horizontalRange:
           nDays >= cutOff ? [0, 1 + (1 / cutOff) * (nDays - cutOff)] : [0, 1],
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,

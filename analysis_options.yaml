@@ -1,5 +1,5 @@
-include: package:flutter_lints/flutter.yaml
-
+# include: package:flutter_lints/flutter.yaml
+include: package:lint/strict.yaml
 linter:
   rules:
     file_names: false

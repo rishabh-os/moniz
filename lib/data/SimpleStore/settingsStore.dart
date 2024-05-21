@@ -7,7 +7,7 @@ final currencyProvider = StateProvider<String>((ref) {
     (previous, next) => GetStorage().write("currency", next),
   );
   GetStorage().read("currency") ?? GetStorage().write("currency", "INR");
-  return (GetStorage().read("currency"));
+  return (GetStorage().read("currency")) as String;
 });
 final transDeleteProvider = StateProvider<bool>((ref) {
   ref.listenSelf(
@@ -15,7 +15,7 @@ final transDeleteProvider = StateProvider<bool>((ref) {
   );
   GetStorage().read("transDeleteConfirmation") ??
       GetStorage().write("transDeleteConfirmation", false);
-  return GetStorage().read("transDeleteConfirmation");
+  return GetStorage().read("transDeleteConfirmation") as bool;
 });
 StateProvider<bool> chipsMultiLineProvider = StateProvider<bool>((ref) {
   ref.listenSelf(
@@ -23,14 +23,14 @@ StateProvider<bool> chipsMultiLineProvider = StateProvider<bool>((ref) {
   );
   GetStorage().read("chipsMultiLine") ??
       GetStorage().write("chipsMultiLine", false);
-  return GetStorage().read("chipsMultiLine");
+  return GetStorage().read("chipsMultiLine") as bool;
 });
 StateProvider<int> initialPageProvider = StateProvider<int>((ref) {
   ref.listenSelf(
     (previous, next) => GetStorage().write("initialPage", next),
   );
   GetStorage().read("initialPage") ?? GetStorage().write("initialPage", 0);
-  return GetStorage().read("initialPage");
+  return GetStorage().read("initialPage") as int;
 });
 final numberFormatProvider = StateProvider<NumberFormat>((ref) {
   return NumberFormat("#,##0.00", "en_US");

@@ -5,11 +5,12 @@ import "package:moniz/data/category.dart";
 import "package:scrollable_positioned_list/scrollable_positioned_list.dart";
 
 class ChipSelector extends ConsumerStatefulWidget {
-  const ChipSelector(
-      {super.key,
-      required this.items,
-      required this.selection,
-      required this.returnSelected});
+  const ChipSelector({
+    super.key,
+    required this.items,
+    required this.selection,
+    required this.returnSelected,
+  });
   final List<Classifier> items;
   final int selection;
   final Function(int selected) returnSelected;
@@ -35,9 +36,12 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
   @override
   Widget build(BuildContext context) {
     if (chipsMultiLine) {
-      return Wrap(alignment: WrapAlignment.center, children: [
-        for (var i = 0; i < widget.items.length; i += 1) customChip(i)
-      ]);
+      return Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          for (var i = 0; i < widget.items.length; i += 1) customChip(i),
+        ],
+      );
     } else {
       // ? SizedBox needed so that it doens't cause render overflow errors
       return SizedBox(
@@ -53,8 +57,8 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
     }
   }
 
-  Widget customChip(index) {
-    Classifier clas = widget.items[index];
+  Widget customChip(int index) {
+    final Classifier clas = widget.items[index];
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: FilterChip(

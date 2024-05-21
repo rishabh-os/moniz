@@ -1,3 +1,7 @@
+// ? Because most of this file was generated
+// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: argument_type_not_assignable
+// ignore_for_file: invalid_assignment
 import "dart:convert";
 import "package:drift/drift.dart";
 import "package:json_annotation/json_annotation.dart" as j;
@@ -88,53 +92,54 @@ class GMapsPlace {
   ParkingOptions? parkingOptions;
   AccessibilityOptions? accessibilityOptions;
 
-  GMapsPlace(
-      {this.name,
-      this.id,
-      this.types,
-      this.nationalPhoneNumber,
-      this.internationalPhoneNumber,
-      this.formattedAddress,
-      this.addressComponents,
-      this.plusCode,
-      this.location,
-      this.viewport,
-      this.rating,
-      this.googleMapsUri,
-      this.websiteUri,
-      this.regularOpeningHours,
-      this.utcOffsetMinutes,
-      this.adrFormatAddress,
-      this.businessStatus,
-      this.userRatingCount,
-      this.iconMaskBaseUri,
-      this.iconBackgroundColor,
-      this.displayName,
-      this.primaryTypeDisplayName,
-      this.takeout,
-      this.delivery,
-      this.dineIn,
-      this.curbsidePickup,
-      this.reservable,
-      this.servesLunch,
-      this.servesDinner,
-      this.servesBeer,
-      this.currentOpeningHours,
-      this.primaryType,
-      this.shortFormattedAddress,
-      this.reviews,
-      this.photos,
-      this.liveMusic,
-      this.servesCocktails,
-      this.servesDessert,
-      this.servesCoffee,
-      this.goodForChildren,
-      this.restroom,
-      this.goodForGroups,
-      this.goodForWatchingSports,
-      this.paymentOptions,
-      this.parkingOptions,
-      this.accessibilityOptions});
+  GMapsPlace({
+    this.name,
+    this.id,
+    this.types,
+    this.nationalPhoneNumber,
+    this.internationalPhoneNumber,
+    this.formattedAddress,
+    this.addressComponents,
+    this.plusCode,
+    this.location,
+    this.viewport,
+    this.rating,
+    this.googleMapsUri,
+    this.websiteUri,
+    this.regularOpeningHours,
+    this.utcOffsetMinutes,
+    this.adrFormatAddress,
+    this.businessStatus,
+    this.userRatingCount,
+    this.iconMaskBaseUri,
+    this.iconBackgroundColor,
+    this.displayName,
+    this.primaryTypeDisplayName,
+    this.takeout,
+    this.delivery,
+    this.dineIn,
+    this.curbsidePickup,
+    this.reservable,
+    this.servesLunch,
+    this.servesDinner,
+    this.servesBeer,
+    this.currentOpeningHours,
+    this.primaryType,
+    this.shortFormattedAddress,
+    this.reviews,
+    this.photos,
+    this.liveMusic,
+    this.servesCocktails,
+    this.servesDessert,
+    this.servesCoffee,
+    this.goodForChildren,
+    this.restroom,
+    this.goodForGroups,
+    this.goodForWatchingSports,
+    this.paymentOptions,
+    this.parkingOptions,
+    this.accessibilityOptions,
+  });
 
   GMapsPlace.fromJson(Map<String, dynamic> json) {
     name = json["name"];
@@ -302,8 +307,12 @@ class AddressComponents {
   List<String>? types;
   String? languageCode;
 
-  AddressComponents(
-      {this.longText, this.shortText, this.types, this.languageCode});
+  AddressComponents({
+    this.longText,
+    this.shortText,
+    this.types,
+    this.languageCode,
+  });
 
   AddressComponents.fromJson(Map<String, dynamic> json) {
     longText = json["longText"];
@@ -515,14 +524,15 @@ class Reviews {
   AuthorAttribution? authorAttribution;
   String? publishTime;
 
-  Reviews(
-      {this.name,
-      this.relativePublishTimeDescription,
-      this.rating,
-      this.text,
-      this.originalText,
-      this.authorAttribution,
-      this.publishTime});
+  Reviews({
+    this.name,
+    this.relativePublishTimeDescription,
+    this.rating,
+    this.text,
+    this.originalText,
+    this.authorAttribution,
+    this.publishTime,
+  });
 
   Reviews.fromJson(Map<String, dynamic> json) {
     name = json["name"];
@@ -623,8 +633,11 @@ class PaymentOptions {
   bool? acceptsDebitCards;
   bool? acceptsCashOnly;
 
-  PaymentOptions(
-      {this.acceptsCreditCards, this.acceptsDebitCards, this.acceptsCashOnly});
+  PaymentOptions({
+    this.acceptsCreditCards,
+    this.acceptsDebitCards,
+    this.acceptsCashOnly,
+  });
 
   PaymentOptions.fromJson(Map<String, dynamic> json) {
     acceptsCreditCards = json["acceptsCreditCards"];
@@ -666,11 +679,12 @@ class AccessibilityOptions {
   bool? wheelchairAccessibleRestroom;
   bool? wheelchairAccessibleSeating;
 
-  AccessibilityOptions(
-      {this.wheelchairAccessibleParking,
-      this.wheelchairAccessibleEntrance,
-      this.wheelchairAccessibleRestroom,
-      this.wheelchairAccessibleSeating});
+  AccessibilityOptions({
+    this.wheelchairAccessibleParking,
+    this.wheelchairAccessibleEntrance,
+    this.wheelchairAccessibleRestroom,
+    this.wheelchairAccessibleSeating,
+  });
 
   AccessibilityOptions.fromJson(Map<String, dynamic> json) {
     wheelchairAccessibleParking = json["wheelchairAccessibleParking"];

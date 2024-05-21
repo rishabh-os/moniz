@@ -6,19 +6,25 @@ import "package:moniz/data/database/db.dart";
 import "package:moniz/data/transactions.dart";
 
 final globalDateRangeProvider = StateProvider<DateTimeRange>((ref) {
-  var now = DateTime.now();
+  final now = DateTime.now();
   return DateTimeRange(
     start: now.copyWith(
-        day: 1, hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0),
+      day: 1,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+      microsecond: 0,
+    ),
     // ? This allows entries on the selected day to be shown
     end: now.add(const Duration(days: 1)),
   );
 });
 
 final overviewIncomeProvider = StateProvider<double>((ref) {
-  var x = ref.watch(transactionsProvider);
+  final x = ref.watch(transactionsProvider);
   double total = 0;
-  for (var element in x) {
+  for (final element in x) {
     if (element.amount > 0) {
       total += element.amount.abs();
     }
@@ -26,9 +32,9 @@ final overviewIncomeProvider = StateProvider<double>((ref) {
   return total;
 });
 final overviewExpenseProvider = StateProvider<double>((ref) {
-  var x = ref.watch(transactionsProvider);
+  final x = ref.watch(transactionsProvider);
   double total = 0;
-  for (var element in x) {
+  for (final element in x) {
     if (element.amount < 0) {
       total += element.amount.abs();
     }
@@ -51,6 +57,6 @@ final initialCenterProvider = StateProvider<LatLng>((ref) {
   );
   GetStorage().read("mapCenter") ??
       GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
-  List longlat = GetStorage().read("mapCenter");
-  return LatLng(longlat.last, longlat.first);
+  final List longlat = GetStorage().read("mapCenter") as List;
+  return LatLng(longlat.last as double, longlat.first as double);
 });
