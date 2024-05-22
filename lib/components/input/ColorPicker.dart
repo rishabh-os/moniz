@@ -32,16 +32,18 @@ class _ColorPickerState extends ConsumerState<ColorPicker> {
         runSpacing: 10,
         children: [
           ...List.generate(
-              listOfColors.length,
-              (index) => IconButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(listOfColors[index])),
-                  onPressed: () => widget.colorCallback(listOfColors[index]),
-                  icon: Container(
-                    width: 2,
-                  )),
-              growable: false),
+            listOfColors.length,
+            (index) => IconButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(listOfColors[index]),
+              ),
+              onPressed: () => widget.colorCallback(listOfColors[index]),
+              icon: Container(
+                width: 2,
+              ),
+            ),
+            growable: false,
+          ),
         ],
       ),
     );

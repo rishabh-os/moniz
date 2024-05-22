@@ -54,35 +54,40 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
   final MyDatabase db;
   final DateTimeRange globalDateRange;
 
-  void filterTransactions() async {
-    List<Transaction> loadedTransactions = await loadAllTransationsFromDB();
-    List<Transaction> filteredTransactions = loadedTransactions
-        .where((element) =>
-            element.recorded.isAfter(globalDateRange.start) &&
-            element.recorded.isBefore(globalDateRange.end))
+  Future<void> filterTransactions() async {
+    final List<Transaction> loadedTransactions =
+        await loadAllTransationsFromDB();
+    final List<Transaction> filteredTransactions = loadedTransactions
+        .where(
+          (element) =>
+              element.recorded.isAfter(globalDateRange.start) &&
+              element.recorded.isBefore(globalDateRange.end),
+        )
         .toList();
     state = filteredTransactions;
     state.sort((a, b) => b.recorded.compareTo(a.recorded));
   }
 
   Future<List<Transaction>> loadAllTransationsFromDB() async {
-    List<Transaction> loadedTransactions =
+    final List<Transaction> loadedTransactions =
         (await db.select(db.transactionTable).get())
-            .map((e) => Transaction(
-                  id: e.id,
-                  title: e.title,
-                  categoryID: e.categoryID,
-                  accountID: e.accountID,
-                  amount: e.amount,
-                  recorded: e.recorded,
-                  additionalInfo: e.additionalInfo,
-                  location: e.location,
-                ))
+            .map(
+              (e) => Transaction(
+                id: e.id,
+                title: e.title,
+                categoryID: e.categoryID,
+                accountID: e.accountID,
+                amount: e.amount,
+                recorded: e.recorded,
+                additionalInfo: e.additionalInfo,
+                location: e.location,
+              ),
+            )
             .toList();
     return loadedTransactions;
   }
 
-  void edit(Transaction editedTransaction) async {
+  Future<void> edit(Transaction editedTransaction) async {
     await db.updateTransaction(editedTransaction);
     state = [
       for (final trans in state)
@@ -102,21 +107,24 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
     state.sort((a, b) => b.recorded.compareTo(a.recorded));
   }
 
-  void add(Transaction newTransaction) async {
+  Future<void> add(Transaction newTransaction) async {
     state = [newTransaction, ...state];
     state.sort((a, b) => b.recorded.compareTo(a.recorded));
-    await db.into(db.transactionTable).insert(TransactionTableCompanion.insert(
-        id: newTransaction.id,
-        title: newTransaction.title,
-        categoryID: newTransaction.categoryID,
-        accountID: newTransaction.accountID,
-        amount: newTransaction.amount,
-        recorded: newTransaction.recorded,
-        additionalInfo: Value(newTransaction.additionalInfo),
-        location: Value(newTransaction.location)));
+    await db.into(db.transactionTable).insert(
+          TransactionTableCompanion.insert(
+            id: newTransaction.id,
+            title: newTransaction.title,
+            categoryID: newTransaction.categoryID,
+            accountID: newTransaction.accountID,
+            amount: newTransaction.amount,
+            recorded: newTransaction.recorded,
+            additionalInfo: Value(newTransaction.additionalInfo),
+            location: Value(newTransaction.location),
+          ),
+        );
   }
 
-  void delete(String transactionID) async {
+  Future<void> delete(String transactionID) async {
     state = [
       for (final transaction in state)
         if (transaction.id != transactionID) transaction,
@@ -129,7 +137,9 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
 final transactionsProvider =
     StateNotifierProvider<TransactionNotifier, List<Transaction>>((ref) {
   return TransactionNotifier(
-      ref.read(dbProvider), ref.watch(globalDateRangeProvider));
+    ref.read(dbProvider),
+    ref.watch(globalDateRangeProvider),
+  );
 });
 
 final searchedTransProvider = StateProvider<List<Transaction>>((ref) {

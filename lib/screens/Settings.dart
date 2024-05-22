@@ -16,9 +16,9 @@ class Settings extends ConsumerStatefulWidget {
 class _SettingsState extends ConsumerState<Settings> {
   @override
   Widget build(BuildContext context) {
-    bool transDeleteConfirmation = ref.watch(transDeleteProvider);
-    bool chipsScroll = ref.watch(chipsMultiLineProvider);
-    List<String> initalPages = ["Entries", "Analysis", "Manage"];
+    final bool transDeleteConfirmation = ref.watch(transDeleteProvider);
+    final bool chipsScroll = ref.watch(chipsMultiLineProvider);
+    final List<String> initalPages = ["Entries", "Analysis", "Manage"];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
@@ -53,33 +53,36 @@ class _SettingsState extends ConsumerState<Settings> {
                     .update((state) => initalPages.indexOf(value!));
               },
               items: initalPages
-                  .map((e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e),
-                      ))
+                  .map(
+                    (e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ),
+                  )
                   .toList(),
             ),
           ),
           ListTile(
             onTap: () => showCurrencyPicker(
-                context: context,
-                onSelect: (e) {
-                  ref
-                      .watch(currencyProvider.notifier)
-                      .update((state) => e.code);
-                }),
+              context: context,
+              onSelect: (e) {
+                ref.watch(currencyProvider.notifier).update((state) => e.code);
+              },
+            ),
             title: const Text("Change currency"),
             trailing: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Theme.of(context).colorScheme.primaryContainer),
+                borderRadius: BorderRadius.circular(15),
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   ref.watch(currencyProvider),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                 ),
               ),
             ),
@@ -97,42 +100,44 @@ class _SettingsState extends ConsumerState<Settings> {
                   return AlertDialog(
                     title: const Text("Are you sure?"),
                     content: const Text(
-                        "This will delete any existing entries unless you have already exported them."),
+                      "This will delete any existing entries unless you have already exported them.",
+                    ),
                     actions: [
                       TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("Cancel")),
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text("Cancel"),
+                      ),
                       TextButton(
-                          onPressed: () async {
-                            showDialog(
-                                barrierDismissible: true,
-                                context: context,
-                                builder: (context) {
-                                  return const Dialog(
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 32),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CircularProgressIndicator(),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
-                            bool imported =
-                                await ref.read(dbProvider).importDB();
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const Dialog(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 32),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CircularProgressIndicator(),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          final bool imported =
+                              await ref.read(dbProvider).importDB();
+                          if (!context.mounted) return;
+                          if (imported) {
+                            await ref.read(dbProvider).close();
                             if (!context.mounted) return;
-                            if (imported) {
-                              await ref.read(dbProvider).close();
-                              if (!context.mounted) return;
-                              RestartWidget.restartApp(context);
-                            } else {
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: const Text("Import")),
+                            RestartWidget.restartApp(context);
+                          } else {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: const Text("Import"),
+                      ),
                     ],
                   );
                 },
@@ -145,41 +150,48 @@ class _SettingsState extends ConsumerState<Settings> {
             title: const Text("Rerun the tutorial"),
             onTap: () {
               showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("Are you sure?"),
-                      content: const Text(
-                          "You will have to finish the tutorial again."),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Cancel")),
-                        TextButton(
-                            onPressed: () {
-                              ref
-                                  .read(
-                                      entriesTutorialCompletedProvider.notifier)
-                                  .update((state) => false);
-                              ref
-                                  .read(
-                                      manageTutorialCompletedProvider.notifier)
-                                  .update((state) => false);
-                              ref
-                                  .read(analysisTutorialCompletedProvider
-                                      .notifier)
-                                  .update((state) => false);
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                "/welcome",
-                                (route) => false,
-                              );
-                            },
-                            child: const Text("Rerun")),
-                      ],
-                    );
-                  });
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Are you sure?"),
+                    content: const Text(
+                      "You will have to finish the tutorial again.",
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          ref
+                              .read(
+                                entriesTutorialCompletedProvider.notifier,
+                              )
+                              .update((state) => false);
+                          ref
+                              .read(
+                                manageTutorialCompletedProvider.notifier,
+                              )
+                              .update((state) => false);
+                          ref
+                              .read(
+                                analysisTutorialCompletedProvider.notifier,
+                              )
+                              .update((state) => false);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            "/welcome",
+                            (route) => false,
+                          );
+                        },
+                        child: const Text("Rerun"),
+                      ),
+                    ],
+                  );
+                },
+              );
             },
-          )
+          ),
         ],
       ),
     );

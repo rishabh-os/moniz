@@ -49,12 +49,13 @@ class _OverviewState extends ConsumerState<Overview>
 }
 
 class Income extends ConsumerStatefulWidget {
-  const Income(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.colorProvider,
-      required this.amountProvider});
+  const Income({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.colorProvider,
+    required this.amountProvider,
+  });
 
   final String title;
   final IconData icon;

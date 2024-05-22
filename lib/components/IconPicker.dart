@@ -25,9 +25,11 @@ class _IconPickerState extends State<IconPicker> {
     _icon = IconData(widget.iconCodepoint);
   }
 
-  _pickIcon() async {
-    IconData? icon = await showIconPicker(context,
-        iconPackModes: [IconPack.roundedMaterial]);
+  Future<void> _pickIcon() async {
+    final IconData? icon = await showIconPicker(
+      context,
+      iconPackModes: [IconPack.roundedMaterial],
+    );
 
     setState(() {
       if (icon != null) {

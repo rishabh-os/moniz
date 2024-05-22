@@ -54,27 +54,31 @@ class _TransactionListState extends ConsumerState<TransactionList> {
               onTap: () => handleTap(key, context, trans),
               child: ListTile(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 subtitle: Wrap(
                   direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.start,
                   spacing: 4,
                   children: [
-                    Text(DateFormat("EEE, d MMM yyyy K:mm a")
-                        .format(trans.recorded)),
+                    Text(
+                      DateFormat("EEE, d MMM yyyy K:mm a")
+                          .format(trans.recorded),
+                    ),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(6)),
                         color: ColorScheme.fromSeed(
-                                seedColor: Color(transAccount.color),
-                                // ? The color does not update properly, that's why I need to manually specify the brightness
-                                brightness: ref.watch(brightnessProvider))
-                            .primaryContainer,
+                          seedColor: Color(transAccount.color),
+                          // ? The color does not update properly, that's why I need to manually specify the brightness
+                          brightness: ref.watch(brightnessProvider),
+                        ).primaryContainer,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 2, horizontal: 6),
+                          vertical: 2,
+                          horizontal: 6,
+                        ),
                         child: Text(transAccount.name),
                       ),
                     ),
@@ -83,20 +87,26 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                 leading: Icon(
                   // ? The global key is attached here to prevent the entire ListView from rebuiling
                   key: key,
-                  IconData(transCategory.iconCodepoint,
-                      fontFamily: "MaterialIcons"),
+                  IconData(
+                    transCategory.iconCodepoint,
+                    fontFamily: "MaterialIcons",
+                  ),
                   color: Color(transCategory.color),
                 ),
                 title: Text(trans.title),
                 trailing: Transform.scale(
-                    scale: 0.9,
-                    child: MoneyDisplay(
-                        amount: trans.amount.abs(),
-                        textColor: ref
-                            .watch(trans.amount > 0
-                                ? incomeColorSchemeProvider
-                                : expenseColorSchemeProvider)
-                            .primary)),
+                  scale: 0.9,
+                  child: MoneyDisplay(
+                    amount: trans.amount.abs(),
+                    textColor: ref
+                        .watch(
+                          trans.amount > 0
+                              ? incomeColorSchemeProvider
+                              : expenseColorSchemeProvider,
+                        )
+                        .primary,
+                  ),
+                ),
               ),
             );
           }),

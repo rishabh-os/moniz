@@ -16,8 +16,8 @@ class _AnalysisState extends ConsumerState<Analysis> {
   late Widget display;
   @override
   Widget build(BuildContext context) {
-    List<GlobalKey> listOfKeys = ref.read(analysisGkListProvider);
-    display = DefaultTabController(
+    final List<GlobalKey> listOfKeys = ref.read(analysisGkListProvider);
+    return DefaultTabController(
       length: 2,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -41,8 +41,9 @@ class _AnalysisState extends ConsumerState<Analysis> {
                 child: const Tab(icon: Icon(Icons.pie_chart_rounded)),
               ),
               Tab(
-                  key: listOfKeys[1],
-                  icon: const Icon(Icons.bar_chart_rounded)),
+                key: listOfKeys[1],
+                icon: const Icon(Icons.bar_chart_rounded),
+              ),
             ],
           ),
           const Expanded(
@@ -57,8 +58,6 @@ class _AnalysisState extends ConsumerState<Analysis> {
         ],
       ),
     );
-
-    return display;
   }
 }
 
@@ -70,13 +69,14 @@ class NoData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-        child: Text(
-      "No data",
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 24,
-        letterSpacing: 1,
+      child: Text(
+        "No data",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 24,
+          letterSpacing: 1,
+        ),
       ),
-    ));
+    );
   }
 }

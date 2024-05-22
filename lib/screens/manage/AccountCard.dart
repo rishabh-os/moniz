@@ -28,14 +28,15 @@ class _AccountCardState extends State<AccountCard> {
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-            color: ColorScheme.fromSeed(
-                    seedColor: Color(widget.account.color),
-                    brightness: Theme.of(context).brightness)
-                .primaryContainer,
-            borderRadius: const BorderRadius.all(
-              // ? The number 12 from Card definition
-              Radius.circular(12),
-            )),
+          color: ColorScheme.fromSeed(
+            seedColor: Color(widget.account.color),
+            brightness: Theme.of(context).brightness,
+          ).primaryContainer,
+          borderRadius: const BorderRadius.all(
+            // ? The number 12 from Card definition
+            Radius.circular(12),
+          ),
+        ),
         child: AccountInfo(
           widget: widget,
           key: infoKey,
@@ -75,11 +76,12 @@ class AccountInfo extends StatelessWidget {
               tooltip: "Edit account",
             ),
             ReorderableDragStartListener(
-                index: widget.account.order,
-                child: const Icon(Icons.drag_indicator_rounded)),
+              index: widget.account.order,
+              child: const Icon(Icons.drag_indicator_rounded),
+            ),
             const SizedBox(
               width: 6,
-            )
+            ),
           ],
         ),
         Padding(
@@ -90,7 +92,7 @@ class AccountInfo extends StatelessWidget {
               Transform.scale(
                 scale: 1.6,
                 child: MoneyDisplay(amount: widget.account.balance),
-              )
+              ),
             ],
           ),
         ),

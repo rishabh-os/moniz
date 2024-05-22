@@ -7,10 +7,12 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(text.toUpperCase(),
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-          )),
+      child: Text(
+        text.toUpperCase(),
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 }

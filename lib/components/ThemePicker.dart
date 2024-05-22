@@ -26,9 +26,9 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
 
   Future<bool> supportsDynamic() async {
     if (Platform.isAndroid) {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      var release = androidInfo.version.release;
+      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      final release = androidInfo.version.release;
       return int.parse(release) >= 12 ? true : false;
     }
     // ? For development only
@@ -41,7 +41,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey k = GlobalKey();
+    final GlobalKey k = GlobalKey();
     isDark = ref.watch(brightnessProvider) == Brightness.dark;
     isDynamic = ref.watch(dynamicProvider);
     return Column(
@@ -98,7 +98,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
               isDynamic = value;
             });
           },
-        )
+        ),
       ],
     );
   }

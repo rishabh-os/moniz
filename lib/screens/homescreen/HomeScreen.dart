@@ -89,8 +89,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    var globalRange = ref.watch(globalDateRangeProvider);
-    var globalRangeUpdater = ref.watch(globalDateRangeProvider.notifier).update;
+    final globalRange = ref.watch(globalDateRangeProvider);
+    final globalRangeUpdater =
+        ref.watch(globalDateRangeProvider.notifier).update;
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -126,32 +127,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       resizeToAvoidBottomInset: true,
       floatingActionButton: OpenContainer(
-          // transitionDuration: Duration(seconds: 2),
-          closedColor: Theme.of(context).colorScheme.primaryContainer,
-          middleColor: Theme.of(context).colorScheme.primaryContainer,
-          openColor: Theme.of(context).colorScheme.background,
-          transitionType: ContainerTransitionType.fadeThrough,
-          closedElevation: 5.0,
-          openShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          closedShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          closedBuilder: (_, openContainer) {
-            return FloatingActionButton.extended(
-              heroTag: null,
-              key: listOfKeys[4],
-              // ? OpenContainer has its own elevation
-              elevation: 0,
-              highlightElevation: 0,
-              hoverElevation: 0,
-              onPressed: openContainer,
-              label: const Text("New Entry"),
-              icon: const Icon(Icons.add),
-            );
-          },
-          openBuilder: (_, closeContainer) {
-            return const EntryEditor();
-          }),
+        // transitionDuration: Duration(seconds: 2),
+        closedColor: Theme.of(context).colorScheme.primaryContainer,
+        middleColor: Theme.of(context).colorScheme.primaryContainer,
+        openColor: Theme.of(context).colorScheme.surface,
+        transitionType: ContainerTransitionType.fadeThrough,
+        closedElevation: 5.0,
+        openShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        closedShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        closedBuilder: (_, openContainer) {
+          return FloatingActionButton.extended(
+            heroTag: null,
+            key: listOfKeys[4],
+            // ? OpenContainer has its own elevation
+            elevation: 0,
+            highlightElevation: 0,
+            hoverElevation: 0,
+            onPressed: openContainer,
+            label: const Text("New Entry"),
+            icon: const Icon(Icons.add),
+          );
+        },
+        openBuilder: (_, closeContainer) {
+          return const EntryEditor();
+        },
+      ),
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) {
@@ -171,20 +173,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           });
         },
         children: widgetOptions
-            .map((e) => SlideTransition(
+            .map(
+              (e) => SlideTransition(
                 position:
                     Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero)
                         .animate(
                   CurvedAnimation(
-                      parent: _controller,
-                      curve: Curves.easeInOutCubicEmphasized),
+                    parent: _controller,
+                    curve: Curves.easeInOutCubicEmphasized,
+                  ),
                 ),
                 child: FadeTransition(
-                    opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                        CurvedAnimation(
-                            parent: _controller,
-                            curve: Curves.easeInOutCubicEmphasized)),
-                    child: e)))
+                  opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: _controller,
+                      curve: Curves.easeInOutCubicEmphasized,
+                    ),
+                  ),
+                  child: e,
+                ),
+              ),
+            )
             .toList(),
       ),
     );

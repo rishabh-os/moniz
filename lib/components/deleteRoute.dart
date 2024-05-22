@@ -22,8 +22,12 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
   Duration get transitionDuration => this.duration;
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return ClipPath(
       clipper: CircularRevealClipper(
         fraction: animation.value,

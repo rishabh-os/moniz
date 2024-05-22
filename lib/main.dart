@@ -27,11 +27,12 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  final WidgetsBinding widgetsBinding =
+      WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await GetStorage.init();
   if (Platform.isLinux) {
-    WindowOptions windowOptions = const WindowOptions(
+    const WindowOptions windowOptions = WindowOptions(
       size: Size(400, (18 / 9) * 400),
       center: false,
       title: "Moniz",
@@ -46,11 +47,13 @@ void main() async {
       windowManager.focus();
     });
   }
-  runApp(const RestartWidget(
-    child: ProviderScope(
-      child: MyApp(),
+  runApp(
+    const RestartWidget(
+      child: ProviderScope(
+        child: MyApp(),
+      ),
     ),
-  ));
+  );
 }
 
 class MyApp extends ConsumerStatefulWidget {
@@ -84,11 +87,12 @@ class _MyAppState extends ConsumerState<MyApp> {
       builder: (lightDynamic, darkDynamic) {
         ThemeData theme;
         if (lightDynamic != null && ref.watch(dynamicProvider)) {
-          var platformBrightness =
+          final platformBrightness =
               SchedulerBinding.instance.platformDispatcher.platformBrightness;
-          ColorScheme dynamicScheme = platformBrightness == Brightness.dark
-              ? darkDynamic!
-              : lightDynamic;
+          final ColorScheme dynamicScheme =
+              platformBrightness == Brightness.dark
+                  ? darkDynamic!
+                  : lightDynamic;
           theme = ThemeData(
             colorScheme: dynamicScheme,
             useMaterial3: true,
@@ -101,8 +105,9 @@ class _MyAppState extends ConsumerState<MyApp> {
         } else {
           theme = ThemeData(
             colorScheme: ColorScheme.fromSeed(
-                seedColor: ref.watch(themeColorProvider),
-                brightness: ref.watch(brightnessProvider)),
+              seedColor: ref.watch(themeColorProvider),
+              brightness: ref.watch(brightnessProvider),
+            ),
             useMaterial3: true,
           );
         }
@@ -130,6 +135,7 @@ class RestartWidget extends StatefulWidget {
   const RestartWidget({super.key, required this.child});
   final Widget child;
 
+  // ignore: unreachable_from_main
   static void restartApp(BuildContext context) {
     final _RestartWidgetState? state =
         context.findAncestorStateOfType<_RestartWidgetState>();

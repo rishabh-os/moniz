@@ -3,7 +3,7 @@ import "package:drift/drift.dart";
 import "package:drift/native.dart";
 import "package:file_picker/file_picker.dart";
 // ? This prevents everything conflicting Table imports in db.g.dart
-import "package:flutter/material.dart" show Icons, Colors;
+import "package:flutter/material.dart" show Colors, Icons;
 import "package:moniz/data/account.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/data/category.dart";
@@ -57,55 +57,64 @@ class MyDatabase extends _$MyDatabase {
 
   Future<List<TransactionCategory>> findAnimalsByLegs(int legCount) {
     return (select(categoriesTable)
-          ..where((a) =>
-              a.name.contains("Default") |
-              a.name.contains("Food") |
-              a.name.contains("Rent") |
-              a.name.contains("Shopping") |
-              a.name.contains("Utility")))
+          ..where(
+            (a) =>
+                a.name.contains("Default") |
+                a.name.contains("Food") |
+                a.name.contains("Rent") |
+                a.name.contains("Shopping") |
+                a.name.contains("Utility"),
+          ))
         .get();
   }
 
   Future<void> initCategories() async {
     final allCategories = await select(categoriesTable).get();
     if (allCategories.isEmpty) {
-      await batch((batch) => batch.insertAll(categoriesTable, [
-            CategoriesTableCompanion.insert(
-                id: "id1",
-                name: "Default",
-                iconCodepoint: Icons.account_circle_rounded.codePoint,
-                color: Colors.blue.value,
-                order: 0,
-                isArchived: false),
-            CategoriesTableCompanion.insert(
-                id: "id2",
-                name: "Food",
-                iconCodepoint: Icons.wine_bar.codePoint,
-                color: Colors.orange.value,
-                order: 1,
-                isArchived: false),
-            CategoriesTableCompanion.insert(
-                id: "id3",
-                name: "Rent",
-                iconCodepoint: Icons.house_rounded.codePoint,
-                color: Colors.green.value,
-                order: 2,
-                isArchived: false),
-            CategoriesTableCompanion.insert(
-                id: "id4",
-                name: "Shopping",
-                iconCodepoint: Icons.shopping_bag_rounded.codePoint,
-                color: Colors.lime.value,
-                order: 3,
-                isArchived: false),
-            CategoriesTableCompanion.insert(
-                id: "id5",
-                name: "Utility",
-                iconCodepoint: Icons.electrical_services_rounded.codePoint,
-                color: Colors.pink.value,
-                order: 4,
-                isArchived: false),
-          ]));
+      await batch(
+        (batch) => batch.insertAll(categoriesTable, [
+          CategoriesTableCompanion.insert(
+            id: "id1",
+            name: "Default",
+            iconCodepoint: Icons.account_circle_rounded.codePoint,
+            color: Colors.blue.value,
+            order: 0,
+            isArchived: false,
+          ),
+          CategoriesTableCompanion.insert(
+            id: "id2",
+            name: "Food",
+            iconCodepoint: Icons.wine_bar.codePoint,
+            color: Colors.orange.value,
+            order: 1,
+            isArchived: false,
+          ),
+          CategoriesTableCompanion.insert(
+            id: "id3",
+            name: "Rent",
+            iconCodepoint: Icons.house_rounded.codePoint,
+            color: Colors.green.value,
+            order: 2,
+            isArchived: false,
+          ),
+          CategoriesTableCompanion.insert(
+            id: "id4",
+            name: "Shopping",
+            iconCodepoint: Icons.shopping_bag_rounded.codePoint,
+            color: Colors.lime.value,
+            order: 3,
+            isArchived: false,
+          ),
+          CategoriesTableCompanion.insert(
+            id: "id5",
+            name: "Utility",
+            iconCodepoint: Icons.electrical_services_rounded.codePoint,
+            color: Colors.pink.value,
+            order: 4,
+            isArchived: false,
+          ),
+        ]),
+      );
     }
   }
 
@@ -113,17 +122,19 @@ class MyDatabase extends _$MyDatabase {
     // ? This part is debug code that adds accounts if they are empty
     final allAccounts = await select(accountsTable).get();
     if (allAccounts.isEmpty) {
-      await batch((batch) => batch.insertAll(accountsTable, [
-            AccountsTableCompanion.insert(
-              id: "accId1",
-              name: "Cash",
-              iconCodepoint: Icons.monetization_on.codePoint,
-              color: Colors.green.value,
-              order: 0,
-              isArchived: false,
-              balance: 0,
-            ),
-          ]));
+      await batch(
+        (batch) => batch.insertAll(accountsTable, [
+          AccountsTableCompanion.insert(
+            id: "accId1",
+            name: "Cash",
+            iconCodepoint: Icons.monetization_on.codePoint,
+            color: Colors.green.value,
+            order: 0,
+            isArchived: false,
+            balance: 0,
+          ),
+        ]),
+      );
     }
     // ? Use batch to perform inserts as there is an inbuilt unique checker (happy little discovery)
     // await delete(accountsTable).go();
@@ -176,20 +187,20 @@ class MyDatabase extends _$MyDatabase {
   @override
   int get schemaVersion => 1;
 
-  void shareDB() async {
+  Future<void> shareDB() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final dbXFile = XFile(p.join(dbFolder.path, "db.sqlite"));
     Share.shareXFiles([dbXFile]);
   }
 
   Future<bool> importDB() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
         // type: FileType.custom,
         // allowedExtensions: ["sqlite"],
         );
 
     if (result != null) {
-      File file = File(result.files.single.path!);
+      final File file = File(result.files.single.path!);
       final dbFolder = await getApplicationDocumentsDirectory();
       final oldFile = File(p.join(dbFolder.path, "db.sqlite"));
       await oldFile.delete();

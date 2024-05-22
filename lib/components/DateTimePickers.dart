@@ -19,10 +19,11 @@ class _DatePickerState extends State<DatePicker> {
   late DateTime displayDate;
   Future<void> _selectDate2(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: widget.initialDate,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100));
+      context: context,
+      initialDate: widget.initialDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
     if (picked != null) {
       setState(() {
         displayDate = picked;
@@ -53,8 +54,11 @@ class _DatePickerState extends State<DatePicker> {
 }
 
 class TimePicker extends StatefulWidget {
-  const TimePicker(
-      {super.key, required this.initialTime, required this.returnSelectedTime});
+  const TimePicker({
+    super.key,
+    required this.initialTime,
+    required this.returnSelectedTime,
+  });
   final Function(TimeOfDay selectedTime) returnSelectedTime;
   final TimeOfDay initialTime;
 
@@ -81,12 +85,12 @@ class _TimePickerState extends State<TimePicker> {
         size: 16,
       ),
       label: Text(
-          '${selectedTime.hourOfPeriod.toString().padLeft(2, "0")}: ${selectedTime.minute.toString().padLeft(2, "0")} ${selectedTime.period.name.toUpperCase()}'),
+        '${selectedTime.hourOfPeriod.toString().padLeft(2, "0")}: ${selectedTime.minute.toString().padLeft(2, "0")} ${selectedTime.period.name.toUpperCase()}',
+      ),
       onPressed: () async {
         final TimeOfDay? time = await showTimePicker(
           context: context,
           initialTime: widget.initialTime,
-          initialEntryMode: TimePickerEntryMode.dial,
           builder: (BuildContext context, Widget? child) {
             return child!;
           },

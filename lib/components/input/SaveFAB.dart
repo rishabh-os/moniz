@@ -8,7 +8,7 @@ class SaveFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
+    final bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Visibility(
       visible: !keyboardIsOpen,
       maintainAnimation: true,

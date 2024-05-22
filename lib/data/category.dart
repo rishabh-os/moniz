@@ -4,13 +4,14 @@ import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/database/db.dart";
 
 class TransactionCategory extends Classifier {
-  TransactionCategory(
-      {required this.id,
-      required this.name,
-      required this.iconCodepoint,
-      required this.color,
-      required this.order,
-      required this.isArchived});
+  TransactionCategory({
+    required this.id,
+    required this.name,
+    required this.iconCodepoint,
+    required this.color,
+    required this.order,
+    required this.isArchived,
+  });
 
   @override
   final String id;
@@ -26,12 +27,13 @@ class TransactionCategory extends Classifier {
   final bool isArchived;
 
   @override
-  TransactionCategory copyWith(
-      {String? name,
-      int? iconCodepoint,
-      int? color,
-      int? order,
-      bool? isArchived}) {
+  TransactionCategory copyWith({
+    String? name,
+    int? iconCodepoint,
+    int? color,
+    int? order,
+    bool? isArchived,
+  }) {
     return TransactionCategory(
       id: id,
       name: name ?? this.name,
@@ -73,18 +75,21 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
     ];
   }
 
-  void add(TransactionCategory newCategory) async {
+  Future<void> add(TransactionCategory newCategory) async {
     state = [...state, newCategory];
-    await db.into(db.categoriesTable).insert(CategoriesTableCompanion.insert(
-        id: newCategory.id,
-        name: newCategory.name,
-        iconCodepoint: newCategory.iconCodepoint,
-        color: newCategory.color,
-        order: newCategory.order,
-        isArchived: newCategory.isArchived));
+    await db.into(db.categoriesTable).insert(
+          CategoriesTableCompanion.insert(
+            id: newCategory.id,
+            name: newCategory.name,
+            iconCodepoint: newCategory.iconCodepoint,
+            color: newCategory.color,
+            order: newCategory.order,
+            isArchived: newCategory.isArchived,
+          ),
+        );
   }
 
-  void delete(String categoryID) async {
+  Future<void> delete(String categoryID) async {
     state = [
       for (final category in state)
         if (category.id != categoryID) category,
@@ -108,10 +113,11 @@ abstract class Classifier {
   int get order;
   bool get isArchived;
 
-  Classifier copyWith(
-      {String? name,
-      int? iconCodepoint,
-      int? color,
-      int? order,
-      bool? isArchived});
+  Classifier copyWith({
+    String? name,
+    int? iconCodepoint,
+    int? color,
+    int? order,
+    bool? isArchived,
+  });
 }

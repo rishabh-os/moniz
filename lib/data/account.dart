@@ -30,22 +30,24 @@ class Account extends Classifier {
   double balance;
 
   @override
-  Account copyWith(
-      {String? name,
-      int? iconCodepoint,
-      int? color,
-      double? balance,
-      double? netTransactions,
-      int? order,
-      bool? isArchived}) {
+  Account copyWith({
+    String? name,
+    int? iconCodepoint,
+    int? color,
+    double? balance,
+    double? netTransactions,
+    int? order,
+    bool? isArchived,
+  }) {
     return Account(
-        id: id,
-        name: name ?? this.name,
-        iconCodepoint: iconCodepoint ?? this.iconCodepoint,
-        color: color ?? this.color,
-        balance: balance ?? this.balance,
-        order: order ?? this.order,
-        isArchived: isArchived ?? this.isArchived);
+      id: id,
+      name: name ?? this.name,
+      iconCodepoint: iconCodepoint ?? this.iconCodepoint,
+      color: color ?? this.color,
+      balance: balance ?? this.balance,
+      order: order ?? this.order,
+      isArchived: isArchived ?? this.isArchived,
+    );
   }
 }
 
@@ -65,31 +67,34 @@ class AccountNotifier extends StateNotifier<List<Account>> {
       for (final acc in state)
         if (acc.id == editedAccount.id)
           acc.copyWith(
-              name: editedAccount.name,
-              iconCodepoint: editedAccount.iconCodepoint,
-              color: editedAccount.color,
-              balance: editedAccount.balance,
-              order: editedAccount.order,
-              isArchived: editedAccount.isArchived)
+            name: editedAccount.name,
+            iconCodepoint: editedAccount.iconCodepoint,
+            color: editedAccount.color,
+            balance: editedAccount.balance,
+            order: editedAccount.order,
+            isArchived: editedAccount.isArchived,
+          )
         else
           acc,
     ];
   }
 
-  void add(Account newAccount) async {
+  Future<void> add(Account newAccount) async {
     state = [...state, newAccount];
-    await db.into(db.accountsTable).insert(AccountsTableCompanion.insert(
-          id: newAccount.id,
-          name: newAccount.name,
-          iconCodepoint: newAccount.iconCodepoint,
-          color: newAccount.color,
-          balance: newAccount.balance,
-          order: newAccount.order,
-          isArchived: newAccount.isArchived,
-        ));
+    await db.into(db.accountsTable).insert(
+          AccountsTableCompanion.insert(
+            id: newAccount.id,
+            name: newAccount.name,
+            iconCodepoint: newAccount.iconCodepoint,
+            color: newAccount.color,
+            balance: newAccount.balance,
+            order: newAccount.order,
+            isArchived: newAccount.isArchived,
+          ),
+        );
   }
 
-  void delete(String accountID) async {
+  Future<void> delete(String accountID) async {
     state = [
       for (final account in state)
         if (account.id != accountID) account,

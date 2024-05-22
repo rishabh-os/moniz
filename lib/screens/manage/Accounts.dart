@@ -16,7 +16,7 @@ class Accounts extends ConsumerStatefulWidget {
 class _AccountsState extends ConsumerState<Accounts> {
   @override
   Widget build(BuildContext context) {
-    List<Account> accounts = ref.watch(accountsProvider);
+    final List<Account> accounts = ref.watch(accountsProvider);
     return Column(
       children: [
         ReorderableListView.builder(
@@ -32,7 +32,7 @@ class _AccountsState extends ConsumerState<Accounts> {
                     .read(accountsProvider.notifier)
                     .edit(accounts[i].copyWith(order: i));
               }
-            })
+            }),
           },
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -40,7 +40,7 @@ class _AccountsState extends ConsumerState<Accounts> {
           proxyDecorator: proxyDecorator,
           itemCount: accounts.length,
           itemBuilder: (context, index) {
-            var acc = accounts[index];
+            final acc = accounts[index];
             final key = GlobalObjectKey(acc.id);
             return AccountCard(
               key: key,
@@ -50,22 +50,24 @@ class _AccountsState extends ConsumerState<Accounts> {
         ),
         const SizedBox(height: 8),
         OpenContainer(
-            closedColor: Theme.of(context).colorScheme.secondaryContainer,
-            middleColor: Theme.of(context).colorScheme.secondaryContainer,
-            openColor: Theme.of(context).colorScheme.background,
-            transitionType: ContainerTransitionType.fadeThrough,
-            closedElevation: 0,
-            openShape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            closedShape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            closedBuilder: (context, action) => TextButton.icon(
-                onPressed: action,
-                icon: const Icon(Icons.add),
-                label: const Text("Add Account")),
-            openBuilder: (context, action) => const AccountEditor(
-                  type: "Account",
-                )),
+          closedColor: Theme.of(context).colorScheme.secondaryContainer,
+          middleColor: Theme.of(context).colorScheme.secondaryContainer,
+          openColor: Theme.of(context).colorScheme.surface,
+          transitionType: ContainerTransitionType.fadeThrough,
+          closedElevation: 0,
+          openShape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          closedShape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          closedBuilder: (context, action) => TextButton.icon(
+            onPressed: action,
+            icon: const Icon(Icons.add),
+            label: const Text("Add Account"),
+          ),
+          openBuilder: (context, action) => const AccountEditor(
+            type: "Account",
+          ),
+        ),
       ],
     );
   }

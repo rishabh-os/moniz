@@ -19,10 +19,8 @@ class DotsMenu extends StatelessWidget {
           case "Theme":
             scaffoldKey.currentState!
                 .showBottomSheet((context) => const ThemePicker());
-            break;
           case "Settings":
             Navigator.of(context).pushNamed("/settings");
-            break;
         }
       },
       itemBuilder: (context) => {
@@ -36,7 +34,7 @@ class DotsMenu extends StatelessWidget {
               child: Wrap(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0),
+                    padding: EdgeInsets.zero,
                     child: Icon(e.value),
                   ),
                   const SizedBox(width: 10),

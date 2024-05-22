@@ -58,10 +58,13 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       ref.read(transactionsProvider.notifier).add(transaction);
 
       // ? Update account balance on add
-      var targetAccount =
+      final targetAccount =
           accounts.firstWhere((element) => element.id == transaction.accountID);
-      ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
-          balance: targetAccount.balance + transaction.amount));
+      ref.read(accountsProvider.notifier).edit(
+            targetAccount.copyWith(
+              balance: targetAccount.balance + transaction.amount,
+            ),
+          );
     };
 
     if (widget.transaction != null) {
@@ -73,10 +76,14 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               .delete(widget.transaction!.id);
           Navigator.of(context).pop();
           // ? Update account balance on delete
-          var targetAccount = accounts.firstWhere(
-              (element) => element.id == widget.transaction!.accountID);
-          ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
-              balance: targetAccount.balance - widget.transaction!.amount));
+          final targetAccount = accounts.firstWhere(
+            (element) => element.id == widget.transaction!.accountID,
+          );
+          ref.read(accountsProvider.notifier).edit(
+                targetAccount.copyWith(
+                  balance: targetAccount.balance - widget.transaction!.amount,
+                ),
+              );
         }
 
         ref.watch(transDeleteProvider)
@@ -85,19 +92,22 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                 builder: (context) => AlertDialog(
                   // title: const Text("Are you sure?"),
                   content: const Text(
-                      "Are you sure you want to delete this transaction?"),
+                    "Are you sure you want to delete this transaction?",
+                  ),
                   actions: [
                     TextButton(
-                        onPressed: () {
-                          deleteTransaction();
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("Yes")),
+                      onPressed: () {
+                        deleteTransaction();
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Yes"),
+                    ),
                     TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("No"))
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("No"),
+                    ),
                   ],
                 ),
               )
@@ -108,35 +118,51 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       _amount = widget.transaction!.amount.abs();
       // ? This complicated code brought to you by having to store only the id in the database
 
-      _selectedCategory = categories.indexOf(categories.firstWhere(
-          (element) => element.id == widget.transaction!.categoryID));
-      _selectedAccount = accounts.indexOf(accounts.firstWhere(
-          (element) => element.id == widget.transaction!.accountID));
+      _selectedCategory = categories.indexOf(
+        categories.firstWhere(
+          (element) => element.id == widget.transaction!.categoryID,
+        ),
+      );
+      _selectedAccount = accounts.indexOf(
+        accounts.firstWhere(
+          (element) => element.id == widget.transaction!.accountID,
+        ),
+      );
       _selectedDate = widget.transaction!.recorded;
       _selectedTime = TimeOfDay(
-          hour: widget.transaction!.recorded.hour,
-          minute: widget.transaction!.recorded.minute);
+        hour: widget.transaction!.recorded.hour,
+        minute: widget.transaction!.recorded.minute,
+      );
       _additionalInfo = widget.transaction!.additionalInfo;
       _selectedLocation = widget.transaction!.location;
       saveAction = (transaction) {
         ref.read(transactionsProvider.notifier).edit(transaction);
         // ? Handle all the cases when the transaction is edited
-        var targetAccount = accounts
+        final targetAccount = accounts
             .firstWhere((element) => element.id == transaction.accountID);
-        var oldTransaction = ref
+        final oldTransaction = ref
             .read(transactionsProvider)
             .firstWhere((element) => element.id == transaction.id);
-        var oldAccount = accounts
+        final oldAccount = accounts
             .firstWhere((element) => element.id == oldTransaction.accountID);
         if (oldTransaction.accountID == transaction.accountID) {
-          var changedAmount = transaction.amount - oldTransaction.amount;
-          ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
-              balance: targetAccount.balance + changedAmount));
+          final changedAmount = transaction.amount - oldTransaction.amount;
+          ref.read(accountsProvider.notifier).edit(
+                targetAccount.copyWith(
+                  balance: targetAccount.balance + changedAmount,
+                ),
+              );
         } else {
-          ref.read(accountsProvider.notifier).edit(oldAccount.copyWith(
-              balance: oldAccount.balance - oldTransaction.amount));
-          ref.read(accountsProvider.notifier).edit(targetAccount.copyWith(
-              balance: targetAccount.balance + transaction.amount));
+          ref.read(accountsProvider.notifier).edit(
+                oldAccount.copyWith(
+                  balance: oldAccount.balance - oldTransaction.amount,
+                ),
+              );
+          ref.read(accountsProvider.notifier).edit(
+                targetAccount.copyWith(
+                  balance: targetAccount.balance + transaction.amount,
+                ),
+              );
         }
       };
     }
@@ -144,9 +170,11 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
     titleController =
         TextEditingController(text: _title == "Untitled" ? null : _title);
     addInfoController = TextEditingController(
-        text: _additionalInfo == "None" ? null : _additionalInfo);
+      text: _additionalInfo == "None" ? null : _additionalInfo,
+    );
     amountController = TextEditingController(
-        text: _amount.toString() == "0.0" ? null : _amount.toString());
+      text: _amount.toString() == "0.0" ? null : _amount.toString(),
+    );
   }
 
   @override
@@ -166,31 +194,37 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
             children: [
               Wrap(
                 spacing: 8.0,
-                children:
-                    List<Widget>.generate(entryTypeStrings.length, (int index) {
-                  return Theme(
-                    data: ThemeData(
+                children: List<Widget>.generate(
+                  entryTypeStrings.length,
+                  (int index) {
+                    return Theme(
+                      data: ThemeData(
                         useMaterial3: true,
                         colorScheme: ref.watch(
-                            entryTypeStrings[index] == "Income"
-                                ? incomeColorSchemeProvider
-                                : expenseColorSchemeProvider)),
-                    child: ChoiceChip.elevated(
-                      label: Text(
-                        entryTypeStrings[index].toUpperCase(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                          entryTypeStrings[index] == "Income"
+                              ? incomeColorSchemeProvider
+                              : expenseColorSchemeProvider,
+                        ),
                       ),
-                      selected: _entryType == index,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          _entryType = index;
-                        });
-                      },
-                    ),
-                  );
-                }, growable: false)
-                        .toList(),
+                      child: ChoiceChip.elevated(
+                        label: Text(
+                          entryTypeStrings[index].toUpperCase(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        selected: _entryType == index,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            _entryType = index;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                  growable: false,
+                ).toList(),
               ),
               TextFormField(
                 controller: titleController,
@@ -211,7 +245,9 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               ChipSelector(
                 // ? Reorders the categories based on the order provided
                 items: List.generate(
-                    categories.length, (index) => categories[index]),
+                  categories.length,
+                  (index) => categories[index],
+                ),
                 selection: _selectedCategory,
                 returnSelected: (selected) {
                   setState(() {
@@ -256,25 +292,27 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                     returnSelectedLocation: (location) => {
                       setState(() {
                         _selectedLocation = location;
-                      })
+                      }),
                     },
-                  )
+                  ),
                 ],
               ),
               // * Not sure why it needs to be this big, when the actual space it gives is a lot less
               const SizedBox(height: 40),
               TextFormField(
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Additional Information",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      hintText: "Optional"),
-                  controller: addInfoController,
-                  onChanged: (value) {
-                    _additionalInfo = value;
-                  },
-                  minLines: 1,
-                  maxLines: 5),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Additional Information",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  hintText: "Optional",
+                ),
+                controller: addInfoController,
+                onChanged: (value) {
+                  _additionalInfo = value;
+                },
+                minLines: 1,
+                maxLines: 5,
+              ),
               const SizedBox(height: 100),
             ],
           ),
@@ -288,15 +326,17 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               const SnackBar(content: Text("Please enter a non zero amount")),
             );
           } else {
-            DateTime recorded = DateTime(
-                _selectedDate.year,
-                _selectedDate.month,
-                _selectedDate.day,
-                _selectedTime.hour,
-                _selectedTime.minute);
+            final DateTime recorded = DateTime(
+              _selectedDate.year,
+              _selectedDate.month,
+              _selectedDate.day,
+              _selectedTime.hour,
+              _selectedTime.minute,
+            );
             // ? I use v1 because it encodes some information about the device used and the time of creation, which may be useful informaiton later for bug fixing or something
             final String uuid = widget.transaction?.id ?? const Uuid().v1();
-            saveAction(Transaction(
+            saveAction(
+              Transaction(
                 id: uuid,
                 title: _title,
                 additionalInfo: _additionalInfo,
@@ -304,7 +344,9 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                 accountID: accounts[_selectedAccount].id,
                 amount: _entryType == 1 ? _amount * -1 : _amount,
                 recorded: recorded,
-                location: _selectedLocation));
+                location: _selectedLocation,
+              ),
+            );
 
             Navigator.pop(context);
           }

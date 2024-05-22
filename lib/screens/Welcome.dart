@@ -52,7 +52,7 @@ class _WelcomeState extends ConsumerState<Welcome> {
           image: const Center(
             child: Icon(Icons.school_rounded, size: 100.0),
           ),
-        )
+        ),
       ],
     );
   }

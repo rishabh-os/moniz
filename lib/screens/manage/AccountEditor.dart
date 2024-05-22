@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/IconPicker.dart";
@@ -12,8 +14,12 @@ import "package:moniz/data/transactions.dart";
 import "package:uuid/uuid.dart";
 
 class AccountEditor extends ConsumerStatefulWidget {
-  const AccountEditor(
-      {super.key, this.editedAccount, this.editedCategory, required this.type});
+  const AccountEditor({
+    super.key,
+    this.editedAccount,
+    this.editedCategory,
+    required this.type,
+  });
   final Account? editedAccount;
   final TransactionCategory? editedCategory;
   final String type;
@@ -64,77 +70,85 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     accountNameController =
         TextEditingController(text: _accountName == "" ? null : _accountName);
     balanceController = TextEditingController(
-        text: _balance.toString() == "0.0" ? null : _balance.toString());
+      text: _balance.toString() == "0.0" ? null : _balance.toString(),
+    );
   }
 
-  void handleAccountDelete() async {
+  Future<void> handleAccountDelete() async {
     void delete() {
       ref.read(accountsProvider.notifier).delete(widget.editedAccount!.id);
       Navigator.popUntil(context, ModalRoute.withName("/home"));
     }
 
-    List<Transaction> transactionList = await ref
+    final List<Transaction> transactionList = await ref
         .watch(transactionsProvider.notifier)
         .loadAllTransationsFromDB();
-    List<Transaction> activeTransactions = transactionList
+    final List<Transaction> activeTransactions = transactionList
         .where((e) => e.accountID == widget.editedAccount!.id)
         .toList();
-    List<Account> accounts = ref.watch(accountsProvider);
+    final List<Account> accounts = ref.watch(accountsProvider);
     if (!mounted) return;
     if (accounts.length == 1) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("You can't delete the last account"),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("You can't delete the last account"),
+        ),
+      );
       return;
     }
     activeTransactions.isEmpty
         ? delete()
-        : ScaffoldMessenger.of(context).showSnackBar(deleteSnack(
-            context,
-            widget.type,
-            () {
-              for (var trans in transactionList) {
-                if (trans.accountID == widget.editedAccount!.id) {
-                  ref.watch(transactionsProvider.notifier).delete(trans.id);
+        : ScaffoldMessenger.of(context).showSnackBar(
+            deleteSnack(
+              context,
+              widget.type,
+              () {
+                for (final trans in transactionList) {
+                  if (trans.accountID == widget.editedAccount!.id) {
+                    ref.watch(transactionsProvider.notifier).delete(trans.id);
+                  }
+                  delete();
                 }
-                delete();
-              }
-            },
-          ));
+              },
+            ),
+          );
   }
 
-  void handleCategoryDelete() async {
+  Future<void> handleCategoryDelete() async {
     void delete() {
       ref.read(categoriesProvider.notifier).delete(widget.editedCategory!.id);
       Navigator.of(context).maybePop();
     }
 
-    List<Transaction> transactionList = await ref
+    final List<Transaction> transactionList = await ref
         .watch(transactionsProvider.notifier)
         .loadAllTransationsFromDB();
-    List<Transaction> activeTransactions = transactionList
+    final List<Transaction> activeTransactions = transactionList
         .where((e) => e.categoryID == widget.editedCategory!.id)
         .toList();
-    List<TransactionCategory> categories = ref.watch(categoriesProvider);
+    final List<TransactionCategory> categories = ref.watch(categoriesProvider);
 
     if (!mounted) return;
     if (categories.length == 1) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("You can't delete the last category"),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("You can't delete the last category"),
+        ),
+      );
       return;
     }
     activeTransactions.isEmpty
         ? delete()
-        : ScaffoldMessenger.of(context)
-            .showSnackBar(deleteSnack(context, widget.type, () {
-            for (var trans in transactionList) {
-              if (trans.categoryID == widget.editedCategory!.id) {
-                ref.watch(transactionsProvider.notifier).delete(trans.id);
+        : ScaffoldMessenger.of(context).showSnackBar(
+            deleteSnack(context, widget.type, () {
+              for (final trans in transactionList) {
+                if (trans.categoryID == widget.editedCategory!.id) {
+                  ref.watch(transactionsProvider.notifier).delete(trans.id);
+                }
+                delete();
               }
-              delete();
-            }
-          }));
+            }),
+          );
   }
 
   @override
@@ -167,7 +181,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
               AmountField(
                 amountController: balanceController,
                 amountCallback: (amount) => _balance = amount,
-              )
+              ),
             ],
             Header(text: "${widget.type} color"),
             ColorPicker(
@@ -186,7 +200,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                   _selectedIcon = selectedIcon.codePoint;
                 });
               },
-            )
+            ),
           ],
         ),
       ),
@@ -200,25 +214,30 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
           } else {
             if (widget.type == "Account") {
               final String uuid = widget.editedAccount?.id ?? const Uuid().v1();
-              saveAction(Account(
+              saveAction(
+                Account(
                   id: uuid,
                   name: _accountName,
                   iconCodepoint: _selectedIcon,
                   color: _selectedColor,
                   balance: _balance,
                   order: 0,
-                  isArchived: false));
+                  isArchived: false,
+                ),
+              );
             } else {
               final String uuid =
                   widget.editedCategory?.id ?? const Uuid().v1();
-              saveAction(TransactionCategory(
-                id: uuid,
-                name: _accountName,
-                iconCodepoint: _selectedIcon,
-                color: _selectedColor,
-                order: 0,
-                isArchived: false,
-              ));
+              saveAction(
+                TransactionCategory(
+                  id: uuid,
+                  name: _accountName,
+                  iconCodepoint: _selectedIcon,
+                  color: _selectedColor,
+                  order: 0,
+                  isArchived: false,
+                ),
+              );
             }
             Navigator.pop(context);
           }

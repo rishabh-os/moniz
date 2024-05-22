@@ -17,10 +17,11 @@ import "package:moniz/env/env.dart";
 import "package:url_launcher/url_launcher.dart";
 
 class LocationPicker extends ConsumerStatefulWidget {
-  const LocationPicker(
-      {super.key,
-      required this.initialLocation,
-      required this.returnSelectedLocation});
+  const LocationPicker({
+    super.key,
+    required this.initialLocation,
+    required this.returnSelectedLocation,
+  });
   final GMapsPlace? initialLocation;
   final Function(GMapsPlace location) returnSelectedLocation;
 
@@ -40,28 +41,33 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-        onPressed: () async {
-          GMapsPlace? result = await Navigator.push(context,
-              MaterialPageRoute(builder: (context) {
-            // ? This is prop drilling and bad I know
-            return LocationMap(
-              initialLocation: widget.initialLocation,
-            );
-          }));
-          if (result != null) {
-            setState(() {
-              selectedLocation = result;
-              widget.returnSelectedLocation(selectedLocation!);
-            });
-          }
-        },
-        label: selectedLocation == null
-            ? const Text("Add Location")
-            : Text(selectedLocation!.displayName!.text ?? ""),
-        icon: const Icon(
-          Icons.location_on,
-          size: 16,
-        ));
+      onPressed: () async {
+        final GMapsPlace? result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              // ? This is prop drilling and bad I know
+              return LocationMap(
+                initialLocation: widget.initialLocation,
+              );
+            },
+          ),
+        );
+        if (result != null) {
+          setState(() {
+            selectedLocation = result;
+            widget.returnSelectedLocation(selectedLocation!);
+          });
+        }
+      },
+      label: selectedLocation == null
+          ? const Text("Add Location")
+          : Text(selectedLocation!.displayName!.text ?? ""),
+      icon: const Icon(
+        Icons.location_on,
+        size: 16,
+      ),
+    );
   }
 }
 
@@ -80,7 +86,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
     with TickerProviderStateMixin {
   late final animatedMapController = AnimatedMapController(
     vsync: this,
-    duration: const Duration(milliseconds: 500),
     curve: Curves.easeInOutCubicEmphasized,
   );
   AlignOnUpdate _alignPositionOnUpdate = AlignOnUpdate.once;
@@ -95,32 +100,34 @@ class _LocationMapState extends ConsumerState<LocationMap>
       "circle": {
         "center": {
           "latitude": mapCenter.latitude,
-          "longitude": mapCenter.longitude
+          "longitude": mapCenter.longitude,
         },
-        "radius": 500.0
-      }
+        "radius": 500.0,
+      },
     };
     if (input == "") {
       return null;
     }
     final response = await http.post(
-        Uri.parse("https://places.googleapis.com/v1/places:searchText"),
-        body: jsonEncode({
-          "textQuery": input,
-          "maxResultCount": 5,
-          "locationBias": locationBias
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": Env.googleMapsApikey,
-          // ? Requesting only the fields we need here
-          "X-Goog-Fieldmask":
-              "places.displayName,places.formattedAddress,places.location,places.googleMapsUri"
-        });
+      Uri.parse("https://places.googleapis.com/v1/places:searchText"),
+      body: jsonEncode({
+        "textQuery": input,
+        "maxResultCount": 5,
+        "locationBias": locationBias,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": Env.googleMapsApikey,
+        // ? Requesting only the fields we need here
+        "X-Goog-Fieldmask":
+            "places.displayName,places.formattedAddress,places.location,places.googleMapsUri",
+      },
+    );
 
     if (response.statusCode == 200) {
       final responseObject = GMapsResponse.fromJson(
-          jsonDecode(response.body) as Map<String, dynamic>);
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
       responseObject.places?.forEach((element) {});
       return responseObject;
     } else {
@@ -143,7 +150,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
     initialCenter = ref.read(initialCenterProvider);
     if (widget.initialLocation != null) {
       selectedLocation = widget.initialLocation;
-      Location selectedCenter = selectedLocation!.location!;
+      final Location selectedCenter = selectedLocation!.location!;
       Future.delayed(0.ms, () {
         ref.read(initialCenterProvider.notifier).state =
             LatLng(selectedCenter.latitude ?? 0, selectedCenter.longitude ?? 0);
@@ -171,8 +178,8 @@ class _LocationMapState extends ConsumerState<LocationMap>
                   {
                     setState(
                       () => _alignPositionOnUpdate = AlignOnUpdate.never,
-                    )
-                  }
+                    ),
+                  },
               },
             ),
             children: [
@@ -184,29 +191,32 @@ class _LocationMapState extends ConsumerState<LocationMap>
                     CancellableNetworkTileProvider(silenceExceptions: true),
               ),
               MarkerLayer(
-                  markers: selectedLocation != null
-                      ? [
-                          Marker(
-                              point: LatLng(
-                                  selectedLocation!.location!.latitude ??
-                                      animatedMapController
-                                          .mapController.camera.center.latitude,
-                                  selectedLocation!.location!.longitude ??
-                                      animatedMapController.mapController.camera
-                                          .center.longitude),
-                              child: Icon(
-                                Icons.place,
-                                size: 36,
-                                color: Theme.of(context).colorScheme.primary,
-                                shadows: [
-                                  Shadow(
-                                      color:
-                                          Theme.of(context).colorScheme.shadow,
-                                      blurRadius: 30)
-                                ],
-                              ))
-                        ]
-                      : []),
+                markers: selectedLocation != null
+                    ? [
+                        Marker(
+                          point: LatLng(
+                            selectedLocation!.location!.latitude ??
+                                animatedMapController
+                                    .mapController.camera.center.latitude,
+                            selectedLocation!.location!.longitude ??
+                                animatedMapController
+                                    .mapController.camera.center.longitude,
+                          ),
+                          child: Icon(
+                            Icons.place,
+                            size: 36,
+                            color: Theme.of(context).colorScheme.primary,
+                            shadows: [
+                              Shadow(
+                                color: Theme.of(context).colorScheme.shadow,
+                                blurRadius: 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]
+                    : [],
+              ),
               // ? The underlying geolocation package doesn't support Linux
               if (!Platform.isLinux)
                 CurrentLocationLayer(
@@ -230,27 +240,30 @@ class _LocationMapState extends ConsumerState<LocationMap>
             child: Column(
               children: [
                 SearchAnchor.bar(
-                    searchController: _searchController,
-                    viewLeading: IconButton(
-                        onPressed: () async {
-                          _searchController.closeView(_searchController.text);
-                          await Future.delayed(
-                            50.ms,
-                            () => FocusScope.of(context).unfocus(),
-                          );
-                        },
-                        icon: const Icon(Icons.arrow_back)),
-                    isFullScreen: false,
-                    barHintText: "Search for a nearby location",
-                    suggestionsBuilder: (context, controller) async {
-                      final results = await debouncedSearch(controller.text);
-                      List<ListTile> resultList = results?.places
-                              ?.map((location) =>
-                                  resultTile(location, controller))
-                              .toList() ??
-                          [];
-                      return resultList;
-                    }),
+                  searchController: _searchController,
+                  viewLeading: IconButton(
+                    onPressed: () async {
+                      _searchController.closeView(_searchController.text);
+                      await Future.delayed(
+                        50.ms,
+                        () => FocusScope.of(context).unfocus(),
+                      );
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  isFullScreen: false,
+                  barHintText: "Search for a nearby location",
+                  suggestionsBuilder: (context, controller) async {
+                    final results = await debouncedSearch(controller.text);
+                    final List<ListTile> resultList = results?.places
+                            ?.map(
+                              (location) => resultTile(location, controller),
+                            )
+                            .toList() ??
+                        [];
+                    return resultList;
+                  },
+                ),
                 const SizedBox(height: 4),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(25),
@@ -260,7 +273,9 @@ class _LocationMapState extends ConsumerState<LocationMap>
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     child: SelectedResult(
-                        selectedLocation: selectedLocation, ref: ref),
+                      selectedLocation: selectedLocation,
+                      ref: ref,
+                    ),
                   )
                       .animate(
                         target: selectedLocation != null ? 1 : 0,
@@ -270,7 +285,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: Column(
@@ -292,14 +307,15 @@ class _LocationMapState extends ConsumerState<LocationMap>
             onPressed: () => animatedMapController.animatedRotateReset(),
           ),
           FloatingActionButton(
-              heroTag: null,
-              child: const Icon(Icons.my_location),
-              onPressed: () async {
-                // ? Follow location on tap
-                setState(
-                  () => _alignPositionOnUpdate = AlignOnUpdate.always,
-                );
-              }),
+            heroTag: null,
+            child: const Icon(Icons.my_location),
+            onPressed: () async {
+              // ? Follow location on tap
+              setState(
+                () => _alignPositionOnUpdate = AlignOnUpdate.always,
+              );
+            },
+          ),
         ],
       ),
     );
@@ -311,10 +327,11 @@ class _LocationMapState extends ConsumerState<LocationMap>
         animatedMapController.animateTo(
           rotation: 0,
           dest: LatLng(
-              location.location!.latitude ??
-                  animatedMapController.mapController.camera.center.latitude,
-              location.location!.longitude ??
-                  animatedMapController.mapController.camera.center.longitude),
+            location.location!.latitude ??
+                animatedMapController.mapController.camera.center.latitude,
+            location.location!.longitude ??
+                animatedMapController.mapController.camera.center.longitude,
+          ),
         );
         controller.closeView(null);
 
@@ -359,8 +376,10 @@ class SelectedResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        final mapCenter = LatLng(selectedLocation!.location!.latitude ?? 0,
-            selectedLocation!.location!.longitude ?? 0);
+        final mapCenter = LatLng(
+          selectedLocation!.location!.latitude ?? 0,
+          selectedLocation!.location!.longitude ?? 0,
+        );
         // ? Update stored mapCenter on location select
         ref.read(initialCenterProvider.notifier).state = mapCenter;
         Navigator.of(context).pop(selectedLocation);

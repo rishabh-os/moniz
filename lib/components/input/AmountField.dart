@@ -20,7 +20,6 @@ class _AmountFieldState extends State<AmountField> {
   Widget build(BuildContext context) {
     return TextFormField(
       key: const Key("amount"),
-      autofocus: false,
       onChanged: (value) {
         // ? Handles the case when the input field is empty and just -
         double returnAmount = 0;
@@ -37,14 +36,15 @@ class _AmountFieldState extends State<AmountField> {
       style: const TextStyle(fontFamily: "VictorMono", fontSize: 50),
       inputFormatters: [
         // ? Allows only proper decimals upto 2 places
-        FilteringTextInputFormatter.allow(RegExp(r"^-?(\d+)?\.?\d{0,2}"))
+        FilteringTextInputFormatter.allow(RegExp(r"^-?(\d+)?\.?\d{0,2}")),
       ],
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       decoration: const InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-          hintText: "00.00",
-          floatingLabelBehavior: FloatingLabelBehavior.never),
+        counterText: "",
+        border: InputBorder.none,
+        hintText: "00.00",
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+      ),
     );
   }
 }

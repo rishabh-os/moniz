@@ -33,20 +33,21 @@ class _ManageState extends ConsumerState<Manage>
         mainAxisSize: MainAxisSize.min,
         children: [
           VisibilityDetector(
-              key: listOfKeys[0],
-              onVisibilityChanged: (info) {
-                if (!ref.watch(manageTutorialCompletedProvider)) {
-                  Future.delayed(const Duration(milliseconds: 100), () {
-                    if (info.visibleFraction == 1) {
-                      ref.read(tutorialProvider)(context, Screen.manage);
-                      ref
-                          .watch(manageTutorialCompletedProvider.notifier)
-                          .update((state) => true);
-                    }
-                  });
-                }
-              },
-              child: const Header(text: "Accounts")),
+            key: listOfKeys[0],
+            onVisibilityChanged: (info) {
+              if (!ref.watch(manageTutorialCompletedProvider)) {
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  if (info.visibleFraction == 1) {
+                    ref.read(tutorialProvider)(context, Screen.manage);
+                    ref
+                        .watch(manageTutorialCompletedProvider.notifier)
+                        .update((state) => true);
+                  }
+                });
+              }
+            },
+            child: const Header(text: "Accounts"),
+          ),
           const SizedBox(height: 10),
           const Accounts(),
           const Divider(

@@ -13,7 +13,7 @@ void main() {
 
   initWindow();
   patrolTest("Skip welcome", config: config, (PatrolIntegrationTester $) async {
-    await initApp($, skipWelcome: true);
+    await initApp($);
   });
 }
 
@@ -35,12 +35,13 @@ void initWindow() {
 
 // ? The custom config is needed because of the animations everywhere in the app. This causes SettlePolicy.settle to always fail
 const config = PatrolTesterConfig(
-  settlePolicy: SettlePolicy.trySettle,
   settleTimeout: Duration(seconds: 5),
 );
 
-Future<void> initApp(PatrolIntegrationTester $,
-    {bool skipWelcome = true}) async {
+Future<void> initApp(
+  PatrolIntegrationTester $, {
+  bool skipWelcome = true,
+}) async {
   await $.pumpWidget(const ProviderScope(child: MyApp()));
   await $("Welcome to Moniz!").waitUntilVisible();
   await $("meh")

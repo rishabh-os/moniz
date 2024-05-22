@@ -1,7 +1,11 @@
 # include: package:flutter_lints/flutter.yaml
+analyzer:
+  errors:
+    avoid_bool_literals_in_conditional_expressions: ignore
 include: package:lint/strict.yaml
 linter:
   rules:
     file_names: false
     directives_ordering: true
     prefer_double_quotes: true
+    sort_pub_dependencies: false
