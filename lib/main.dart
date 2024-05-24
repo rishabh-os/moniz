@@ -48,8 +48,8 @@ void main() async {
     });
   }
   runApp(
-    const RestartWidget(
-      child: ProviderScope(
+    const ProviderScope(
+      child: RestartWidget(
         child: MyApp(),
       ),
     ),

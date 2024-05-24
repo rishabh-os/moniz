@@ -24,7 +24,7 @@ class _ChipSelectorState extends ConsumerState<ChipSelector> {
   @override
   void initState() {
     super.initState();
-    chipsMultiLine = ref.read(chipsMultiLineProvider);
+    chipsMultiLine = ref.read(showLocationProvider);
     if (!chipsMultiLine) {
       // ? Scrolls to the selected chip on render
       WidgetsBinding.instance.addPostFrameCallback((_) {

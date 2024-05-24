@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/components/deleteRoute.dart";
+import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
@@ -56,44 +57,85 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                subtitle: Wrap(
-                  direction: Axis.vertical,
-                  spacing: 4,
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       DateFormat("EEE, d MMM yyyy K:mm a")
                           .format(trans.recorded),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(6)),
-                        color: ColorScheme.fromSeed(
-                          seedColor: Color(transAccount.color),
-                          // ? The color does not update properly, that's why I need to manually specify the brightness
-                          brightness: ref.watch(brightnessProvider),
-                        ).primaryContainer,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 6,
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6)),
+                            color: ColorScheme.fromSeed(
+                              seedColor: Color(transAccount.color),
+                              // ? The color does not update properly, that's why I need to manually specify the brightness
+                              brightness: ref.watch(brightnessProvider),
+                            ).primaryContainer,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 2,
+                              horizontal: 6,
+                            ),
+                            child: Text(transAccount.name),
+                          ),
                         ),
-                        child: Text(transAccount.name),
+                        if (trans.location != null &&
+                            ref.watch(showLocationProvider))
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(6)),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 2,
+                                horizontal: 6,
+                              ),
+                              child:
+                                  Text(trans.location!.displayName!.text ?? ""),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+                title: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Icon(
+                        // ? The global key is attached here to prevent the entire ListView from rebuiling
+                        key: key,
+                        IconData(
+                          transCategory.iconCodepoint,
+                          fontFamily: "MaterialIcons",
+                        ),
+                        color: Color(transCategory.color),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Flexible(
+                      child: Text(
+                        trans.title,
                       ),
                     ),
                   ],
                 ),
-                leading: Icon(
-                  // ? The global key is attached here to prevent the entire ListView from rebuiling
-                  key: key,
-                  IconData(
-                    transCategory.iconCodepoint,
-                    fontFamily: "MaterialIcons",
-                  ),
-                  color: Color(transCategory.color),
-                ),
-                title: Text(trans.title),
                 trailing: Transform.scale(
                   scale: 0.9,
                   child: MoneyDisplay(

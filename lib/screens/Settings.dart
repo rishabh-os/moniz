@@ -18,6 +18,7 @@ class _SettingsState extends ConsumerState<Settings> {
   Widget build(BuildContext context) {
     final bool transDeleteConfirmation = ref.watch(transDeleteProvider);
     final bool chipsScroll = ref.watch(chipsMultiLineProvider);
+    final bool showLocation = ref.watch(showLocationProvider);
     final List<String> initalPages = ["Entries", "Analysis", "Manage"];
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +39,14 @@ class _SettingsState extends ConsumerState<Settings> {
             value: chipsScroll,
             onChanged: (e) {
               ref.watch(chipsMultiLineProvider.notifier).update((state) => e);
+            },
+          ),
+          SwitchListTile(
+            title:
+                const Text("Show location of the transaction in the list view"),
+            value: showLocation,
+            onChanged: (e) {
+              ref.watch(showLocationProvider.notifier).update((state) => e);
             },
           ),
           ListTile(

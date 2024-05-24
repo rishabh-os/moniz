@@ -25,6 +25,14 @@ StateProvider<bool> chipsMultiLineProvider = StateProvider<bool>((ref) {
       GetStorage().write("chipsMultiLine", false);
   return GetStorage().read("chipsMultiLine") as bool;
 });
+StateProvider<bool> showLocationProvider = StateProvider<bool>((ref) {
+  ref.listenSelf(
+    (previous, next) => GetStorage().write("showLocation", next),
+  );
+  GetStorage().read("showLocation") ??
+      GetStorage().write("showLocation", false);
+  return GetStorage().read("showLocation") as bool;
+});
 StateProvider<int> initialPageProvider = StateProvider<int>((ref) {
   ref.listenSelf(
     (previous, next) => GetStorage().write("initialPage", next),
