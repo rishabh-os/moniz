@@ -95,9 +95,11 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                             decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(6)),
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
+                              color: ColorScheme.fromSeed(
+                                seedColor: ref.watch(themeColorProvider),
+                                // ? The color does not update properly, that's why I need to manually specify the brightness
+                                brightness: ref.watch(brightnessProvider),
+                              ).primaryContainer,
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
