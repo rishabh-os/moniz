@@ -55,7 +55,8 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         _accountName = widget.editedAccount!.name;
         _selectedColor = widget.editedAccount!.color;
         _selectedIcon = widget.editedAccount!.iconCodepoint;
-        _balance = widget.editedAccount!.balance;
+        _balance =
+            double.parse(widget.editedAccount!.balance.toStringAsFixed(2));
         saveAction = ref.read(accountsProvider.notifier).edit;
         deleteItem = deleteAction(() => handleAccountDelete());
       } else {
