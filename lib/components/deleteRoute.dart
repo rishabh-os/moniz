@@ -28,9 +28,10 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
+    final curveTween = CurveTween(curve: Curves.easeInOutCubicEmphasized);
     return ClipPath(
       clipper: CircularRevealClipper(
-        fraction: animation.value,
+        fraction: animation.drive(curveTween).value,
         centerAlignment: startPositionGlobal,
       ),
       child: child,
