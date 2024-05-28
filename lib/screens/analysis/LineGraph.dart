@@ -72,7 +72,8 @@ class _LineGraphState extends ConsumerState<LineGraph> {
         if (element[0] == getDTString(transaction.recorded) &&
             element[1].id == transaction.categoryID &&
             transaction.amount.isNegative) {
-          element[2] += transaction.amount.abs();
+          element[2] +=
+              double.parse(transaction.amount.abs().toStringAsFixed(2));
         }
       }
     }
@@ -83,7 +84,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
         if (element[0] == day) {
           return sum + element[2];
         }
-        return sum;
+        return double.parse(sum.toStringAsFixed(2));
       });
       spendsByDay.add([day, x]);
     }
@@ -243,7 +244,7 @@ class _LineChartState extends ConsumerState<LineChart> {
                   accessor: (List spot) => spot[2] as double,
                   scale: LinearScale(
                     min: 0,
-                    max: widget.maxY * 1.30,
+                    marginMax: 0.2,
                   ),
                 ),
               }
@@ -259,7 +260,7 @@ class _LineChartState extends ConsumerState<LineChart> {
                   accessor: (List spot) => spot[1] as double,
                   scale: LinearScale(
                     min: 0,
-                    max: widget.maxY * 1.30,
+                    marginMax: 0.2,
                   ),
                 ),
               };
