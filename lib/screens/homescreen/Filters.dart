@@ -25,15 +25,8 @@ class _FiltersState extends ConsumerState<Filters> {
   late List<Account> accounts;
   late List<Transaction> transactions;
   late RangeValues rangeValues;
-  Map<double, int> frequencyHistorgram = {};
+  late Map<double, int> frequencyHistorgram;
   List<double> freqKeys = [];
-  @override
-  void initState() {
-    super.initState();
-    // ? This is a bit hacky and there probably is a better way to do this
-    frequencyHistorgram = ref.read(freqHistProvider);
-    rangeValues = RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +39,7 @@ class _FiltersState extends ConsumerState<Filters> {
     selectedAccounts = ref.watch(filteredAccountsProvider);
     frequencyHistorgram = ref.watch(freqHistProvider);
     freqKeys = ref.watch(freqKeysProvider);
+    rangeValues = ref.watch(rangeValueProvider);
     final transResults = transactions
         .where(
           (element) => filterQuery != ""
@@ -173,9 +167,9 @@ class _FiltersState extends ConsumerState<Filters> {
                     values: rangeValues,
                     divisions: frequencyHistorgram.length - 1,
                     onChanged: (value) {
-                      setState(() {
-                        rangeValues = value;
-                      });
+                      ref
+                          .watch(rangeValueProvider.notifier)
+                          .update((state) => value);
                     },
                     labels: RangeLabels(
                       freqKeys[rangeValues.start.toInt()].abs().toString(),
@@ -196,6 +190,10 @@ class _FiltersState extends ConsumerState<Filters> {
               ref
                   .watch(filteredAccountsProvider.notifier)
                   .update((state) => []);
+              setState(() {
+                rangeValues =
+                    RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
+              });
             },
             icon: const Icon(Icons.undo),
             label: const Text("Reset all"),

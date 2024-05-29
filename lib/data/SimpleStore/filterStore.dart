@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
@@ -24,6 +25,11 @@ final freqKeysProvider = StateProvider<List<double>>((ref) {
   final List<double> freqKeys = frequencyHistorgram.keys.toList();
   freqKeys.sort();
   return freqKeys;
+});
+
+final rangeValueProvider = StateProvider<RangeValues>((ref) {
+  final frequencyHistorgram = ref.watch(freqHistProvider);
+  return RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
 });
 
 final filteredCategoriesProvider =
