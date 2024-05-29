@@ -288,23 +288,30 @@ class _LocationMapState extends ConsumerState<LocationMap>
           ),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+      floatingActionButton: Wrap(
+        direction: Axis.vertical,
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 8,
         children: [
-          IconButton.filled(
-            icon: const Icon(Icons.add),
-            visualDensity: VisualDensity.compact,
-            onPressed: () => animatedMapController.animatedZoomIn(),
-          ),
-          IconButton.filled(
-            icon: const Icon(Icons.remove),
-            visualDensity: VisualDensity.compact,
-            onPressed: () => animatedMapController.animatedZoomOut(),
-          ),
-          IconButton.filled(
-            icon: const Icon(Icons.restart_alt_rounded),
-            visualDensity: VisualDensity.compact,
-            onPressed: () => animatedMapController.animatedRotateReset(),
+          ...[
+            (Icons.add, animatedMapController.animatedZoomIn),
+            (Icons.remove, animatedMapController.animatedZoomOut),
+            (
+              Icons.restart_alt_rounded,
+              animatedMapController.animatedRotateReset,
+            ),
+          ].map(
+            (e) => PhysicalModel(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(20),
+              elevation: 4,
+              child: IconButton.filled(
+                icon: Icon(e.$1),
+                visualDensity: VisualDensity.compact,
+                onPressed: () => e.$2(),
+              ),
+            ),
           ),
           FloatingActionButton(
             heroTag: null,

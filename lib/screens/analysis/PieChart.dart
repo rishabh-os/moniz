@@ -1,4 +1,3 @@
-import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:graphic/graphic.dart";
@@ -34,7 +33,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
   bool get wantKeepAlive => true;
   bool showCat = true;
   bool showIncome = false;
-  late List<PieChartSectionData> data;
   late Widget _legend;
 
   @override
