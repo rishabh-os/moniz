@@ -26,10 +26,11 @@ final freqKeysProvider = StateProvider<List<double>>((ref) {
   return freqKeys;
 });
 
-final filterCategoryProvider = StateProvider<TransactionCategory?>((ref) {
-  return null;
+final filteredCategoriesProvider =
+    StateProvider<List<TransactionCategory>>((ref) {
+  return [];
 });
 
-final filterAccountProvider = StateProvider<Account?>((ref) {
-  return null;
+final filteredAccountsProvider = StateProvider<List<Account>>((ref) {
+  return [];
 });

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/input/Header.dart";
 import "package:moniz/data/SimpleStore/filterStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
@@ -16,10 +17,9 @@ class Filters extends ConsumerStatefulWidget {
 
 class _FiltersState extends ConsumerState<Filters> {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController catController = TextEditingController();
   final TextEditingController accController = TextEditingController();
-  late TransactionCategory? selectedCategory;
-  late Account? selectedAccount;
+  late List<TransactionCategory> selectedCategories;
+  late List<Account> selectedAccounts;
   late String filterQuery;
   late List<TransactionCategory> categories;
   late List<Account> accounts;
@@ -42,12 +42,10 @@ class _FiltersState extends ConsumerState<Filters> {
     transactions = ref.watch(transactionsProvider);
     filterQuery = ref.watch(filterQueryProvider);
     titleController.value = TextEditingValue(text: filterQuery);
-    selectedCategory = ref.watch(filterCategoryProvider);
-    selectedAccount = ref.watch(filterAccountProvider);
+    selectedCategories = ref.watch(filteredCategoriesProvider);
+    selectedAccounts = ref.watch(filteredAccountsProvider);
     frequencyHistorgram = ref.watch(freqHistProvider);
     freqKeys = ref.watch(freqKeysProvider);
-    catController.value = TextEditingValue(text: selectedCategory?.name ?? "");
-    accController.value = TextEditingValue(text: selectedAccount?.name ?? "");
     final transResults = transactions
         .where(
           (element) => filterQuery != ""
@@ -58,7 +56,7 @@ class _FiltersState extends ConsumerState<Filters> {
                   (element.additionalInfo
                           ?.toLowerCase()
                           .contains(filterQuery.toLowerCase()) ??
-                      true)
+                      false)
               : true,
         )
         .where(
@@ -67,13 +65,13 @@ class _FiltersState extends ConsumerState<Filters> {
               element.amount.abs() <= freqKeys[rangeValues.end.toInt()],
         )
         .where(
-          (element) => selectedCategory != null
-              ? element.categoryID == selectedCategory!.id
+          (element) => selectedCategories.isNotEmpty
+              ? selectedCategories.map((e) => e.id).contains(element.categoryID)
               : true,
         )
         .where(
-          (element) => selectedAccount != null
-              ? element.accountID == selectedAccount!.id
+          (element) => selectedAccounts.isNotEmpty
+              ? selectedAccounts.map((e) => e.id).contains(element.accountID)
               : true,
         )
         .toList();
@@ -121,51 +119,43 @@ class _FiltersState extends ConsumerState<Filters> {
           ),
           const SizedBox(height: 10),
           Wrap(
-            spacing: 10,
-            alignment: WrapAlignment.spaceEvenly,
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
             children: [
-              DropdownMenu<TransactionCategory>(
-                // ? Manual width because using expanded doesn't work
-                width: MediaQuery.of(context).size.width * 0.5 - 20,
-                requestFocusOnTap: true,
-                controller: catController,
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
+              const Header(text: "Categories"),
+              ...categories.map(
+                (e) => FilterChip(
+                  showCheckmark: false,
+                  label: Text(e.name),
+                  selectedShadowColor: Color(e.color),
+                  elevation: 4,
+                  onSelected: (value) {
+                    setState(() {
+                      value
+                          ? selectedCategories.add(e)
+                          : selectedCategories.remove(e);
+                    });
+                  },
+                  selected: selectedCategories.contains(e),
                 ),
-                label: const Text("Category"),
-                dropdownMenuEntries: categories
-                    .map(
-                      (e) => DropdownMenuEntry<TransactionCategory>(
-                        value: e,
-                        label: e.name,
-                      ),
-                    )
-                    .toList(),
-                onSelected: (TransactionCategory? category) => ref
-                    .watch(filterCategoryProvider.notifier)
-                    .update((state) => category),
               ),
-              DropdownMenu<Account>(
-                width: MediaQuery.of(context).size.width * 0.5 - 20,
-                requestFocusOnTap: true,
-                controller: accController,
-                label: const Text("Account"),
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
+              const Header(text: "Accounts"),
+              ...accounts.map(
+                (e) => FilterChip(
+                  showCheckmark: false,
+                  label: Text(e.name),
+                  selectedShadowColor: Color(e.color),
+                  elevation: 4,
+                  onSelected: (value) {
+                    setState(() {
+                      value
+                          ? selectedAccounts.add(e)
+                          : selectedAccounts.remove(e);
+                    });
+                  },
+                  selected: selectedAccounts.contains(e),
                 ),
-                dropdownMenuEntries: accounts
-                    .map(
-                      (e) =>
-                          DropdownMenuEntry<Account>(value: e, label: e.name),
-                    )
-                    .toList(),
-                onSelected: (Account? account) => ref
-                    .watch(filterAccountProvider.notifier)
-                    .update((state) => account),
               ),
             ],
           ),
@@ -199,12 +189,13 @@ class _FiltersState extends ConsumerState<Filters> {
           ),
           TextButton.icon(
             onPressed: () {
-              // ref
-              //     .read(rangeProvider.notifier)
-              //     .update((state) => RangeValues(0, sliderMax));
               ref.read(filterQueryProvider.notifier).update((state) => "");
-              ref.read(filterCategoryProvider.notifier).update((state) => null);
-              ref.watch(filterAccountProvider.notifier).update((state) => null);
+              ref
+                  .read(filteredCategoriesProvider.notifier)
+                  .update((state) => []);
+              ref
+                  .watch(filteredAccountsProvider.notifier)
+                  .update((state) => []);
             },
             icon: const Icon(Icons.undo),
             label: const Text("Reset all"),
