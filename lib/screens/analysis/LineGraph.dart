@@ -141,10 +141,10 @@ class LineChart extends ConsumerStatefulWidget {
 class _LineChartState extends ConsumerState<LineChart> {
   @override
   Widget build(BuildContext context) {
-    final selections2 = {
+    final Map<String, Selection> selections2 = {
       "tooltipMouse": PointSelection(
         on: {GestureType.hover},
-        devices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
+        devices: {PointerDeviceKind.touch},
         nearest: false,
       ),
       "tooltipTouch": PointSelection(
@@ -178,7 +178,6 @@ class _LineChartState extends ConsumerState<LineChart> {
                 )
                 .color,
           );
-          // y = Color()
         }
         return [
           OvalElement(
@@ -232,13 +231,14 @@ class _LineChartState extends ConsumerState<LineChart> {
             ? {
                 "day": Variable(
                   accessor: (List spot) {
-                    final String dayMonth = DateFormat("d MMM")
+                    final String dayMonth = DateFormat("d MMM yy")
                         .format(DateTime.parse(spot[0] as String));
                     return dayMonth;
                   },
                 ),
                 "category": Variable(
                   accessor: (List spot) => spot[1].name as String,
+                  scale: OrdinalScale(tickCount: 0),
                 ),
                 "amount": Variable(
                   accessor: (List spot) => spot[2] as double,
@@ -251,7 +251,7 @@ class _LineChartState extends ConsumerState<LineChart> {
             : {
                 "day": Variable(
                   accessor: (List spot) {
-                    final String dayMonth = DateFormat("d MMM")
+                    final String dayMonth = DateFormat("d MMM yy")
                         .format(DateTime.parse(spot[0] as String));
                     return dayMonth;
                   },
@@ -320,12 +320,11 @@ class _LineChartState extends ConsumerState<LineChart> {
     }
     final int nDays = days.toSet().length;
     // ? Cutoff assumes 12 bars can fit on screen comfortably
-    const int cutOff = 12;
+    const int cutOff = 10;
     final rectCoord = RectCoord(
       horizontalRange:
           nDays >= cutOff ? [0, 1 + (1 / cutOff) * (nDays - cutOff)] : [0, 1],
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,
-      // verticalRangeUpdater: Defaults.verticalRangeEvent
     );
     // ? The mouse region allows the chart interaction to take priority
     return MouseRegion(
@@ -337,7 +336,6 @@ class _LineChartState extends ConsumerState<LineChart> {
       child: widget.data.every((element) => element.last == 0)
           ? const NoData()
           : Chart(
-              rebuild: true,
               data: widget.data,
               variables: variables,
               marks: marks,

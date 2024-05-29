@@ -100,7 +100,8 @@ Widget proxyDecorator(Widget child, int index, Animation<double> animation) =>
     AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget? child) {
-        final double animValue = Curves.easeInOut.transform(animation.value);
+        final double animValue =
+            Curves.easeInOutCubicEmphasized.transform(animation.value);
         final double elevation = lerpDouble(1, 6, animValue)!;
         return Material(
           borderRadius: BorderRadius.circular(10),
