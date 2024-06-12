@@ -3,7 +3,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/IconPicker.dart";
-import "package:moniz/components/input/AmountField.dart";
 import "package:moniz/components/input/ColorPicker.dart";
 import "package:moniz/components/input/Header.dart";
 import "package:moniz/components/input/SaveFAB.dart";
@@ -31,10 +30,8 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   late String title = "Add ";
   late TextEditingController accountNameController;
   String _accountName = "";
-  double _balance = 0;
   int _selectedColor = Colors.blue.value;
   int _selectedIcon = Icons.abc.codePoint;
-  late TextEditingController balanceController;
   late Function saveAction;
   List<Widget> deleteItem = [];
 
@@ -55,8 +52,6 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         _accountName = widget.editedAccount!.name;
         _selectedColor = widget.editedAccount!.color;
         _selectedIcon = widget.editedAccount!.iconCodepoint;
-        _balance =
-            double.parse(widget.editedAccount!.balance.toStringAsFixed(2));
         saveAction = ref.read(accountsProvider.notifier).edit;
         deleteItem = deleteAction(() => handleAccountDelete());
       } else {
@@ -70,9 +65,6 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     }
     accountNameController =
         TextEditingController(text: _accountName == "" ? null : _accountName);
-    balanceController = TextEditingController(
-      text: _balance.toString() == "0.0" ? null : _balance.toString(),
-    );
   }
 
   Future<void> handleAccountDelete() async {
@@ -177,13 +169,6 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
               ),
               textCapitalization: TextCapitalization.sentences,
             ),
-            if (widget.type == "Account") ...[
-              const Header(text: "Current Balance"),
-              AmountField(
-                amountController: balanceController,
-                amountCallback: (amount) => _balance = amount,
-              ),
-            ],
             Header(text: "${widget.type} color"),
             ColorPicker(
               colorCallback: (selectedColor) {
@@ -221,7 +206,8 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
                   name: _accountName,
                   iconCodepoint: _selectedIcon,
                   color: _selectedColor,
-                  balance: _balance,
+                  // ? This will never be null
+                  balance: widget.editedAccount?.balance ?? 0,
                   order: 0,
                   isArchived: false,
                 ),
