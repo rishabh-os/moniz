@@ -7,7 +7,6 @@ import "package:flutter_map_animations/flutter_map_animations.dart";
 import "package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart";
 import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:fluttertoast/fluttertoast.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
@@ -102,33 +101,47 @@ class _LocationMapState extends ConsumerState<LocationMap>
           "latitude": mapCenter.latitude,
           "longitude": mapCenter.longitude,
         },
-        "radius": 500.0,
+        "radius": 200.0,
       },
     };
+    final http.Response response;
     if (input == "") {
-      return null;
+      response = await http.post(
+        Uri.parse("https://places.googleapis.com/v1/places:searchNearby"),
+        body: jsonEncode({
+          "maxResultCount": 10,
+          "locationRestriction": locationBias,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": Env.googleMapsApikey,
+          // ? Requesting only the fields we need here
+          "X-Goog-Fieldmask":
+              "places.displayName,places.formattedAddress,places.location,places.googleMapsUri",
+        },
+      );
+    } else {
+      response = await http.post(
+        Uri.parse("https://places.googleapis.com/v1/places:searchText"),
+        body: jsonEncode({
+          "textQuery": input,
+          "maxResultCount": 5,
+          "locationBias": locationBias,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": Env.googleMapsApikey,
+          // ? Requesting only the fields we need here
+          "X-Goog-Fieldmask":
+              "places.displayName,places.formattedAddress,places.location,places.googleMapsUri",
+        },
+      );
     }
-    final response = await http.post(
-      Uri.parse("https://places.googleapis.com/v1/places:searchText"),
-      body: jsonEncode({
-        "textQuery": input,
-        "maxResultCount": 5,
-        "locationBias": locationBias,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "X-Goog-Api-Key": Env.googleMapsApikey,
-        // ? Requesting only the fields we need here
-        "X-Goog-Fieldmask":
-            "places.displayName,places.formattedAddress,places.location,places.googleMapsUri",
-      },
-    );
 
     if (response.statusCode == 200) {
       final responseObject = GMapsResponse.fromJson(
         jsonDecode(response.body) as Map<String, dynamic>,
       );
-      responseObject.places?.forEach((element) {});
       return responseObject;
     } else {
       throw Exception(response.body);
@@ -139,14 +152,10 @@ class _LocationMapState extends ConsumerState<LocationMap>
   late final Future<GMapsResponse?> Function(String) debouncedSearch;
   final SearchController _searchController = SearchController();
   late LatLng initialCenter;
-  late FToast fToast;
 
   @override
   void initState() {
     super.initState();
-    fToast = FToast();
-    fToast.init(context);
-    debouncedSearch = debounce(fetchResponse);
     initialCenter = ref.read(initialCenterProvider);
     if (widget.initialLocation != null) {
       selectedLocation = widget.initialLocation;
@@ -209,7 +218,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
                             shadows: [
                               Shadow(
                                 color: Theme.of(context).colorScheme.shadow,
-                                blurRadius: 30,
+                                blurRadius: 1,
                               ),
                             ],
                           ),
@@ -254,6 +263,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
                   isFullScreen: false,
                   barHintText: "Search for a nearby location",
                   suggestionsBuilder: (context, controller) async {
+                    final debouncedSearch = debounce(fetchResponse);
                     final results = await debouncedSearch(controller.text);
                     final List<ListTile> resultList = results?.places
                             ?.map(
@@ -261,6 +271,32 @@ class _LocationMapState extends ConsumerState<LocationMap>
                             )
                             .toList() ??
                         [];
+
+                    if (controller.text.isEmpty) {
+                      resultList.insert(
+                        0,
+                        ListTile(
+                          title: Center(
+                            child: Text(
+                              "Suggestions".toUpperCase(),
+                              // ? It's never not mounted, just to remove the warning
+                              style: context.mounted
+                                  ? Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(fontWeight: FontWeight.bold)
+                                  : null,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    // ? Add padding to the bottom of the list
+                    resultList.add(
+                      const ListTile(
+                        minTileHeight: 200,
+                      ),
+                    );
                     return resultList;
                   },
                 ),
