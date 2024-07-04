@@ -35,6 +35,7 @@ samples, guidance on mobile development, and a full API reference.
   - [x] Some selection bugs persist when adding or removing transactions
   - [x] Range slider remains global
   - [x] Make filters multi select
+  - [ ] Options for text search filters: title, location, additional info (by default all)
 - [x] Import databases
 - [x] Fix the tutorial after the layout changes
   - [ ] Manage tutorial still has legibility issues

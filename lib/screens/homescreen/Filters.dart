@@ -50,6 +50,11 @@ class _FiltersState extends ConsumerState<Filters> {
                   (element.additionalInfo
                           ?.toLowerCase()
                           .contains(filterQuery.toLowerCase()) ??
+                      false) ||
+                  // ? Return true if additionalInfo is null
+                  (element.location?.displayName?.text
+                          ?.toLowerCase()
+                          .contains(filterQuery.toLowerCase()) ??
                       false)
               : true,
         )
@@ -91,7 +96,7 @@ class _FiltersState extends ConsumerState<Filters> {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 isDense: true,
-                hintText: "Search by title and info",
+                hintText: "Search by title, info or location name",
                 suffixIcon: IconButton(
                   splashRadius: 20,
                   icon: Icon(
