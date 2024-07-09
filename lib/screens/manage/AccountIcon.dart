@@ -19,6 +19,7 @@ class AccountIcon extends StatelessWidget {
     return CircleAvatar(
       backgroundColor: showBgColor
           ? ColorScheme.fromSeed(
+              dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
               seedColor: Color(color),
               brightness: Theme.of(context).brightness,
             ).primaryContainer
@@ -26,6 +27,7 @@ class AccountIcon extends StatelessWidget {
       child: Icon(
         IconData(iconCodepoint, fontFamily: "MaterialIcons"),
         color: ColorScheme.fromSeed(
+          dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
           seedColor: Color(color),
           brightness: Theme.of(context).brightness,
         ).primary,

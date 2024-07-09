@@ -105,7 +105,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
       },
     };
     final http.Response response;
-    if (input == "") {
+    if (input.isEmpty) {
       response = await http.post(
         Uri.parse("https://places.googleapis.com/v1/places:searchNearby"),
         body: jsonEncode({
@@ -291,12 +291,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
                         ),
                       );
                     }
-                    // ? Add padding to the bottom of the list
-                    resultList.add(
-                      const ListTile(
-                        minTileHeight: 200,
-                      ),
-                    );
                     return resultList;
                   },
                 ),

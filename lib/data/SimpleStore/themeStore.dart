@@ -4,6 +4,7 @@ import "package:get_storage/get_storage.dart";
 
 final incomeColorSchemeProvider = StateProvider((ref) {
   return ColorScheme.fromSeed(
+    dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
     seedColor: Colors.green,
     brightness: ref.watch(brightnessProvider),
   );
@@ -11,6 +12,7 @@ final incomeColorSchemeProvider = StateProvider((ref) {
 
 final expenseColorSchemeProvider = StateProvider((ref) {
   return ColorScheme.fromSeed(
+    dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
     seedColor: Colors.red,
     brightness: ref.watch(brightnessProvider),
   );

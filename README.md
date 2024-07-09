@@ -44,12 +44,14 @@ samples, guidance on mobile development, and a full API reference.
 - [x] Better no transactions found handling on analysis page
 - [ ] A way to add and manage events
   - [ ] Add tags
-- [ ] Make entrines multiselect-able
+- [ ] Make entries multiselect-able
 - [x] Make additional info multiline
 - [x] Make accounts and categories orderable
   - [ ] Make them archivable or hideable
 - [x] Add location to entries (optional)
   - [x] Move to Google Maps because more locations
-- [x] Make app restart on data import
+- [ ] Fix location suggestions bug - seems flaky
+- [x] Fix desaturated colours
+- [ ] Make app restart on data import
 - [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase
 - [ ] Rewrite LineGraph as it lags with a lot of transactions

@@ -29,6 +29,7 @@ class _AccountCardState extends State<AccountCard> {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: ColorScheme.fromSeed(
+            dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
             seedColor: Color(widget.account.color),
             brightness: Theme.of(context).brightness,
           ).primaryContainer,

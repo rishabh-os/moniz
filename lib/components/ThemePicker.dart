@@ -41,7 +41,6 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey k = GlobalKey();
     isDark = ref.watch(brightnessProvider) == Brightness.dark;
     isDynamic = ref.watch(dynamicProvider);
     return Column(
@@ -50,43 +49,17 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
         const SizedBox(
           height: 40,
         ),
-        AnimatedOpacity(
-          opacity: isDynamic ? 0 : 1,
-          duration: const Duration(milliseconds: 200),
-          child: AnimatedSize(
-            duration: const Duration(milliseconds: 200),
-            child: SizedBox(
-              height: isDynamic ? 0 : null,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ColorPicker(
-                    colorCallback: (selectedColor) {
-                      ref
-                          .read(themeColorProvider.notifier)
-                          .update((state) => selectedColor);
-                    },
-                  ),
-                  SwitchListTile(
-                    key: const Key("Dark Mode"),
-                    title: const Text("Dark Mode"),
-                    value: isDark,
-                    onChanged: (value) {
-                      ref.watch(brightnessProvider.notifier).update((state) {
-                        return isDark ? Brightness.light : Brightness.dark;
-                      });
-                      setState(() {
-                        isDark = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
+        AnimatedCrossFade(
+          firstChild: const SizedBox(
+            // ? Width has to be set to something large otherwise the animation doesn't work properly
+            width: double.maxFinite,
           ),
+          secondChild: themeOptions(),
+          crossFadeState:
+              isDynamic ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          duration: const Duration(milliseconds: 200),
         ),
         SwitchListTile(
-          key: k,
           title: const Text("Dynamic Theme"),
           value: isDynamic,
           onChanged: (value) {
@@ -96,6 +69,34 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
 
             setState(() {
               isDynamic = value;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Column themeOptions() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ColorPicker(
+          colorCallback: (selectedColor) {
+            ref
+                .read(themeColorProvider.notifier)
+                .update((state) => selectedColor);
+          },
+        ),
+        SwitchListTile(
+          key: const Key("Dark Mode"),
+          title: const Text("Dark Mode"),
+          value: isDark,
+          onChanged: (value) {
+            ref.watch(brightnessProvider.notifier).update((state) {
+              return isDark ? Brightness.light : Brightness.dark;
+            });
+            setState(() {
+              isDark = value;
             });
           },
         ),
