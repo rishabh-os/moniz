@@ -50,7 +50,7 @@ samples, guidance on mobile development, and a full API reference.
   - [ ] Make them archivable or hideable
 - [x] Add location to entries (optional)
   - [x] Move to Google Maps because more locations
-- [ ] Fix location suggestions bug - seems flaky
+- [x] Fix location suggestions bug - seems flaky
 - [x] Fix desaturated colours
 - [ ] Make app restart on data import
 - [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase

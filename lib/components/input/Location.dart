@@ -156,6 +156,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
   @override
   void initState() {
     super.initState();
+    debouncedSearch = debounce(fetchResponse);
     initialCenter = ref.read(initialCenterProvider);
     if (widget.initialLocation != null) {
       selectedLocation = widget.initialLocation;
@@ -263,14 +264,16 @@ class _LocationMapState extends ConsumerState<LocationMap>
                   isFullScreen: false,
                   barHintText: "Search for a nearby location",
                   suggestionsBuilder: (context, controller) async {
-                    final debouncedSearch = debounce(fetchResponse);
-                    final results = await debouncedSearch(controller.text);
-                    final List<ListTile> resultList = results?.places
+                    final switchSearch = controller.text.isEmpty
+                        ? fetchResponse
+                        : debouncedSearch;
+                    final results = await switchSearch(controller.text);
+                    final List<Widget> resultList = results?.places
                             ?.map(
                               (location) => resultTile(location, controller),
                             )
                             .toList() ??
-                        [];
+                        [const LinearProgressIndicator()];
 
                     if (controller.text.isEmpty) {
                       resultList.insert(
