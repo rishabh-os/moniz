@@ -94,7 +94,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         crossAxisCount: 3,
-        childAspectRatio: 2.5,
+        childAspectRatio: 2,
         children: unsortedSpends.map((label) {
           final Classifier classifier = label.classifier;
           return Row(
@@ -104,7 +104,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    color: Theme.of(context).colorScheme.outlineVariant,
                     width: 3,
                   ),
                 ),
