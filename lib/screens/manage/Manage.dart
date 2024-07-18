@@ -51,7 +51,7 @@ class _ManageState extends ConsumerState<Manage>
           const SizedBox(height: 10),
           const Accounts(),
           const Divider(
-            height: 60,
+            height: 40,
             indent: 20,
             endIndent: 20,
           ),
@@ -61,11 +61,7 @@ class _ManageState extends ConsumerState<Manage>
           ),
           const SizedBox(height: 20),
           const Categories(),
-          // ? Provides space so that the FAB doesn't block elements
-          const ListTile(
-            isThreeLine: true,
-            subtitle: Text(""),
-          ),
+          const SizedBox(height: 20),
         ],
       ),
     );

@@ -229,11 +229,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
           ),
           const SizedBox(height: 20),
           _legend,
-          // ? Provides space so that the FAB doesn't block elements
-          const ListTile(
-            isThreeLine: true,
-            subtitle: Text(""),
-          ),
         ],
       ),
     );

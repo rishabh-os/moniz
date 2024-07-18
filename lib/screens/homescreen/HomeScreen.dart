@@ -87,6 +87,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     }
   }
 
+  Widget fader(Widget child, int index) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      reverseDuration: const Duration(milliseconds: 200),
+      switchInCurve: Curves.easeInOutCubicEmphasized.flipped,
+      switchOutCurve: Curves.easeInOutCubicEmphasized,
+      child: _selectedIndex <= index
+          ? child
+          : SizedBox(
+              key: Key("$index"),
+            ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final globalRange = ref.watch(globalDateRangeProvider);
@@ -103,22 +117,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         ),
 
         actions: [
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            reverseDuration: const Duration(milliseconds: 200),
-            child: _selectedIndex <= 1
-                ? IconButton.filledTonal(
-                    key: listOfKeys[3],
-                    tooltip: "Filters",
-                    icon: const Icon(Icons.filter_list_rounded),
-                    onPressed: () {
-                      scaffoldKey.currentState!
-                          .showBottomSheet((context) => const Filters());
-                    },
-                  )
-                : const SizedBox(
-                    key: Key("1"),
-                  ),
+          fader(
+            IconButton.filledTonal(
+              key: listOfKeys[3],
+              tooltip: "Filters",
+              icon: const Icon(Icons.filter_list_rounded),
+              onPressed: () {
+                scaffoldKey.currentState!
+                    .showBottomSheet((context) => const Filters());
+              },
+            ),
+            1,
           ),
           DateSort(key: listOfKeys[1], globalRangeUpdater: globalRangeUpdater),
           DotsMenu(key: listOfKeys[2], scaffoldKey: scaffoldKey),
@@ -126,33 +135,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       resizeToAvoidBottomInset: true,
-      floatingActionButton: OpenContainer(
-        // transitionDuration: Duration(seconds: 2),
-        closedColor: Theme.of(context).colorScheme.primaryContainer,
-        middleColor: Theme.of(context).colorScheme.primaryContainer,
-        openColor: Theme.of(context).colorScheme.surface,
-        transitionType: ContainerTransitionType.fadeThrough,
-        closedElevation: 5.0,
-        openShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        closedShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        closedBuilder: (_, openContainer) {
-          return FloatingActionButton.extended(
-            heroTag: null,
-            key: listOfKeys[4],
-            // ? OpenContainer has its own elevation
-            elevation: 0,
-            highlightElevation: 0,
-            hoverElevation: 0,
-            onPressed: openContainer,
-            label: const Text("New Entry"),
-            icon: const Icon(Icons.add),
-          );
-        },
-        openBuilder: (_, closeContainer) {
-          return const EntryEditor();
-        },
+      floatingActionButton: fader(
+        OpenContainer(
+          // transitionDuration: Duration(seconds: 2),
+          closedColor: Theme.of(context).colorScheme.primaryContainer,
+          middleColor: Theme.of(context).colorScheme.primaryContainer,
+          openColor: Theme.of(context).colorScheme.surface,
+          transitionType: ContainerTransitionType.fadeThrough,
+          closedElevation: 5.0,
+          openShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          closedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          closedBuilder: (_, openContainer) {
+            return FloatingActionButton.extended(
+              heroTag: null,
+              key: listOfKeys[4],
+              // ? OpenContainer has its own elevation
+              elevation: 0,
+              highlightElevation: 0,
+              hoverElevation: 0,
+              onPressed: openContainer,
+              label: const Text("New Entry"),
+              icon: const Icon(Icons.add),
+            );
+          },
+          openBuilder: (_, closeContainer) {
+            return const EntryEditor();
+          },
+        ),
+        0,
       ),
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
