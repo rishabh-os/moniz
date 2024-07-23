@@ -52,6 +52,6 @@ samples, guidance on mobile development, and a full API reference.
   - [x] Move to Google Maps because more locations
 - [x] Fix location suggestions bug - seems flaky
 - [x] Fix desaturated colours
-- [ ] Make app restart on data import
+- [x] Make app restart on data import - made it close instead
 - [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase
 - [ ] Rewrite LineGraph as it lags with a lot of transactions

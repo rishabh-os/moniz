@@ -1,6 +1,10 @@
 import "package:flutter/material.dart";
 
-SnackBar deleteSnack(BuildContext context, String type, Function onPressed) {
+SnackBar deleteSnack(
+  BuildContext context,
+  String type,
+  void Function() onPressed,
+) {
   final lowercaseType = type.toLowerCase();
   return SnackBar(
     duration: const Duration(seconds: 1),
@@ -19,7 +23,6 @@ SnackBar deleteSnack(BuildContext context, String type, Function onPressed) {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  // ignore: avoid_dynamic_calls
                   onPressed();
                 },
                 child: const Text("Yes"),

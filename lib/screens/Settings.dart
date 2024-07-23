@@ -1,10 +1,10 @@
 import "package:currency_picker/currency_picker.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
-import "package:moniz/main.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -109,7 +109,7 @@ class _SettingsState extends ConsumerState<Settings> {
                   return AlertDialog(
                     title: const Text("Are you sure?"),
                     content: const Text(
-                      "This will delete any existing entries unless you have already exported them.",
+                      "This will delete any existing entries unless you have already exported them. \n\n The app will close and you will have to launch it again.",
                     ),
                     actions: [
                       TextButton(
@@ -139,8 +139,8 @@ class _SettingsState extends ConsumerState<Settings> {
                           if (!context.mounted) return;
                           if (imported) {
                             await ref.read(dbProvider).close();
-                            if (!context.mounted) return;
-                            RestartWidget.restartApp(context);
+                            SystemChannels.platform
+                                .invokeMethod("SystemNavigator.pop");
                           } else {
                             Navigator.of(context).pop();
                           }
