@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_animations/flutter_map_animations.dart";
-import "package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart";
 import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart" as http;
@@ -197,8 +196,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
                 urlTemplate:
                     "https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
                 userAgentPackageName: "com.rishabhos.moniz",
-                tileProvider:
-                    CancellableNetworkTileProvider(silenceExceptions: true),
               ),
               MarkerLayer(
                 markers: selectedLocation != null
