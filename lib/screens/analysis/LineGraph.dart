@@ -282,7 +282,7 @@ class _LineChartState extends ConsumerState<LineChart> {
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutQuint,
+                curve: Curves.easeInOutCubicEmphasized,
               ),
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
               modifiers: [StackModifier()],
@@ -297,7 +297,7 @@ class _LineChartState extends ConsumerState<LineChart> {
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutQuint,
+                curve: Curves.easeInOutCubicEmphasized,
               ),
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
             ),
@@ -308,7 +308,7 @@ class _LineChartState extends ConsumerState<LineChart> {
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutQuint,
+                curve: Curves.easeInOutCubicEmphasized,
               ),
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
             ),
@@ -319,11 +319,15 @@ class _LineChartState extends ConsumerState<LineChart> {
       days.add(element[0]);
     }
     final int nDays = days.toSet().length;
-    // ? Cutoff assumes 12 bars can fit on screen comfortably
+    // ? Cutoff assumes 10 bars can fit on screen comfortably
     const int cutOff = 10;
     final rectCoord = RectCoord(
-      horizontalRange:
-          nDays >= cutOff ? [0, 1 + (1 / cutOff) * (nDays - cutOff)] : [0, 1],
+      horizontalRange: nDays >= cutOff
+          ? [
+              -(1 / cutOff) * (nDays - cutOff),
+              1,
+            ]
+          : [0, 1],
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,
     );
     // ? The mouse region allows the chart interaction to take priority
