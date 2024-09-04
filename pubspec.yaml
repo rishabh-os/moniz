@@ -50,7 +50,11 @@ dependencies:
   flutter_map_location_marker: ^9.0.0
   geolocator: ^12.0.0
   # ? Explicit dependency to fix build issue
-  win32: ^5.5.1
+  # win32: ^5.5.1
+  # flutter_compass: 0.7.0
+dependency_overrides:
+  flutter_compass:
+    git: https://github.com/PikPakPik/flutter_compass.git
 
 dev_dependencies:
   flutter_test:
