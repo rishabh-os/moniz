@@ -76,7 +76,8 @@ flutter_native_splash:
   branding: assets/coin4.png
   color_dark: "#212121"
   android: true
-  ios: true
+  ios: false
+  web: false
   android_12:
     image: assets/coin4.png
     icon_background_color: "#ffffff"
