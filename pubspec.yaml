@@ -23,8 +23,8 @@ dependencies:
   path: ^1.9.0
   uuid: ^4.4.2
   get_storage: ^2.1.1
-  flutter_iconpicker: ^3.3.3
-  window_manager: ^0.3.9
+  flutter_iconpicker: ^4.0.1
+  window_manager: ^0.4.2
   currency_picker: ^2.0.21
   share_plus: ^10.0.0
   introduction_screen: ^3.1.14
@@ -65,7 +65,7 @@ dev_dependencies:
   drift_dev: ^2.19.1
   build_runner: ^2.4.11
   patrol: ^3.9.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
   lint: ^2.3.0
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10

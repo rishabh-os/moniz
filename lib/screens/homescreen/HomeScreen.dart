@@ -79,6 +79,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     listOfKeys = ref.read(entriesGkListProvider);
     if (!ref.read(entriesTutorialCompletedProvider)) {
       Future.delayed(const Duration(milliseconds: 100), () {
+        if (!context.mounted) return;
+        // ? Idk why the above check doesn't work here
+        // ignore: use_build_context_synchronously
         ref.read(tutorialProvider)(context, Screen.entries);
         ref
             .read(entriesTutorialCompletedProvider.notifier)

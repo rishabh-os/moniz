@@ -253,7 +253,10 @@ class _LocationMapState extends ConsumerState<LocationMap>
                       _searchController.closeView(_searchController.text);
                       await Future.delayed(
                         50.ms,
-                        () => FocusScope.of(context).unfocus(),
+                        () {
+                          if (!context.mounted) return;
+                          FocusScope.of(context).unfocus();
+                        },
                       );
                     },
                     icon: const Icon(Icons.arrow_back),
@@ -378,7 +381,12 @@ class _LocationMapState extends ConsumerState<LocationMap>
         // ? This is very hacky but none of the other solutions work so
         await Future.delayed(
           50.ms,
-          () => FocusScope.of(context).unfocus(),
+          () {
+            if (!context.mounted) return;
+            // ? Idk why the above check doesn't work here
+            // ignore: use_build_context_synchronously
+            FocusScope.of(context).unfocus();
+          },
         );
       },
       title: Text(

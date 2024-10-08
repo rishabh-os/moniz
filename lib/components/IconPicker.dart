@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_iconpicker/Models/configuration.dart";
 import "package:flutter_iconpicker/flutter_iconpicker.dart";
 import "package:moniz/screens/manage/AccountIcon.dart";
 
@@ -26,14 +27,18 @@ class _IconPickerState extends State<IconPicker> {
   }
 
   Future<void> _pickIcon() async {
-    final IconData? icon = await showIconPicker(
+    final icon = await showIconPicker(
       context,
-      iconPackModes: [IconPack.roundedMaterial],
+      configuration: const SinglePickerConfiguration(
+        // ? Remember to run
+        // ? dart run flutter_iconpicker:generate_packs --packs roundedMaterial
+        iconPackModes: [IconPack.roundedMaterial],
+      ),
     );
 
     setState(() {
       if (icon != null) {
-        _icon = icon;
+        _icon = icon.data;
         widget.iconCallback(_icon);
       }
     });
