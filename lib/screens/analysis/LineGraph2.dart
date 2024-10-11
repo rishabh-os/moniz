@@ -50,7 +50,6 @@ class _Linegraph2State extends ConsumerState<LineGraph2> {
           for (final category in ref.read(categoriesProvider)) category: 0.0,
         },
     };
-
     for (final trans in transactionList) {
       if (trans.amount < 0) {
         final day = getDTString(trans.recorded);
@@ -74,24 +73,36 @@ class _Linegraph2State extends ConsumerState<LineGraph2> {
           return dayMonth;
         },
       ),
+      "amount": Variable(
+        accessor: (MapEntry<String, Map<TransactionCategory, double>> spot) {
+          // ? Combine all category values into one total for the day
+          return spot.value.values.reduce((a, b) => a + b);
+        },
+      ),
       "category": Variable(
         accessor: (MapEntry<String, Map<TransactionCategory, double>> spot) {
           return spot.value.keys.first.name;
         },
       ),
-      "amount": Variable(
-        accessor: (MapEntry<String, Map<TransactionCategory, double>> spot) {
-          return spot.value.values.first;
-        },
-      ),
     };
 
-    final marks = [
+    final List<Mark> marks = [
       LineMark(
         size: SizeEncode(value: 5),
         shape: ShapeEncode(value: BasicLineShape(smooth: true)),
         color: ColorEncode(
           value: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+        ),
+        transition: Transition(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOutCubicEmphasized,
+        ),
+        entrance: {MarkEntrance.opacity, MarkEntrance.y},
+      ),
+      AreaMark(
+        shape: ShapeEncode(value: BasicAreaShape(smooth: true)),
+        color: ColorEncode(
+          value: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
         ),
         transition: Transition(
           duration: const Duration(milliseconds: 500),
