@@ -797,6 +797,7 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
 
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
+  $MyDatabaseManager get managers => $MyDatabaseManager(this);
   late final $TransactionTableTable transactionTable =
       $TransactionTableTable(this);
   late final $CategoriesTableTable categoriesTable =
@@ -808,4 +809,627 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [transactionTable, categoriesTable, accountsTable];
+}
+
+typedef $$TransactionTableTableCreateCompanionBuilder
+    = TransactionTableCompanion Function({
+  required String id,
+  required String title,
+  Value<String?> additionalInfo,
+  required String categoryID,
+  required String accountID,
+  required double amount,
+  required DateTime recorded,
+  Value<GMapsPlace?> location,
+  Value<int> rowid,
+});
+typedef $$TransactionTableTableUpdateCompanionBuilder
+    = TransactionTableCompanion Function({
+  Value<String> id,
+  Value<String> title,
+  Value<String?> additionalInfo,
+  Value<String> categoryID,
+  Value<String> accountID,
+  Value<double> amount,
+  Value<DateTime> recorded,
+  Value<GMapsPlace?> location,
+  Value<int> rowid,
+});
+
+class $$TransactionTableTableFilterComposer
+    extends Composer<_$MyDatabase, $TransactionTableTable> {
+  $$TransactionTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get title => $composableBuilder(
+      column: $table.title, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get additionalInfo => $composableBuilder(
+      column: $table.additionalInfo,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get categoryID => $composableBuilder(
+      column: $table.categoryID, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get accountID => $composableBuilder(
+      column: $table.accountID, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get recorded => $composableBuilder(
+      column: $table.recorded, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<GMapsPlace?, GMapsPlace, String>
+      get location => $composableBuilder(
+          column: $table.location,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$TransactionTableTableOrderingComposer
+    extends Composer<_$MyDatabase, $TransactionTableTable> {
+  $$TransactionTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get title => $composableBuilder(
+      column: $table.title, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get additionalInfo => $composableBuilder(
+      column: $table.additionalInfo,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get categoryID => $composableBuilder(
+      column: $table.categoryID, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get accountID => $composableBuilder(
+      column: $table.accountID, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get recorded => $composableBuilder(
+      column: $table.recorded, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get location => $composableBuilder(
+      column: $table.location, builder: (column) => ColumnOrderings(column));
+}
+
+class $$TransactionTableTableAnnotationComposer
+    extends Composer<_$MyDatabase, $TransactionTableTable> {
+  $$TransactionTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get additionalInfo => $composableBuilder(
+      column: $table.additionalInfo, builder: (column) => column);
+
+  GeneratedColumn<String> get categoryID => $composableBuilder(
+      column: $table.categoryID, builder: (column) => column);
+
+  GeneratedColumn<String> get accountID =>
+      $composableBuilder(column: $table.accountID, builder: (column) => column);
+
+  GeneratedColumn<double> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recorded =>
+      $composableBuilder(column: $table.recorded, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<GMapsPlace?, String> get location =>
+      $composableBuilder(column: $table.location, builder: (column) => column);
+}
+
+class $$TransactionTableTableTableManager extends RootTableManager<
+    _$MyDatabase,
+    $TransactionTableTable,
+    Transaction,
+    $$TransactionTableTableFilterComposer,
+    $$TransactionTableTableOrderingComposer,
+    $$TransactionTableTableAnnotationComposer,
+    $$TransactionTableTableCreateCompanionBuilder,
+    $$TransactionTableTableUpdateCompanionBuilder,
+    (
+      Transaction,
+      BaseReferences<_$MyDatabase, $TransactionTableTable, Transaction>
+    ),
+    Transaction,
+    PrefetchHooks Function()> {
+  $$TransactionTableTableTableManager(
+      _$MyDatabase db, $TransactionTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TransactionTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TransactionTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TransactionTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<String?> additionalInfo = const Value.absent(),
+            Value<String> categoryID = const Value.absent(),
+            Value<String> accountID = const Value.absent(),
+            Value<double> amount = const Value.absent(),
+            Value<DateTime> recorded = const Value.absent(),
+            Value<GMapsPlace?> location = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TransactionTableCompanion(
+            id: id,
+            title: title,
+            additionalInfo: additionalInfo,
+            categoryID: categoryID,
+            accountID: accountID,
+            amount: amount,
+            recorded: recorded,
+            location: location,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String title,
+            Value<String?> additionalInfo = const Value.absent(),
+            required String categoryID,
+            required String accountID,
+            required double amount,
+            required DateTime recorded,
+            Value<GMapsPlace?> location = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              TransactionTableCompanion.insert(
+            id: id,
+            title: title,
+            additionalInfo: additionalInfo,
+            categoryID: categoryID,
+            accountID: accountID,
+            amount: amount,
+            recorded: recorded,
+            location: location,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$TransactionTableTableProcessedTableManager = ProcessedTableManager<
+    _$MyDatabase,
+    $TransactionTableTable,
+    Transaction,
+    $$TransactionTableTableFilterComposer,
+    $$TransactionTableTableOrderingComposer,
+    $$TransactionTableTableAnnotationComposer,
+    $$TransactionTableTableCreateCompanionBuilder,
+    $$TransactionTableTableUpdateCompanionBuilder,
+    (
+      Transaction,
+      BaseReferences<_$MyDatabase, $TransactionTableTable, Transaction>
+    ),
+    Transaction,
+    PrefetchHooks Function()>;
+typedef $$CategoriesTableTableCreateCompanionBuilder = CategoriesTableCompanion
+    Function({
+  required String id,
+  required String name,
+  required int iconCodepoint,
+  required int color,
+  required int order,
+  required bool isArchived,
+  Value<int> rowid,
+});
+typedef $$CategoriesTableTableUpdateCompanionBuilder = CategoriesTableCompanion
+    Function({
+  Value<String> id,
+  Value<String> name,
+  Value<int> iconCodepoint,
+  Value<int> color,
+  Value<int> order,
+  Value<bool> isArchived,
+  Value<int> rowid,
+});
+
+class $$CategoriesTableTableFilterComposer
+    extends Composer<_$MyDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get iconCodepoint => $composableBuilder(
+      column: $table.iconCodepoint, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get color => $composableBuilder(
+      column: $table.color, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get order => $composableBuilder(
+      column: $table.order, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+}
+
+class $$CategoriesTableTableOrderingComposer
+    extends Composer<_$MyDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get iconCodepoint => $composableBuilder(
+      column: $table.iconCodepoint,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get color => $composableBuilder(
+      column: $table.color, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get order => $composableBuilder(
+      column: $table.order, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+}
+
+class $$CategoriesTableTableAnnotationComposer
+    extends Composer<_$MyDatabase, $CategoriesTableTable> {
+  $$CategoriesTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get iconCodepoint => $composableBuilder(
+      column: $table.iconCodepoint, builder: (column) => column);
+
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumn<int> get order =>
+      $composableBuilder(column: $table.order, builder: (column) => column);
+
+  GeneratedColumn<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => column);
+}
+
+class $$CategoriesTableTableTableManager extends RootTableManager<
+    _$MyDatabase,
+    $CategoriesTableTable,
+    TransactionCategory,
+    $$CategoriesTableTableFilterComposer,
+    $$CategoriesTableTableOrderingComposer,
+    $$CategoriesTableTableAnnotationComposer,
+    $$CategoriesTableTableCreateCompanionBuilder,
+    $$CategoriesTableTableUpdateCompanionBuilder,
+    (
+      TransactionCategory,
+      BaseReferences<_$MyDatabase, $CategoriesTableTable, TransactionCategory>
+    ),
+    TransactionCategory,
+    PrefetchHooks Function()> {
+  $$CategoriesTableTableTableManager(
+      _$MyDatabase db, $CategoriesTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CategoriesTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CategoriesTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CategoriesTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> iconCodepoint = const Value.absent(),
+            Value<int> color = const Value.absent(),
+            Value<int> order = const Value.absent(),
+            Value<bool> isArchived = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CategoriesTableCompanion(
+            id: id,
+            name: name,
+            iconCodepoint: iconCodepoint,
+            color: color,
+            order: order,
+            isArchived: isArchived,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String name,
+            required int iconCodepoint,
+            required int color,
+            required int order,
+            required bool isArchived,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CategoriesTableCompanion.insert(
+            id: id,
+            name: name,
+            iconCodepoint: iconCodepoint,
+            color: color,
+            order: order,
+            isArchived: isArchived,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$CategoriesTableTableProcessedTableManager = ProcessedTableManager<
+    _$MyDatabase,
+    $CategoriesTableTable,
+    TransactionCategory,
+    $$CategoriesTableTableFilterComposer,
+    $$CategoriesTableTableOrderingComposer,
+    $$CategoriesTableTableAnnotationComposer,
+    $$CategoriesTableTableCreateCompanionBuilder,
+    $$CategoriesTableTableUpdateCompanionBuilder,
+    (
+      TransactionCategory,
+      BaseReferences<_$MyDatabase, $CategoriesTableTable, TransactionCategory>
+    ),
+    TransactionCategory,
+    PrefetchHooks Function()>;
+typedef $$AccountsTableTableCreateCompanionBuilder = AccountsTableCompanion
+    Function({
+  required String id,
+  required String name,
+  required int iconCodepoint,
+  required int color,
+  required double balance,
+  required int order,
+  required bool isArchived,
+  Value<int> rowid,
+});
+typedef $$AccountsTableTableUpdateCompanionBuilder = AccountsTableCompanion
+    Function({
+  Value<String> id,
+  Value<String> name,
+  Value<int> iconCodepoint,
+  Value<int> color,
+  Value<double> balance,
+  Value<int> order,
+  Value<bool> isArchived,
+  Value<int> rowid,
+});
+
+class $$AccountsTableTableFilterComposer
+    extends Composer<_$MyDatabase, $AccountsTableTable> {
+  $$AccountsTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get iconCodepoint => $composableBuilder(
+      column: $table.iconCodepoint, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get color => $composableBuilder(
+      column: $table.color, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get balance => $composableBuilder(
+      column: $table.balance, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get order => $composableBuilder(
+      column: $table.order, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+}
+
+class $$AccountsTableTableOrderingComposer
+    extends Composer<_$MyDatabase, $AccountsTableTable> {
+  $$AccountsTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get iconCodepoint => $composableBuilder(
+      column: $table.iconCodepoint,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get color => $composableBuilder(
+      column: $table.color, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get balance => $composableBuilder(
+      column: $table.balance, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get order => $composableBuilder(
+      column: $table.order, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+}
+
+class $$AccountsTableTableAnnotationComposer
+    extends Composer<_$MyDatabase, $AccountsTableTable> {
+  $$AccountsTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get iconCodepoint => $composableBuilder(
+      column: $table.iconCodepoint, builder: (column) => column);
+
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumn<double> get balance =>
+      $composableBuilder(column: $table.balance, builder: (column) => column);
+
+  GeneratedColumn<int> get order =>
+      $composableBuilder(column: $table.order, builder: (column) => column);
+
+  GeneratedColumn<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => column);
+}
+
+class $$AccountsTableTableTableManager extends RootTableManager<
+    _$MyDatabase,
+    $AccountsTableTable,
+    Account,
+    $$AccountsTableTableFilterComposer,
+    $$AccountsTableTableOrderingComposer,
+    $$AccountsTableTableAnnotationComposer,
+    $$AccountsTableTableCreateCompanionBuilder,
+    $$AccountsTableTableUpdateCompanionBuilder,
+    (Account, BaseReferences<_$MyDatabase, $AccountsTableTable, Account>),
+    Account,
+    PrefetchHooks Function()> {
+  $$AccountsTableTableTableManager(_$MyDatabase db, $AccountsTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AccountsTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AccountsTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AccountsTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> iconCodepoint = const Value.absent(),
+            Value<int> color = const Value.absent(),
+            Value<double> balance = const Value.absent(),
+            Value<int> order = const Value.absent(),
+            Value<bool> isArchived = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AccountsTableCompanion(
+            id: id,
+            name: name,
+            iconCodepoint: iconCodepoint,
+            color: color,
+            balance: balance,
+            order: order,
+            isArchived: isArchived,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String name,
+            required int iconCodepoint,
+            required int color,
+            required double balance,
+            required int order,
+            required bool isArchived,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AccountsTableCompanion.insert(
+            id: id,
+            name: name,
+            iconCodepoint: iconCodepoint,
+            color: color,
+            balance: balance,
+            order: order,
+            isArchived: isArchived,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$AccountsTableTableProcessedTableManager = ProcessedTableManager<
+    _$MyDatabase,
+    $AccountsTableTable,
+    Account,
+    $$AccountsTableTableFilterComposer,
+    $$AccountsTableTableOrderingComposer,
+    $$AccountsTableTableAnnotationComposer,
+    $$AccountsTableTableCreateCompanionBuilder,
+    $$AccountsTableTableUpdateCompanionBuilder,
+    (Account, BaseReferences<_$MyDatabase, $AccountsTableTable, Account>),
+    Account,
+    PrefetchHooks Function()>;
+
+class $MyDatabaseManager {
+  final _$MyDatabase _db;
+  $MyDatabaseManager(this._db);
+  $$TransactionTableTableTableManager get transactionTable =>
+      $$TransactionTableTableTableManager(_db, _db.transactionTable);
+  $$CategoriesTableTableTableManager get categoriesTable =>
+      $$CategoriesTableTableTableManager(_db, _db.categoriesTable);
+  $$AccountsTableTableTableManager get accountsTable =>
+      $$AccountsTableTableTableManager(_db, _db.accountsTable);
 }

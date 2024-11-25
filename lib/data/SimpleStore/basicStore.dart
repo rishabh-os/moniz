@@ -4,6 +4,9 @@ import "package:get_storage/get_storage.dart";
 import "package:latlong2/latlong.dart";
 import "package:moniz/data/database/db.dart";
 import "package:moniz/data/transactions.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
+
+part "basicStore.g.dart";
 
 final globalDateRangeProvider = StateProvider<DateTimeRange>((ref) {
   final now = DateTime.now();
@@ -42,13 +45,25 @@ final overviewExpenseProvider = StateProvider<double>((ref) {
   return total;
 });
 
-final dbProvider = Provider<MyDatabase>((ref) => MyDatabase());
+@riverpod
+MyDatabase db(Ref ref) {
+  return MyDatabase();
+}
 
-final chartScrollProvider = StateProvider<bool>((ref) => true);
+@riverpod
+class GraphByCat extends _$GraphByCat {
+  @override
+  bool build() => false;
+  void toggle() => super.state = !state;
+}
 
-final graphByCatProvider = StateProvider<bool>((ref) {
-  return false;
-});
+@riverpod
+class ChartScroll extends _$ChartScroll {
+  @override
+  bool build() => true;
+  @override
+  set state(bool value) => state = value;
+}
 
 final initialCenterProvider = StateProvider<LatLng>((ref) {
   ref.listenSelf(

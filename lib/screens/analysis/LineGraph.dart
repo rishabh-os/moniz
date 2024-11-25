@@ -94,9 +94,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
         children: [
           SwitchListTile.adaptive(
             value: showByCat,
-            onChanged: (value) {
-              ref.watch(graphByCatProvider.notifier).state = value;
-            },
+            onChanged: (_) => ref.watch(graphByCatProvider.notifier).toggle(),
             title: const Text("Show category-wise spends"),
           ),
           AspectRatio(
@@ -333,10 +331,9 @@ class _LineChartState extends ConsumerState<LineChart> {
     // ? The mouse region allows the chart interaction to take priority
     return MouseRegion(
       onHover: (event) {
-        ref.read(chartScrollProvider.notifier).update((state) => false);
+        ref.read(chartScrollProvider.notifier).state = false;
       },
-      onExit: (event) =>
-          ref.read(chartScrollProvider.notifier).update((state) => true),
+      onExit: (event) => ref.read(chartScrollProvider.notifier).state = true,
       child: widget.data.every((element) => element.last == 0)
           ? const NoData()
           : Chart(
