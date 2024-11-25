@@ -104,15 +104,13 @@ class _FiltersState extends ConsumerState<Filters> {
                     color: Theme.of(context).colorScheme.error,
                   ),
                   onPressed: () {
-                    ref
-                        .read(filterQueryProvider.notifier)
-                        .update((state) => "");
+                    ref.read(filterQueryProvider.notifier).state = "";
                   },
                 ),
               ),
               textCapitalization: TextCapitalization.words,
               onChanged: (value) {
-                ref.read(filterQueryProvider.notifier).update((state) => value);
+                ref.read(filterQueryProvider.notifier).state = value;
               },
             ),
           ),
@@ -172,9 +170,7 @@ class _FiltersState extends ConsumerState<Filters> {
                     values: rangeValues,
                     divisions: frequencyHistorgram.length - 1,
                     onChanged: (value) {
-                      ref
-                          .watch(rangeValueProvider.notifier)
-                          .update((state) => value);
+                      ref.watch(rangeValueProvider.notifier).state = value;
                     },
                     labels: RangeLabels(
                       freqKeys[rangeValues.start.toInt()].abs().toString(),
@@ -188,13 +184,9 @@ class _FiltersState extends ConsumerState<Filters> {
           ),
           TextButton.icon(
             onPressed: () {
-              ref.read(filterQueryProvider.notifier).update((state) => "");
-              ref
-                  .read(filteredCategoriesProvider.notifier)
-                  .update((state) => []);
-              ref
-                  .watch(filteredAccountsProvider.notifier)
-                  .update((state) => []);
+              ref.watch(filterQueryProvider.notifier).state = "";
+              ref.watch(filteredCategoriesProvider.notifier).state = [];
+              ref.watch(filteredAccountsProvider.notifier).state = [];
               setState(() {
                 rangeValues =
                     RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
