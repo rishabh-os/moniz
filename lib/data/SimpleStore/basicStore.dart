@@ -8,42 +8,58 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "basicStore.g.dart";
 
-final globalDateRangeProvider = StateProvider<DateTimeRange>((ref) {
-  final now = DateTime.now();
-  return DateTimeRange(
-    start: now.copyWith(
-      day: 1,
-      hour: 0,
-      minute: 0,
-      second: 0,
-      millisecond: 0,
-      microsecond: 0,
-    ),
-    // ? This allows entries on the selected day to be shown
-    end: now.add(const Duration(days: 1)),
-  );
-});
+@riverpod
+class GlobalDateRange extends _$GlobalDateRange {
+  @override
+  DateTimeRange build() {
+    final now = DateTime.now();
+    return DateTimeRange(
+      start: now.copyWith(
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+      ),
+      // ? This allows entries on the selected day to be shown
+      end: now.add(const Duration(days: 1)),
+    );
+  }
 
-final overviewIncomeProvider = StateProvider<double>((ref) {
-  final x = ref.watch(transactionsProvider);
-  double total = 0;
-  for (final element in x) {
-    if (element.amount > 0) {
-      total += element.amount.abs();
+  @override
+  set state(DateTimeRange value) => super.state = value;
+}
+
+@riverpod
+class OverviewIncome extends _$OverviewIncome {
+  @override
+  double build() {
+    final x = ref.watch(transactionsProvider);
+    double total = 0;
+    for (final element in x) {
+      if (element.amount > 0) {
+        total += element.amount.abs();
+      }
     }
+    return total;
   }
-  return total;
-});
-final overviewExpenseProvider = StateProvider<double>((ref) {
-  final x = ref.watch(transactionsProvider);
-  double total = 0;
-  for (final element in x) {
-    if (element.amount < 0) {
-      total += element.amount.abs();
+}
+
+@riverpod
+class OverviewExpense extends _$OverviewExpense {
+  @override
+  double build() {
+    final x = ref.watch(transactionsProvider);
+    double total = 0;
+    for (final element in x) {
+      if (element.amount < 0) {
+        total += element.amount.abs();
+      }
     }
+    return total;
   }
-  return total;
-});
+}
 
 @riverpod
 MyDatabase db(Ref ref) {
@@ -65,13 +81,20 @@ class ChartScroll extends _$ChartScroll {
   set state(bool value) => state = value;
 }
 
-final initialCenterProvider = StateProvider<LatLng>((ref) {
-  ref.listenSelf(
-    (previous, next) => GetStorage()
-        .write("mapCenter", <double>[next.longitude, next.latitude]),
-  );
-  GetStorage().read("mapCenter") ??
-      GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
-  final List longlat = GetStorage().read("mapCenter") as List;
-  return LatLng(longlat.last as double, longlat.first as double);
-});
+@riverpod
+class InitialCenter extends _$InitialCenter {
+  @override
+  LatLng build() {
+    super.listenSelf(
+      (previous, next) => GetStorage()
+          .write("mapCenter", <double>[next.longitude, next.latitude]),
+    );
+    GetStorage().read("mapCenter") ??
+        GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
+    final List longlat = GetStorage().read("mapCenter") as List;
+    return LatLng(longlat.last as double, longlat.first as double);
+  }
+
+  @override
+  set state(LatLng value) => super.state = value;
+}

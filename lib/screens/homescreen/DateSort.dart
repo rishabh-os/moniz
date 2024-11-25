@@ -6,11 +6,7 @@ import "package:moniz/data/transactions.dart";
 class DateSort extends ConsumerStatefulWidget {
   const DateSort({
     super.key,
-    required this.globalRangeUpdater,
   });
-
-  final DateTimeRange Function(DateTimeRange Function(DateTimeRange state) cb)
-      globalRangeUpdater;
 
   @override
   ConsumerState<DateSort> createState() => _DateSortState();
@@ -33,6 +29,7 @@ class _DateSortState extends ConsumerState<DateSort> {
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
+    final globalRange = ref.watch(globalDateRangeProvider.notifier);
     return PopupMenuButton(
       tooltip: "Select a range",
       icon: const Icon(Icons.calendar_today_rounded),
@@ -40,58 +37,52 @@ class _DateSortState extends ConsumerState<DateSort> {
       onSelected: (value) async {
         switch (value) {
           case "Last 7 days":
-            widget.globalRangeUpdater(
-              (state) => DateTimeRange(
-                start: now.copyWith(
-                  day: now.day - 7,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0,
-                ),
-                // ? This allows entries on the selected day to be shown
-                end: now.add(const Duration(days: 1)),
+            globalRange.state = DateTimeRange(
+              start: now.copyWith(
+                day: now.day - 7,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+                microsecond: 0,
               ),
+              // ? This allows entries on the selected day to be shown
+              end: now.add(const Duration(days: 1)),
             );
           case "This month":
-            widget.globalRangeUpdater(
-              (state) => DateTimeRange(
-                start: now.copyWith(
-                  day: 1,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0,
-                ),
-                // ? This allows entries on the selected day to be shown
-                end: now.add(const Duration(days: 1)),
+            globalRange.state = DateTimeRange(
+              start: now.copyWith(
+                day: 1,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+                microsecond: 0,
               ),
+              // ? This allows entries on the selected day to be shown
+              end: now.add(const Duration(days: 1)),
             );
           case "Last month":
-            widget.globalRangeUpdater(
-              (state) => DateTimeRange(
-                start: now.copyWith(
-                  month: now.month - 1,
-                  day: 1,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0,
-                ),
-                // ? This allows entries on the selected day to be shown
-                end: now.copyWith(
-                  month: now.month - 1,
-                  // * Not sure how exactly this works
-                  day: DateTime(now.year, now.month, 0).day,
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0,
-                ),
+            globalRange.state = DateTimeRange(
+              start: now.copyWith(
+                month: now.month - 1,
+                day: 1,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+                microsecond: 0,
+              ),
+              // ? This allows entries on the selected day to be shown
+              end: now.copyWith(
+                month: now.month - 1,
+                // * Not sure how exactly this works
+                day: DateTime(now.year, now.month, 0).day,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+                microsecond: 0,
               ),
             );
           case "Everything":
@@ -101,18 +92,16 @@ class _DateSortState extends ConsumerState<DateSort> {
                     .loadAllTransationsFromDB())
                 .map<DateTime>((e) => e.recorded)
                 .reduce((min, e) => e.isBefore(min) ? e : min);
-            widget.globalRangeUpdater(
-              (state) => DateTimeRange(
-                start: oldestDate.copyWith(
-                  hour: 0,
-                  minute: 0,
-                  second: 0,
-                  millisecond: 0,
-                  microsecond: 0,
-                ),
-                // ? This allows entries on the selected day to be shown
-                end: now.add(const Duration(days: 1)),
+            globalRange.state = DateTimeRange(
+              start: oldestDate.copyWith(
+                hour: 0,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+                microsecond: 0,
               ),
+              // ? This allows entries on the selected day to be shown
+              end: now.add(const Duration(days: 1)),
             );
           case "Custom":
             if (!context.mounted) return;
@@ -127,7 +116,7 @@ class _DateSortState extends ConsumerState<DateSort> {
               },
             );
             if (selectedRange != null) {
-              widget.globalRangeUpdater((state) => selectedRange);
+              globalRange.state = selectedRange;
             }
         }
         ref.read(transactionsProvider.notifier).filterTransactions();

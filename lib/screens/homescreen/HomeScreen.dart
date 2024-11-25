@@ -107,8 +107,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final globalRange = ref.watch(globalDateRangeProvider);
-    final globalRangeUpdater =
-        ref.watch(globalDateRangeProvider.notifier).update;
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -132,7 +130,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             ),
             1,
           ),
-          DateSort(key: listOfKeys[1], globalRangeUpdater: globalRangeUpdater),
+          DateSort(key: listOfKeys[1]),
           DotsMenu(key: listOfKeys[2], scaffoldKey: scaffoldKey),
         ],
       ),
