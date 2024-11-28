@@ -111,7 +111,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         }
         return MaterialApp(
           scrollBehavior: MyCustomScrollBehavior(),
-          title: "Money Tracker",
+          title: "Moniz",
           theme: theme,
           debugShowCheckedModeBanner: false,
           builder: FToastBuilder(),
