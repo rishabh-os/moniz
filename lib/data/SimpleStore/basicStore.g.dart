@@ -6,22 +6,6 @@ part of 'basicStore.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dbHash() => r'd98dd30cbc3273c05b6fefbb550c3c9b2b7a4620';
-
-/// See also [db].
-@ProviderFor(db)
-final dbProvider = AutoDisposeProvider<MyDatabase>.internal(
-  db,
-  name: r'dbProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$dbHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DbRef = AutoDisposeProviderRef<MyDatabase>;
 String _$globalDateRangeHash() => r'5a2d6b232325ebf45dffa990ac211ab4416e6363';
 
 /// See also [GlobalDateRange].

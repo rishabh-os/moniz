@@ -4,6 +4,7 @@ import "package:drift/native.dart";
 import "package:file_picker/file_picker.dart";
 // ? This prevents everything conflicting Table imports in db.g.dart
 import "package:flutter/material.dart" show Colors, Icons;
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/data/category.dart";
@@ -210,6 +211,8 @@ class MyDatabase extends _$MyDatabase {
       return false;
     }
   }
+
+  static final Provider<MyDatabase> provider = Provider((ref) => MyDatabase());
 }
 
 LazyDatabase _openConnection() {

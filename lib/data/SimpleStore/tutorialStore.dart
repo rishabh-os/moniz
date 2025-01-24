@@ -108,8 +108,6 @@ final tutorialProvider = Provider((ref) {
         targetDetails = ref.read(manageTargetListProvider);
       case Screen.analysis:
         targetDetails = ref.read(analysisTargetListProvider);
-      default:
-        targetDetails = {};
     }
 
     final List listOfKeys = targetDetails.keys.toList();

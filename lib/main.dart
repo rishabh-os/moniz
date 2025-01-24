@@ -7,10 +7,10 @@ import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:get_storage/get_storage.dart";
-import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
+import "package:moniz/data/database/db.dart";
 import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/Settings.dart";
 import "package:moniz/screens/Welcome.dart";
@@ -64,8 +64,8 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   Future<void> loadData() async {
     // ? This part should just be run on first app startup to make sure the database itself is not empty
-    await ref.read(dbProvider).initAccounts();
-    await ref.read(dbProvider).initCategories();
+    await ref.read(MyDatabase.provider).initAccounts();
+    await ref.read(MyDatabase.provider).initCategories();
     // ? This loads the data from the database into the app
     await ref.read(categoriesProvider.notifier).loadCategories();
     await ref.read(accountsProvider.notifier).loadAccounts();

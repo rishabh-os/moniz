@@ -137,7 +137,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
 final transactionsProvider =
     StateNotifierProvider<TransactionNotifier, List<Transaction>>((ref) {
   return TransactionNotifier(
-    ref.read(dbProvider),
+    ref.read(MyDatabase.provider),
     ref.watch(globalDateRangeProvider),
   );
 });

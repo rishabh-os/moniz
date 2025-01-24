@@ -17,8 +17,8 @@ dependencies:
   animations: ^2.0.11
   intl: ^0.19.0
   # * Database
-  drift: ^2.21.0
-  sqlite3_flutter_libs: ^0.5.26
+  drift: ^2.24.0
+  sqlite3_flutter_libs: ^0.5.29
   path_provider: ^2.1.5
   path: ^1.9.0
   uuid: ^4.5.1
@@ -26,34 +26,33 @@ dependencies:
   flutter_iconpicker: ^4.0.1
   window_manager: ^0.4.3
   currency_picker: ^2.0.21
-  share_plus: ^10.1.2
+  share_plus: ^10.1.4
   introduction_screen: ^3.1.14
   tutorial_coach_mark: ^1.2.12
   visibility_detector: ^0.4.0+2
   dynamic_color: ^1.7.0
-  flutter_native_splash: ^2.4.2
+  flutter_native_splash: ^2.4.4
   scrollable_positioned_list: ^0.3.8
-  device_info_plus: ^11.1.1
-  file_picker: ^8.1.4
-  graphic: ^2.5.0
+  device_info_plus: ^11.2.1
+  file_picker: ^8.1.7
+  graphic: ^2.5.1
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
   location: ^7.0.1
-  flutter_map_animations: ^0.7.1
-  envied: ^0.5.4+1
-  envied_generator: ^0.5.4+1
-  http: ^1.2.2
-  flutter_animate: ^4.5.0
+  flutter_map_animations: ^0.8.0
+  envied: ^1.1.0
+  envied_generator: ^1.1.0
+  http: ^1.3.0
+  flutter_animate: ^4.5.2
   json_annotation: ^4.9.0
   url_launcher: ^6.3.1
-  fluttertoast: ^8.2.8
+  fluttertoast: ^8.2.10
   flutter_map_location_marker: ^9.1.1
-  geolocator: ^13.0.1
+  geolocator: ^13.0.2
   riverpod_annotation: ^2.6.1
-  freezed: ^2.5.7
-  # ? Explicit dependency to fix build issue
-  # win32: ^5.5.1
-  # flutter_compass: 0.7.0
+  freezed: ^2.5.8
+  hive_ce: ^2.9.0
+  hive_ce_flutter: ^2.2.0
 dependency_overrides:
   flutter_compass:
     git: https://github.com/PikPakPik/flutter_compass.git
@@ -64,14 +63,15 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   # * Database
-  drift_dev: ^2.21.2
-  build_runner: ^2.4.13
-  patrol: ^3.12.0
-  flutter_launcher_icons: ^0.14.1
+  drift_dev: ^2.24.0
+  build_runner: ^2.4.14
+  patrol: ^3.14.0
+  flutter_launcher_icons: ^0.14.3
   lint: ^2.3.0
-  custom_lint: ^0.7.0
-  riverpod_lint: ^2.6.2
-  riverpod_generator: ^2.6.2
+  custom_lint: ^0.7.1
+  riverpod_lint: ^2.6.4
+  riverpod_generator: ^2.6.4
+  hive_ce_generator: ^1.8.2
 
 flutter_native_splash:
   # ? Insists on giving me blurry icons

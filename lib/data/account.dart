@@ -1,6 +1,5 @@
 import "package:drift/drift.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/database/db.dart";
 
@@ -105,5 +104,5 @@ class AccountNotifier extends StateNotifier<List<Account>> {
 
 final accountsProvider =
     StateNotifierProvider<AccountNotifier, List<Account>>((ref) {
-  return AccountNotifier(ref.read(dbProvider));
+  return AccountNotifier(ref.read(MyDatabase.provider));
 });
