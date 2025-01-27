@@ -56,3 +56,5 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase
 - [ ] Rewrite LineGraph as it lags with a lot of transactions
 - [ ] Rewrite money to be represented as int instead of double
+- [ ] Add budgeting options
+- [ ] Add a map heatmap
