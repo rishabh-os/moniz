@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
+import "package:moniz/screens/analysis/ClusterMap.dart";
 // import "package:moniz/screens/analysis/LineGraph2.dart";
 import "package:moniz/screens/analysis/LineGraph.dart";
 import "package:moniz/screens/analysis/PieChart.dart";
@@ -19,7 +20,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
   Widget build(BuildContext context) {
     final List<GlobalKey> listOfKeys = ref.read(analysisGkListProvider);
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -47,15 +48,16 @@ class _AnalysisState extends ConsumerState<Analysis> {
                 key: listOfKeys[1],
                 icon: const Icon(Icons.bar_chart_rounded),
               ),
+              const Tab(
+                // key: listOfKeys[1],
+                icon: Icon(Icons.map_rounded),
+              ),
             ],
           ),
           const Expanded(
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
-              children: [
-                CategoryChart(),
-                LineGraph(),
-              ],
+              children: [CategoryChart(), LineGraph(), Heatmap()],
             ),
           ),
         ],

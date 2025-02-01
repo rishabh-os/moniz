@@ -336,20 +336,31 @@ class MarkerW extends StatelessWidget {
                       animatedMapController
                           .mapController.camera.center.longitude,
                 ),
-                child: Icon(
-                  Icons.place,
-                  size: 36,
-                  color: Theme.of(context).colorScheme.primary,
-                  shadows: [
-                    Shadow(
-                      color: Theme.of(context).colorScheme.shadow,
-                      blurRadius: 1,
-                    ),
-                  ],
-                ),
+                child: const MarkerIcon(),
               ),
             ]
           : [],
+    );
+  }
+}
+
+class MarkerIcon extends StatelessWidget {
+  const MarkerIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.place,
+      size: 36,
+      color: Theme.of(context).colorScheme.primary,
+      shadows: [
+        Shadow(
+          color: Theme.of(context).colorScheme.shadow,
+          blurRadius: 1,
+        ),
+      ],
     );
   }
 }

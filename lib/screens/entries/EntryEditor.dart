@@ -287,7 +287,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
                       });
                     },
                   ),
-                  LocationPicker(
+                  LocationPickerButton(
                     initialLocation: _selectedLocation,
                     returnSelectedLocation: (location) => {
                       setState(() {
