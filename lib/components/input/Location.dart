@@ -1,21 +1,20 @@
 import "dart:convert";
-import "dart:io";
 import "package:flutter/material.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_animations/flutter_map_animations.dart";
-import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart" as http;
 import "package:latlong2/latlong.dart";
+import "package:moniz/components/input/Map.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/api/debouncer.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/env/env.dart";
 import "package:url_launcher/url_launcher.dart";
 
-class LocationPicker extends ConsumerStatefulWidget {
-  const LocationPicker({
+class LocationPickerButton extends ConsumerStatefulWidget {
+  const LocationPickerButton({
     super.key,
     required this.initialLocation,
     required this.returnSelectedLocation,
@@ -24,10 +23,11 @@ class LocationPicker extends ConsumerStatefulWidget {
   final Function(GMapsPlace location) returnSelectedLocation;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LocationPickerState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LocationPickerButtonState();
 }
 
-class _LocationPickerState extends ConsumerState<LocationPicker> {
+class _LocationPickerButtonState extends ConsumerState<LocationPickerButton> {
   GMapsPlace? selectedLocation;
 
   @override
@@ -45,7 +45,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
           MaterialPageRoute(
             builder: (context) {
               // ? This is prop drilling and bad I know
-              return LocationMap(
+              return LocationPicker(
                 initialLocation: widget.initialLocation,
               );
             },
@@ -69,24 +69,23 @@ class _LocationPickerState extends ConsumerState<LocationPicker> {
   }
 }
 
-class LocationMap extends ConsumerStatefulWidget {
-  const LocationMap({
+class LocationPicker extends ConsumerStatefulWidget {
+  const LocationPicker({
     super.key,
     required this.initialLocation,
   });
   final GMapsPlace? initialLocation;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LocationMapState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _LocationPickerState();
 }
 
-class _LocationMapState extends ConsumerState<LocationMap>
+class _LocationPickerState extends ConsumerState<LocationPicker>
     with TickerProviderStateMixin {
   late final animatedMapController = AnimatedMapController(
     vsync: this,
     curve: Curves.easeInOutCubicEmphasized,
   );
-  AlignOnUpdate _alignPositionOnUpdate = AlignOnUpdate.once;
   GMapsResponse? suggestions;
 
   Future<GMapsResponse?> fetchResponse(String input) async {
@@ -175,70 +174,13 @@ class _LocationMapState extends ConsumerState<LocationMap>
       ),
       body: Stack(
         children: [
-          FlutterMap(
-            mapController: animatedMapController.mapController,
-            options: MapOptions(
-              initialCenter: initialCenter,
-              initialZoom: 16,
-              maxZoom: 22,
-              onPositionChanged: (position, hasGesture) => {
-                // ? Stop following the location on any gesture
-                if (hasGesture && _alignPositionOnUpdate != AlignOnUpdate.never)
-                  {
-                    setState(
-                      () => _alignPositionOnUpdate = AlignOnUpdate.never,
-                    ),
-                  },
-              },
-            ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                    "https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
-                userAgentPackageName: "com.rishabhos.moniz",
-              ),
-              MarkerLayer(
-                markers: selectedLocation != null
-                    ? [
-                        Marker(
-                          point: LatLng(
-                            selectedLocation!.location!.latitude ??
-                                animatedMapController
-                                    .mapController.camera.center.latitude,
-                            selectedLocation!.location!.longitude ??
-                                animatedMapController
-                                    .mapController.camera.center.longitude,
-                          ),
-                          child: Icon(
-                            Icons.place,
-                            size: 36,
-                            color: Theme.of(context).colorScheme.primary,
-                            shadows: [
-                              Shadow(
-                                color: Theme.of(context).colorScheme.shadow,
-                                blurRadius: 1,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]
-                    : [],
-              ),
-              // ? The underlying geolocation package doesn't support Linux
-              if (!Platform.isLinux)
-                CurrentLocationLayer(
-                  alignPositionOnUpdate: _alignPositionOnUpdate,
-                ),
-              const RichAttributionWidget(
-                alignment: AttributionAlignment.bottomLeft,
-                attributions: [
-                  TextSourceAttribution(
-                    "Mapbox",
-                  ),
-                  TextSourceAttribution(
-                    "OpenStreetMap contributors",
-                  ),
-                ],
+          LocationMap(
+            animatedMapController: animatedMapController,
+            initialLocation: widget.initialLocation,
+            layers: [
+              MarkerW(
+                selectedLocation: selectedLocation,
+                animatedMapController: animatedMapController,
               ),
             ],
           ),
@@ -321,43 +263,6 @@ class _LocationMapState extends ConsumerState<LocationMap>
           ),
         ],
       ),
-      floatingActionButton: Wrap(
-        direction: Axis.vertical,
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 8,
-        children: [
-          ...[
-            (Icons.add, animatedMapController.animatedZoomIn),
-            (Icons.remove, animatedMapController.animatedZoomOut),
-            (
-              Icons.restart_alt_rounded,
-              animatedMapController.animatedRotateReset,
-            ),
-          ].map(
-            (e) => PhysicalModel(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-              elevation: 4,
-              child: IconButton.filled(
-                icon: Icon(e.$1),
-                visualDensity: VisualDensity.compact,
-                onPressed: () => e.$2(),
-              ),
-            ),
-          ),
-          FloatingActionButton(
-            heroTag: null,
-            child: const Icon(Icons.my_location),
-            onPressed: () async {
-              // ? Follow location on tap
-              setState(
-                () => _alignPositionOnUpdate = AlignOnUpdate.always,
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 
@@ -403,6 +308,48 @@ class _LocationMapState extends ConsumerState<LocationMap>
         },
         icon: const Icon(Icons.open_in_new_rounded),
       ),
+    );
+  }
+}
+
+class MarkerW extends StatelessWidget {
+  const MarkerW({
+    super.key,
+    required this.selectedLocation,
+    required this.animatedMapController,
+  });
+
+  final GMapsPlace? selectedLocation;
+  final AnimatedMapController animatedMapController;
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkerLayer(
+      markers: selectedLocation != null
+          ? [
+              Marker(
+                point: LatLng(
+                  selectedLocation!.location!.latitude ??
+                      animatedMapController
+                          .mapController.camera.center.latitude,
+                  selectedLocation!.location!.longitude ??
+                      animatedMapController
+                          .mapController.camera.center.longitude,
+                ),
+                child: Icon(
+                  Icons.place,
+                  size: 36,
+                  color: Theme.of(context).colorScheme.primary,
+                  shadows: [
+                    Shadow(
+                      color: Theme.of(context).colorScheme.shadow,
+                      blurRadius: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ]
+          : [],
     );
   }
 }
