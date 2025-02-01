@@ -50,8 +50,16 @@ class _ClusterMapState extends ConsumerState<ClusterMap>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const ListTile(
-            title: Text("Cluster Map"),
+          ListTile(
+            title: const Text(
+              "Location available data for",
+            ),
+            trailing: FilterChip(
+              label: Text("${markers.length}/${transactions.length} "),
+              onSelected: (value) {},
+              selected: true,
+              showCheckmark: false,
+            ),
           ),
           Expanded(
             child: LocationMap(
