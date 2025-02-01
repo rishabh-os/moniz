@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:get_storage/get_storage.dart";
 import "package:latlong2/latlong.dart";
 import "package:moniz/data/transactions.dart";
@@ -75,6 +74,7 @@ class ChartScroll extends _$ChartScroll {
   set state(bool value) => state = value;
 }
 
+// ? This provider exists to remember the last used location on the map
 @riverpod
 class InitialCenter extends _$InitialCenter {
   @override

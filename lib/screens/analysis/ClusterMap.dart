@@ -7,6 +7,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:latlong2/latlong.dart";
 import "package:moniz/components/input/Location.dart";
 import "package:moniz/components/input/Map.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/entries/TransactionList.dart";
 
@@ -55,7 +56,7 @@ class _ClusterMapState extends ConsumerState<ClusterMap>
           Expanded(
             child: LocationMap(
               animatedMapController: animatedMapController,
-              initialLocation: null,
+              initialCenter: ref.read(initialCenterProvider),
               layers: [
                 MarkerClusterLayerWidget(
                   options: MarkerClusterLayerOptions(

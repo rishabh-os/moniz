@@ -159,9 +159,10 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
     if (widget.initialLocation != null) {
       selectedLocation = widget.initialLocation;
       final Location selectedCenter = selectedLocation!.location!;
+      initialCenter =
+          LatLng(selectedCenter.latitude ?? 0, selectedCenter.longitude ?? 0);
       Future.delayed(0.ms, () {
-        ref.read(initialCenterProvider.notifier).state =
-            LatLng(selectedCenter.latitude ?? 0, selectedCenter.longitude ?? 0);
+        ref.read(initialCenterProvider.notifier).state = initialCenter;
       });
     }
   }
@@ -176,7 +177,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
         children: [
           LocationMap(
             animatedMapController: animatedMapController,
-            initialLocation: widget.initialLocation,
+            initialCenter: ref.read(initialCenterProvider),
             layers: [
               MarkerW(
                 selectedLocation: selectedLocation,
