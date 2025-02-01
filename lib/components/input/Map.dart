@@ -48,85 +48,46 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FlutterMap(
-        mapController: widget.animatedMapController.mapController,
-        options: MapOptions(
-          initialCenter: initialCenter,
-          initialZoom: 16,
-          maxZoom: 22,
-          onPositionChanged: (position, hasGesture) => {
-            // ? Stop following the location on any gesture
-            if (hasGesture && _alignPositionOnUpdate != AlignOnUpdate.never)
-              {
-                setState(
-                  () => _alignPositionOnUpdate = AlignOnUpdate.never,
-                ),
-              },
-          },
-        ),
-        children: [
-          TileLayer(
-            urlTemplate:
-                "https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
-            userAgentPackageName: "com.rishabhos.moniz",
-          ),
-          ...widget.layers,
-          // ? The underlying geolocation package doesn't support Linux
-          if (!Platform.isLinux)
-            CurrentLocationLayer(
-              alignPositionOnUpdate: _alignPositionOnUpdate,
-            ),
-          const RichAttributionWidget(
-            alignment: AttributionAlignment.bottomLeft,
-            attributions: [
-              TextSourceAttribution(
-                "Mapbox",
-              ),
-              TextSourceAttribution(
-                "OpenStreetMap contributors",
-              ),
-            ],
-          ),
-        ],
-      ),
-      floatingActionButton: Wrap(
-        direction: Axis.vertical,
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 8,
-        children: [
-          ...[
-            (Icons.add, widget.animatedMapController.animatedZoomIn),
-            (Icons.remove, widget.animatedMapController.animatedZoomOut),
-            (
-              Icons.restart_alt_rounded,
-              widget.animatedMapController.animatedRotateReset,
-            ),
-          ].map(
-            (e) => PhysicalModel(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-              elevation: 4,
-              child: IconButton.filled(
-                icon: Icon(e.$1),
-                visualDensity: VisualDensity.compact,
-                onPressed: () => e.$2(),
-              ),
-            ),
-          ),
-          FloatingActionButton(
-            heroTag: null,
-            child: const Icon(Icons.my_location),
-            onPressed: () async {
-              // ? Follow location on tap
+    return FlutterMap(
+      mapController: widget.animatedMapController.mapController,
+      options: MapOptions(
+        initialCenter: initialCenter,
+        initialZoom: 16,
+        maxZoom: 22,
+        onPositionChanged: (position, hasGesture) => {
+          // ? Stop following the location on any gesture
+          if (hasGesture && _alignPositionOnUpdate != AlignOnUpdate.never)
+            {
               setState(
-                () => _alignPositionOnUpdate = AlignOnUpdate.always,
-              );
+                () => _alignPositionOnUpdate = AlignOnUpdate.never,
+              ),
             },
-          ),
-        ],
+        },
       ),
+      children: [
+        TileLayer(
+          urlTemplate:
+              "https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
+          userAgentPackageName: "com.rishabhos.moniz",
+        ),
+        ...widget.layers,
+        // ? The underlying geolocation package doesn't support Linux
+        if (!Platform.isLinux)
+          CurrentLocationLayer(
+            alignPositionOnUpdate: _alignPositionOnUpdate,
+          ),
+        const RichAttributionWidget(
+          alignment: AttributionAlignment.bottomLeft,
+          attributions: [
+            TextSourceAttribution(
+              "Mapbox",
+            ),
+            TextSourceAttribution(
+              "OpenStreetMap contributors",
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

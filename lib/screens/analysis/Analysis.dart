@@ -57,7 +57,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
           const Expanded(
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
-              children: [CategoryChart(), LineGraph(), Heatmap()],
+              children: [CategoryChart(), LineGraph(), ClusterMap()],
             ),
           ),
         ],

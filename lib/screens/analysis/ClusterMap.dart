@@ -8,15 +8,16 @@ import "package:latlong2/latlong.dart";
 import "package:moniz/components/input/Location.dart";
 import "package:moniz/components/input/Map.dart";
 import "package:moniz/data/transactions.dart";
+import "package:moniz/screens/entries/TransactionList.dart";
 
-class Heatmap extends ConsumerStatefulWidget {
-  const Heatmap({super.key});
+class ClusterMap extends ConsumerStatefulWidget {
+  const ClusterMap({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HeatmapState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ClusterMapState();
 }
 
-class _HeatmapState extends ConsumerState<Heatmap>
+class _ClusterMapState extends ConsumerState<ClusterMap>
     with TickerProviderStateMixin {
   late final animatedMapController = AnimatedMapController(
     vsync: this,
@@ -45,70 +46,77 @@ class _HeatmapState extends ConsumerState<Heatmap>
     final PopupController popupController = PopupController();
     return PopupScope(
       popupController: popupController,
-      child: LocationMap(
-        animatedMapController: animatedMapController,
-        initialLocation: null,
-        layers: [
-          MarkerClusterLayerWidget(
-            options: MarkerClusterLayerOptions(
-              maxClusterRadius: 45,
-              size: const Size(40, 40),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(50),
-              maxZoom: 15,
-              markers: markers,
-              builder: (context, markers) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  child: Center(
-                    child: Text(
-                      markers.length.toString(),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                    ),
-                  ),
-                );
-              },
-              popupOptions: PopupOptions(
-                popupController: popupController,
-                buildPopupOnHover: true,
-                markerTapBehavior: MarkerTapBehavior.togglePopupAndHideRest(),
-                popupBuilder: (context, marker) {
-                  final String transID =
-                      (marker.key! as ValueKey).value as String;
-                  return ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: 200,
-                      maxHeight: 40,
-                      minHeight: 40,
-                      minWidth: 40,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          transactions
-                                  .firstWhereOrNull(
-                                    (element) => element.id == transID,
-                                  )
-                                  ?.title ??
-                              "No title",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.ellipsis,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const ListTile(
+            title: Text("Cluster Map"),
+          ),
+          Expanded(
+            child: LocationMap(
+              animatedMapController: animatedMapController,
+              initialLocation: null,
+              layers: [
+                MarkerClusterLayerWidget(
+                  options: MarkerClusterLayerOptions(
+                    maxClusterRadius: 45,
+                    size: const Size(40, 40),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(50),
+                    markers: markers,
+                    builder: (context, markers) {
+                      return DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Theme.of(context).colorScheme.primary,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).colorScheme.shadow,
+                              blurRadius: 1,
+                            ),
+                          ],
                         ),
-                      ),
+                        child: Center(
+                          child: Text(
+                            markers.length.toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                        ),
+                      );
+                    },
+                    popupOptions: PopupOptions(
+                      popupController: popupController,
+                      markerTapBehavior:
+                          MarkerTapBehavior.togglePopupAndHideRest(),
+                      popupBuilder: (context, marker) {
+                        final String transID =
+                            (marker.key! as ValueKey).value as String;
+                        final trans = transactions.firstWhereOrNull(
+                          (element) => element.id == transID,
+                        );
+                        // ? Needed when you delete a transaction from this view
+                        if (trans == null) return const SizedBox();
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            child: TransactionListTile(transaction: trans),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

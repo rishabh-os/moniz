@@ -42,118 +42,138 @@ class _TransactionListState extends ConsumerState<TransactionList> {
               );
             }
             final trans = widget.transactions[index];
-            final transAccount = ref
-                .watch(accountsProvider)
-                .firstWhere((element) => element.id == trans.accountID);
-            final transCategory = ref
-                .watch(categoriesProvider)
-                .firstWhere((element) => element.id == trans.categoryID);
-            final key = GlobalKey();
+
             // ? Provides space so that the FAB doesn't block the last transaction
 
-            return InkWell(
-              onTap: () => handleTap(key, context, trans),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      DateFormat("EEE, d MMM yyyy K:mm a")
-                          .format(trans.recorded),
+            return TransactionListTile(transaction: trans);
+          }),
+    );
+  }
+}
+
+class TransactionListTile extends ConsumerStatefulWidget {
+  const TransactionListTile({
+    super.key,
+    required this.transaction,
+  });
+  final Transaction transaction;
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _TransactionListTileState();
+}
+
+class _TransactionListTileState extends ConsumerState<TransactionListTile> {
+  @override
+  Widget build(BuildContext context) {
+    final transAccount = ref
+        .watch(accountsProvider)
+        .firstWhere((element) => element.id == widget.transaction.accountID);
+    final transCategory = ref
+        .watch(categoriesProvider)
+        .firstWhere((element) => element.id == widget.transaction.categoryID);
+    final key = GlobalKey();
+    return InkWell(
+      onTap: () => handleTap(key, context, widget.transaction),
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              DateFormat("EEE, d MMM yyyy K:mm a")
+                  .format(widget.transaction.recorded),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                    color: ColorScheme.fromSeed(
+                      seedColor: Color(transAccount.color),
+                      // ? The color does not update properly, that's why I need to manually specify the brightness
+                      brightness: ref.watch(brightnessProvider),
+                    ).primaryContainer,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 2,
+                      horizontal: 6,
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(6)),
-                            color: ColorScheme.fromSeed(
-                              seedColor: Color(transAccount.color),
-                              // ? The color does not update properly, that's why I need to manually specify the brightness
-                              brightness: ref.watch(brightnessProvider),
-                            ).primaryContainer,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 2,
-                              horizontal: 6,
-                            ),
-                            child: Text(transAccount.name),
-                          ),
-                        ),
-                        if (trans.location != null &&
-                            ref.watch(showLocationProvider))
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(6)),
-                              color: ColorScheme.fromSeed(
-                                seedColor: ref.watch(themeColorProvider),
-                                // ? The color does not update properly, that's why I need to manually specify the brightness
-                                brightness: ref.watch(brightnessProvider),
-                              ).primaryContainer,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 2,
-                                horizontal: 6,
-                              ),
-                              child:
-                                  Text(trans.location!.displayName!.text ?? ""),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-                title: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Icon(
-                        // ? The global key is attached here to prevent the entire ListView from rebuiling
-                        key: key,
-                        IconData(
-                          transCategory.iconCodepoint,
-                          fontFamily: "MaterialIcons",
-                        ),
-                        color: Color(transCategory.color),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Flexible(
-                      child: Text(
-                        trans.title,
-                      ),
-                    ),
-                  ],
-                ),
-                trailing: Transform.scale(
-                  scale: 0.9,
-                  child: MoneyDisplay(
-                    amount: trans.amount.abs(),
-                    textColor: ref
-                        .watch(
-                          trans.amount > 0
-                              ? incomeColorSchemeProvider
-                              : expenseColorSchemeProvider,
-                        )
-                        .primary,
+                    child: Text(transAccount.name),
                   ),
                 ),
+                if (widget.transaction.location != null &&
+                    ref.watch(showLocationProvider))
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                      color: ColorScheme.fromSeed(
+                        seedColor: ref.watch(themeColorProvider),
+                        // ? The color does not update properly, that's why I need to manually specify the brightness
+                        brightness: ref.watch(brightnessProvider),
+                      ).primaryContainer,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 6,
+                      ),
+                      child: Text(
+                        widget.transaction.location!.displayName!.text ?? "",
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+        title: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: Icon(
+                // ? The global key is attached here to prevent the entire ListView from rebuiling
+                key: key,
+                IconData(
+                  transCategory.iconCodepoint,
+                  fontFamily: "MaterialIcons",
+                ),
+                color: Color(transCategory.color),
               ),
-            );
-          }),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Flexible(
+              child: Text(
+                widget.transaction.title,
+              ),
+            ),
+          ],
+        ),
+        trailing: Transform.scale(
+          scale: 0.9,
+          child: MoneyDisplay(
+            amount: widget.transaction.amount.abs(),
+            textColor: ref
+                .watch(
+                  widget.transaction.amount > 0
+                      ? incomeColorSchemeProvider
+                      : expenseColorSchemeProvider,
+                )
+                .primary,
+          ),
+        ),
+      ),
     );
   }
 }
