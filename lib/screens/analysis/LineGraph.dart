@@ -329,22 +329,16 @@ class _LineChartState extends ConsumerState<LineChart> {
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,
     );
     // ? The mouse region allows the chart interaction to take priority
-    return MouseRegion(
-      onHover: (event) {
-        ref.read(chartScrollProvider.notifier).state = false;
-      },
-      onExit: (event) => ref.read(chartScrollProvider.notifier).state = true,
-      child: widget.data.every((element) => element.last == 0)
-          ? const NoData()
-          : Chart(
-              data: widget.data,
-              variables: variables,
-              marks: marks,
-              axes: axes2,
-              coord: rectCoord,
-              selections: selections2,
-              tooltip: tooltipGuide,
-            ),
-    );
+    return widget.data.every((element) => element.last == 0)
+        ? const NoData()
+        : Chart(
+            data: widget.data,
+            variables: variables,
+            marks: marks,
+            axes: axes2,
+            coord: rectCoord,
+            selections: selections2,
+            tooltip: tooltipGuide,
+          );
   }
 }

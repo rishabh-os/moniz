@@ -69,21 +69,6 @@ final graphByCatProvider =
 );
 
 typedef _$GraphByCat = AutoDisposeNotifier<bool>;
-String _$chartScrollHash() => r'30c5cd572d780bcc1a06e22e9ac78d9a2b80b074';
-
-/// See also [ChartScroll].
-@ProviderFor(ChartScroll)
-final chartScrollProvider =
-    AutoDisposeNotifierProvider<ChartScroll, bool>.internal(
-  ChartScroll.new,
-  name: r'chartScrollProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$chartScrollHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ChartScroll = AutoDisposeNotifier<bool>;
 String _$initialCenterHash() => r'2dc65d2c04f7c4938966a2720821711dd0a7912a';
 
 /// See also [InitialCenter].

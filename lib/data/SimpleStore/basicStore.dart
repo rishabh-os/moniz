@@ -66,14 +66,6 @@ class GraphByCat extends _$GraphByCat {
   void toggle() => super.state = !state;
 }
 
-@riverpod
-class ChartScroll extends _$ChartScroll {
-  @override
-  bool build() => true;
-  @override
-  set state(bool value) => state = value;
-}
-
 // ? This provider exists to remember the last used location on the map
 @riverpod
 class InitialCenter extends _$InitialCenter {
