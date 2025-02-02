@@ -4,6 +4,7 @@
 
 import "dart:math";
 import "dart:ui";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:graphic/graphic.dart";
@@ -21,73 +22,12 @@ class LineGraph extends ConsumerStatefulWidget {
 }
 
 class _LineGraphState extends ConsumerState<LineGraph> {
-  List<String> days = [];
-
-  String getDTString(DateTime trans) {
-    // ? This type is needed so that sorting works easily
-    return DateTime(trans.year, trans.month, trans.day)
-        .toString()
-        .split(" ")[0];
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool showByCat = ref.watch(graphByCatProvider);
     final List<Transaction> transactionList = ref.watch(searchedTransProvider);
+    final List<TransactionCategory> categories = ref.read(categoriesProvider);
     final range = ref.watch(globalDateRangeProvider);
-    final numberOfDays = range.end.difference(range.start).inDays;
-    days = List.generate(
-      numberOfDays,
-      (i) => getDTString(
-        DateTime(
-          range.start.year,
-          range.start.month,
-          range.start.day + i,
-        ),
-      ),
-    );
-    // ? The built-in sort method works! Ez pz
-    days.sort((a, b) {
-      return a.compareTo(b);
-    });
-    final Map<String, double> spotsByDay = {for (final v in days) v: 0};
-    for (final trans in transactionList) {
-      if (trans.amount < 0) {
-        spotsByDay.update(
-          getDTString(trans.recorded),
-          (value) =>
-              spotsByDay[getDTString(trans.recorded)]! + trans.amount.abs(),
-          ifAbsent: () => 0,
-        );
-      }
-    }
-
-    final List<List> spendsByCategory = [
-      for (final x in days)
-        for (final y in ref.read(categoriesProvider)) [x, y, 0.0],
-    ];
-
-    for (final transaction in transactionList) {
-      for (final element in spendsByCategory) {
-        if (element[0] == getDTString(transaction.recorded) &&
-            element[1].id == transaction.categoryID &&
-            transaction.amount.isNegative) {
-          element[2] +=
-              double.parse(transaction.amount.abs().toStringAsFixed(2));
-        }
-      }
-    }
-
-    final List<List> spendsByDay = [];
-    for (final day in days) {
-      final x = spendsByCategory.fold(0.0, (sum, element) {
-        if (element[0] == day) {
-          return sum + element[2];
-        }
-        return double.parse(sum.toStringAsFixed(2));
-      });
-      spendsByDay.add([day, x]);
-    }
 
     return SingleChildScrollView(
       child: Column(
@@ -97,23 +37,66 @@ class _LineGraphState extends ConsumerState<LineGraph> {
             onChanged: (_) => ref.watch(graphByCatProvider.notifier).toggle(),
             title: const Text("Show category-wise spends"),
           ),
-          AspectRatio(
-            aspectRatio: 1.4,
-            child: Padding(
-              // ? It different to account for how it looks with the axis labels
-              padding: const EdgeInsets.only(
-                right: 18,
-                left: 12,
-              ),
-              child: LineChart(
-                data: showByCat ? spendsByCategory : spendsByDay,
-                maxY: spendsByDay.reduce(
-                  (currentDay, nextDay) =>
-                      currentDay[1] > nextDay[1] ? currentDay : nextDay,
-                )[1] as double,
-                showCat: showByCat,
-              ),
+          FutureBuilder(
+            future: compute(
+              getSpots,
+              GetSpotsData(transactionList, range, categories),
             ),
+            builder: (context, snapshot) {
+              List<Widget> children;
+              if (snapshot.hasData) {
+                children = <Widget>[
+                  AspectRatio(
+                    aspectRatio: 1.4,
+                    child: Padding(
+                      // ? It different to account for how it looks with the axis labels
+                      padding: const EdgeInsets.only(
+                        right: 18,
+                        left: 12,
+                      ),
+                      child: LineChart(
+                        data: showByCat ? snapshot.data!.$2 : snapshot.data!.$1,
+                        maxY: snapshot.data!.$1.reduce(
+                          (currentDay, nextDay) =>
+                              currentDay[1] > nextDay[1] ? currentDay : nextDay,
+                        )[1] as double,
+                        showCat: showByCat,
+                      ),
+                    ),
+                  ),
+                ];
+              } else if (snapshot.hasError) {
+                children = <Widget>[
+                  const Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text("Error: ${snapshot.error}"),
+                  ),
+                ];
+              } else {
+                children = const <Widget>[
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text("Awaiting result..."),
+                  ),
+                ];
+              }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: children,
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -341,4 +324,76 @@ class _LineChartState extends ConsumerState<LineChart> {
             tooltip: tooltipGuide,
           );
   }
+}
+
+class GetSpotsData {
+  final List<Transaction> transactionList;
+  final DateTimeRange range;
+  final List<TransactionCategory> categories;
+
+  GetSpotsData(this.transactionList, this.range, this.categories);
+}
+
+(List<List>, List<List>) getSpots(
+  GetSpotsData data,
+) {
+  List<String> days = [];
+  final numberOfDays = data.range.end.difference(data.range.start).inDays;
+  days = List.generate(
+    numberOfDays,
+    (i) => getDTString(
+      DateTime(
+        data.range.start.year,
+        data.range.start.month,
+        data.range.start.day + i,
+      ),
+    ),
+  );
+  // ? The built-in sort method works! Ez pz
+  days.sort((a, b) {
+    return a.compareTo(b);
+  });
+  final Map<String, double> spotsByDay = {for (final v in days) v: 0};
+  for (final trans in data.transactionList) {
+    if (trans.amount < 0) {
+      spotsByDay.update(
+        getDTString(trans.recorded),
+        (value) =>
+            spotsByDay[getDTString(trans.recorded)]! + trans.amount.abs(),
+        ifAbsent: () => 0,
+      );
+    }
+  }
+
+  final List<List> spendsByCategory = [
+    for (final x in days)
+      for (final y in data.categories) [x, y, 0.0],
+  ];
+
+  for (final transaction in data.transactionList) {
+    for (final element in spendsByCategory) {
+      if (element[0] == getDTString(transaction.recorded) &&
+          element[1].id == transaction.categoryID &&
+          transaction.amount.isNegative) {
+        element[2] += double.parse(transaction.amount.abs().toStringAsFixed(2));
+      }
+    }
+  }
+
+  final List<List> spendsByDay = [];
+  for (final day in days) {
+    final x = spendsByCategory.fold(0.0, (sum, element) {
+      if (element[0] == day) {
+        return sum + element[2];
+      }
+      return double.parse(sum.toStringAsFixed(2));
+    });
+    spendsByDay.add([day, x]);
+  }
+  return (spendsByDay, spendsByCategory);
+}
+
+String getDTString(DateTime trans) {
+  // ? This type is needed so that sorting works easily
+  return "${trans.year}-${trans.month.toString().padLeft(2, '0')}-${trans.day.toString().padLeft(2, '0')}";
 }
