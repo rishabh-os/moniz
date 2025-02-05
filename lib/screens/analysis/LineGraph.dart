@@ -48,10 +48,6 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                       ),
                       child: LineChart(
                         data: showByCat ? data.$2 : data.$1,
-                        maxY: data.$1.reduce(
-                          (currentDay, nextDay) =>
-                              currentDay[1] > nextDay[1] ? currentDay : nextDay,
-                        )[1] as double,
                         showCat: showByCat,
                       ),
                     ),
@@ -101,11 +97,9 @@ class LineChart extends ConsumerStatefulWidget {
   const LineChart({
     super.key,
     required this.data,
-    required this.maxY,
     required this.showCat,
   });
   final List<List> data;
-  final double maxY;
   final bool showCat;
 
   @override
@@ -184,7 +178,7 @@ class _LineChartState extends ConsumerState<LineChart> {
         ];
       },
     );
-    final axes2 = [
+    final axes = [
       AxisGuide(
         label: LabelStyle(
           offset: const Offset(-10, 30),
@@ -317,7 +311,7 @@ class _LineChartState extends ConsumerState<LineChart> {
             data: widget.data,
             variables: variables,
             marks: marks,
-            axes: axes2,
+            axes: axes,
             coord: rectCoord,
             selections: selections2,
             tooltip: tooltipGuide,
