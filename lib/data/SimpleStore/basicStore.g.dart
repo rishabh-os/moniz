@@ -36,7 +36,7 @@ final globalDateRangeProvider =
 );
 
 typedef _$GlobalDateRange = Notifier<DateTimeRange>;
-String _$overviewIncomeHash() => r'61b0c9dbce47f276fb7887b150eed67305a21b57';
+String _$overviewIncomeHash() => r'fd6e192f51fe3a592ce0b6e5d76dda645ee961ae';
 
 /// See also [OverviewIncome].
 @ProviderFor(OverviewIncome)
@@ -52,7 +52,7 @@ final overviewIncomeProvider =
 );
 
 typedef _$OverviewIncome = Notifier<double>;
-String _$overviewExpenseHash() => r'bd76c00b6913969505b8de056ee613765e7372aa';
+String _$overviewExpenseHash() => r'8edf938b3da8260130fa2b7d938e9d20904de394';
 
 /// See also [OverviewExpense].
 @ProviderFor(OverviewExpense)

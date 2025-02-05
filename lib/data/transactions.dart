@@ -140,6 +140,13 @@ class Transactions extends _$Transactions {
   }
 }
 
-final searchedTransProvider = StateProvider<List<Transaction>>((ref) {
-  return ref.watch(transactionsProvider);
-});
+@Riverpod(keepAlive: true)
+class SearchedTrans extends _$SearchedTrans {
+  @override
+  List<Transaction> build() {
+    return ref.watch(transactionsProvider);
+  }
+
+  @override
+  set state(List<Transaction> value) => super.state = value;
+}

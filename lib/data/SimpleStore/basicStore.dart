@@ -40,7 +40,7 @@ class GlobalDateRange extends _$GlobalDateRange {
 class OverviewIncome extends _$OverviewIncome {
   @override
   double build() {
-    final x = ref.watch(transactionsProvider);
+    final x = ref.watch(searchedTransProvider);
     double total = 0;
     for (final element in x) {
       if (element.amount > 0) {
@@ -55,7 +55,7 @@ class OverviewIncome extends _$OverviewIncome {
 class OverviewExpense extends _$OverviewExpense {
   @override
   double build() {
-    final x = ref.watch(transactionsProvider);
+    final x = ref.watch(searchedTransProvider);
     double total = 0;
     for (final element in x) {
       if (element.amount < 0) {
