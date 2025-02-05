@@ -6,7 +6,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "basicStore.g.dart";
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GlobalDateRange extends _$GlobalDateRange {
   @override
   DateTimeRange build() {
@@ -29,7 +29,7 @@ class GlobalDateRange extends _$GlobalDateRange {
   set state(DateTimeRange value) => super.state = value;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class OverviewIncome extends _$OverviewIncome {
   @override
   double build() {
@@ -44,7 +44,7 @@ class OverviewIncome extends _$OverviewIncome {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class OverviewExpense extends _$OverviewExpense {
   @override
   double build() {
@@ -59,7 +59,7 @@ class OverviewExpense extends _$OverviewExpense {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GraphByCat extends _$GraphByCat {
   @override
   bool build() => false;
@@ -67,7 +67,7 @@ class GraphByCat extends _$GraphByCat {
 }
 
 // ? This provider exists to remember the last used location on the map
-@riverpod
+@Riverpod(keepAlive: true)
 class InitialCenter extends _$InitialCenter {
   @override
   LatLng build() {

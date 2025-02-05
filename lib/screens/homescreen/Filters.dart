@@ -7,12 +7,10 @@ import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 
 class Filters extends ConsumerStatefulWidget {
-  const Filters({
-    super.key,
-  });
+  const Filters({super.key});
 
   @override
-  ConsumerState<Filters> createState() => _FiltersState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FiltersState();
 }
 
 class _FiltersState extends ConsumerState<Filters> {
@@ -26,7 +24,7 @@ class _FiltersState extends ConsumerState<Filters> {
   late List<Transaction> transactions;
   late RangeValues rangeValues;
   late Map<double, int> frequencyHistorgram;
-  List<double> freqKeys = [];
+  late List<double> freqKeys;
 
   @override
   Widget build(BuildContext context) {

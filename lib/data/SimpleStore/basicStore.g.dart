@@ -6,12 +6,12 @@ part of 'basicStore.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$globalDateRangeHash() => r'5a2d6b232325ebf45dffa990ac211ab4416e6363';
+String _$globalDateRangeHash() => r'b03df872b92feb3c37a5f5ee43fc622593f46857';
 
 /// See also [GlobalDateRange].
 @ProviderFor(GlobalDateRange)
 final globalDateRangeProvider =
-    AutoDisposeNotifierProvider<GlobalDateRange, DateTimeRange>.internal(
+    NotifierProvider<GlobalDateRange, DateTimeRange>.internal(
   GlobalDateRange.new,
   name: r'globalDateRangeProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,13 +21,13 @@ final globalDateRangeProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$GlobalDateRange = AutoDisposeNotifier<DateTimeRange>;
-String _$overviewIncomeHash() => r'06546b1efe1ffd4ae7fc00ce715564f75afabd3f';
+typedef _$GlobalDateRange = Notifier<DateTimeRange>;
+String _$overviewIncomeHash() => r'61b0c9dbce47f276fb7887b150eed67305a21b57';
 
 /// See also [OverviewIncome].
 @ProviderFor(OverviewIncome)
 final overviewIncomeProvider =
-    AutoDisposeNotifierProvider<OverviewIncome, double>.internal(
+    NotifierProvider<OverviewIncome, double>.internal(
   OverviewIncome.new,
   name: r'overviewIncomeProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -37,13 +37,13 @@ final overviewIncomeProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$OverviewIncome = AutoDisposeNotifier<double>;
-String _$overviewExpenseHash() => r'7af3d78098eea20c0cf4344a486dc4571bca04b8';
+typedef _$OverviewIncome = Notifier<double>;
+String _$overviewExpenseHash() => r'bd76c00b6913969505b8de056ee613765e7372aa';
 
 /// See also [OverviewExpense].
 @ProviderFor(OverviewExpense)
 final overviewExpenseProvider =
-    AutoDisposeNotifierProvider<OverviewExpense, double>.internal(
+    NotifierProvider<OverviewExpense, double>.internal(
   OverviewExpense.new,
   name: r'overviewExpenseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -53,13 +53,12 @@ final overviewExpenseProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$OverviewExpense = AutoDisposeNotifier<double>;
-String _$graphByCatHash() => r'd2aba88d0c166776770a6e8933328ac64ef9b42b';
+typedef _$OverviewExpense = Notifier<double>;
+String _$graphByCatHash() => r'50bb7dc368d4b8756c0c96bc83072c57b526e49a';
 
 /// See also [GraphByCat].
 @ProviderFor(GraphByCat)
-final graphByCatProvider =
-    AutoDisposeNotifierProvider<GraphByCat, bool>.internal(
+final graphByCatProvider = NotifierProvider<GraphByCat, bool>.internal(
   GraphByCat.new,
   name: r'graphByCatProvider',
   debugGetCreateSourceHash:
@@ -68,13 +67,12 @@ final graphByCatProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$GraphByCat = AutoDisposeNotifier<bool>;
-String _$initialCenterHash() => r'2dc65d2c04f7c4938966a2720821711dd0a7912a';
+typedef _$GraphByCat = Notifier<bool>;
+String _$initialCenterHash() => r'09ec34daacab0394eb288cc639864b103db9873c';
 
 /// See also [InitialCenter].
 @ProviderFor(InitialCenter)
-final initialCenterProvider =
-    AutoDisposeNotifierProvider<InitialCenter, LatLng>.internal(
+final initialCenterProvider = NotifierProvider<InitialCenter, LatLng>.internal(
   InitialCenter.new,
   name: r'initialCenterProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -84,6 +82,6 @@ final initialCenterProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$InitialCenter = AutoDisposeNotifier<LatLng>;
+typedef _$InitialCenter = Notifier<LatLng>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

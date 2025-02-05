@@ -11,7 +11,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "graphStore.g.dart";
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GraphData extends _$GraphData {
   @override
   Future<(List<List<dynamic>>, List<List<dynamic>>)> build() async {

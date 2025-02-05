@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
@@ -7,7 +6,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "filterStore.g.dart";
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FilterQuery extends _$FilterQuery {
   @override
   String build() => "";
@@ -15,7 +14,7 @@ class FilterQuery extends _$FilterQuery {
   set state(String value) => super.state = value;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FreqHist extends _$FreqHist {
   @override
   Map<double, int> build() {
@@ -31,7 +30,7 @@ class FreqHist extends _$FreqHist {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FreqKeys extends _$FreqKeys {
   @override
   List<double> build() {
@@ -42,7 +41,7 @@ class FreqKeys extends _$FreqKeys {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class RangeValue extends _$RangeValue {
   @override
   RangeValues build() {
@@ -54,7 +53,7 @@ class RangeValue extends _$RangeValue {
   set state(RangeValues value) => super.state = value;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FilteredCategories extends _$FilteredCategories {
   @override
   List<TransactionCategory> build() => [];
@@ -62,7 +61,7 @@ class FilteredCategories extends _$FilteredCategories {
   set state(List<TransactionCategory> value) => super.state = value;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FilteredAccounts extends _$FilteredAccounts {
   @override
   List<Account> build() => [];
