@@ -4,14 +4,13 @@
 
 import "dart:math";
 import "dart:ui";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:graphic/graphic.dart";
 import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/graphStore.dart";
 import "package:moniz/data/category.dart";
-import "package:moniz/data/transactions.dart";
 import "package:moniz/screens/analysis/Analysis.dart";
 
 class LineGraph extends ConsumerStatefulWidget {
@@ -25,10 +24,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
   @override
   Widget build(BuildContext context) {
     final bool showByCat = ref.watch(graphByCatProvider);
-    final List<Transaction> transactionList = ref.watch(searchedTransProvider);
-    final List<TransactionCategory> categories = ref.read(categoriesProvider);
-    final range = ref.watch(globalDateRangeProvider);
-
+    final graphData = ref.watch(graphDataProvider);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -37,15 +33,11 @@ class _LineGraphState extends ConsumerState<LineGraph> {
             onChanged: (_) => ref.watch(graphByCatProvider.notifier).toggle(),
             title: const Text("Show category-wise spends"),
           ),
-          FutureBuilder(
-            future: compute(
-              getSpots,
-              GetSpotsData(transactionList, range, categories),
-            ),
-            builder: (context, snapshot) {
-              List<Widget> children;
-              if (snapshot.hasData) {
-                children = <Widget>[
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: graphData.when(
+                data: (data) => <Widget>[
                   AspectRatio(
                     aspectRatio: 1.4,
                     child: Padding(
@@ -55,8 +47,8 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                         left: 12,
                       ),
                       child: LineChart(
-                        data: showByCat ? snapshot.data!.$2 : snapshot.data!.$1,
-                        maxY: snapshot.data!.$1.reduce(
+                        data: showByCat ? data.$2 : data.$1,
+                        maxY: data.$1.reduce(
                           (currentDay, nextDay) =>
                               currentDay[1] > nextDay[1] ? currentDay : nextDay,
                         )[1] as double,
@@ -64,9 +56,8 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                       ),
                     ),
                   ),
-                ];
-              } else if (snapshot.hasError) {
-                children = <Widget>[
+                ],
+                error: (error, stackTrace) => <Widget>[
                   const Icon(
                     Icons.error_outline,
                     color: Colors.red,
@@ -74,29 +65,31 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
-                    child: Text("Error: ${snapshot.error}"),
+                    child: Text("Error: $error"),
                   ),
-                ];
-              } else {
-                children = const <Widget>[
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text("Awaiting result..."),
-                  ),
-                ];
-              }
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children,
-                ),
-              );
-            },
+                ],
+                loading: () {
+                  // ? Make this delayed by like 100ms idk
+                  return const <Widget>[
+                    SizedBox(height: 100),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 8,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text("Calculating..."),
+                    ),
+                  ];
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -274,7 +267,10 @@ class _LineChartState extends ConsumerState<LineChart> {
               size: SizeEncode(value: 5),
               shape: ShapeEncode(value: BasicLineShape(smooth: true)),
               color: ColorEncode(
-                value: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                value: Theme.of(context)
+                    .colorScheme
+                    .secondary
+                    .withValues(alpha: 0.8),
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
@@ -285,7 +281,10 @@ class _LineChartState extends ConsumerState<LineChart> {
             AreaMark(
               shape: ShapeEncode(value: BasicAreaShape(smooth: true)),
               color: ColorEncode(
-                value: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                value: Theme.of(context)
+                    .colorScheme
+                    .secondary
+                    .withValues(alpha: 0.2),
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
@@ -324,76 +323,4 @@ class _LineChartState extends ConsumerState<LineChart> {
             tooltip: tooltipGuide,
           );
   }
-}
-
-class GetSpotsData {
-  final List<Transaction> transactionList;
-  final DateTimeRange range;
-  final List<TransactionCategory> categories;
-
-  GetSpotsData(this.transactionList, this.range, this.categories);
-}
-
-(List<List>, List<List>) getSpots(
-  GetSpotsData data,
-) {
-  List<String> days = [];
-  final numberOfDays = data.range.end.difference(data.range.start).inDays;
-  days = List.generate(
-    numberOfDays,
-    (i) => getDTString(
-      DateTime(
-        data.range.start.year,
-        data.range.start.month,
-        data.range.start.day + i,
-      ),
-    ),
-  );
-  // ? The built-in sort method works! Ez pz
-  days.sort((a, b) {
-    return a.compareTo(b);
-  });
-  final Map<String, double> spotsByDay = {for (final v in days) v: 0};
-  for (final trans in data.transactionList) {
-    if (trans.amount < 0) {
-      spotsByDay.update(
-        getDTString(trans.recorded),
-        (value) =>
-            spotsByDay[getDTString(trans.recorded)]! + trans.amount.abs(),
-        ifAbsent: () => 0,
-      );
-    }
-  }
-
-  final List<List> spendsByCategory = [
-    for (final x in days)
-      for (final y in data.categories) [x, y, 0.0],
-  ];
-
-  for (final transaction in data.transactionList) {
-    for (final element in spendsByCategory) {
-      if (element[0] == getDTString(transaction.recorded) &&
-          element[1].id == transaction.categoryID &&
-          transaction.amount.isNegative) {
-        element[2] += double.parse(transaction.amount.abs().toStringAsFixed(2));
-      }
-    }
-  }
-
-  final List<List> spendsByDay = [];
-  for (final day in days) {
-    final x = spendsByCategory.fold(0.0, (sum, element) {
-      if (element[0] == day) {
-        return sum + element[2];
-      }
-      return double.parse(sum.toStringAsFixed(2));
-    });
-    spendsByDay.add([day, x]);
-  }
-  return (spendsByDay, spendsByCategory);
-}
-
-String getDTString(DateTime trans) {
-  // ? This type is needed so that sorting works easily
-  return "${trans.year}-${trans.month.toString().padLeft(2, '0')}-${trans.day.toString().padLeft(2, '0')}";
 }
