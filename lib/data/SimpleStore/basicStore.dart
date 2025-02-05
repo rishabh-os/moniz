@@ -1,10 +1,17 @@
 import "package:flutter/material.dart";
 import "package:get_storage/get_storage.dart";
 import "package:latlong2/latlong.dart";
+import "package:moniz/data/database/db.dart";
 import "package:moniz/data/transactions.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "basicStore.g.dart";
+
+@Riverpod(keepAlive: true)
+class DB extends _$DB {
+  @override
+  MyDatabase build() => MyDatabase();
+}
 
 @Riverpod(keepAlive: true)
 class GlobalDateRange extends _$GlobalDateRange {

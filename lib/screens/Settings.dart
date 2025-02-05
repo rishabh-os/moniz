@@ -2,9 +2,9 @@ import "package:currency_picker/currency_picker.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
-import "package:moniz/data/database/db.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -97,7 +97,7 @@ class _SettingsState extends ConsumerState<Settings> {
             ),
           ),
           ListTile(
-            onTap: () => ref.read(MyDatabase.provider).shareDB(),
+            onTap: () => ref.read(dBProvider).shareDB(),
             title: const Text("Export data"),
             leading: const Icon(Icons.file_upload_outlined),
           ),
@@ -135,10 +135,10 @@ class _SettingsState extends ConsumerState<Settings> {
                             },
                           );
                           final bool imported =
-                              await ref.read(MyDatabase.provider).importDB();
+                              await ref.read(dBProvider).importDB();
                           if (!context.mounted) return;
                           if (imported) {
-                            await ref.read(MyDatabase.provider).close();
+                            await ref.read(dBProvider).close();
                             SystemChannels.platform
                                 .invokeMethod("SystemNavigator.pop");
                           } else {

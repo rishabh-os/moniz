@@ -6,6 +6,20 @@ part of 'basicStore.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$dBHash() => r'65d29f0a22fa0428b136b6be31735601fdc61d5f';
+
+/// See also [DB].
+@ProviderFor(DB)
+final dBProvider = NotifierProvider<DB, MyDatabase>.internal(
+  DB.new,
+  name: r'dBProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$dBHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$DB = Notifier<MyDatabase>;
 String _$globalDateRangeHash() => r'b03df872b92feb3c37a5f5ee43fc622593f46857';
 
 /// See also [GlobalDateRange].

@@ -1,6 +1,9 @@
 import "package:drift/drift.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/database/db.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
+
+part "category.g.dart";
 
 class TransactionCategory extends Classifier {
   TransactionCategory({
@@ -44,13 +47,13 @@ class TransactionCategory extends Classifier {
   }
 }
 
-class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
-  CategoryNotifier(this.db)
-      : super(
-          [],
-        );
-  final MyDatabase db;
+@Riverpod(keepAlive: true)
+class Categories extends _$Categories {
+  @override
+  List<TransactionCategory> build() => [];
+
   Future<void> loadCategories() async {
+    final db = ref.read(dBProvider);
     final List<TransactionCategory> allCategories =
         await db.select(db.categoriesTable).get();
     allCategories.sort((a, b) => a.order.compareTo(b.order));
@@ -58,6 +61,7 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
   }
 
   void edit(TransactionCategory editedCategory) {
+    final db = ref.read(dBProvider);
     db.updateCategory(editedCategory);
     state = [
       for (final trans in state)
@@ -76,6 +80,7 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
 
   Future<void> add(TransactionCategory newCategory) async {
     state = [...state, newCategory];
+    final db = ref.read(dBProvider);
     await db.into(db.categoriesTable).insert(
           CategoriesTableCompanion.insert(
             id: newCategory.id,
@@ -93,16 +98,10 @@ class CategoryNotifier extends StateNotifier<List<TransactionCategory>> {
       for (final category in state)
         if (category.id != categoryID) category,
     ];
+    final db = ref.read(dBProvider);
     await db.categoriesTable.deleteWhere((tbl) => tbl.id.equals(categoryID));
   }
 }
-
-final categoriesProvider =
-    StateNotifierProvider<CategoryNotifier, List<TransactionCategory>>((ref) {
-  return CategoryNotifier(
-    ref.read(MyDatabase.provider),
-  );
-});
 
 abstract class Classifier {
   String get id;

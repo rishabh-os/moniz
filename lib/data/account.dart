@@ -1,7 +1,10 @@
 import "package:drift/drift.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/database/db.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
+
+part "account.g.dart";
 
 class Account extends Classifier {
   Account({
@@ -50,10 +53,13 @@ class Account extends Classifier {
   }
 }
 
-class AccountNotifier extends StateNotifier<List<Account>> {
-  AccountNotifier(this.db) : super([]);
-  final MyDatabase db;
+@Riverpod(keepAlive: true)
+class Accounts extends _$Accounts {
+  @override
+  List<Account> build() => [];
   Future<void> loadAccounts() async {
+    final db = ref.read(dBProvider);
+
     final allAccounts = await db.select(db.accountsTable).get();
 
     allAccounts.sort((a, b) => a.order.compareTo(b.order));
@@ -61,6 +67,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
   }
 
   void edit(Account editedAccount) {
+    final db = ref.read(dBProvider);
     db.updateAccount(editedAccount);
     state = [
       for (final acc in state)
@@ -80,6 +87,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
 
   Future<void> add(Account newAccount) async {
     state = [...state, newAccount];
+    final db = ref.read(dBProvider);
     await db.into(db.accountsTable).insert(
           AccountsTableCompanion.insert(
             id: newAccount.id,
@@ -98,11 +106,7 @@ class AccountNotifier extends StateNotifier<List<Account>> {
       for (final account in state)
         if (account.id != accountID) account,
     ];
+    final db = ref.read(dBProvider);
     await db.accountsTable.deleteWhere((tbl) => tbl.id.equals(accountID));
   }
 }
-
-final accountsProvider =
-    StateNotifierProvider<AccountNotifier, List<Account>>((ref) {
-  return AccountNotifier(ref.read(MyDatabase.provider));
-});

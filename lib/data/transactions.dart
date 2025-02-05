@@ -1,9 +1,10 @@
 import "package:drift/drift.dart";
-import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/data/database/db.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
+part "transactions.g.dart";
 
 class Transaction {
   const Transaction({
@@ -49,12 +50,13 @@ class Transaction {
   }
 }
 
-class TransactionNotifier extends StateNotifier<List<Transaction>> {
-  TransactionNotifier(this.db, this.globalDateRange) : super([]);
-  final MyDatabase db;
-  final DateTimeRange globalDateRange;
+@Riverpod(keepAlive: true)
+class Transactions extends _$Transactions {
+  @override
+  List<Transaction> build() => [];
 
   Future<void> filterTransactions() async {
+    final globalDateRange = ref.watch(globalDateRangeProvider);
     final List<Transaction> loadedTransactions =
         await loadAllTransationsFromDB();
     final List<Transaction> filteredTransactions = loadedTransactions
@@ -69,6 +71,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
   }
 
   Future<List<Transaction>> loadAllTransationsFromDB() async {
+    final db = ref.read(dBProvider);
     final List<Transaction> loadedTransactions =
         (await db.select(db.transactionTable).get())
             .map(
@@ -88,6 +91,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
   }
 
   Future<void> edit(Transaction editedTransaction) async {
+    final db = ref.read(dBProvider);
     await db.updateTransaction(editedTransaction);
     state = [
       for (final trans in state)
@@ -108,6 +112,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
   }
 
   Future<void> add(Transaction newTransaction) async {
+    final db = ref.read(dBProvider);
     state = [newTransaction, ...state];
     state.sort((a, b) => b.recorded.compareTo(a.recorded));
     await db.into(db.transactionTable).insert(
@@ -125,6 +130,7 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
   }
 
   Future<void> delete(String transactionID) async {
+    final db = ref.read(dBProvider);
     state = [
       for (final transaction in state)
         if (transaction.id != transactionID) transaction,
@@ -133,14 +139,6 @@ class TransactionNotifier extends StateNotifier<List<Transaction>> {
         .deleteWhere((tbl) => tbl.id.equals(transactionID));
   }
 }
-
-final transactionsProvider =
-    StateNotifierProvider<TransactionNotifier, List<Transaction>>((ref) {
-  return TransactionNotifier(
-    ref.read(MyDatabase.provider),
-    ref.watch(globalDateRangeProvider),
-  );
-});
 
 final searchedTransProvider = StateProvider<List<Transaction>>((ref) {
   return ref.watch(transactionsProvider);
