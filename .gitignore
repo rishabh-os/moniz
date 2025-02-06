@@ -49,3 +49,6 @@ lib/env/env.g.dart
 
 # Sentry
 .sentry-native*
+
+# Keystore
+*.jks
