@@ -12,9 +12,11 @@ import "package:moniz/data/SimpleStore/themeStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
+import "package:moniz/env/env.dart";
 import "package:moniz/screens/Settings.dart";
 import "package:moniz/screens/Welcome.dart";
 import "package:moniz/screens/homescreen/HomeScreen.dart";
+import "package:posthog_flutter/posthog_flutter.dart";
 import "package:sentry_flutter/sentry_flutter.dart";
 import "package:window_manager/window_manager.dart";
 
@@ -47,6 +49,13 @@ void main() async {
       windowManager.show();
       windowManager.focus();
     });
+  } else {
+// ? Posthog doesn't support Linux (for now)
+    final config = PostHogConfig(Env.posthogApikey);
+    config.debug = true;
+    config.captureApplicationLifecycleEvents = true;
+    config.host = "https://eu.i.posthog.com";
+    await Posthog().setup(config);
   }
   await SentryFlutter.init(
     (options) {

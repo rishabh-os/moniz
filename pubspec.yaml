@@ -57,6 +57,7 @@ dependencies:
   collection: ^1.19.0
   flutter_map_marker_cluster: ^1.4.0
   sentry_flutter: ^8.13.0
+  posthog_flutter: ^4.10.1
 dependency_overrides:
   flutter_compass:
     git: https://github.com/PikPakPik/flutter_compass.git
