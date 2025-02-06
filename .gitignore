@@ -46,3 +46,6 @@ app.*.map.json
 # .env variables
 .env
 lib/env/env.g.dart
+
+# Sentry
+.sentry-native*
