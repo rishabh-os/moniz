@@ -40,6 +40,7 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=keystore.jks" >> android/key.properties
       - run: dart run build_runner build --delete-conflicting-outputs
+      - run: dart run flutter_iconpicker:generate_packs --packs roundedMaterial
       - run: flutter build apk --split-per-abi --no-tree-shake-icons
       - name: Extract version from pubspec.yaml
         id: extract_version
