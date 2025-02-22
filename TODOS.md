@@ -1,0 +1,43 @@
+# TODOs:
+
+- [x] A lot of clean up
+- [x] Add testing
+- [x] App icon
+- [x] Make accounts and categories part of same parent class
+  - [ ] Done, but this needs more work
+- [ ] Animate transaction amount update
+- [x] Support dynamic themes
+- [x] Make categories reorderable
+- [x] Solve the middle nav icon getting selected on transition - solved by removing the PageView
+- [x] Quick filters state inconsistency - still present, hard to reproduce reliably
+  - This was due to the loading being done on every call
+- [x] Make filters global
+  - [x] Make range slider values better, not linear
+
+    Thanks to https://www.howdoi.me/blog/slider-scale.html for the implementation details.
+  - [x] Some selection bugs persist when adding or removing transactions
+  - [x] Range slider remains global
+  - [x] Make filters multi select
+  - [ ] Options for text search filters: title, location, additional info (by default all)
+- [x] Import databases
+- [x] Fix the tutorial after the layout changes
+  - [ ] Manage tutorial still has legibility issues
+- [ ] Rewrite tests
+- [ ] Graph transition animation bugs
+- [x] Better no transactions found handling on analysis page
+- [ ] A way to add and manage events
+  - [ ] Add tags
+- [ ] Make entries multiselect-able
+- [x] Make additional info multiline
+- [x] Make accounts and categories orderable
+  - [ ] Make them archivable or hideable
+- [x] Add location to entries (optional)
+  - [x] Move to Google Maps because more locations
+- [x] Fix location suggestions bug - seems flaky
+- [x] Fix desaturated colours
+- [x] Make app restart on data import - made it close instead
+- [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase
+- [x] Rewrite LineGraph as it lags with a lot of transactions - fixed by using Isolates
+- [ ] Rewrite money to be represented as int instead of double
+- [ ] Add budgeting options
+- [x] Add a map heatmap
