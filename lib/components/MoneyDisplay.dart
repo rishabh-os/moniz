@@ -1,8 +1,10 @@
+// ? It's a hack, because I only want to store the currency string symbol
+// ignore: implementation_imports
+import "package:currency_picker/src/currencies.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
-import "package:moniz/data/listOfCurrencies.dart";
 
 class MoneyDisplay extends ConsumerStatefulWidget {
   const MoneyDisplay({
