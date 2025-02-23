@@ -30,7 +30,7 @@ class _SettingsState extends ConsumerState<Settings> {
             title: const Text("Show confirmation before deleting transactions"),
             value: transDeleteConfirmation,
             onChanged: (e) {
-              ref.watch(transDeleteProvider.notifier).update((state) => e);
+              ref.watch(transDeleteProvider.notifier).state = e;
             },
           ),
           SwitchListTile(
@@ -38,7 +38,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 const Text("Show category and account chips on multiple lines"),
             value: chipsScroll,
             onChanged: (e) {
-              ref.watch(chipsMultiLineProvider.notifier).update((state) => e);
+              ref.watch(chipsMultiLineProvider.notifier).state = e;
             },
           ),
           SwitchListTile(
@@ -46,7 +46,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 const Text("Show location of the transaction in the list view"),
             value: showLocation,
             onChanged: (e) {
-              ref.watch(showLocationProvider.notifier).update((state) => e);
+              ref.watch(showLocationProvider.notifier).state = e;
             },
           ),
           ListTile(
@@ -57,9 +57,8 @@ class _SettingsState extends ConsumerState<Settings> {
               underline: Container(),
               value: initalPages[ref.watch(initialPageProvider)],
               onChanged: (value) {
-                ref
-                    .watch(initialPageProvider.notifier)
-                    .update((state) => initalPages.indexOf(value!));
+                ref.watch(initialPageProvider.notifier).state =
+                    initalPages.indexOf(value!);
               },
               items: initalPages
                   .map(
@@ -75,7 +74,7 @@ class _SettingsState extends ConsumerState<Settings> {
             onTap: () => showCurrencyPicker(
               context: context,
               onSelect: (e) {
-                ref.watch(currencyProvider.notifier).update((state) => e.code);
+                ref.watch(currProvider.notifier).state = e;
               },
             ),
             title: const Text("Change currency"),
@@ -87,7 +86,7 @@ class _SettingsState extends ConsumerState<Settings> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  ref.watch(currencyProvider),
+                  ref.watch(currProvider).code,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,

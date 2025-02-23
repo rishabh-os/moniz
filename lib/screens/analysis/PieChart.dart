@@ -87,7 +87,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
       );
     }
 
-    final NumberFormat numberFormat = ref.watch(numberFormatProvider);
+    final NumberFormat numberFormat = ref.watch(numberFProvider);
     _legend = Padding(
       padding: const EdgeInsets.all(16.0),
       child: GridView.count(
