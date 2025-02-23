@@ -23,7 +23,7 @@ class FreqHist extends _$FreqHist {
     for (final x in transactions) {
       final amt = x.amount.abs();
       frequencyHistorgram[amt] = !frequencyHistorgram.containsKey(amt)
-          ? (1)
+          ? 1
           : (frequencyHistorgram[amt]! + 1);
     }
     return frequencyHistorgram;

@@ -6,12 +6,10 @@ import "package:moniz/screens/manage/AccountIcon.dart";
 
 class AccountCard extends StatefulWidget {
   const AccountCard({
-    required this.key,
+    required this.globalKey,
     required this.account,
-  }) : super(key: key);
-  @override
-  // ignore: overridden_fields
-  final GlobalKey key;
+  }) : super(key: globalKey);
+  final GlobalKey globalKey;
   final Account account;
 
   @override
@@ -72,7 +70,8 @@ class AccountInfo extends StatelessWidget {
             ),
             const Expanded(child: SizedBox()),
             IconButton(
-              onPressed: () => handleTap(widget.key, context, widget.account),
+              onPressed: () =>
+                  handleTap(widget.globalKey, context, widget.account),
               icon: const Icon(Icons.edit),
               tooltip: "Edit account",
             ),

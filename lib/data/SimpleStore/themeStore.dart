@@ -19,11 +19,11 @@ final expenseColorSchemeProvider = StateProvider((ref) {
 });
 final themeColorProvider = StateProvider<Color>((ref) {
   ref.listenSelf(
-    (previous, next) => GetStorage().write("themeColor", next.value),
+    (previous, next) => GetStorage().write("themeColor", next.toARGB32()),
   );
   GetStorage().read("themeColor") ??
       // ? Colors.blueGrey is the default app color
-      GetStorage().write("themeColor", Colors.blueGrey.value);
+      GetStorage().write("themeColor", Colors.blueGrey.toARGB32());
   return Color(GetStorage().read("themeColor") as int);
 });
 final brightnessProvider = StateProvider<Brightness>((ref) {

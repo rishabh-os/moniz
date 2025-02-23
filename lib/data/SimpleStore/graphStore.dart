@@ -1,7 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
-// ignore_for_file: non_bool_condition
-// ignore_for_file: argument_type_not_assignable
-
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
@@ -14,7 +10,7 @@ part "graphStore.g.dart";
 @Riverpod(keepAlive: true)
 class GraphData extends _$GraphData {
   @override
-  Future<(List<List<dynamic>>, List<List<dynamic>>)> build() async {
+  Future<(List<SpendsByDay>, List<SpendsByCat>)> build() async {
     final List<Transaction> transactionList = ref.watch(searchedTransProvider);
     final List<TransactionCategory> categories = ref.read(categoriesProvider);
     final range = ref.watch(globalDateRangeProvider);
@@ -34,7 +30,7 @@ class GetSpotsData {
   GetSpotsData(this.transactionList, this.range, this.categories);
 }
 
-(List<List>, List<List>) getSpots(
+(List<SpendsByDay>, List<SpendsByCat>) getSpots(
   GetSpotsData data,
 ) {
   List<String> days = [];
@@ -65,32 +61,48 @@ class GetSpotsData {
     }
   }
 
-  final List<List> spendsByCategory = [
+  final List<SpendsByCat> spendsByCategory = [
     for (final x in days)
-      for (final y in data.categories) [x, y, 0.0],
+      for (final y in data.categories) SpendsByCat(x, y, 0.0),
   ];
 
   for (final transaction in data.transactionList) {
     for (final element in spendsByCategory) {
-      if (element[0] == getDTString(transaction.recorded) &&
-          element[1].id == transaction.categoryID &&
+      if (element.day == getDTString(transaction.recorded) &&
+          element.category.id == transaction.categoryID &&
           transaction.amount.isNegative) {
-        element[2] += double.parse(transaction.amount.abs().toStringAsFixed(2));
+        element.amount +=
+            double.parse(transaction.amount.abs().toStringAsFixed(2));
       }
     }
   }
 
-  final List<List> spendsByDay = [];
+  final List<SpendsByDay> spendsByDay = [];
   for (final day in days) {
     final x = spendsByCategory.fold(0.0, (sum, element) {
-      if (element[0] == day) {
-        return sum + element[2];
+      if (element.day == day) {
+        return sum + element.amount;
       }
       return double.parse(sum.toStringAsFixed(2));
     });
-    spendsByDay.add([day, x]);
+    spendsByDay.add(SpendsByDay(day, x));
   }
   return (spendsByDay, spendsByCategory);
+}
+
+class SpendsByCat extends SpendsBy {
+  final TransactionCategory category;
+  SpendsByCat(super.day, this.category, super.amount);
+}
+
+class SpendsByDay extends SpendsBy {
+  SpendsByDay(super.day, super.amount);
+}
+
+abstract class SpendsBy {
+  final String day;
+  double amount;
+  SpendsBy(this.day, this.amount);
 }
 
 String getDTString(DateTime trans) {

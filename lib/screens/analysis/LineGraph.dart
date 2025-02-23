@@ -1,7 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
-// ignore_for_file: non_bool_condition
-// ignore_for_file: argument_type_not_assignable
-
 import "dart:math";
 import "dart:ui";
 import "package:flutter/material.dart";
@@ -99,7 +95,7 @@ class LineChart extends ConsumerStatefulWidget {
     required this.data,
     required this.showCat,
   });
-  final List<List> data;
+  final List<SpendsBy> data;
   final bool showCat;
 
   @override
@@ -194,44 +190,43 @@ class _LineChartState extends ConsumerState<LineChart> {
       ),
     ];
 
-    final Map<String, Variable<List<dynamic>, dynamic>> variables =
-        widget.showCat
-            ? {
-                "day": Variable(
-                  accessor: (List spot) {
-                    final String dayMonth = DateFormat("d MMM yy")
-                        .format(DateTime.parse(spot[0] as String));
-                    return dayMonth;
-                  },
-                ),
-                "category": Variable(
-                  accessor: (List spot) => spot[1].name as String,
-                  scale: OrdinalScale(tickCount: 0),
-                ),
-                "amount": Variable(
-                  accessor: (List spot) => spot[2] as double,
-                  scale: LinearScale(
-                    min: 0,
-                    marginMax: 0.2,
-                  ),
-                ),
-              }
-            : {
-                "day": Variable(
-                  accessor: (List spot) {
-                    final String dayMonth = DateFormat("d MMM yy")
-                        .format(DateTime.parse(spot[0] as String));
-                    return dayMonth;
-                  },
-                ),
-                "amount": Variable(
-                  accessor: (List spot) => spot[1] as double,
-                  scale: LinearScale(
-                    min: 0,
-                    marginMax: 0.2,
-                  ),
-                ),
-              };
+    final Map<String, Variable<SpendsBy, dynamic>> variables = widget.showCat
+        ? {
+            "day": Variable(
+              accessor: (spot) {
+                final String dayMonth =
+                    DateFormat("d MMM yy").format(DateTime.parse(spot.day));
+                return dayMonth;
+              },
+            ),
+            "category": Variable(
+              accessor: (spot) => (spot as SpendsByCat).category.name,
+              scale: OrdinalScale(tickCount: 0),
+            ),
+            "amount": Variable(
+              accessor: (spot) => spot.amount,
+              scale: LinearScale(
+                min: 0,
+                marginMax: 0.2,
+              ),
+            ),
+          }
+        : {
+            "day": Variable(
+              accessor: (spot) {
+                final String dayMonth =
+                    DateFormat("d MMM yy").format(DateTime.parse(spot.day));
+                return dayMonth;
+              },
+            ),
+            "amount": Variable(
+              accessor: (spot) => spot.amount,
+              scale: LinearScale(
+                min: 0,
+                marginMax: 0.2,
+              ),
+            ),
+          };
 
     final List<Mark<Shape>> marks = widget.showCat
         ? [
@@ -287,10 +282,10 @@ class _LineChartState extends ConsumerState<LineChart> {
               entrance: {MarkEntrance.opacity, MarkEntrance.y},
             ),
           ];
-// ? Here I do some maths to scale the graph to the number of days
+    // ? Here I do some maths to scale the graph to the number of days
     final List days = [];
     for (final element in widget.data) {
-      days.add(element[0]);
+      days.add(element.day);
     }
     final int nDays = days.toSet().length;
     // ? Cutoff assumes 10 bars can fit on screen comfortably
@@ -304,8 +299,7 @@ class _LineChartState extends ConsumerState<LineChart> {
           : [0, 1],
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,
     );
-    // ? The mouse region allows the chart interaction to take priority
-    return widget.data.every((element) => element.last == 0)
+    return widget.data.every((element) => element.amount == 0)
         ? const NoData()
         : Chart(
             data: widget.data,

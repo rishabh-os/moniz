@@ -6,12 +6,12 @@ part of 'graphStore.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$graphDataHash() => r'd47ae861a543f34b851cf2e2000c5d35cf1c7098';
+String _$graphDataHash() => r'2dfdc10a29a7be4d9003accb148ea59930edba07';
 
 /// See also [GraphData].
 @ProviderFor(GraphData)
 final graphDataProvider = AsyncNotifierProvider<GraphData,
-    (List<List<dynamic>>, List<List<dynamic>>)>.internal(
+    (List<SpendsByDay>, List<SpendsByCat>)>.internal(
   GraphData.new,
   name: r'graphDataProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final graphDataProvider = AsyncNotifierProvider<GraphData,
   allTransitiveDependencies: null,
 );
 
-typedef _$GraphData = AsyncNotifier<(List<List<dynamic>>, List<List<dynamic>>)>;
+typedef _$GraphData = AsyncNotifier<(List<SpendsByDay>, List<SpendsByCat>)>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

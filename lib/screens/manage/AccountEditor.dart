@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
-
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/IconPicker.dart";
@@ -30,20 +28,19 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   late String title = "Add ";
   late TextEditingController accountNameController;
   String _accountName = "";
-  int _selectedColor = Colors.blue.value;
+  int _selectedColor = Colors.blue.toARGB32();
   int _selectedIcon = Icons.abc.codePoint;
-  late Function saveAction;
+  late Function(Account) saveAction;
+  late Function(TransactionCategory) saveCategory;
   List<Widget> deleteItem = [];
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.type == "Account") {
-      saveAction = ref.read(accountsProvider.notifier).add;
-    } else {
-      saveAction = ref.read(categoriesProvider.notifier).add;
-    }
+    saveAction = ref.read(accountsProvider.notifier).add;
+    saveCategory = ref.read(categoriesProvider.notifier).add;
+
     title += widget.type;
     if (widget.editedAccount != null || widget.editedCategory != null) {
       title = "Edit ";
@@ -59,7 +56,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         _accountName = widget.editedCategory!.name;
         _selectedColor = widget.editedCategory!.color;
         _selectedIcon = widget.editedCategory!.iconCodepoint;
-        saveAction = ref.read(categoriesProvider.notifier).edit;
+        saveCategory = ref.read(categoriesProvider.notifier).edit;
         deleteItem = deleteAction(() => handleCategoryDelete());
       }
     }
@@ -173,7 +170,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
             ColorPicker(
               colorCallback: (selectedColor) {
                 setState(() {
-                  _selectedColor = selectedColor.value;
+                  _selectedColor = selectedColor.toARGB32();
                 });
               },
             ),
@@ -215,7 +212,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
             } else {
               final String uuid =
                   widget.editedCategory?.id ?? const Uuid().v1();
-              saveAction(
+              saveCategory(
                 TransactionCategory(
                   id: uuid,
                   name: _accountName,

@@ -43,7 +43,7 @@ class _AccountsState extends ConsumerState<Accounts> {
             final acc = accounts[index];
             final key = GlobalObjectKey(acc.id);
             return AccountCard(
-              key: key,
+              globalKey: key,
               account: acc,
             );
           },

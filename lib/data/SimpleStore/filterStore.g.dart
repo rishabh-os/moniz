@@ -20,7 +20,7 @@ final filterQueryProvider = NotifierProvider<FilterQuery, String>.internal(
 );
 
 typedef _$FilterQuery = Notifier<String>;
-String _$freqHistHash() => r'80dd9f0a29265ce2e2797bdbd1bde3907131157c';
+String _$freqHistHash() => r'389959ac627eb814e24a0e47fb9d64777d170575';
 
 /// See also [FreqHist].
 @ProviderFor(FreqHist)
