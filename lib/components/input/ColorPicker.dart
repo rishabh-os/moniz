@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:moniz/data/SimpleStore/themeStore.dart";
 
 class ColorPicker extends ConsumerStatefulWidget {
   const ColorPicker({
@@ -14,12 +13,10 @@ class ColorPicker extends ConsumerStatefulWidget {
 }
 
 class _ColorPickerState extends ConsumerState<ColorPicker> {
-  late bool isDark;
   List<Color> listOfColors = Colors.primaries;
   @override
   void initState() {
     super.initState();
-    isDark = ref.read(brightnessProvider) == Brightness.dark;
   }
 
   @override

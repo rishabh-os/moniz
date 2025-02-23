@@ -100,7 +100,7 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
                     color: ColorScheme.fromSeed(
                       seedColor: Color(transAccount.color),
                       // ? The color does not update properly, that's why I need to manually specify the brightness
-                      brightness: ref.watch(brightnessProvider),
+                      brightness: ref.watch(brightProvider),
                     ).primaryContainer,
                   ),
                   child: Padding(
@@ -119,7 +119,7 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
                       color: ColorScheme.fromSeed(
                         seedColor: ref.watch(themeColorProvider),
                         // ? The color does not update properly, that's why I need to manually specify the brightness
-                        brightness: ref.watch(brightnessProvider),
+                        brightness: ref.watch(brightProvider),
                       ).primaryContainer,
                     ),
                     child: Padding(

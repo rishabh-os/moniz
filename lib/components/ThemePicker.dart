@@ -41,8 +41,8 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
 
   @override
   Widget build(BuildContext context) {
-    isDark = ref.watch(brightnessProvider) == Brightness.dark;
-    isDynamic = ref.watch(dynamicProvider);
+    isDark = ref.watch(brightProvider) == Brightness.dark;
+    isDynamic = ref.watch(dynamicColorProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -63,10 +63,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
           title: const Text("Dynamic Theme"),
           value: isDynamic,
           onChanged: (value) {
-            ref.watch(dynamicProvider.notifier).update((state) {
-              return value;
-            });
-
+            ref.watch(dynamicColorProvider.notifier).state = value;
             setState(() {
               isDynamic = value;
             });
@@ -82,9 +79,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
       children: [
         ColorPicker(
           colorCallback: (selectedColor) {
-            ref
-                .read(themeColorProvider.notifier)
-                .update((state) => selectedColor);
+            ref.read(themeColorProvider.notifier).state = selectedColor;
           },
         ),
         SwitchListTile(
@@ -92,9 +87,9 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
           title: const Text("Dark Mode"),
           value: isDark,
           onChanged: (value) {
-            ref.watch(brightnessProvider.notifier).update((state) {
-              return isDark ? Brightness.light : Brightness.dark;
-            });
+            ref.watch(brightProvider.notifier).state =
+                isDark ? Brightness.light : Brightness.dark;
+
             setState(() {
               isDark = value;
             });

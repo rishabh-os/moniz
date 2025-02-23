@@ -108,7 +108,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
         ThemeData theme;
-        if (lightDynamic != null && ref.watch(dynamicProvider)) {
+        if (lightDynamic != null && ref.watch(dynamicColorProvider)) {
           final platformBrightness =
               SchedulerBinding.instance.platformDispatcher.platformBrightness;
           final ColorScheme dynamicScheme =
@@ -120,15 +120,13 @@ class _MyAppState extends ConsumerState<MyApp> {
             useMaterial3: true,
           );
           Future.delayed(const Duration(milliseconds: 1), () {
-            ref
-                .watch(brightnessProvider.notifier)
-                .update((state) => platformBrightness);
+            ref.watch(brightProvider.notifier).state = platformBrightness;
           });
         } else {
           theme = ThemeData(
             colorScheme: ColorScheme.fromSeed(
               seedColor: ref.watch(themeColorProvider),
-              brightness: ref.watch(brightnessProvider),
+              brightness: ref.watch(brightProvider),
             ),
             useMaterial3: true,
           );
