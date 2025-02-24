@@ -15,19 +15,13 @@ class Manage extends ConsumerStatefulWidget {
 
 class _ManageState extends ConsumerState<Manage>
     with AutomaticKeepAliveClientMixin {
-  late final List<GlobalKey> listOfKeys;
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    listOfKeys = ref.read(manageGkListProvider);
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
+    final List<GlobalKey> listOfKeys = manageTargets.map((e) => e.$1).toList();
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,

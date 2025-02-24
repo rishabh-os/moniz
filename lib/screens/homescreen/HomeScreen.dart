@@ -60,7 +60,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     const Manage(),
   ];
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late final List<GlobalKey> listOfKeys;
   late Animation<double> fadeAnimation;
   late AnimationController _controller;
   @override
@@ -76,7 +75,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       initialPage: _selectedIndex,
     );
     // ? It's read here and watch elsewhere because this code is executed only once while the others are part of build
-    listOfKeys = ref.read(entriesGkListProvider);
     if (!ref.read(entriesTutorialCompletedProvider)) {
       Future.delayed(const Duration(milliseconds: 100), () {
         if (!context.mounted) return;
@@ -106,6 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final List<GlobalKey> listOfKeys = entriesTargets.map((e) => e.$1).toList();
     final globalRange = ref.watch(globalDateRangeProvider);
     return Scaffold(
       key: scaffoldKey,

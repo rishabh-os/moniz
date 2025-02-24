@@ -18,7 +18,8 @@ class _AnalysisState extends ConsumerState<Analysis> {
   late Widget display;
   @override
   Widget build(BuildContext context) {
-    final List<GlobalKey> listOfKeys = ref.read(analysisGkListProvider);
+    final List<GlobalKey> listOfKeys =
+        analysisTargets.map((e) => e.$1).toList();
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -48,9 +49,9 @@ class _AnalysisState extends ConsumerState<Analysis> {
                 key: listOfKeys[1],
                 icon: const Icon(Icons.bar_chart_rounded),
               ),
-              const Tab(
-                // key: listOfKeys[1],
-                icon: Icon(Icons.map_rounded),
+              Tab(
+                key: listOfKeys[2],
+                icon: const Icon(Icons.map_rounded),
               ),
             ],
           ),
