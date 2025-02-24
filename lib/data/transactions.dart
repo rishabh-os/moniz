@@ -1,5 +1,6 @@
 import "package:drift/drift.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/filterStore.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/data/database/db.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
@@ -143,7 +144,48 @@ class Transactions extends _$Transactions {
 class SearchedTrans extends _$SearchedTrans {
   @override
   List<Transaction> build() {
-    return ref.watch(transactionsProvider);
+    final transactions = ref.watch(transactionsProvider);
+    final filterQuery = ref.watch(filterQueryProvider);
+    final selectedCategories = ref.watch(filteredCategoriesProvider);
+    final selectedAccounts = ref.watch(filteredAccountsProvider);
+    final freqKeys = ref.watch(freqKeysProvider);
+    final rangeValues = ref.watch(rangeValueProvider);
+
+    final searchedTrans = transactions
+        .where(
+          (element) => filterQuery != ""
+              ? element.title
+                      .toLowerCase()
+                      .contains(filterQuery.toLowerCase()) ||
+                  // ? Return true if additionalInfo is null
+                  (element.additionalInfo
+                          ?.toLowerCase()
+                          .contains(filterQuery.toLowerCase()) ??
+                      false) ||
+                  // ? Return true if location is null
+                  (element.location?.displayName?.text
+                          ?.toLowerCase()
+                          .contains(filterQuery.toLowerCase()) ??
+                      false)
+              : true,
+        )
+        .where(
+          (element) =>
+              freqKeys[rangeValues.start.toInt()] <= element.amount.abs() &&
+              element.amount.abs() <= freqKeys[rangeValues.end.toInt()],
+        )
+        .where(
+          (element) => selectedCategories.isNotEmpty
+              ? selectedCategories.map((e) => e.id).contains(element.categoryID)
+              : true,
+        )
+        .where(
+          (element) => selectedAccounts.isNotEmpty
+              ? selectedAccounts.map((e) => e.id).contains(element.accountID)
+              : true,
+        )
+        .toList();
+    return searchedTrans;
   }
 
   @override

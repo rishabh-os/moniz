@@ -59,6 +59,16 @@ class FilteredCategories extends _$FilteredCategories {
   List<TransactionCategory> build() => [];
   @override
   set state(List<TransactionCategory> value) => super.state = value;
+
+  void add(TransactionCategory category) {
+    state.add(category);
+    ref.notifyListeners();
+  }
+
+  void remove(TransactionCategory category) {
+    state.remove(category);
+    ref.notifyListeners();
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -67,4 +77,14 @@ class FilteredAccounts extends _$FilteredAccounts {
   List<Account> build() => [];
   @override
   set state(List<Account> value) => super.state = value;
+
+  void add(Account account) {
+    state.add(account);
+    ref.notifyListeners();
+  }
+
+  void remove(Account account) {
+    state.remove(account);
+    ref.notifyListeners();
+  }
 }

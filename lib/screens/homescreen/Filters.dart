@@ -16,8 +16,6 @@ class Filters extends ConsumerStatefulWidget {
 class _FiltersState extends ConsumerState<Filters> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController accController = TextEditingController();
-  late List<TransactionCategory> selectedCategories;
-  late List<Account> selectedAccounts;
   late String filterQuery;
   late List<TransactionCategory> categories;
   late List<Account> accounts;
@@ -33,49 +31,9 @@ class _FiltersState extends ConsumerState<Filters> {
     transactions = ref.watch(transactionsProvider);
     filterQuery = ref.watch(filterQueryProvider);
     titleController.value = TextEditingValue(text: filterQuery);
-    selectedCategories = ref.watch(filteredCategoriesProvider);
-    selectedAccounts = ref.watch(filteredAccountsProvider);
     frequencyHistorgram = ref.watch(freqHistProvider);
     freqKeys = ref.watch(freqKeysProvider);
     rangeValues = ref.watch(rangeValueProvider);
-    final transResults = transactions
-        .where(
-          (element) => filterQuery != ""
-              ? element.title
-                      .toLowerCase()
-                      .contains(filterQuery.toLowerCase()) ||
-                  // ? Return true if additionalInfo is null
-                  (element.additionalInfo
-                          ?.toLowerCase()
-                          .contains(filterQuery.toLowerCase()) ??
-                      false) ||
-                  // ? Return true if additionalInfo is null
-                  (element.location?.displayName?.text
-                          ?.toLowerCase()
-                          .contains(filterQuery.toLowerCase()) ??
-                      false)
-              : true,
-        )
-        .where(
-          (element) =>
-              freqKeys[rangeValues.start.toInt()] <= element.amount.abs() &&
-              element.amount.abs() <= freqKeys[rangeValues.end.toInt()],
-        )
-        .where(
-          (element) => selectedCategories.isNotEmpty
-              ? selectedCategories.map((e) => e.id).contains(element.categoryID)
-              : true,
-        )
-        .where(
-          (element) => selectedAccounts.isNotEmpty
-              ? selectedAccounts.map((e) => e.id).contains(element.accountID)
-              : true,
-        )
-        .toList();
-    Future.delayed(Duration.zero, () {
-      ref.read(searchedTransProvider.notifier).state = transResults;
-    });
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -128,11 +86,15 @@ class _FiltersState extends ConsumerState<Filters> {
                   onSelected: (value) {
                     setState(() {
                       value
-                          ? selectedCategories.add(e)
-                          : selectedCategories.remove(e);
+                          ? ref
+                              .watch(filteredCategoriesProvider.notifier)
+                              .add(e)
+                          : ref
+                              .watch(filteredCategoriesProvider.notifier)
+                              .remove(e);
                     });
                   },
-                  selected: selectedCategories.contains(e),
+                  selected: ref.watch(filteredCategoriesProvider).contains(e),
                 ),
               ),
               const Header(text: "Accounts"),
@@ -145,11 +107,13 @@ class _FiltersState extends ConsumerState<Filters> {
                   onSelected: (value) {
                     setState(() {
                       value
-                          ? selectedAccounts.add(e)
-                          : selectedAccounts.remove(e);
+                          ? ref.watch(filteredAccountsProvider.notifier).add(e)
+                          : ref
+                              .watch(filteredAccountsProvider.notifier)
+                              .remove(e);
                     });
                   },
-                  selected: selectedAccounts.contains(e),
+                  selected: ref.watch(filteredAccountsProvider).contains(e),
                 ),
               ),
             ],

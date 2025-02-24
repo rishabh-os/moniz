@@ -63,7 +63,7 @@ final rangeValueProvider = NotifierProvider<RangeValue, RangeValues>.internal(
 
 typedef _$RangeValue = Notifier<RangeValues>;
 String _$filteredCategoriesHash() =>
-    r'34c5fb56b8ff3eec6839f9da0afde921cfc5b9fc';
+    r'6cba2865400001674e264699ba06c454f748d3ca';
 
 /// See also [FilteredCategories].
 @ProviderFor(FilteredCategories)
@@ -79,7 +79,7 @@ final filteredCategoriesProvider =
 );
 
 typedef _$FilteredCategories = Notifier<List<TransactionCategory>>;
-String _$filteredAccountsHash() => r'6260b6ec7a56ae8a04fecb78866054e651b17bf3';
+String _$filteredAccountsHash() => r'37e4fdc548931ed389aded51e452dbb832b5993b';
 
 /// See also [FilteredAccounts].
 @ProviderFor(FilteredAccounts)

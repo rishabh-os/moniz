@@ -21,7 +21,7 @@ final transactionsProvider =
 );
 
 typedef _$Transactions = Notifier<List<Transaction>>;
-String _$searchedTransHash() => r'58019aee61bd67e01fb184c6ffe298f5cf4491b5';
+String _$searchedTransHash() => r'1ca9c5aabf4ea0fa46968b9e9635b89958b74983';
 
 /// See also [SearchedTrans].
 @ProviderFor(SearchedTrans)
