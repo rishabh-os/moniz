@@ -33,7 +33,7 @@ class _ManageState extends ConsumerState<Manage>
                 Future.delayed(const Duration(milliseconds: 100), () {
                   if (info.visibleFraction == 1) {
                     if (!context.mounted) return;
-                    ref.read(tutorialProvider)(context, Screen.manage);
+                    showTutorial(context, Screen.manage);
                     ref
                         .watch(manageTutorialCompletedProvider.notifier)
                         .update((state) => true);

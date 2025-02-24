@@ -80,7 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         if (!context.mounted) return;
         // ? Idk why the above check doesn't work here
         // ignore: use_build_context_synchronously
-        ref.read(tutorialProvider)(context, Screen.entries);
+        showTutorial(context, Screen.entries);
         ref
             .read(entriesTutorialCompletedProvider.notifier)
             .update((state) => true);
@@ -117,20 +117,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         ),
 
         actions: [
-          fader(
-            IconButton.filledTonal(
-              key: listOfKeys[3],
-              tooltip: "Filters",
-              icon: const Icon(Icons.search_rounded),
-              onPressed: () {
-                scaffoldKey.currentState!
-                    .showBottomSheet((context) => const Filters());
-              },
-            ),
-            1,
+          IconButton.filledTonal(
+            key: listOfKeys[1],
+            tooltip: "Filters",
+            icon: const Icon(Icons.search_rounded),
+            onPressed: () {
+              scaffoldKey.currentState!
+                  .showBottomSheet((context) => const Filters());
+            },
           ),
-          DateSort(key: listOfKeys[1]),
-          DotsMenu(key: listOfKeys[2], scaffoldKey: scaffoldKey),
+          DateSort(key: listOfKeys[2]),
+          DotsMenu(key: listOfKeys[3], scaffoldKey: scaffoldKey),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

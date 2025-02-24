@@ -11,18 +11,18 @@ final List<(GlobalKey, String, String)> entriesTargets = [
   ),
   (
     GlobalKey(debugLabel: "entries1"),
+    "Filter",
+    "You can filter the transactions shown here by amount, category, or account. You can also search by text.",
+  ),
+  (
+    GlobalKey(debugLabel: "entries2"),
     "Change Date Range",
     "You can change the range here. Chose from a few options or pick your own custom range.",
   ),
   (
-    GlobalKey(debugLabel: "entries2"),
+    GlobalKey(debugLabel: "entries3"),
     "Settings",
     "You can change the application theme and access other settings here",
-  ),
-  (
-    GlobalKey(debugLabel: "entries3"),
-    "Filter",
-    "You can filter the transactions shown here by amount, category, or account. You can also search by text.",
   ),
   (
     GlobalKey(debugLabel: "entries4"),
@@ -90,101 +90,100 @@ final analysisTutorialCompletedProvider = StateProvider<bool>((ref) {
 
 enum Screen { entries, manage, analysis }
 
-final tutorialProvider = Provider((ref) {
-  void showTutorial(
-    BuildContext context,
-    Screen screen,
-  ) {
-    List<(GlobalKey, String, String)> targetDetails;
-    switch (screen) {
-      case Screen.entries:
-        targetDetails = entriesTargets;
-      case Screen.manage:
-        targetDetails = manageTargets;
-      case Screen.analysis:
-        targetDetails = analysisTargets;
-    }
-
-    final List<GlobalKey> listOfKeys = targetDetails.map((e) => e.$1).toList();
-    TargetFocus customTarget(
-      BuildContext context,
-      GlobalKey key,
-      String title,
-      String details,
-    ) {
-      return TargetFocus(
-        keyTarget: key,
-        contents: [
-          TargetContent(
-            builder: (context, controller) {
-              return SizedBox(
-                height: 200,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        fontSize: 24,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      details,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (listOfKeys.first != key)
-                          OutlinedButton(
-                            onPressed: () {
-                              controller.previous();
-                            },
-                            child: const Text("PREVIOUS"),
-                          ),
-                        const SizedBox(width: 10),
-                        OutlinedButton(
-                          onPressed: () {
-                            controller.next();
-                          },
-                          child:
-                              Text(listOfKeys.last != key ? "NEXT" : "FINISH"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      );
-    }
-
-    TutorialCoachMark(
-      targets: targetDetails
-          .map(
-            (e) => customTarget(context, e.$1, e.$2, e.$3),
-          )
-          .toList(), // List<TargetFocus>
-      colorShadow: Theme.of(context).colorScheme.secondaryContainer,
-      hideSkip: true,
-      opacityShadow: 0.9,
-      focusAnimationDuration: const Duration(milliseconds: 250),
-      unFocusAnimationDuration: const Duration(milliseconds: 250),
-      pulseAnimationDuration: const Duration(milliseconds: 1000),
-    ).show(context: context);
+void showTutorial(
+  BuildContext context,
+  Screen screen,
+) {
+  List<(GlobalKey, String, String)> targetDetails;
+  switch (screen) {
+    case Screen.entries:
+      targetDetails = entriesTargets;
+    case Screen.manage:
+      targetDetails = manageTargets;
+    case Screen.analysis:
+      targetDetails = analysisTargets;
   }
 
-  return showTutorial;
-});
+  final List<GlobalKey> listOfKeys = targetDetails.map((e) => e.$1).toList();
+  TargetFocus customTarget(
+    BuildContext context,
+    GlobalKey key,
+    String title,
+    String details,
+  ) {
+    return TargetFocus(
+      keyTarget: key,
+      shape: ShapeLightFocus.RRect,
+      radius: 25,
+      contents: [
+        TargetContent(
+          // ? Because the FAB is at the very bottom
+          align: title == "New Transactions"
+              ? ContentAlign.top
+              : ContentAlign.bottom,
+          builder: (context, controller) {
+            return SizedBox(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      fontSize: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    details,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (listOfKeys.first != key)
+                        OutlinedButton(
+                          onPressed: () {
+                            controller.previous();
+                          },
+                          child: const Text("PREVIOUS"),
+                        ),
+                      const SizedBox(width: 10),
+                      OutlinedButton(
+                        onPressed: () {
+                          controller.next();
+                        },
+                        child: Text(listOfKeys.last != key ? "NEXT" : "FINISH"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  TutorialCoachMark(
+    targets: targetDetails
+        .map(
+          (e) => customTarget(context, e.$1, e.$2, e.$3),
+        )
+        .toList(), // List<TargetFocus>
+    colorShadow: Theme.of(context).colorScheme.secondaryContainer,
+    hideSkip: true,
+    opacityShadow: 0.9,
+    focusAnimationDuration: const Duration(milliseconds: 250),
+    unFocusAnimationDuration: const Duration(milliseconds: 250),
+    pulseAnimationDuration: const Duration(milliseconds: 1000),
+  ).show(context: context);
+}

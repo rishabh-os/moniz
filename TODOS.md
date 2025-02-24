@@ -21,7 +21,7 @@
   - [ ] Options for text search filters: title, location, additional info (by default all)
 - [x] Import databases
 - [x] Fix the tutorial after the layout changes
-  - [ ] Manage tutorial still has legibility issues
+  - [x] Manage tutorial still has legibility issues
 - [ ] Rewrite tests
 - [ ] Graph transition animation bugs
 - [x] Better no transactions found handling on analysis page

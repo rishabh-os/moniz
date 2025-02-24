@@ -34,7 +34,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
                     Future.delayed(const Duration(milliseconds: 200), () {
                       if (info.visibleFraction == 1) {
                         if (context.mounted) {
-                          ref.read(tutorialProvider)(context, Screen.analysis);
+                          showTutorial(context, Screen.analysis);
                         }
                       }
                     });
