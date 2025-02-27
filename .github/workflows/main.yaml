@@ -2,10 +2,32 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "pubspec.yaml"
 name: "Build & Release"
 jobs:
+  check-version-change:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed for creating releases
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for changelog generation
+
+      - name: Make scripts executable
+        run: |
+          chmod +x .github/scripts/version_checker.sh
+          chmod +x .github/scripts/generate_changelog.sh
+
+      - name: Check if version changed, generate changelog
+        id: check-version
+        run: .github/scripts/version_checker.sh
+        continue-on-error: true
   build:
     name: Build & Release
+    if: needs.check-version-change.outputs.VERSION_CHANGED == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -64,5 +86,6 @@ jobs:
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
+          body_path: CHANGELOG_GENERATED.md
           artifacts: "build/app/outputs/flutter-apk/*.apk"
           tag: v${{ env.VERSION }}
