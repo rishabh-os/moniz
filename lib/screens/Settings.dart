@@ -5,6 +5,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
+import "package:posthog_flutter/posthog_flutter.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -29,7 +30,13 @@ class _SettingsState extends ConsumerState<Settings> {
           SwitchListTile(
             title: const Text("Show confirmation before deleting transactions"),
             value: transDeleteConfirmation,
-            onChanged: (e) {
+            onChanged: (e) async {
+              await Posthog().capture(
+                eventName: "Transaction delete confirmation",
+                properties: {
+                  "value": e,
+                },
+              );
               ref.watch(transDeleteProvider.notifier).state = e;
             },
           ),
@@ -37,7 +44,13 @@ class _SettingsState extends ConsumerState<Settings> {
             title:
                 const Text("Show category and account chips on multiple lines"),
             value: chipsScroll,
-            onChanged: (e) {
+            onChanged: (e) async {
+              await Posthog().capture(
+                eventName: "Chips multiline",
+                properties: {
+                  "value": e,
+                },
+              );
               ref.watch(chipsMultiLineProvider.notifier).state = e;
             },
           ),
@@ -45,7 +58,13 @@ class _SettingsState extends ConsumerState<Settings> {
             title:
                 const Text("Show location of the transaction in the list view"),
             value: showLocation,
-            onChanged: (e) {
+            onChanged: (e) async {
+              await Posthog().capture(
+                eventName: "Show location",
+                properties: {
+                  "value": e,
+                },
+              );
               ref.watch(showLocationProvider.notifier).state = e;
             },
           ),
@@ -56,9 +75,15 @@ class _SettingsState extends ConsumerState<Settings> {
               borderRadius: BorderRadius.circular(15),
               underline: Container(),
               value: initalPages[ref.watch(initialPageProvider)],
-              onChanged: (value) {
+              onChanged: (value) async {
+                await Posthog().capture(
+                  eventName: "Initial page",
+                  properties: {
+                    "value": value!,
+                  },
+                );
                 ref.watch(initialPageProvider.notifier).state =
-                    initalPages.indexOf(value!);
+                    initalPages.indexOf(value);
               },
               items: initalPages
                   .map(
@@ -73,7 +98,13 @@ class _SettingsState extends ConsumerState<Settings> {
           ListTile(
             onTap: () => showCurrencyPicker(
               context: context,
-              onSelect: (e) {
+              onSelect: (e) async {
+                await Posthog().capture(
+                  eventName: "Currency change",
+                  properties: {
+                    "value": e.code,
+                  },
+                );
                 ref.watch(currProvider.notifier).state = e;
               },
             ),
@@ -96,12 +127,21 @@ class _SettingsState extends ConsumerState<Settings> {
             ),
           ),
           ListTile(
-            onTap: () => ref.read(dBProvider).shareDB(),
+            onTap: () async {
+              await Posthog().capture(
+                eventName: "Export data",
+              );
+              ref.read(dBProvider).shareDB();
+            },
             title: const Text("Export data"),
             leading: const Icon(Icons.file_upload_outlined),
           ),
           ListTile(
-            onTap: () {
+            onTap: () async {
+              await Posthog().capture(
+                eventName: "Import data",
+              );
+              if (!context.mounted) return;
               showDialog(
                 context: context,
                 builder: (context) {

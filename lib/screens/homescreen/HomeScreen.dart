@@ -12,6 +12,7 @@ import "package:moniz/screens/homescreen/DateSort.dart";
 import "package:moniz/screens/homescreen/DotsMenu.dart";
 import "package:moniz/screens/homescreen/Filters.dart";
 import "package:moniz/screens/manage/Manage.dart";
+import "package:posthog_flutter/posthog_flutter.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -154,7 +155,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               elevation: 0,
               highlightElevation: 0,
               hoverElevation: 0,
-              onPressed: openContainer,
+              onPressed: () async {
+                await Posthog().capture(
+                  eventName: "Add Entry",
+                );
+                openContainer();
+              },
               label: const Text("New Entry"),
               icon: const Icon(Icons.add_rounded),
             );
@@ -167,7 +173,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       ),
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (int index) {
+        onDestinationSelected: (int index) async {
+          await Posthog().capture(
+            eventName: "Bottom nav",
+            properties: {
+              "index": navDestinations[index].label,
+            },
+          );
           setState(() {
             _onItemTapped(index);
           });

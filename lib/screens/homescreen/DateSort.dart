@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/transactions.dart";
+import "package:posthog_flutter/posthog_flutter.dart";
 
 class DateSort extends ConsumerStatefulWidget {
   const DateSort({
@@ -35,6 +36,12 @@ class _DateSortState extends ConsumerState<DateSort> {
       icon: const Icon(Icons.calendar_today_rounded),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onSelected: (value) async {
+        Posthog().capture(
+          eventName: "Date sort",
+          properties: {
+            "value": value,
+          },
+        );
         switch (value) {
           case "Last 7 days":
             globalRange.state = DateTimeRange(
