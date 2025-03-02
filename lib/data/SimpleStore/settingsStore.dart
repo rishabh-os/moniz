@@ -37,7 +37,7 @@ class TransDelete extends _$TransDelete {
       (previous, next) => GetStorage().write("transDeleteConfirmation", next),
     );
     GetStorage().read("transDeleteConfirmation") ??
-        GetStorage().write("transDeleteConfirmation", false);
+        GetStorage().write("transDeleteConfirmation", true);
     return GetStorage().read("transDeleteConfirmation") as bool;
   }
 
@@ -53,7 +53,7 @@ class ChipsMultiLine extends _$ChipsMultiLine {
       (previous, next) => GetStorage().write("chipsMultiLine", next),
     );
     GetStorage().read("chipsMultiLine") ??
-        GetStorage().write("chipsMultiLine", false);
+        GetStorage().write("chipsMultiLine", true);
     return GetStorage().read("chipsMultiLine") as bool;
   }
 
@@ -69,7 +69,7 @@ class ShowLocation extends _$ShowLocation {
       (previous, next) => GetStorage().write("showLocation", next),
     );
     GetStorage().read("showLocation") ??
-        GetStorage().write("showLocation", false);
+        GetStorage().write("showLocation", true);
     return GetStorage().read("showLocation") as bool;
   }
 

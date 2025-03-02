@@ -50,5 +50,8 @@ lib/env/env.g.dart
 # Sentry
 .sentry-native*
 
+# Android debug symbols
+android/app/.cxx/
+
 # Keystore
 *.jks
