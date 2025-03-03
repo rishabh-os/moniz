@@ -126,6 +126,15 @@ class _SettingsState extends ConsumerState<Settings> {
               ),
             ),
           ),
+          const CustomDivider(),
+          ListTile(
+            title: const Text("About"),
+            leading: const Icon(Icons.info_outline_rounded),
+            onTap: () {
+              Navigator.of(context).pushNamed("/about");
+            },
+          ),
+          const CustomDivider(),
           ListTile(
             onTap: () async {
               await Posthog().capture(
@@ -242,6 +251,25 @@ class _SettingsState extends ConsumerState<Settings> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomDivider extends StatelessWidget {
+  const CustomDivider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        SizedBox(height: 4),
+        Divider(
+          thickness: 2,
+        ),
+        SizedBox(height: 4),
+      ],
     );
   }
 }

@@ -13,6 +13,7 @@ import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
 import "package:moniz/env/env.dart";
+import "package:moniz/screens/About.dart";
 import "package:moniz/screens/Settings.dart";
 import "package:moniz/screens/Welcome.dart";
 import "package:moniz/screens/homescreen/HomeScreen.dart";
@@ -144,6 +145,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             // ? Why not just "/"? Because that causes duplicate GlobalKeys for reasons unknown
             "/home": (context) => const HomeScreen(),
             "/settings": (context) => const Settings(),
+            "/about": (context) => const About(),
           },
         );
       },
