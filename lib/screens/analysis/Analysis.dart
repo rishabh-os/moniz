@@ -1,11 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/utils.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
 import "package:moniz/screens/analysis/ClusterMap.dart";
-// import "package:moniz/screens/analysis/LineGraph2.dart";
 import "package:moniz/screens/analysis/LineGraph.dart";
 import "package:moniz/screens/analysis/PieChart.dart";
-import "package:posthog_flutter/posthog_flutter.dart";
 import "package:visibility_detector/visibility_detector.dart";
 
 class Analysis extends ConsumerStatefulWidget {
@@ -28,7 +27,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
         children: [
           TabBar(
             onTap: (value) async {
-              await Posthog().capture(
+              await postHogCapture(
                 eventName: "Analysis Graph",
                 properties: {
                   "value": analysisTargets[value].$2,

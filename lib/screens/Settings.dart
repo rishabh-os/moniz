@@ -2,10 +2,10 @@ import "package:currency_picker/currency_picker.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/utils.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
-import "package:posthog_flutter/posthog_flutter.dart";
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
@@ -31,7 +31,7 @@ class _SettingsState extends ConsumerState<Settings> {
             title: const Text("Show confirmation before deleting transactions"),
             value: transDeleteConfirmation,
             onChanged: (e) async {
-              await Posthog().capture(
+              await postHogCapture(
                 eventName: "Transaction delete confirmation",
                 properties: {
                   "value": e,
@@ -45,7 +45,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 const Text("Show category and account chips on multiple lines"),
             value: chipsScroll,
             onChanged: (e) async {
-              await Posthog().capture(
+              await postHogCapture(
                 eventName: "Chips multiline",
                 properties: {
                   "value": e,
@@ -59,7 +59,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 const Text("Show location of the transaction in the list view"),
             value: showLocation,
             onChanged: (e) async {
-              await Posthog().capture(
+              await postHogCapture(
                 eventName: "Show location",
                 properties: {
                   "value": e,
@@ -76,7 +76,7 @@ class _SettingsState extends ConsumerState<Settings> {
               underline: Container(),
               value: initalPages[ref.watch(initialPageProvider)],
               onChanged: (value) async {
-                await Posthog().capture(
+                await postHogCapture(
                   eventName: "Initial page",
                   properties: {
                     "value": value!,
@@ -99,7 +99,7 @@ class _SettingsState extends ConsumerState<Settings> {
             onTap: () => showCurrencyPicker(
               context: context,
               onSelect: (e) async {
-                await Posthog().capture(
+                await postHogCapture(
                   eventName: "Currency change",
                   properties: {
                     "value": e.code,
@@ -137,7 +137,7 @@ class _SettingsState extends ConsumerState<Settings> {
           const CustomDivider(),
           ListTile(
             onTap: () async {
-              await Posthog().capture(
+              await postHogCapture(
                 eventName: "Export data",
               );
               ref.read(dBProvider).shareDB();
@@ -147,7 +147,7 @@ class _SettingsState extends ConsumerState<Settings> {
           ),
           ListTile(
             onTap: () async {
-              await Posthog().capture(
+              await postHogCapture(
                 eventName: "Import data",
               );
               if (!context.mounted) return;

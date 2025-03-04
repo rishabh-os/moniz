@@ -2,6 +2,7 @@ import "package:animations/animations.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
+import "package:moniz/components/utils.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
 import "package:moniz/data/SimpleStore/tutorialStore.dart";
@@ -12,7 +13,6 @@ import "package:moniz/screens/homescreen/DateSort.dart";
 import "package:moniz/screens/homescreen/DotsMenu.dart";
 import "package:moniz/screens/homescreen/Filters.dart";
 import "package:moniz/screens/manage/Manage.dart";
-import "package:posthog_flutter/posthog_flutter.dart";
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -156,7 +156,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               highlightElevation: 0,
               hoverElevation: 0,
               onPressed: () async {
-                await Posthog().capture(
+                await postHogCapture(
                   eventName: "Add Entry",
                 );
                 openContainer();
@@ -174,7 +174,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) async {
-          await Posthog().capture(
+          await postHogCapture(
             eventName: "Bottom nav",
             properties: {
               "index": navDestinations[index].label,
