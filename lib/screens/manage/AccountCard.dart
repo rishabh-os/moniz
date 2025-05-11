@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:latlong2/latlong.dart";
 import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/components/deleteRoute.dart";
 import "package:moniz/data/account.dart";
@@ -91,7 +92,9 @@ class AccountInfo extends StatelessWidget {
             children: [
               Transform.scale(
                 scale: 1.6,
-                child: MoneyDisplay(amount: widget.account.balance),
+                child: MoneyDisplay(
+                  amount: round(widget.account.balance, decimals: 2),
+                ),
               ),
             ],
           ),

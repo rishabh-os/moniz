@@ -21,9 +21,9 @@ class _AmountFieldState extends State<AmountField> {
     return TextFormField(
       key: const Key("amount"),
       onChanged: (value) {
-        // ? Handles the case when the input field is empty and just -
+        // ? Handles the case when the input field is empty and just - or .
         double returnAmount = 0;
-        if (value.isNotEmpty && value != "-") {
+        if (value.isNotEmpty && value != "-" && value != ".") {
           returnAmount = double.parse(value);
         }
         setState(() {
