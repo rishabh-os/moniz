@@ -4,7 +4,6 @@ import "package:moniz/components/input/Header.dart";
 import "package:moniz/data/SimpleStore/filterStore.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
-import "package:moniz/data/transactions.dart";
 
 class Filters extends ConsumerStatefulWidget {
   const Filters({super.key});
@@ -16,24 +15,16 @@ class Filters extends ConsumerStatefulWidget {
 class _FiltersState extends ConsumerState<Filters> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController accController = TextEditingController();
-  late String filterQuery;
-  late List<TransactionCategory> categories;
-  late List<Account> accounts;
-  late List<Transaction> transactions;
-  late RangeValues rangeValues;
-  late Map<double, int> frequencyHistorgram;
-  late List<double> freqKeys;
 
   @override
   Widget build(BuildContext context) {
-    categories = ref.watch(categoriesProvider);
-    accounts = ref.watch(accountsProvider);
-    transactions = ref.watch(transactionsProvider);
-    filterQuery = ref.watch(filterQueryProvider);
+    final List<TransactionCategory> categories = ref.watch(categoriesProvider);
+    final List<Account> accounts = ref.watch(accountsProvider);
+    final String filterQuery = ref.watch(filterQueryProvider);
     titleController.value = TextEditingValue(text: filterQuery);
-    frequencyHistorgram = ref.watch(freqHistProvider);
-    freqKeys = ref.watch(freqKeysProvider);
-    rangeValues = ref.watch(rangeValueProvider);
+    final Map<double, int> frequencyHistorgram = ref.watch(freqHistProvider);
+    final List<double> freqKeys = ref.watch(freqKeysProvider);
+    final RangeValues rangeValues = ref.watch(rangeValueProvider);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -116,46 +107,41 @@ class _FiltersState extends ConsumerState<Filters> {
                   selected: ref.watch(filteredAccountsProvider).contains(e),
                 ),
               ),
+              const Header(text: "Amount"),
+              SliderTheme(
+                data: const SliderThemeData(
+                  showValueIndicator: ShowValueIndicator.always,
+                ),
+                child: frequencyHistorgram.length > 1
+                    ? RangeSlider(
+                        max: frequencyHistorgram.length.toDouble() - 1,
+                        values: rangeValues,
+                        divisions: frequencyHistorgram.length - 1,
+                        onChanged: (value) {
+                          ref.watch(rangeValueProvider.notifier).state = value;
+                        },
+                        labels: RangeLabels(
+                          freqKeys[rangeValues.start.toInt()].abs().toString(),
+                          freqKeys[rangeValues.end.toInt()].abs().toString(),
+                        ),
+                      )
+                    : const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text("Not enough data to show a range slider"),
+                      ),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  ref.watch(filterQueryProvider.notifier).state = "";
+                  ref.watch(filteredCategoriesProvider.notifier).state = [];
+                  ref.watch(filteredAccountsProvider.notifier).state = [];
+                  ref.watch(rangeValueProvider.notifier).state =
+                      RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
+                },
+                icon: const Icon(Icons.undo),
+                label: const Text("Reset all"),
+              ),
             ],
-          ),
-          const SizedBox(height: 10),
-          Center(
-            child: Text("Amount", style: Theme.of(context).textTheme.bodyLarge),
-          ),
-          SliderTheme(
-            data: const SliderThemeData(
-              showValueIndicator: ShowValueIndicator.always,
-            ),
-            child: frequencyHistorgram.length > 1
-                ? RangeSlider(
-                    max: frequencyHistorgram.length.toDouble() - 1,
-                    values: rangeValues,
-                    divisions: frequencyHistorgram.length - 1,
-                    onChanged: (value) {
-                      ref.watch(rangeValueProvider.notifier).state = value;
-                    },
-                    labels: RangeLabels(
-                      freqKeys[rangeValues.start.toInt()].abs().toString(),
-                      freqKeys[rangeValues.end.toInt()].abs().toString(),
-                    ),
-                  )
-                : const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text("Not enough data to show a range slider"),
-                  ),
-          ),
-          TextButton.icon(
-            onPressed: () {
-              ref.watch(filterQueryProvider.notifier).state = "";
-              ref.watch(filteredCategoriesProvider.notifier).state = [];
-              ref.watch(filteredAccountsProvider.notifier).state = [];
-              setState(() {
-                rangeValues =
-                    RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
-              });
-            },
-            icon: const Icon(Icons.undo),
-            label: const Text("Reset all"),
           ),
         ],
       ),
