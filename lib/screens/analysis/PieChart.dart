@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:graphic/graphic.dart";
-import "package:intl/intl.dart";
-import "package:moniz/data/SimpleStore/settingsStore.dart";
+import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/data/account.dart";
 import "package:moniz/data/category.dart";
 import "package:moniz/data/transactions.dart";
@@ -87,7 +86,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
       );
     }
 
-    final NumberFormat numberFormat = ref.watch(numberFProvider);
     _legend = Padding(
       padding: const EdgeInsets.all(16.0),
       child: GridView.count(
@@ -121,10 +119,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                 ),
               ),
               const SizedBox(width: 4),
-              Text(
-                numberFormat.format(label.amount),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              MoneyDisplay(amount: label.amount, fontSize: null),
             ],
           );
         }).toList(),

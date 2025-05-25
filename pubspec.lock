@@ -1114,6 +1114,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  numeral:
+    dependency: "direct main"
+    description:
+      name: numeral
+      sha256: "860deb8465f3a778822b6cc2c0513be2831fb3083a8c06b611d9a5fef6ea3b67"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.1"
   package_config:
     dependency: transitive
     description:

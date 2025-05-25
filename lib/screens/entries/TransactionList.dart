@@ -160,18 +160,16 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
             ),
           ],
         ),
-        trailing: Transform.scale(
-          scale: 0.9,
-          child: MoneyDisplay(
-            amount: widget.transaction.amount.abs(),
-            textColor: ref
-                .watch(
-                  widget.transaction.amount > 0
-                      ? incomeColorSchemeProvider
-                      : expenseColorSchemeProvider,
-                )
-                .primary,
-          ),
+        trailing: MoneyDisplay(
+          amount: widget.transaction.amount.abs(),
+          fontSize: 22,
+          textColor: ref
+              .watch(
+                widget.transaction.amount > 0
+                    ? incomeColorSchemeProvider
+                    : expenseColorSchemeProvider,
+              )
+              .primary,
         ),
       ),
     );

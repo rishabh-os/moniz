@@ -90,11 +90,10 @@ class AccountInfo extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Transform.scale(
-                scale: 1.6,
-                child: MoneyDisplay(
-                  amount: round(widget.account.balance, decimals: 2),
-                ),
+              MoneyDisplay(
+                amount: round(widget.account.balance, decimals: 2),
+                fontSize: 40,
+                pretty: false,
               ),
             ],
           ),
