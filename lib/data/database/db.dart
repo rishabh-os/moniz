@@ -190,7 +190,9 @@ class MyDatabase extends _$MyDatabase {
   Future<void> shareDB() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final dbXFile = XFile(p.join(dbFolder.path, "db.sqlite"));
-    Share.shareXFiles([dbXFile]);
+    SharePlus.instance.share(
+      ShareParams(files: [dbXFile]),
+    );
   }
 
   Future<bool> importDB() async {

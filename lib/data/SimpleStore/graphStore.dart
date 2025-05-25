@@ -10,7 +10,7 @@ part "graphStore.g.dart";
 @Riverpod(keepAlive: true)
 class GraphData extends _$GraphData {
   @override
-  Future<(List<SpendsByDay>, List<SpendsByCat>)> build() async {
+  Future<(List<SpendsByDay>, List<SpendsByCat>)> build() {
     final List<Transaction> transactionList = ref.watch(searchedTransProvider);
     final List<TransactionCategory> categories = ref.read(categoriesProvider);
     final range = ref.watch(globalDateRangeProvider);

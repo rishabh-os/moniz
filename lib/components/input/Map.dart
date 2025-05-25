@@ -98,7 +98,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
           FloatingActionButton(
             heroTag: null,
             child: const Icon(Icons.my_location),
-            onPressed: () async {
+            onPressed: () {
               // ? Follow location on tap
               setState(
                 () => _alignPositionOnUpdate = AlignOnUpdate.always,
