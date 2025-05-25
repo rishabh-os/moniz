@@ -10,4 +10,3 @@ linter:
     file_names: false
     directives_ordering: true
     prefer_double_quotes: true
-    sort_pub_dependencies: false
