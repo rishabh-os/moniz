@@ -1,5 +1,6 @@
 import "dart:io";
 import "package:dynamic_color/dynamic_color.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
@@ -60,8 +61,10 @@ void main() async {
   }
   await SentryFlutter.init(
     (options) {
-      options.dsn =
-          "https://3e6550282cb26ab69d067815cbe9a91a@o4508771833282560.ingest.de.sentry.io/4508771834462288";
+      // ? Disable sentry while developing
+      options.dsn = kDebugMode
+          ? ""
+          : "https://3e6550282cb26ab69d067815cbe9a91a@o4508771833282560.ingest.de.sentry.io/4508771834462288";
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
       // We recommend adjusting this value in production.
       options.tracesSampleRate = 1.0;
