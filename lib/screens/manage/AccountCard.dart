@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:latlong2/latlong.dart";
 import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/components/deleteRoute.dart";
 import "package:moniz/data/account.dart";
@@ -91,7 +90,7 @@ class AccountInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MoneyDisplay(
-                amount: round(widget.account.balance * 1, decimals: 2),
+                amount: widget.account.balance,
                 fontSize: 40,
                 pretty: false,
               ),

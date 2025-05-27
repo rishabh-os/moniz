@@ -61,7 +61,7 @@ class Income extends ConsumerStatefulWidget {
   final IconData icon;
 
   final ProviderListenable<ColorScheme> colorProvider;
-  final ProviderListenable<double> amountProvider;
+  final ProviderListenable<int> amountProvider;
 
   @override
   ConsumerState<Income> createState() => _IncomeState();

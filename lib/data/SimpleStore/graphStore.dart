@@ -72,7 +72,7 @@ class GetSpotsData {
           element.category.id == transaction.categoryID &&
           transaction.amount.isNegative) {
         element.amount +=
-            double.parse(transaction.amount.abs().toStringAsFixed(2));
+            double.parse((transaction.amount.abs() / 100).toStringAsFixed(2));
       }
     }
   }

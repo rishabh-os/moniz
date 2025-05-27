@@ -38,6 +38,6 @@
 - [x] Make app restart on data import - made it close instead
 - [ ] Add images somehow using rust to use JPEGXL - maybe use Supabase
 - [x] Rewrite LineGraph as it lags with a lot of transactions - fixed by using Isolates
-- [ ] Rewrite money to be represented as int instead of double
+- [x] Rewrite money to be represented as int instead of double
 - [ ] Add budgeting options
 - [x] Add a map heatmap

@@ -36,12 +36,11 @@ final globalDateRangeProvider =
 );
 
 typedef _$GlobalDateRange = Notifier<DateTimeRange>;
-String _$overviewIncomeHash() => r'fd6e192f51fe3a592ce0b6e5d76dda645ee961ae';
+String _$overviewIncomeHash() => r'a617c893dc765463b86ae0b86fa5967cab1af43d';
 
 /// See also [OverviewIncome].
 @ProviderFor(OverviewIncome)
-final overviewIncomeProvider =
-    NotifierProvider<OverviewIncome, double>.internal(
+final overviewIncomeProvider = NotifierProvider<OverviewIncome, int>.internal(
   OverviewIncome.new,
   name: r'overviewIncomeProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -51,13 +50,12 @@ final overviewIncomeProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$OverviewIncome = Notifier<double>;
-String _$overviewExpenseHash() => r'8edf938b3da8260130fa2b7d938e9d20904de394';
+typedef _$OverviewIncome = Notifier<int>;
+String _$overviewExpenseHash() => r'1e274913be8c115f5b748c51deb25daf318b775e';
 
 /// See also [OverviewExpense].
 @ProviderFor(OverviewExpense)
-final overviewExpenseProvider =
-    NotifierProvider<OverviewExpense, double>.internal(
+final overviewExpenseProvider = NotifierProvider<OverviewExpense, int>.internal(
   OverviewExpense.new,
   name: r'overviewExpenseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -67,7 +65,7 @@ final overviewExpenseProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$OverviewExpense = Notifier<double>;
+typedef _$OverviewExpense = Notifier<int>;
 String _$graphByCatHash() => r'50bb7dc368d4b8756c0c96bc83072c57b526e49a';
 
 /// See also [GraphByCat].

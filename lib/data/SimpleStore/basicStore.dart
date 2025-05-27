@@ -39,9 +39,9 @@ class GlobalDateRange extends _$GlobalDateRange {
 @Riverpod(keepAlive: true)
 class OverviewIncome extends _$OverviewIncome {
   @override
-  double build() {
+  int build() {
     final x = ref.watch(searchedTransProvider);
-    double total = 0;
+    int total = 0;
     for (final element in x) {
       if (element.amount > 0) {
         total += element.amount.abs();
@@ -54,9 +54,9 @@ class OverviewIncome extends _$OverviewIncome {
 @Riverpod(keepAlive: true)
 class OverviewExpense extends _$OverviewExpense {
   @override
-  double build() {
+  int build() {
     final x = ref.watch(searchedTransProvider);
-    double total = 0;
+    int total = 0;
     for (final element in x) {
       if (element.amount < 0) {
         total += element.amount.abs();

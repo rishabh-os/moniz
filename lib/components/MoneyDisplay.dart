@@ -12,7 +12,7 @@ class MoneyDisplay extends ConsumerStatefulWidget {
     this.pretty = true,
   });
 
-  final double amount;
+  final int amount;
   final Color? textColor;
   final double? fontSize;
   final bool pretty;
@@ -25,7 +25,7 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
   @override
   Widget build(BuildContext context) {
     final numberFormat = ref.watch(numberFProvider);
-    final prettyValue = widget.amount.numeral(digits: 2);
+    final prettyValue = (widget.amount / 100).numeral(digits: 2);
 
     final String displayValue;
     if (RegExp("[a-zA-Z]")
@@ -36,7 +36,7 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
       final String suffix = prettyValue.substring(prettyValue.length - 1);
       displayValue = "${numberFormat.format(numericalPart)}$suffix";
     } else {
-      displayValue = numberFormat.format(widget.amount);
+      displayValue = numberFormat.format(widget.amount / 100);
     }
 
     return RichText(

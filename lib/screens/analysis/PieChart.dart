@@ -50,7 +50,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         if (condition) {
           spendsByClass
               .firstWhere((element) => element.classifier.id == id)
-              .add(trans.amount.abs() * 1);
+              .add(trans.amount.abs() / 100);
         }
       }
       return spendsByClass;
@@ -119,7 +119,8 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                 ),
               ),
               const SizedBox(width: 4),
-              MoneyDisplay(amount: label.amount, fontSize: null),
+              MoneyDisplay(
+                  amount: (label.amount * 100).toInt(), fontSize: null),
             ],
           );
         }).toList(),
