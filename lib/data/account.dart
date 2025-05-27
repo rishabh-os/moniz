@@ -29,14 +29,14 @@ class Account extends Classifier {
   final int order;
   @override
   final bool isArchived;
-  double balance;
+  int balance;
 
   @override
   Account copyWith({
     String? name,
     int? iconCodepoint,
     int? color,
-    double? balance,
+    int? balance,
     double? netTransactions,
     int? order,
     bool? isArchived,

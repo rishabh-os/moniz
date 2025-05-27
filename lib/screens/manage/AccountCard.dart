@@ -91,7 +91,7 @@ class AccountInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MoneyDisplay(
-                amount: round(widget.account.balance, decimals: 2),
+                amount: round(widget.account.balance * 1, decimals: 2),
                 fontSize: 40,
                 pretty: false,
               ),

@@ -39,17 +39,15 @@ class $TransactionTableTable extends TransactionTable
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  late final GeneratedColumn<double> amount = GeneratedColumn<double>(
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
       'amount', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _recordedMeta =
       const VerificationMeta('recorded');
   @override
   late final GeneratedColumn<DateTime> recorded = GeneratedColumn<DateTime>(
       'recorded', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _locationMeta =
-      const VerificationMeta('location');
   @override
   late final GeneratedColumnWithTypeConverter<GMapsPlace?, String> location =
       GeneratedColumn<String>('location', aliasedName, true,
@@ -122,7 +120,6 @@ class $TransactionTableTable extends TransactionTable
     } else if (isInserting) {
       context.missing(_recordedMeta);
     }
-    context.handle(_locationMeta, const VerificationResult.success());
     return context;
   }
 
@@ -143,7 +140,7 @@ class $TransactionTableTable extends TransactionTable
       accountID: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}account_i_d'])!,
       amount: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}amount'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
       recorded: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}recorded'])!,
       location: $TransactionTableTable.$converterlocationn.fromSql(
@@ -169,7 +166,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
   final Value<String?> additionalInfo;
   final Value<String> categoryID;
   final Value<String> accountID;
-  final Value<double> amount;
+  final Value<int> amount;
   final Value<DateTime> recorded;
   final Value<GMapsPlace?> location;
   final Value<int> rowid;
@@ -190,7 +187,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     this.additionalInfo = const Value.absent(),
     required String categoryID,
     required String accountID,
-    required double amount,
+    required int amount,
     required DateTime recorded,
     this.location = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -206,7 +203,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     Expression<String>? additionalInfo,
     Expression<String>? categoryID,
     Expression<String>? accountID,
-    Expression<double>? amount,
+    Expression<int>? amount,
     Expression<DateTime>? recorded,
     Expression<String>? location,
     Expression<int>? rowid,
@@ -230,7 +227,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
       Value<String?>? additionalInfo,
       Value<String>? categoryID,
       Value<String>? accountID,
-      Value<double>? amount,
+      Value<int>? amount,
       Value<DateTime>? recorded,
       Value<GMapsPlace?>? location,
       Value<int>? rowid}) {
@@ -266,7 +263,7 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
       map['account_i_d'] = Variable<String>(accountID.value);
     }
     if (amount.present) {
-      map['amount'] = Variable<double>(amount.value);
+      map['amount'] = Variable<int>(amount.value);
     }
     if (recorded.present) {
       map['recorded'] = Variable<DateTime>(recorded.value);
@@ -564,9 +561,9 @@ class $AccountsTableTable extends AccountsTable
   static const VerificationMeta _balanceMeta =
       const VerificationMeta('balance');
   @override
-  late final GeneratedColumn<double> balance = GeneratedColumn<double>(
+  late final GeneratedColumn<int> balance = GeneratedColumn<int>(
       'balance', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _orderMeta = const VerificationMeta('order');
   @override
   late final GeneratedColumn<int> order = GeneratedColumn<int>(
@@ -657,7 +654,7 @@ class $AccountsTableTable extends AccountsTable
       color: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
       balance: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}balance'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}balance'])!,
       order: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
       isArchived: attachedDatabase.typeMapping
@@ -676,7 +673,7 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
   final Value<String> name;
   final Value<int> iconCodepoint;
   final Value<int> color;
-  final Value<double> balance;
+  final Value<int> balance;
   final Value<int> order;
   final Value<bool> isArchived;
   final Value<int> rowid;
@@ -695,7 +692,7 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     required String name,
     required int iconCodepoint,
     required int color,
-    required double balance,
+    required int balance,
     required int order,
     required bool isArchived,
     this.rowid = const Value.absent(),
@@ -711,7 +708,7 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     Expression<String>? name,
     Expression<int>? iconCodepoint,
     Expression<int>? color,
-    Expression<double>? balance,
+    Expression<int>? balance,
     Expression<int>? order,
     Expression<bool>? isArchived,
     Expression<int>? rowid,
@@ -733,7 +730,7 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       Value<String>? name,
       Value<int>? iconCodepoint,
       Value<int>? color,
-      Value<double>? balance,
+      Value<int>? balance,
       Value<int>? order,
       Value<bool>? isArchived,
       Value<int>? rowid}) {
@@ -765,7 +762,7 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
       map['color'] = Variable<int>(color.value);
     }
     if (balance.present) {
-      map['balance'] = Variable<double>(balance.value);
+      map['balance'] = Variable<int>(balance.value);
     }
     if (order.present) {
       map['order'] = Variable<int>(order.value);
@@ -818,7 +815,7 @@ typedef $$TransactionTableTableCreateCompanionBuilder
   Value<String?> additionalInfo,
   required String categoryID,
   required String accountID,
-  required double amount,
+  required int amount,
   required DateTime recorded,
   Value<GMapsPlace?> location,
   Value<int> rowid,
@@ -830,7 +827,7 @@ typedef $$TransactionTableTableUpdateCompanionBuilder
   Value<String?> additionalInfo,
   Value<String> categoryID,
   Value<String> accountID,
-  Value<double> amount,
+  Value<int> amount,
   Value<DateTime> recorded,
   Value<GMapsPlace?> location,
   Value<int> rowid,
@@ -861,7 +858,7 @@ class $$TransactionTableTableFilterComposer
   ColumnFilters<String> get accountID => $composableBuilder(
       column: $table.accountID, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get amount => $composableBuilder(
+  ColumnFilters<int> get amount => $composableBuilder(
       column: $table.amount, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get recorded => $composableBuilder(
@@ -898,7 +895,7 @@ class $$TransactionTableTableOrderingComposer
   ColumnOrderings<String> get accountID => $composableBuilder(
       column: $table.accountID, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get amount => $composableBuilder(
+  ColumnOrderings<int> get amount => $composableBuilder(
       column: $table.amount, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<DateTime> get recorded => $composableBuilder(
@@ -932,7 +929,7 @@ class $$TransactionTableTableAnnotationComposer
   GeneratedColumn<String> get accountID =>
       $composableBuilder(column: $table.accountID, builder: (column) => column);
 
-  GeneratedColumn<double> get amount =>
+  GeneratedColumn<int> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
 
   GeneratedColumn<DateTime> get recorded =>
@@ -974,7 +971,7 @@ class $$TransactionTableTableTableManager extends RootTableManager<
             Value<String?> additionalInfo = const Value.absent(),
             Value<String> categoryID = const Value.absent(),
             Value<String> accountID = const Value.absent(),
-            Value<double> amount = const Value.absent(),
+            Value<int> amount = const Value.absent(),
             Value<DateTime> recorded = const Value.absent(),
             Value<GMapsPlace?> location = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -996,7 +993,7 @@ class $$TransactionTableTableTableManager extends RootTableManager<
             Value<String?> additionalInfo = const Value.absent(),
             required String categoryID,
             required String accountID,
-            required double amount,
+            required int amount,
             required DateTime recorded,
             Value<GMapsPlace?> location = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -1230,7 +1227,7 @@ typedef $$AccountsTableTableCreateCompanionBuilder = AccountsTableCompanion
   required String name,
   required int iconCodepoint,
   required int color,
-  required double balance,
+  required int balance,
   required int order,
   required bool isArchived,
   Value<int> rowid,
@@ -1241,7 +1238,7 @@ typedef $$AccountsTableTableUpdateCompanionBuilder = AccountsTableCompanion
   Value<String> name,
   Value<int> iconCodepoint,
   Value<int> color,
-  Value<double> balance,
+  Value<int> balance,
   Value<int> order,
   Value<bool> isArchived,
   Value<int> rowid,
@@ -1268,7 +1265,7 @@ class $$AccountsTableTableFilterComposer
   ColumnFilters<int> get color => $composableBuilder(
       column: $table.color, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get balance => $composableBuilder(
+  ColumnFilters<int> get balance => $composableBuilder(
       column: $table.balance, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get order => $composableBuilder(
@@ -1300,7 +1297,7 @@ class $$AccountsTableTableOrderingComposer
   ColumnOrderings<int> get color => $composableBuilder(
       column: $table.color, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get balance => $composableBuilder(
+  ColumnOrderings<int> get balance => $composableBuilder(
       column: $table.balance, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get order => $composableBuilder(
@@ -1331,7 +1328,7 @@ class $$AccountsTableTableAnnotationComposer
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<double> get balance =>
+  GeneratedColumn<int> get balance =>
       $composableBuilder(column: $table.balance, builder: (column) => column);
 
   GeneratedColumn<int> get order =>
@@ -1368,7 +1365,7 @@ class $$AccountsTableTableTableManager extends RootTableManager<
             Value<String> name = const Value.absent(),
             Value<int> iconCodepoint = const Value.absent(),
             Value<int> color = const Value.absent(),
-            Value<double> balance = const Value.absent(),
+            Value<int> balance = const Value.absent(),
             Value<int> order = const Value.absent(),
             Value<bool> isArchived = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -1388,7 +1385,7 @@ class $$AccountsTableTableTableManager extends RootTableManager<
             required String name,
             required int iconCodepoint,
             required int color,
-            required double balance,
+            required int balance,
             required int order,
             required bool isArchived,
             Value<int> rowid = const Value.absent(),

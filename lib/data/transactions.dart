@@ -22,7 +22,7 @@ class Transaction {
   final String? additionalInfo;
   final String categoryID;
   final String accountID;
-  final double amount;
+  final int amount;
   final DateTime recorded;
   final GMapsPlace? location;
 
@@ -32,7 +32,7 @@ class Transaction {
     String? additionalInfo,
     String? categoryID,
     String? accountID,
-    double? amount,
+    int? amount,
     DateTime? recorded,
     GMapsPlace? location,
   }) {

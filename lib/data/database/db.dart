@@ -7,6 +7,7 @@ import "package:flutter/material.dart" show Colors, Icons;
 import "package:moniz/data/account.dart";
 import "package:moniz/data/api/response.dart";
 import "package:moniz/data/category.dart";
+import "package:moniz/data/database/db.steps.dart";
 import "package:moniz/data/transactions.dart";
 import "package:path/path.dart" as p;
 import "package:path_provider/path_provider.dart";
@@ -21,7 +22,7 @@ class TransactionTable extends Table {
   TextColumn get additionalInfo => text().nullable()();
   TextColumn get categoryID => text()();
   TextColumn get accountID => text()();
-  RealColumn get amount => real()();
+  IntColumn get amount => integer()();
   DateTimeColumn get recorded => dateTime()();
   TextColumn get location =>
       text().map(const LocationFeatureConverter()).nullable()();
@@ -46,14 +47,14 @@ class AccountsTable extends Table {
   // ? Use Colors.blue.value and Color(value)
   IntColumn get color => integer()();
   // ? Real means double
-  RealColumn get balance => real()();
+  IntColumn get balance => integer()();
   IntColumn get order => integer()();
   BoolColumn get isArchived => boolean()();
 }
 
 @DriftDatabase(tables: [TransactionTable, CategoriesTable, AccountsTable])
 class MyDatabase extends _$MyDatabase {
-  MyDatabase() : super(_openConnection());
+  MyDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
 
   Future<List<TransactionCategory>> findAnimalsByLegs(int legCount) {
     return (select(categoriesTable)
@@ -185,7 +186,20 @@ class MyDatabase extends _$MyDatabase {
 
   // you should bump this number whenever you change or add a table definition
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration =>
+      MigrationStrategy(onUpgrade: stepByStep(from1To2: (m, schema) async {
+        await m.alterTable(TableMigration(transactionTable, columnTransformer: {
+          transactionTable.amount:
+              const CustomExpression<int>("(amount * 100)").cast<int>(),
+        }));
+        await m.alterTable(TableMigration(accountsTable, columnTransformer: {
+          accountsTable.balance:
+              const CustomExpression<int>("(balance * 100)").cast<int>(),
+        }));
+      }));
 
   Future<void> shareDB() async {
     final dbFolder = await getApplicationDocumentsDirectory();

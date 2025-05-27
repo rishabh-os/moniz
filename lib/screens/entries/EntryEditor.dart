@@ -32,7 +32,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   int _entryType = 1;
   String _title = "Untitled";
   late TextEditingController titleController;
-  double _amount = 0;
+  int _amount = 0;
   late TextEditingController amountController;
   int _selectedCategory = 0;
   int _selectedAccount = 0;
@@ -239,7 +239,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               ),
               AmountField(
                 amountController: amountController,
-                amountCallback: (amount) => _amount = amount,
+                amountCallback: (amount) => _amount = (amount * 100).toInt(),
               ),
               const Header(text: "Category"),
               ChipSelector(

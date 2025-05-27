@@ -50,7 +50,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         if (condition) {
           spendsByClass
               .firstWhere((element) => element.classifier.id == id)
-              .add(trans.amount.abs());
+              .add(trans.amount.abs() * 1);
         }
       }
       return spendsByClass;

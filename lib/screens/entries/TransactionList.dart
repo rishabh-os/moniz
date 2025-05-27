@@ -161,7 +161,7 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
           ],
         ),
         trailing: MoneyDisplay(
-          amount: widget.transaction.amount.abs(),
+          amount: widget.transaction.amount.abs() * 1,
           fontSize: 22,
           textColor: ref
               .watch(

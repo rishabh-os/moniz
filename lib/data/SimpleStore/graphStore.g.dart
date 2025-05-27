@@ -6,7 +6,7 @@ part of 'graphStore.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$graphDataHash() => r'2dfdc10a29a7be4d9003accb148ea59930edba07';
+String _$graphDataHash() => r'695e8fe503f28f60f6c98d75e326cdac6e2b987c';
 
 /// See also [GraphData].
 @ProviderFor(GraphData)

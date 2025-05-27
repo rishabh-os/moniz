@@ -20,7 +20,7 @@ final currProvider = NotifierProvider<Curr, Currency>.internal(
 );
 
 typedef _$Curr = Notifier<Currency>;
-String _$transDeleteHash() => r'309591a2ba27ef3bd28142d63b46e4c065681bf8';
+String _$transDeleteHash() => r'82c695b0ee8a6e1e1cfe4cd7ffc882570e46f35b';
 
 /// See also [TransDelete].
 @ProviderFor(TransDelete)
@@ -34,7 +34,7 @@ final transDeleteProvider = NotifierProvider<TransDelete, bool>.internal(
 );
 
 typedef _$TransDelete = Notifier<bool>;
-String _$chipsMultiLineHash() => r'53903a81714df8050442449fe45fddc534c48bf6';
+String _$chipsMultiLineHash() => r'16097a1b70b86d543e81eee96939358522d269e5';
 
 /// See also [ChipsMultiLine].
 @ProviderFor(ChipsMultiLine)
@@ -49,7 +49,7 @@ final chipsMultiLineProvider = NotifierProvider<ChipsMultiLine, bool>.internal(
 );
 
 typedef _$ChipsMultiLine = Notifier<bool>;
-String _$showLocationHash() => r'f6331ba45d51efbf3a05d227e1da746cb39554fe';
+String _$showLocationHash() => r'0aeec792d0238bf501ad07d938c57cb64a3bb71a';
 
 /// See also [ShowLocation].
 @ProviderFor(ShowLocation)
