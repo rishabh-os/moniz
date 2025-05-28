@@ -8,6 +8,7 @@ environment:
   sdk: ">=3.2.3 <4.0.0"
 
 dependencies:
+  animated_size_and_fade: ^5.1.1
   animations: ^2.0.11
   collection: ^1.19.0
   currency_picker: ^2.0.21

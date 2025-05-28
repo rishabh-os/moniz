@@ -18,14 +18,21 @@ packages:
     source: hosted
     version: "7.4.5"
   analyzer_plugin:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "pkg/analyzer_plugin"
-      ref: "8c5e06206103f8b2fd7d434ece9248ce9ac31ba4"
-      resolved-ref: "8c5e06206103f8b2fd7d434ece9248ce9ac31ba4"
-      url: "git@github.com:dart-lang/sdk.git"
-    source: git
-    version: "0.13.1-wip"
+      name: analyzer_plugin
+      sha256: ee188b6df6c85f1441497c7171c84f1392affadc0384f71089cb10a3bc508cef
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.1"
+  animated_size_and_fade:
+    dependency: "direct main"
+    description:
+      name: animated_size_and_fade
+      sha256: "1a013cb7cd9e1751d6b8a38e34e4d0732f010c2d6021acd2176a455ee3df4664"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
   animated_stack_widget:
     dependency: transitive
     description:

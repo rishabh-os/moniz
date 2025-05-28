@@ -1,9 +1,12 @@
 import "dart:io";
 
+import "package:animated_size_and_fade/animated_size_and_fade.dart";
 import "package:device_info_plus/device_info_plus.dart";
 import "package:flutter/material.dart";
+import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/input/ColorPicker.dart";
+import "package:moniz/components/input/Header.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
 
 class ThemePicker extends ConsumerStatefulWidget {
@@ -49,15 +52,12 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
         const SizedBox(
           height: 40,
         ),
-        AnimatedCrossFade(
-          firstChild: const SizedBox(
-            // ? Width has to be set to something large otherwise the animation doesn't work properly
-            width: double.maxFinite,
-          ),
-          secondChild: themeOptions(),
-          crossFadeState:
-              isDynamic ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          duration: const Duration(milliseconds: 200),
+        const Header(text: "Pick your theme"),
+        AnimatedSizeAndFade.showHide(
+          show: !isDynamic,
+          fadeDuration: 200.ms,
+          sizeDuration: 200.ms,
+          child: themeOptions(),
         ),
         SwitchListTile(
           title: const Text("Dynamic Theme"),
