@@ -63,6 +63,21 @@ final showLocationProvider = NotifierProvider<ShowLocation, bool>.internal(
 );
 
 typedef _$ShowLocation = Notifier<bool>;
+String _$colorMapIconsHash() => r'a2d2d427ebfbbf664ad8745245265813533f9e54';
+
+/// See also [ColorMapIcons].
+@ProviderFor(ColorMapIcons)
+final colorMapIconsProvider = NotifierProvider<ColorMapIcons, bool>.internal(
+  ColorMapIcons.new,
+  name: r'colorMapIconsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$colorMapIconsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ColorMapIcons = Notifier<bool>;
 String _$initialPageHash() => r'a323cf0b2377503c514d58adf859c2b561d2a655';
 
 /// See also [InitialPage].

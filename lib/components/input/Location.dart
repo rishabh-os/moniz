@@ -348,14 +348,17 @@ class MarkerW extends StatelessWidget {
 class MarkerIcon extends StatelessWidget {
   const MarkerIcon({
     super.key,
+    this.color,
   });
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Icon(
       Icons.place,
       size: 36,
-      color: Theme.of(context).colorScheme.primary,
+      color: color ?? Theme.of(context).colorScheme.primary,
       shadows: [
         Shadow(
           color: Theme.of(context).colorScheme.shadow,

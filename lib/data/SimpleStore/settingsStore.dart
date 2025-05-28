@@ -78,6 +78,22 @@ class ShowLocation extends _$ShowLocation {
 }
 
 @Riverpod(keepAlive: true)
+class ColorMapIcons extends _$ColorMapIcons {
+  @override
+  bool build() {
+    listenSelf(
+      (previous, next) => GetStorage().write("colorMapIcons", next),
+    );
+    GetStorage().read("colorMapIcons") ??
+        GetStorage().write("colorMapIcons", true);
+    return GetStorage().read("colorMapIcons") as bool;
+  }
+
+  @override
+  set state(bool newState) => super.state = newState;
+}
+
+@Riverpod(keepAlive: true)
 class InitialPage extends _$InitialPage {
   @override
   int build() {

@@ -2,6 +2,7 @@ import "package:currency_picker/currency_picker.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:moniz/components/input/Header.dart";
 import "package:moniz/components/utils.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/settingsStore.dart";
@@ -20,6 +21,7 @@ class _SettingsState extends ConsumerState<Settings> {
     final bool transDeleteConfirmation = ref.watch(transDeleteProvider);
     final bool chipsScroll = ref.watch(chipsMultiLineProvider);
     final bool showLocation = ref.watch(showLocationProvider);
+    final bool colorMapIcons = ref.watch(colorMapIconsProvider);
     final List<String> initalPages = ["Entries", "Analysis", "Manage"];
     return Scaffold(
       appBar: AppBar(
@@ -27,6 +29,7 @@ class _SettingsState extends ConsumerState<Settings> {
       ),
       body: ListView(
         children: [
+          const Header(text: "Entries"),
           SwitchListTile(
             title: const Text("Show confirmation before deleting transactions"),
             value: transDeleteConfirmation,
@@ -68,6 +71,21 @@ class _SettingsState extends ConsumerState<Settings> {
               ref.watch(showLocationProvider.notifier).state = e;
             },
           ),
+          const Header(text: "Analysis"),
+          SwitchListTile(
+            title: const Text("Color map icons by category"),
+            value: colorMapIcons,
+            onChanged: (e) async {
+              await postHogCapture(
+                eventName: "Color map icons",
+                properties: {
+                  "value": e,
+                },
+              );
+              ref.watch(colorMapIconsProvider.notifier).state = e;
+            },
+          ),
+          const Header(text: "General"),
           ListTile(
             title: const Text("Default view on app start"),
             trailing: DropdownButton(
