@@ -6,6 +6,7 @@ import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:latlong2/latlong.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
+import "package:moniz/data/SimpleStore/themeStore.dart";
 
 class LocationMap extends ConsumerStatefulWidget {
   const LocationMap({
@@ -28,6 +29,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = ref.watch(brightProvider) == Brightness.dark;
     return Scaffold(
       body: FlutterMap(
         mapController: widget.animatedMapController.mapController,
@@ -48,7 +50,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
         children: [
           TileLayer(
             urlTemplate:
-                "https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
+                "https://api.maptiler.com/maps/streets-v2${isDark ? "-dark" : ""}/256/{z}/{x}/{y}@2x.png?key=iVYN0Z0Hxh10yhJtDCbk",
             userAgentPackageName: "com.rishabhos.moniz",
           ),
           ...widget.layers,
