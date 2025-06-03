@@ -63,7 +63,9 @@ class Transactions extends _$Transactions {
         .where(
           (element) =>
               element.recorded.isAfter(globalDateRange.start) &&
-              element.recorded.isBefore(globalDateRange.end),
+              element.recorded.isBefore(globalDateRange.end
+                  //.add(const Duration(days: 1)
+                  ),
         )
         .toList();
     state = filteredTransactions;

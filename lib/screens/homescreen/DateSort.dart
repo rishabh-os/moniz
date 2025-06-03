@@ -54,7 +54,13 @@ class _DateSortState extends ConsumerState<DateSort> {
                 microsecond: 0,
               ),
               // ? This allows entries on the selected day to be shown
-              end: now.add(const Duration(days: 1)),
+              end: now.copyWith(
+                hour: 23,
+                minute: 59,
+                second: 59,
+                millisecond: 999,
+                microsecond: 999,
+              ),
             );
           case "This month":
             globalRange.state = DateTimeRange(
@@ -67,7 +73,13 @@ class _DateSortState extends ConsumerState<DateSort> {
                 microsecond: 0,
               ),
               // ? This allows entries on the selected day to be shown
-              end: now.add(const Duration(days: 1)),
+              end: now.copyWith(
+                hour: 23,
+                minute: 59,
+                second: 59,
+                millisecond: 999,
+                microsecond: 999,
+              ),
             );
           case "Last month":
             globalRange.state = DateTimeRange(
@@ -84,12 +96,13 @@ class _DateSortState extends ConsumerState<DateSort> {
               end: now.copyWith(
                 month: now.month - 1,
                 // * Not sure how exactly this works
+                // * Something with int wrap around ig
                 day: DateTime(now.year, now.month, 0).day,
-                hour: 0,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-                microsecond: 0,
+                hour: 23,
+                minute: 59,
+                second: 59,
+                millisecond: 999,
+                microsecond: 999,
               ),
             );
           case "Everything":

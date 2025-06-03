@@ -28,7 +28,13 @@ class GlobalDateRange extends _$GlobalDateRange {
         microsecond: 0,
       ),
       // ? This allows entries on the selected day to be shown
-      end: now.add(const Duration(days: 1)),
+      end: now.copyWith(
+        hour: 23,
+        minute: 59,
+        second: 59,
+        millisecond: 999,
+        microsecond: 999,
+      ),
     );
   }
 
