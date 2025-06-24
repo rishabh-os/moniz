@@ -47,6 +47,8 @@ jobs:
         with:
           channel: "stable"
           cache: true
+      - name: Setup Android SDK
+        uses: amyu/setup-android@v4
       - name: Install dependenices
         run: flutter pub get
       - name: Set up env variables
@@ -61,13 +63,13 @@ jobs:
           EOF
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > my-release-key.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | openssl base64 -d > my-release-key.jks
       - name: Create key.properties
         run: |
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=keystore.jks" >> android/key.properties
+          echo "storeFile=../../my-release-key.jks" >> android/key.properties
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: dart run flutter_iconpicker:generate_packs --packs roundedMaterial
       - run: flutter build apk --split-per-abi --no-tree-shake-icons
