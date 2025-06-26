@@ -24,7 +24,7 @@ jobs:
       - name: Check if version changed, generate changelog
         id: check-version
         run: .github/scripts/version_checker.sh
-        continue-on-error: true
+        # continue-on-error: true
   build:
     name: Build & Release
     needs: check-version-change
@@ -95,6 +95,6 @@ jobs:
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          body_path: CHANGELOG_GENERATED.md
+          bodyFile: CHANGELOG_GENERATED.md
           artifacts: "build/app/outputs/flutter-apk/*.apk"
           tag: v${{ env.VERSION }}
