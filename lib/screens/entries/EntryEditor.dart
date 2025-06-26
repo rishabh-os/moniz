@@ -173,7 +173,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       text: _additionalInfo == "None" ? null : _additionalInfo,
     );
     amountController = TextEditingController(
-      text: _amount.toString() == "0.0" ? null : _amount.toString(),
+      text: _amount.toString() == "0.0" ? null : (_amount / 100).toString(),
     );
   }
 
@@ -239,7 +239,9 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               ),
               AmountField(
                 amountController: amountController,
-                amountCallback: (amount) => _amount = (amount * 100).toInt(),
+                amountCallback: (amount) {
+                  _amount = int.parse(amount.toString().replaceAll(".", ""));
+                },
               ),
               const Header(text: "Category"),
               ChipSelector(
