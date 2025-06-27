@@ -120,7 +120,9 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
               ),
               const SizedBox(width: 4),
               MoneyDisplay(
-                  amount: (label.amount * 100).toInt(), fontSize: null),
+                  amount: int.parse(
+                      label.amount.toStringAsFixed(2).replaceAll(".", "")),
+                  fontSize: null),
             ],
           );
         }).toList(),

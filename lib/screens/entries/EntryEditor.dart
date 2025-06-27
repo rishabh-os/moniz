@@ -240,7 +240,8 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               AmountField(
                 amountController: amountController,
                 amountCallback: (amount) {
-                  _amount = int.parse(amount.toString().replaceAll(".", ""));
+                  _amount =
+                      int.parse(amount.toStringAsFixed(2).replaceAll(".", ""));
                 },
               ),
               const Header(text: "Category"),
