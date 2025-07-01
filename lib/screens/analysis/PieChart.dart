@@ -96,7 +96,6 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
         children: unsortedSpends.map((label) {
           final Classifier classifier = label.classifier;
           return Row(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -119,10 +118,12 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                 ),
               ),
               const SizedBox(width: 4),
-              MoneyDisplay(
-                  amount: int.parse(
-                      label.amount.toStringAsFixed(2).replaceAll(".", "")),
-                  fontSize: null),
+              Flexible(
+                child: MoneyDisplay(
+                    amount: int.parse(
+                        label.amount.toStringAsFixed(2).replaceAll(".", "")),
+                    fontSize: null),
+              ),
             ],
           );
         }).toList(),

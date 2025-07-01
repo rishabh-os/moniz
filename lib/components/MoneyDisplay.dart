@@ -25,8 +25,9 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
   @override
   Widget build(BuildContext context) {
     final numberFormat = ref.watch(numberFProvider);
-    final prettyValue = (widget.amount / 100).numeral(digits: 2);
+    final rawValue = numberFormat.format(widget.amount / 100);
 
+    final prettyValue = (widget.amount / 100).numeral(digits: 2);
     final String displayValue;
     if (RegExp("[a-zA-Z]")
             .hasMatch(prettyValue.substring(prettyValue.length - 1)) &&
@@ -38,23 +39,32 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
     } else {
       displayValue = numberFormat.format(widget.amount / 100);
     }
-
-    return RichText(
-      text: TextSpan(
-        style: DefaultTextStyle.of(context).style,
-        children: [
-          TextSpan(
-            text: displayValue,
-            style: TextStyle(
-              fontFeatures: const [FontFeature.enable("ss02")],
-              fontFamily: "VictorMono",
-              fontSize: widget.fontSize,
-              color: widget.textColor,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final style = TextStyle(
+          fontFeatures: const [FontFeature.enable("ss02")],
+          fontFamily: "VictorMono",
+          fontSize: widget.fontSize,
+          color: widget.textColor,
+          fontWeight: FontWeight.w600,
+        );
+        final span = TextSpan(
+          text: rawValue,
+          style: style,
+        );
+        final painter = TextPainter(
+          text: span,
+          maxLines: 1,
+          textDirection: TextDirection.ltr,
+        );
+        // ? Do a test layout to see if it will overflow
+        painter.layout();
+        // ? + 5 to account for single digit wrap that happens, due to padding probably
+        final overflow = painter.size.width + 5 > constraints.maxWidth;
+        return Text.rich(
+          TextSpan(text: overflow ? displayValue : rawValue, style: style),
+        );
+      },
     );
   }
 }
