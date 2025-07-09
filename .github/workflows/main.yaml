@@ -25,6 +25,13 @@ jobs:
         id: check-version
         run: .github/scripts/version_checker.sh
         # continue-on-error: true
+      - name: Upload changelog
+        if: ${{steps.check-version.outputs.VERSION_CHANGED}} == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelog-artifact
+          path: CHANGELOG_GENERATED.md
+
   build:
     name: Build & Release
     needs: check-version-change
@@ -32,6 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Download changelog
+        uses: actions/download-artifact@v4
+        with:
+          name: changelog-artifact
       - name: 🚀 Cache pub deps
         uses: actions/cache@v3
         with:
