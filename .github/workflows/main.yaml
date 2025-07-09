@@ -25,7 +25,7 @@ jobs:
       - name: Check if version changed, generate changelog
         id: check-version
         run: .github/scripts/version_checker.sh
-        # continue-on-error: true
+        continue-on-error: true
       - name: Upload changelog
         if: ${{steps.check-version.outputs.VERSION_CHANGED}} == 'true'
         uses: actions/upload-artifact@v4
