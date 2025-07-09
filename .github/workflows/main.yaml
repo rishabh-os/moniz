@@ -4,7 +4,7 @@ on:
       - main
     paths:
       - "pubspec.yaml"
-      - ".github/workflows/main.yaml"
+      - ".github/**"
 name: "Build & Release"
 jobs:
   check-version-change:

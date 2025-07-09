@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
+# Get the latest release tag (assuming tags are in the form vX.Y.Z)
+LATEST_TAG=$(git describe --tags --abbrev=0)
 
-# Extract the version from the current and previous pubspec.yaml
-OLD_VERSION=$(git show HEAD^:pubspec.yaml | grep -E '^version:' | awk '{print $2}')
+# Extract the version from the pubspec.yaml at the latest tag
+OLD_VERSION=$(git show ${LATEST_TAG}:pubspec.yaml | grep -E '^version:' | awk '{print $2}')
 CURRENT_VERSION=$(grep -E '^version:' pubspec.yaml | awk '{print $2}')
 
 echo "Old version: $OLD_VERSION"
