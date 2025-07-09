@@ -17,11 +17,8 @@ if [ "$OLD_VERSION" != "$CURRENT_VERSION" ]; then
   echo "OLD_VERSION=$OLD_VERSION" >> $GITHUB_ENV
   echo "NEW_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
-  # Generate changelog if the script exists
-  if [ -f ".github/scripts/generate-changelog.sh" ]; then
-    bash .github/scripts/generate-changelog.sh "$OLD_VERSION" "$CURRENT_VERSION"
-    echo "CHANGELOG_GENERATED=true" >> $GITHUB_ENV
-  fi
+  bash .github/scripts/generate_changelog.sh "$OLD_VERSION" "$CURRENT_VERSION"
+  echo "CHANGELOG_GENERATED=true" >> $GITHUB_ENV
 
   exit 0
 else

@@ -14,7 +14,7 @@ echo "## What's Changed" >> $CHANGELOG_FILE
 echo "" >> $CHANGELOG_FILE
 
 # Find the commit that last changed the version number
-LAST_VERSION_COMMIT=$(git log -p --format="%H" -- pubspec.yaml | grep -B 5 "version: $OLD_VERSION" | head -n 1 || echo "")
+LAST_VERSION_COMMIT=$(git rev-list -n 1 $(git describe --tags --abbrev=0))
 
 if [ -z "$LAST_VERSION_COMMIT" ]; then
   # If we can't find the exact commit, just use the range since the previous commit
@@ -26,4 +26,3 @@ else
 fi
 
 echo "Generated changelog for version $NEW_VERSION"
-cat $CHANGELOG_FILE
