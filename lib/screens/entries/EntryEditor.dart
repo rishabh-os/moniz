@@ -173,7 +173,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       text: _additionalInfo == "None" ? null : _additionalInfo,
     );
     amountController = TextEditingController(
-      text: _amount.toString() == "0.0" ? null : (_amount / 100).toString(),
+      text: _amount == 0 ? null : (_amount / 100).toString(),
     );
   }
 
