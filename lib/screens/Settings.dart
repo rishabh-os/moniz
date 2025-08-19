@@ -243,17 +243,17 @@ class _SettingsState extends ConsumerState<Settings> {
                               .read(
                                 entriesTutorialCompletedProvider.notifier,
                               )
-                              .update((state) => false);
+                              .state = false;
                           ref
                               .read(
                                 manageTutorialCompletedProvider.notifier,
                               )
-                              .update((state) => false);
+                              .state = false;
                           ref
                               .read(
                                 analysisTutorialCompletedProvider.notifier,
                               )
-                              .update((state) => false);
+                              .state = false;
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             "/welcome",
                             (route) => false,

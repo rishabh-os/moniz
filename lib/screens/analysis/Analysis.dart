@@ -48,7 +48,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
                     });
                     ref
                         .watch(analysisTutorialCompletedProvider.notifier)
-                        .update((state) => true);
+                        .state = true;
                   }
                 },
                 child: const Tab(icon: Icon(Icons.pie_chart_rounded)),

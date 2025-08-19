@@ -26,15 +26,9 @@ class _WelcomeState extends ConsumerState<Welcome> {
       onDone: goHome,
       onSkip: () {
         goHome();
-        ref
-            .read(entriesTutorialCompletedProvider.notifier)
-            .update((state) => true);
-        ref
-            .read(analysisTutorialCompletedProvider.notifier)
-            .update((state) => true);
-        ref
-            .read(manageTutorialCompletedProvider.notifier)
-            .update((state) => true);
+        ref.read(entriesTutorialCompletedProvider.notifier).state = true;
+        ref.read(analysisTutorialCompletedProvider.notifier).state = true;
+        ref.read(manageTutorialCompletedProvider.notifier).state = true;
       },
       showSkipButton: true,
       pages: [

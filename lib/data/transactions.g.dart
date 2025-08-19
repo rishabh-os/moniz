@@ -6,36 +6,105 @@ part of 'transactions.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+@ProviderFor(Transactions)
+const transactionsProvider = TransactionsProvider._();
+
+final class TransactionsProvider
+    extends $NotifierProvider<Transactions, List<Transaction>> {
+  const TransactionsProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'transactionsProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$transactionsHash();
+
+  @$internal
+  @override
+  Transactions create() => Transactions();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<Transaction> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Transaction>>(value),
+    );
+  }
+}
+
 String _$transactionsHash() => r'9a3d86f3453def7c9d2a4846b47a9e92b042f672';
 
-/// See also [Transactions].
-@ProviderFor(Transactions)
-final transactionsProvider =
-    NotifierProvider<Transactions, List<Transaction>>.internal(
-  Transactions.new,
-  name: r'transactionsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$transactionsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$Transactions extends $Notifier<List<Transaction>> {
+  List<Transaction> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<List<Transaction>, List<Transaction>>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<List<Transaction>, List<Transaction>>,
+        List<Transaction>,
+        Object?,
+        Object?>;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$Transactions = Notifier<List<Transaction>>;
+@ProviderFor(SearchedTrans)
+const searchedTransProvider = SearchedTransProvider._();
+
+final class SearchedTransProvider
+    extends $NotifierProvider<SearchedTrans, List<Transaction>> {
+  const SearchedTransProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'searchedTransProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$searchedTransHash();
+
+  @$internal
+  @override
+  SearchedTrans create() => SearchedTrans();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<Transaction> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Transaction>>(value),
+    );
+  }
+}
+
 String _$searchedTransHash() => r'1ca9c5aabf4ea0fa46968b9e9635b89958b74983';
 
-/// See also [SearchedTrans].
-@ProviderFor(SearchedTrans)
-final searchedTransProvider =
-    NotifierProvider<SearchedTrans, List<Transaction>>.internal(
-  SearchedTrans.new,
-  name: r'searchedTransProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$searchedTransHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$SearchedTrans extends $Notifier<List<Transaction>> {
+  List<Transaction> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<List<Transaction>, List<Transaction>>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<List<Transaction>, List<Transaction>>,
+        List<Transaction>,
+        Object?,
+        Object?>;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$SearchedTrans = Notifier<List<Transaction>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

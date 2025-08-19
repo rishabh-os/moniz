@@ -34,9 +34,8 @@ class _ManageState extends ConsumerState<Manage>
                   if (info.visibleFraction == 1) {
                     if (!context.mounted) return;
                     showTutorial(context, Screen.manage);
-                    ref
-                        .watch(manageTutorialCompletedProvider.notifier)
-                        .update((state) => true);
+                    ref.watch(manageTutorialCompletedProvider.notifier).state =
+                        true;
                   }
                 });
               }

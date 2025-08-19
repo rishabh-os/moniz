@@ -6,20 +6,56 @@ part of 'category.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+@ProviderFor(Categories)
+const categoriesProvider = CategoriesProvider._();
+
+final class CategoriesProvider
+    extends $NotifierProvider<Categories, List<TransactionCategory>> {
+  const CategoriesProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'categoriesProvider',
+          isAutoDispose: false,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$categoriesHash();
+
+  @$internal
+  @override
+  Categories create() => Categories();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<TransactionCategory> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<TransactionCategory>>(value),
+    );
+  }
+}
+
 String _$categoriesHash() => r'545bb20df89fe8ad4dc940ea4abd06c73af031f2';
 
-/// See also [Categories].
-@ProviderFor(Categories)
-final categoriesProvider =
-    NotifierProvider<Categories, List<TransactionCategory>>.internal(
-  Categories.new,
-  name: r'categoriesProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$categoriesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+abstract class _$Categories extends $Notifier<List<TransactionCategory>> {
+  List<TransactionCategory> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<List<TransactionCategory>, List<TransactionCategory>>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<List<TransactionCategory>, List<TransactionCategory>>,
+        List<TransactionCategory>,
+        Object?,
+        Object?>;
+    element.handleValue(ref, created);
+  }
+}
 
-typedef _$Categories = Notifier<List<TransactionCategory>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

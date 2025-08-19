@@ -82,9 +82,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         // ? Idk why the above check doesn't work here
         // ignore: use_build_context_synchronously
         showTutorial(context, Screen.entries);
-        ref
-            .read(entriesTutorialCompletedProvider.notifier)
-            .update((state) => true);
+        ref.read(entriesTutorialCompletedProvider.notifier).state = true;
       });
     }
   }

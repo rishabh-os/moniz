@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:get_storage/get_storage.dart";
+import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tutorial_coach_mark/tutorial_coach_mark.dart";
+part "tutorialStore.g.dart";
 
 final List<(GlobalKey, String, String)> entriesTargets = [
   (
@@ -30,14 +31,22 @@ final List<(GlobalKey, String, String)> entriesTargets = [
     "Add a new transaction by using the button. Once you've added a transaction, you can click on it to edit it.",
   ),
 ];
-final entriesTutorialCompletedProvider = StateProvider<bool>((ref) {
-  ref.listenSelf(
-    (previous, next) => GetStorage().write("entriesTutorialCompleted", next),
-  );
-  GetStorage().read("entriesTutorialCompleted") ??
-      GetStorage().write("entriesTutorialCompleted", false);
-  return GetStorage().read("entriesTutorialCompleted") as bool;
-});
+
+@Riverpod(keepAlive: true)
+class EntriesTutorialCompleted extends _$EntriesTutorialCompleted {
+  @override
+  bool build() {
+    listenSelf(
+      (previous, next) => GetStorage().write("entriesTutorialCompleted", next),
+    );
+    GetStorage().read("entriesTutorialCompleted") ??
+        GetStorage().write("entriesTutorialCompleted", false);
+    return GetStorage().read("entriesTutorialCompleted") as bool;
+  }
+
+  @override
+  set state(bool newState) => super.state = newState;
+}
 
 final List<(GlobalKey, String, String)> manageTargets = [
   (
@@ -52,14 +61,21 @@ final List<(GlobalKey, String, String)> manageTargets = [
   ),
 ];
 
-final manageTutorialCompletedProvider = StateProvider<bool>((ref) {
-  ref.listenSelf(
-    (previous, next) => GetStorage().write("manageTutorialCompleted", next),
-  );
-  GetStorage().read("manageTutorialCompleted") ??
-      GetStorage().write("manageTutorialCompleted", false);
-  return GetStorage().read("manageTutorialCompleted") as bool;
-});
+@Riverpod(keepAlive: true)
+class ManageTutorialCompleted extends _$ManageTutorialCompleted {
+  @override
+  bool build() {
+    listenSelf(
+      (previous, next) => GetStorage().write("manageTutorialCompleted", next),
+    );
+    GetStorage().read("manageTutorialCompleted") ??
+        GetStorage().write("manageTutorialCompleted", false);
+    return GetStorage().read("manageTutorialCompleted") as bool;
+  }
+
+  @override
+  set state(bool newState) => super.state = newState;
+}
 
 final List<(GlobalKey, String, String)> analysisTargets = [
   (
@@ -79,14 +95,21 @@ final List<(GlobalKey, String, String)> analysisTargets = [
   ),
 ];
 
-final analysisTutorialCompletedProvider = StateProvider<bool>((ref) {
-  ref.listenSelf(
-    (previous, next) => GetStorage().write("analysisTutorialCompleted", next),
-  );
-  GetStorage().read("analysisTutorialCompleted") ??
-      GetStorage().write("analysisTutorialCompleted", false);
-  return GetStorage().read("analysisTutorialCompleted") as bool;
-});
+@Riverpod(keepAlive: true)
+class AnalysisTutorialCompleted extends _$AnalysisTutorialCompleted {
+  @override
+  bool build() {
+    listenSelf(
+      (previous, next) => GetStorage().write("analysisTutorialCompleted", next),
+    );
+    GetStorage().read("analysisTutorialCompleted") ??
+        GetStorage().write("analysisTutorialCompleted", false);
+    return GetStorage().read("analysisTutorialCompleted") as bool;
+  }
+
+  @override
+  set state(bool newState) => super.state = newState;
+}
 
 enum Screen { entries, manage, analysis }
 

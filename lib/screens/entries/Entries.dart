@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_riverpod/misc.dart";
 import "package:moniz/components/MoneyDisplay.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
