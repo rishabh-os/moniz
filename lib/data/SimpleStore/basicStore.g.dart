@@ -6,6 +6,9 @@ part of 'basicStore.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
 @ProviderFor(DB)
 const dBProvider = DBProvider._();
 
@@ -56,7 +59,7 @@ abstract class _$DB extends $Notifier<MyDatabase> {
 const globalDateRangeProvider = GlobalDateRangeProvider._();
 
 final class GlobalDateRangeProvider
-    extends $NotifierProvider<GlobalDateRange, DateTimeRange> {
+    extends $NotifierProvider<GlobalDateRange, DateTimeRange<DateTime>> {
   const GlobalDateRangeProvider._()
       : super(
           from: null,
@@ -76,26 +79,27 @@ final class GlobalDateRangeProvider
   GlobalDateRange create() => GlobalDateRange();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DateTimeRange value) {
+  Override overrideWithValue(DateTimeRange<DateTime> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<DateTimeRange>(value),
+      providerOverride: $SyncValueProvider<DateTimeRange<DateTime>>(value),
     );
   }
 }
 
 String _$globalDateRangeHash() => r'2bf3d98c4ddaaa61d3960d86695057a1e8a5e716';
 
-abstract class _$GlobalDateRange extends $Notifier<DateTimeRange> {
-  DateTimeRange build();
+abstract class _$GlobalDateRange extends $Notifier<DateTimeRange<DateTime>> {
+  DateTimeRange<DateTime> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<DateTimeRange, DateTimeRange>;
+    final ref =
+        this.ref as $Ref<DateTimeRange<DateTime>, DateTimeRange<DateTime>>;
     final element = ref.element as $ClassProviderElement<
-        AnyNotifier<DateTimeRange, DateTimeRange>,
-        DateTimeRange,
+        AnyNotifier<DateTimeRange<DateTime>, DateTimeRange<DateTime>>,
+        DateTimeRange<DateTime>,
         Object?,
         Object?>;
     element.handleValue(ref, created);
@@ -288,6 +292,3 @@ abstract class _$InitialCenter extends $Notifier<LatLng> {
     element.handleValue(ref, created);
   }
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
