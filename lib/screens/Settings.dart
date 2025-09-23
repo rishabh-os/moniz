@@ -30,7 +30,7 @@ class _SettingsState extends ConsumerState<Settings> {
       body: ListView(
         children: [
           const Header(text: "Entries"),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             title: const Text("Show confirmation before deleting transactions"),
             value: transDeleteConfirmation,
             onChanged: (e) async {
@@ -43,7 +43,7 @@ class _SettingsState extends ConsumerState<Settings> {
               ref.watch(transDeleteProvider.notifier).state = e;
             },
           ),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             title:
                 const Text("Show category and account chips on multiple lines"),
             value: chipsScroll,
@@ -57,7 +57,7 @@ class _SettingsState extends ConsumerState<Settings> {
               ref.watch(chipsMultiLineProvider.notifier).state = e;
             },
           ),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             title:
                 const Text("Show location of the transaction in the list view"),
             value: showLocation,
@@ -72,7 +72,7 @@ class _SettingsState extends ConsumerState<Settings> {
             },
           ),
           const Header(text: "Analysis"),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             title: const Text("Color map icons by category"),
             value: colorMapIcons,
             onChanged: (e) async {

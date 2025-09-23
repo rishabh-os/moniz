@@ -59,7 +59,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
           sizeDuration: 200.ms,
           child: themeOptions(),
         ),
-        SwitchListTile(
+        SwitchListTile.adaptive(
           title: const Text("Dynamic Theme"),
           value: isDynamic,
           onChanged: (value) {
@@ -82,7 +82,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
             ref.read(themeColorProvider.notifier).state = selectedColor;
           },
         ),
-        SwitchListTile(
+        SwitchListTile.adaptive(
           key: const Key("Dark Mode"),
           title: const Text("Dark Mode"),
           value: isDark,
