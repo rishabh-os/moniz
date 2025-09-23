@@ -6,7 +6,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "account.g.dart";
 
-class Account extends Classifier {
+final class Account extends Classifier {
   Account({
     required this.id,
     required this.name,

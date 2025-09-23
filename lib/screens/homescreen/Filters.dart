@@ -110,7 +110,7 @@ class _FiltersState extends ConsumerState<Filters> {
               const Header(text: "Amount"),
               SliderTheme(
                 data: const SliderThemeData(
-                  showValueIndicator: ShowValueIndicator.always,
+                  showValueIndicator: ShowValueIndicator.onDrag,
                 ),
                 child: frequencyHistorgram.length > 1
                     ? RangeSlider(

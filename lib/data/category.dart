@@ -5,7 +5,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 
 part "category.g.dart";
 
-class TransactionCategory extends Classifier {
+final class TransactionCategory extends Classifier {
   TransactionCategory({
     required this.id,
     required this.name,
@@ -103,7 +103,7 @@ class Categories extends _$Categories {
   }
 }
 
-abstract class Classifier {
+abstract base class Classifier {
   String get id;
   String get name;
   int get iconCodepoint;

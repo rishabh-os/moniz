@@ -19,7 +19,7 @@ class DeleteRoute<T> extends MaterialPageRoute<T> {
   final Alignment startPositionGlobal;
 
   @override
-  Duration get transitionDuration => this.duration;
+  Duration get transitionDuration => duration;
 
   @override
   Widget buildTransitions(
