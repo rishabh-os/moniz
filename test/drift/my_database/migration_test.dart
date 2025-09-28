@@ -1,5 +1,6 @@
 // dart format width=80
 // ignore_for_file: unused_local_variable, unused_import
+// ignore_for_file: type=lint
 import 'package:drift/drift.dart';
 import 'package:drift_dev/api/migrations_native.dart';
 import 'package:moniz/data/database/db.dart';
@@ -42,12 +43,11 @@ void main() {
   // (e.g. by alterating their type or constraints). Migrations that only add
   // tables or columns typically don't need these advanced tests. For more
   // information, see https://drift.simonbinder.eu/migrations/tests/#verifying-data-integrity
-  // TODO: This generated template shows how these tests could be written. Adopt
+  // This generated template shows how these tests could be written. Adopt
   // it to your own needs when testing migrations with data integrity.
   test('migration from v1 to v2 does not corrupt data', () async {
     // Add data to insert into the old database, and the expected rows after the
     // migration.
-    // TODO: Fill these lists
     final oldTransactionTableData = <v1.TransactionTableData>[];
     final expectedNewTransactionTableData = <v2.TransactionTableData>[];
 
@@ -69,12 +69,18 @@ void main() {
         batch.insertAll(oldDb.accountsTable, oldAccountsTableData);
       },
       validateItems: (newDb) async {
-        expect(expectedNewTransactionTableData,
-            await newDb.select(newDb.transactionTable).get());
-        expect(expectedNewCategoriesTableData,
-            await newDb.select(newDb.categoriesTable).get());
-        expect(expectedNewAccountsTableData,
-            await newDb.select(newDb.accountsTable).get());
+        expect(
+          expectedNewTransactionTableData,
+          await newDb.select(newDb.transactionTable).get(),
+        );
+        expect(
+          expectedNewCategoriesTableData,
+          await newDb.select(newDb.categoriesTable).get(),
+        );
+        expect(
+          expectedNewAccountsTableData,
+          await newDb.select(newDb.accountsTable).get(),
+        );
       },
     );
   });

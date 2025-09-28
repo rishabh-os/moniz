@@ -42,7 +42,7 @@ final class EntriesTutorialCompletedProvider
 }
 
 String _$entriesTutorialCompletedHash() =>
-    r'9ec3f978dc3bb87f7f4e853bfab1fdf9caf53268';
+    r'45a825fcd07a9289e951afe56e02c941b5230f02';
 
 abstract class _$EntriesTutorialCompleted extends $Notifier<bool> {
   bool build();
@@ -96,7 +96,7 @@ final class ManageTutorialCompletedProvider
 }
 
 String _$manageTutorialCompletedHash() =>
-    r'a0098f45a3636cac5ec9f87b74fcfd96b4d2bc0b';
+    r'fb8113ca1b3b61263660e3dcff157a60778db93d';
 
 abstract class _$ManageTutorialCompleted extends $Notifier<bool> {
   bool build();
@@ -150,7 +150,7 @@ final class AnalysisTutorialCompletedProvider
 }
 
 String _$analysisTutorialCompletedHash() =>
-    r'142e2e6bcf0c4a820f56e42eabb0a88bbecde84e';
+    r'be538b67b66f108aeafbf69021c9662d6fc9154d';
 
 abstract class _$AnalysisTutorialCompleted extends $Notifier<bool> {
   bool build();

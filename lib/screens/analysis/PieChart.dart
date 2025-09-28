@@ -164,11 +164,11 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                     data: data,
                     variables: {
                       "classifier": Variable(
-                        accessor: (Map<String, String> map) =>
+                        accessor: (Map<String, dynamic> map) =>
                             map["classifier"] as String,
                       ),
                       "amount": Variable(
-                        accessor: (Map<String, num> map) =>
+                        accessor: (Map<String, dynamic> map) =>
                             map["amount"] as num,
                         scale: LinearScale(min: 0),
                       ),

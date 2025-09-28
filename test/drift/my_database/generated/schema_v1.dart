@@ -10,40 +10,72 @@ class TransactionTable extends Table
   final String? _alias;
   TransactionTable(this.attachedDatabase, [this._alias]);
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<String> additionalInfo = GeneratedColumn<String>(
-      'additional_info', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'additional_info',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   late final GeneratedColumn<String> categoryID = GeneratedColumn<String>(
-      'category_i_d', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'category_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<String> accountID = GeneratedColumn<String>(
-      'account_i_d', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'account_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<double> amount = GeneratedColumn<double>(
-      'amount', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+    'amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<DateTime> recorded = GeneratedColumn<DateTime>(
-      'recorded', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+    'recorded',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<String> location = GeneratedColumn<String>(
-      'location', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'location',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        title,
-        additionalInfo,
-        categoryID,
-        accountID,
-        amount,
-        recorded,
-        location
-      ];
+    id,
+    title,
+    additionalInfo,
+    categoryID,
+    accountID,
+    amount,
+    recorded,
+    location,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -55,22 +87,38 @@ class TransactionTable extends Table
   TransactionTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TransactionTableData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      additionalInfo: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}additional_info']),
-      categoryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category_i_d'])!,
-      accountID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}account_i_d'])!,
-      amount: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}amount'])!,
-      recorded: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}recorded'])!,
-      location: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}location']),
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      additionalInfo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}additional_info'],
+      ),
+      categoryID: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_i_d'],
+      )!,
+      accountID: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_i_d'],
+      )!,
+      amount: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}amount'],
+      )!,
+      recorded: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded'],
+      )!,
+      location: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}location'],
+      ),
     );
   }
 
@@ -90,15 +138,16 @@ class TransactionTableData extends DataClass
   final double amount;
   final DateTime recorded;
   final String? location;
-  const TransactionTableData(
-      {required this.id,
-      required this.title,
-      this.additionalInfo,
-      required this.categoryID,
-      required this.accountID,
-      required this.amount,
-      required this.recorded,
-      this.location});
+  const TransactionTableData({
+    required this.id,
+    required this.title,
+    this.additionalInfo,
+    required this.categoryID,
+    required this.accountID,
+    required this.amount,
+    required this.recorded,
+    this.location,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -134,8 +183,10 @@ class TransactionTableData extends DataClass
     );
   }
 
-  factory TransactionTableData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory TransactionTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TransactionTableData(
       id: serializer.fromJson<String>(json['id']),
@@ -163,26 +214,27 @@ class TransactionTableData extends DataClass
     };
   }
 
-  TransactionTableData copyWith(
-          {String? id,
-          String? title,
-          Value<String?> additionalInfo = const Value.absent(),
-          String? categoryID,
-          String? accountID,
-          double? amount,
-          DateTime? recorded,
-          Value<String?> location = const Value.absent()}) =>
-      TransactionTableData(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        additionalInfo:
-            additionalInfo.present ? additionalInfo.value : this.additionalInfo,
-        categoryID: categoryID ?? this.categoryID,
-        accountID: accountID ?? this.accountID,
-        amount: amount ?? this.amount,
-        recorded: recorded ?? this.recorded,
-        location: location.present ? location.value : this.location,
-      );
+  TransactionTableData copyWith({
+    String? id,
+    String? title,
+    Value<String?> additionalInfo = const Value.absent(),
+    String? categoryID,
+    String? accountID,
+    double? amount,
+    DateTime? recorded,
+    Value<String?> location = const Value.absent(),
+  }) => TransactionTableData(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    additionalInfo: additionalInfo.present
+        ? additionalInfo.value
+        : this.additionalInfo,
+    categoryID: categoryID ?? this.categoryID,
+    accountID: accountID ?? this.accountID,
+    amount: amount ?? this.amount,
+    recorded: recorded ?? this.recorded,
+    location: location.present ? location.value : this.location,
+  );
   TransactionTableData copyWithCompanion(TransactionTableCompanion data) {
     return TransactionTableData(
       id: data.id.present ? data.id.value : this.id,
@@ -190,8 +242,9 @@ class TransactionTableData extends DataClass
       additionalInfo: data.additionalInfo.present
           ? data.additionalInfo.value
           : this.additionalInfo,
-      categoryID:
-          data.categoryID.present ? data.categoryID.value : this.categoryID,
+      categoryID: data.categoryID.present
+          ? data.categoryID.value
+          : this.categoryID,
       accountID: data.accountID.present ? data.accountID.value : this.accountID,
       amount: data.amount.present ? data.amount.value : this.amount,
       recorded: data.recorded.present ? data.recorded.value : this.recorded,
@@ -215,8 +268,16 @@ class TransactionTableData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, title, additionalInfo, categoryID,
-      accountID, amount, recorded, location);
+  int get hashCode => Object.hash(
+    id,
+    title,
+    additionalInfo,
+    categoryID,
+    accountID,
+    amount,
+    recorded,
+    location,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -262,12 +323,12 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
     required DateTime recorded,
     this.location = const Value.absent(),
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        title = Value(title),
-        categoryID = Value(categoryID),
-        accountID = Value(accountID),
-        amount = Value(amount),
-        recorded = Value(recorded);
+  }) : id = Value(id),
+       title = Value(title),
+       categoryID = Value(categoryID),
+       accountID = Value(accountID),
+       amount = Value(amount),
+       recorded = Value(recorded);
   static Insertable<TransactionTableData> custom({
     Expression<String>? id,
     Expression<String>? title,
@@ -292,16 +353,17 @@ class TransactionTableCompanion extends UpdateCompanion<TransactionTableData> {
     });
   }
 
-  TransactionTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? title,
-      Value<String?>? additionalInfo,
-      Value<String>? categoryID,
-      Value<String>? accountID,
-      Value<double>? amount,
-      Value<DateTime>? recorded,
-      Value<String?>? location,
-      Value<int>? rowid}) {
+  TransactionTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? title,
+    Value<String?>? additionalInfo,
+    Value<String>? categoryID,
+    Value<String>? accountID,
+    Value<double>? amount,
+    Value<DateTime>? recorded,
+    Value<String?>? location,
+    Value<int>? rowid,
+  }) {
     return TransactionTableCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -372,29 +434,59 @@ class CategoriesTable extends Table
   final String? _alias;
   CategoriesTable(this.attachedDatabase, [this._alias]);
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<int> iconCodepoint = GeneratedColumn<int>(
-      'icon_codepoint', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'icon_codepoint',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
-      'color', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'color',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<int> order = GeneratedColumn<int>(
-      'order', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
-      'is_archived', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("is_archived" IN (0, 1))'));
+    'is_archived',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_archived" IN (0, 1))',
+    ),
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, iconCodepoint, color, order, isArchived];
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    iconCodepoint,
+    color,
+    order,
+    isArchived,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -406,18 +498,30 @@ class CategoriesTable extends Table
   CategoriesTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CategoriesTableData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      iconCodepoint: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}icon_codepoint'])!,
-      color: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      order: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
-      isArchived: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      iconCodepoint: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}icon_codepoint'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      order: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order'],
+      )!,
+      isArchived: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_archived'],
+      )!,
     );
   }
 
@@ -435,13 +539,14 @@ class CategoriesTableData extends DataClass
   final int color;
   final int order;
   final bool isArchived;
-  const CategoriesTableData(
-      {required this.id,
-      required this.name,
-      required this.iconCodepoint,
-      required this.color,
-      required this.order,
-      required this.isArchived});
+  const CategoriesTableData({
+    required this.id,
+    required this.name,
+    required this.iconCodepoint,
+    required this.color,
+    required this.order,
+    required this.isArchived,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -465,8 +570,10 @@ class CategoriesTableData extends DataClass
     );
   }
 
-  factory CategoriesTableData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory CategoriesTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CategoriesTableData(
       id: serializer.fromJson<String>(json['id']),
@@ -490,21 +597,21 @@ class CategoriesTableData extends DataClass
     };
   }
 
-  CategoriesTableData copyWith(
-          {String? id,
-          String? name,
-          int? iconCodepoint,
-          int? color,
-          int? order,
-          bool? isArchived}) =>
-      CategoriesTableData(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        iconCodepoint: iconCodepoint ?? this.iconCodepoint,
-        color: color ?? this.color,
-        order: order ?? this.order,
-        isArchived: isArchived ?? this.isArchived,
-      );
+  CategoriesTableData copyWith({
+    String? id,
+    String? name,
+    int? iconCodepoint,
+    int? color,
+    int? order,
+    bool? isArchived,
+  }) => CategoriesTableData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    iconCodepoint: iconCodepoint ?? this.iconCodepoint,
+    color: color ?? this.color,
+    order: order ?? this.order,
+    isArchived: isArchived ?? this.isArchived,
+  );
   CategoriesTableData copyWithCompanion(CategoriesTableCompanion data) {
     return CategoriesTableData(
       id: data.id.present ? data.id.value : this.id,
@@ -514,8 +621,9 @@ class CategoriesTableData extends DataClass
           : this.iconCodepoint,
       color: data.color.present ? data.color.value : this.color,
       order: data.order.present ? data.order.value : this.order,
-      isArchived:
-          data.isArchived.present ? data.isArchived.value : this.isArchived,
+      isArchived: data.isArchived.present
+          ? data.isArchived.value
+          : this.isArchived,
     );
   }
 
@@ -572,12 +680,12 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     required int order,
     required bool isArchived,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name),
-        iconCodepoint = Value(iconCodepoint),
-        color = Value(color),
-        order = Value(order),
-        isArchived = Value(isArchived);
+  }) : id = Value(id),
+       name = Value(name),
+       iconCodepoint = Value(iconCodepoint),
+       color = Value(color),
+       order = Value(order),
+       isArchived = Value(isArchived);
   static Insertable<CategoriesTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
@@ -598,14 +706,15 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoriesTableData> {
     });
   }
 
-  CategoriesTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? name,
-      Value<int>? iconCodepoint,
-      Value<int>? color,
-      Value<int>? order,
-      Value<bool>? isArchived,
-      Value<int>? rowid}) {
+  CategoriesTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<int>? iconCodepoint,
+    Value<int>? color,
+    Value<int>? order,
+    Value<bool>? isArchived,
+    Value<int>? rowid,
+  }) {
     return CategoriesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -666,32 +775,67 @@ class AccountsTable extends Table
   final String? _alias;
   AccountsTable(this.attachedDatabase, [this._alias]);
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<int> iconCodepoint = GeneratedColumn<int>(
-      'icon_codepoint', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'icon_codepoint',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
-      'color', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'color',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<double> balance = GeneratedColumn<double>(
-      'balance', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+    'balance',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<int> order = GeneratedColumn<int>(
-      'order', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
-      'is_archived', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("is_archived" IN (0, 1))'));
+    'is_archived',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_archived" IN (0, 1))',
+    ),
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, iconCodepoint, color, balance, order, isArchived];
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    iconCodepoint,
+    color,
+    balance,
+    order,
+    isArchived,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -703,20 +847,34 @@ class AccountsTable extends Table
   AccountsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return AccountsTableData(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      iconCodepoint: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}icon_codepoint'])!,
-      color: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      balance: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}balance'])!,
-      order: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
-      isArchived: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      iconCodepoint: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}icon_codepoint'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      balance: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}balance'],
+      )!,
+      order: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order'],
+      )!,
+      isArchived: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_archived'],
+      )!,
     );
   }
 
@@ -735,14 +893,15 @@ class AccountsTableData extends DataClass
   final double balance;
   final int order;
   final bool isArchived;
-  const AccountsTableData(
-      {required this.id,
-      required this.name,
-      required this.iconCodepoint,
-      required this.color,
-      required this.balance,
-      required this.order,
-      required this.isArchived});
+  const AccountsTableData({
+    required this.id,
+    required this.name,
+    required this.iconCodepoint,
+    required this.color,
+    required this.balance,
+    required this.order,
+    required this.isArchived,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -768,8 +927,10 @@ class AccountsTableData extends DataClass
     );
   }
 
-  factory AccountsTableData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory AccountsTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AccountsTableData(
       id: serializer.fromJson<String>(json['id']),
@@ -795,23 +956,23 @@ class AccountsTableData extends DataClass
     };
   }
 
-  AccountsTableData copyWith(
-          {String? id,
-          String? name,
-          int? iconCodepoint,
-          int? color,
-          double? balance,
-          int? order,
-          bool? isArchived}) =>
-      AccountsTableData(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        iconCodepoint: iconCodepoint ?? this.iconCodepoint,
-        color: color ?? this.color,
-        balance: balance ?? this.balance,
-        order: order ?? this.order,
-        isArchived: isArchived ?? this.isArchived,
-      );
+  AccountsTableData copyWith({
+    String? id,
+    String? name,
+    int? iconCodepoint,
+    int? color,
+    double? balance,
+    int? order,
+    bool? isArchived,
+  }) => AccountsTableData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    iconCodepoint: iconCodepoint ?? this.iconCodepoint,
+    color: color ?? this.color,
+    balance: balance ?? this.balance,
+    order: order ?? this.order,
+    isArchived: isArchived ?? this.isArchived,
+  );
   AccountsTableData copyWithCompanion(AccountsTableCompanion data) {
     return AccountsTableData(
       id: data.id.present ? data.id.value : this.id,
@@ -822,8 +983,9 @@ class AccountsTableData extends DataClass
       color: data.color.present ? data.color.value : this.color,
       balance: data.balance.present ? data.balance.value : this.balance,
       order: data.order.present ? data.order.value : this.order,
-      isArchived:
-          data.isArchived.present ? data.isArchived.value : this.isArchived,
+      isArchived: data.isArchived.present
+          ? data.isArchived.value
+          : this.isArchived,
     );
   }
 
@@ -885,13 +1047,13 @@ class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
     required int order,
     required bool isArchived,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name),
-        iconCodepoint = Value(iconCodepoint),
-        color = Value(color),
-        balance = Value(balance),
-        order = Value(order),
-        isArchived = Value(isArchived);
+  }) : id = Value(id),
+       name = Value(name),
+       iconCodepoint = Value(iconCodepoint),
+       color = Value(color),
+       balance = Value(balance),
+       order = Value(order),
+       isArchived = Value(isArchived);
   static Insertable<AccountsTableData> custom({
     Expression<String>? id,
     Expression<String>? name,
@@ -914,15 +1076,16 @@ class AccountsTableCompanion extends UpdateCompanion<AccountsTableData> {
     });
   }
 
-  AccountsTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? name,
-      Value<int>? iconCodepoint,
-      Value<int>? color,
-      Value<double>? balance,
-      Value<int>? order,
-      Value<bool>? isArchived,
-      Value<int>? rowid}) {
+  AccountsTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<int>? iconCodepoint,
+    Value<int>? color,
+    Value<double>? balance,
+    Value<int>? order,
+    Value<bool>? isArchived,
+    Value<int>? rowid,
+  }) {
     return AccountsTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -990,8 +1153,11 @@ class DatabaseAtV1 extends GeneratedDatabase {
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [transactionTable, categoriesTable, accountsTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    transactionTable,
+    categoriesTable,
+    accountsTable,
+  ];
   @override
   int get schemaVersion => 1;
 }

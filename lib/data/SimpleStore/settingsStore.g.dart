@@ -40,7 +40,7 @@ final class CurrProvider extends $NotifierProvider<Curr, Currency> {
   }
 }
 
-String _$currHash() => r'dc2711bd1559c981bca0bf6b84f60059c8a036cc';
+String _$currHash() => r'cc606d215b73453f87ac4f41b2f9e582db54261d';
 
 abstract class _$Curr extends $Notifier<Currency> {
   Currency build();
@@ -92,7 +92,7 @@ final class TransDeleteProvider extends $NotifierProvider<TransDelete, bool> {
   }
 }
 
-String _$transDeleteHash() => r'82c695b0ee8a6e1e1cfe4cd7ffc882570e46f35b';
+String _$transDeleteHash() => r'de6ae90e06b6d7da27fbb05e9d1cc6563f24e661';
 
 abstract class _$TransDelete extends $Notifier<bool> {
   bool build();
@@ -145,7 +145,7 @@ final class ChipsMultiLineProvider
   }
 }
 
-String _$chipsMultiLineHash() => r'16097a1b70b86d543e81eee96939358522d269e5';
+String _$chipsMultiLineHash() => r'6b9fe42a383120e90406a175f646dcafd2aad888';
 
 abstract class _$ChipsMultiLine extends $Notifier<bool> {
   bool build();
@@ -197,7 +197,7 @@ final class ShowLocationProvider extends $NotifierProvider<ShowLocation, bool> {
   }
 }
 
-String _$showLocationHash() => r'0aeec792d0238bf501ad07d938c57cb64a3bb71a';
+String _$showLocationHash() => r'3576bc8d9d0317491c1228527e4e4418f202e07a';
 
 abstract class _$ShowLocation extends $Notifier<bool> {
   bool build();
@@ -250,7 +250,7 @@ final class ColorMapIconsProvider
   }
 }
 
-String _$colorMapIconsHash() => r'a2d2d427ebfbbf664ad8745245265813533f9e54';
+String _$colorMapIconsHash() => r'66b52c4739041116ad251e786216abd4b7c1e19e';
 
 abstract class _$ColorMapIcons extends $Notifier<bool> {
   bool build();
@@ -302,7 +302,7 @@ final class InitialPageProvider extends $NotifierProvider<InitialPage, int> {
   }
 }
 
-String _$initialPageHash() => r'a323cf0b2377503c514d58adf859c2b561d2a655';
+String _$initialPageHash() => r'1715fd2619f6c5a3c191135c3c449f36598240ee';
 
 abstract class _$InitialPage extends $Notifier<int> {
   int build();

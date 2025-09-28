@@ -40,7 +40,7 @@ final class ThemeColorProvider extends $NotifierProvider<ThemeColor, Color> {
   }
 }
 
-String _$themeColorHash() => r'0c2b0f7bc9b55c9213d8ef7136110ff1120c7208';
+String _$themeColorHash() => r'4a2af7394b58fa8015cc72d113d346ff3f5220e2';
 
 abstract class _$ThemeColor extends $Notifier<Color> {
   Color build();
@@ -92,7 +92,7 @@ final class BrightProvider extends $NotifierProvider<Bright, Brightness> {
   }
 }
 
-String _$brightHash() => r'405350768bad8b5219e7593d136aa91fd2fe296d';
+String _$brightHash() => r'4e93d89a9a9be91ee223b5fedf02e33054551526';
 
 abstract class _$Bright extends $Notifier<Brightness> {
   Brightness build();
@@ -144,7 +144,7 @@ final class DynamicColorProvider extends $NotifierProvider<DynamicColor, bool> {
   }
 }
 
-String _$dynamicColorHash() => r'0e4ea67ae3259d32e57e5400783809405dfd0ba9';
+String _$dynamicColorHash() => r'baff793c31f32aaf9ab9836646cfcba7c5106910';
 
 abstract class _$DynamicColor extends $Notifier<bool> {
   bool build();

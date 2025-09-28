@@ -90,9 +90,13 @@ class InitialCenter extends _$InitialCenter {
         next.latitude,
       ]),
     );
-    GetStorage().read<List<double>>("mapCenter") ??
+    // ? Can't specify the type otherwise it errors out
+    GetStorage().read<List<dynamic>>("mapCenter") ??
         GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
-    final List<double> longlat = GetStorage().read("mapCenter") as List<double>;
+    final List<double> longlat = GetStorage()
+        .read<List<dynamic>>("mapCenter")!
+        .map((e) => e as double)
+        .toList();
     return LatLng(longlat.last, longlat.first);
   }
 
