@@ -39,7 +39,7 @@ class EntriesTutorialCompleted extends _$EntriesTutorialCompleted {
     listenSelf(
       (previous, next) => GetStorage().write("entriesTutorialCompleted", next),
     );
-    GetStorage().read("entriesTutorialCompleted") ??
+    GetStorage().read<bool>("entriesTutorialCompleted") ??
         GetStorage().write("entriesTutorialCompleted", false);
     return GetStorage().read("entriesTutorialCompleted") as bool;
   }
@@ -68,7 +68,7 @@ class ManageTutorialCompleted extends _$ManageTutorialCompleted {
     listenSelf(
       (previous, next) => GetStorage().write("manageTutorialCompleted", next),
     );
-    GetStorage().read("manageTutorialCompleted") ??
+    GetStorage().read<bool>("manageTutorialCompleted") ??
         GetStorage().write("manageTutorialCompleted", false);
     return GetStorage().read("manageTutorialCompleted") as bool;
   }
@@ -102,7 +102,7 @@ class AnalysisTutorialCompleted extends _$AnalysisTutorialCompleted {
     listenSelf(
       (previous, next) => GetStorage().write("analysisTutorialCompleted", next),
     );
-    GetStorage().read("analysisTutorialCompleted") ??
+    GetStorage().read<bool>("analysisTutorialCompleted") ??
         GetStorage().write("analysisTutorialCompleted", false);
     return GetStorage().read("analysisTutorialCompleted") as bool;
   }

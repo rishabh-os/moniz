@@ -90,7 +90,7 @@ class InitialCenter extends _$InitialCenter {
         next.latitude,
       ]),
     );
-    GetStorage().read("mapCenter") ??
+    GetStorage().read<List<double>>("mapCenter") ??
         GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
     final List<double> longlat = GetStorage().read("mapCenter") as List<double>;
     return LatLng(longlat.last, longlat.first);

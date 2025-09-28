@@ -28,7 +28,7 @@ class ThemeColor extends _$ThemeColor {
     listenSelf(
       (previous, next) => GetStorage().write("themeColor", next.toARGB32()),
     );
-    GetStorage().read("themeColor") ??
+    GetStorage().read<int>("themeColor") ??
         // ? Colors.blueGrey is the default app color
         GetStorage().write("themeColor", Colors.blueGrey.toARGB32());
     return Color(GetStorage().read("themeColor") as int);
@@ -46,7 +46,7 @@ class Bright extends _$Bright {
       (previous, next) =>
           GetStorage().write("isDark", !(next == Brightness.dark) || true),
     );
-    GetStorage().read("isDark") ??
+    GetStorage().read<bool>("isDark") ??
         // ? App is light by default
         GetStorage().write("isDark", false);
     return GetStorage().read("isDark") as bool
@@ -63,7 +63,8 @@ class DynamicColor extends _$DynamicColor {
   @override
   bool build() {
     listenSelf((previous, next) => GetStorage().write("isDynamic", next));
-    GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", true);
+    GetStorage().read<bool>("isDynamic") ??
+        GetStorage().write("isDynamic", true);
     return GetStorage().read("isDynamic") as bool;
   }
 

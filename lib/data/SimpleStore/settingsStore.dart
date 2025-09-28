@@ -14,7 +14,8 @@ class Curr extends _$Curr {
   Currency build() {
     // ? Only save the name of the currency
     listenSelf((previous, next) => GetStorage().write("currency", next.code));
-    GetStorage().read("currency") ?? GetStorage().write("currency", "INR");
+    GetStorage().read<String>("currency") ??
+        GetStorage().write("currency", "INR");
     final Map<String, dynamic> m = currencies.firstWhere(
       (element) => element["code"] == GetStorage().read("currency") as String,
       // ? This should never happen, but just in case
@@ -34,7 +35,7 @@ class TransDelete extends _$TransDelete {
     listenSelf(
       (previous, next) => GetStorage().write("transDeleteConfirmation", next),
     );
-    GetStorage().read("transDeleteConfirmation") ??
+    GetStorage().read<bool>("transDeleteConfirmation") ??
         GetStorage().write("transDeleteConfirmation", true);
     return GetStorage().read("transDeleteConfirmation") as bool;
   }
@@ -48,7 +49,7 @@ class ChipsMultiLine extends _$ChipsMultiLine {
   @override
   bool build() {
     listenSelf((previous, next) => GetStorage().write("chipsMultiLine", next));
-    GetStorage().read("chipsMultiLine") ??
+    GetStorage().read<bool>("chipsMultiLine") ??
         GetStorage().write("chipsMultiLine", true);
     return GetStorage().read("chipsMultiLine") as bool;
   }
@@ -62,7 +63,7 @@ class ShowLocation extends _$ShowLocation {
   @override
   bool build() {
     listenSelf((previous, next) => GetStorage().write("showLocation", next));
-    GetStorage().read("showLocation") ??
+    GetStorage().read<bool>("showLocation") ??
         GetStorage().write("showLocation", true);
     return GetStorage().read("showLocation") as bool;
   }
@@ -76,7 +77,7 @@ class ColorMapIcons extends _$ColorMapIcons {
   @override
   bool build() {
     listenSelf((previous, next) => GetStorage().write("colorMapIcons", next));
-    GetStorage().read("colorMapIcons") ??
+    GetStorage().read<bool>("colorMapIcons") ??
         GetStorage().write("colorMapIcons", true);
     return GetStorage().read("colorMapIcons") as bool;
   }
@@ -90,7 +91,8 @@ class InitialPage extends _$InitialPage {
   @override
   int build() {
     listenSelf((previous, next) => GetStorage().write("initialPage", next));
-    GetStorage().read("initialPage") ?? GetStorage().write("initialPage", 0);
+    GetStorage().read<int>("initialPage") ??
+        GetStorage().write("initialPage", 0);
     return GetStorage().read("initialPage") as int;
   }
 

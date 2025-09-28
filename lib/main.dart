@@ -131,7 +131,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           theme: theme,
           debugShowCheckedModeBanner: false,
           builder: FToastBuilder(),
-          initialRoute: GetStorage().read("welcome") == null
+          initialRoute: GetStorage().read<bool>("welcome") == null
               ? "/welcome"
               : "/home",
           routes: {
