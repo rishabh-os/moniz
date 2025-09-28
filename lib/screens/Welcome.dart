@@ -43,9 +43,7 @@ class _WelcomeState extends ConsumerState<Welcome> {
           title: "Tutorial",
           body:
               "Proceed to start the tutorial.\nOr you can go back and skip it.",
-          image: const Center(
-            child: Icon(Icons.school_rounded, size: 100.0),
-          ),
+          image: const Center(child: Icon(Icons.school_rounded, size: 100.0)),
         ),
       ],
     );

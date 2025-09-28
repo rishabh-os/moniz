@@ -46,11 +46,13 @@ class _ClusterMapState extends ConsumerState<ClusterMap>
               point: LatLng(lat, lon),
               child: MarkerIcon(
                 color: colorMapIcons
-                    ? Color(categories
-                        .firstWhere(
-                          (element) => element.id == trans.categoryID,
-                        )
-                        .color)
+                    ? Color(
+                        categories
+                            .firstWhere(
+                              (element) => element.id == trans.categoryID,
+                            )
+                            .color,
+                      )
                     : null,
               ),
             ),
@@ -65,9 +67,7 @@ class _ClusterMapState extends ConsumerState<ClusterMap>
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text(
-              "Location available data for",
-            ),
+            title: const Text("Location available data for"),
             trailing: FilterChip(
               label: Text("${markers.length}/${transactions.length} "),
               onSelected: (value) {},
@@ -92,10 +92,14 @@ class _ClusterMapState extends ConsumerState<ClusterMap>
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: colorMapIcons
-                              ? averageColors(markers
-                                  // ? Can't be null because I always assign it above
-                                  .map((e) => (e.child as MarkerIcon).color!)
-                                  .toList())
+                              ? averageColors(
+                                  markers
+                                      // ? Can't be null because I always assign it above
+                                      .map(
+                                        (e) => (e.child as MarkerIcon).color!,
+                                      )
+                                      .toList(),
+                                )
                               : Theme.of(context).colorScheme.primary,
                           boxShadow: [
                             BoxShadow(
@@ -107,12 +111,11 @@ class _ClusterMapState extends ConsumerState<ClusterMap>
                         child: Center(
                           child: Text(
                             markers.length.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
+                            style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                 ),
                           ),
                         ),

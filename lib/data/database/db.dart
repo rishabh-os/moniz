@@ -57,15 +57,14 @@ class MyDatabase extends _$MyDatabase {
   MyDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
 
   Future<List<TransactionCategory>> findAnimalsByLegs(int legCount) {
-    return (select(categoriesTable)
-          ..where(
-            (a) =>
-                a.name.contains("Default") |
-                a.name.contains("Food") |
-                a.name.contains("Rent") |
-                a.name.contains("Shopping") |
-                a.name.contains("Utility"),
-          ))
+    return (select(categoriesTable)..where(
+          (a) =>
+              a.name.contains("Default") |
+              a.name.contains("Food") |
+              a.name.contains("Rent") |
+              a.name.contains("Shopping") |
+              a.name.contains("Utility"),
+        ))
         .get();
   }
 
@@ -143,7 +142,7 @@ class MyDatabase extends _$MyDatabase {
     // print('Accounts in database: $allAccounts');
   }
 
-  Future updateAccount(Account target) {
+  Future<int> updateAccount(Account target) {
     return (update(accountsTable)..where((t) => t.id.equals(target.id))).write(
       AccountsTableCompanion(
         name: Value(target.name),
@@ -156,9 +155,10 @@ class MyDatabase extends _$MyDatabase {
     );
   }
 
-  Future updateCategory(TransactionCategory target) {
-    return (update(categoriesTable)..where((t) => t.id.equals(target.id)))
-        .write(
+  Future<int> updateCategory(TransactionCategory target) {
+    return (update(
+      categoriesTable,
+    )..where((t) => t.id.equals(target.id))).write(
       CategoriesTableCompanion(
         name: Value(target.name),
         iconCodepoint: Value(target.iconCodepoint),
@@ -169,9 +169,10 @@ class MyDatabase extends _$MyDatabase {
     );
   }
 
-  Future updateTransaction(Transaction target) {
-    return (update(transactionTable)..where((t) => t.id.equals(target.id)))
-        .write(
+  Future<int> updateTransaction(Transaction target) {
+    return (update(
+      transactionTable,
+    )..where((t) => t.id.equals(target.id))).write(
       TransactionTableCompanion(
         title: Value(target.title),
         additionalInfo: Value(target.additionalInfo),
@@ -189,31 +190,44 @@ class MyDatabase extends _$MyDatabase {
   int get schemaVersion => 2;
 
   @override
-  MigrationStrategy get migration =>
-      MigrationStrategy(onUpgrade: stepByStep(from1To2: (m, schema) async {
-        await m.alterTable(TableMigration(transactionTable, columnTransformer: {
-          transactionTable.amount:
-              const CustomExpression<int>("(amount * 100)").cast<int>(),
-        }));
-        await m.alterTable(TableMigration(accountsTable, columnTransformer: {
-          accountsTable.balance:
-              const CustomExpression<int>("(balance * 100)").cast<int>(),
-        }));
-      }));
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: stepByStep(
+      from1To2: (m, schema) async {
+        await m.alterTable(
+          TableMigration(
+            transactionTable,
+            columnTransformer: {
+              transactionTable.amount: const CustomExpression<int>(
+                "(amount * 100)",
+              ).cast<int>(),
+            },
+          ),
+        );
+        await m.alterTable(
+          TableMigration(
+            accountsTable,
+            columnTransformer: {
+              accountsTable.balance: const CustomExpression<int>(
+                "(balance * 100)",
+              ).cast<int>(),
+            },
+          ),
+        );
+      },
+    ),
+  );
 
   Future<void> shareDB() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final dbXFile = XFile(p.join(dbFolder.path, "db.sqlite"));
-    SharePlus.instance.share(
-      ShareParams(files: [dbXFile]),
-    );
+    SharePlus.instance.share(ShareParams(files: [dbXFile]));
   }
 
   Future<bool> importDB() async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        // type: FileType.custom,
-        // allowedExtensions: ["sqlite"],
-        );
+      // type: FileType.custom,
+      // allowedExtensions: ["sqlite"],
+    );
 
     if (result != null) {
       final File file = File(result.files.single.path!);

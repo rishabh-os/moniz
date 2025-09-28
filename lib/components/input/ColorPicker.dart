@@ -2,12 +2,9 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 class ColorPicker extends ConsumerStatefulWidget {
-  const ColorPicker({
-    super.key,
-    required this.colorCallback,
-  });
+  const ColorPicker({super.key, required this.colorCallback});
 
-  final Function(Color selectedColor) colorCallback;
+  final void Function(Color selectedColor) colorCallback;
   @override
   ConsumerState<ColorPicker> createState() => _ColorPickerState();
 }
@@ -35,9 +32,7 @@ class _ColorPickerState extends ConsumerState<ColorPicker> {
                 backgroundColor: WidgetStatePropertyAll(listOfColors[index]),
               ),
               onPressed: () => widget.colorCallback(listOfColors[index]),
-              icon: Container(
-                width: 2,
-              ),
+              icon: Container(width: 2),
             ),
             growable: false,
           ),

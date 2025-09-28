@@ -15,15 +15,15 @@ const entriesTutorialCompletedProvider = EntriesTutorialCompletedProvider._();
 final class EntriesTutorialCompletedProvider
     extends $NotifierProvider<EntriesTutorialCompleted, bool> {
   const EntriesTutorialCompletedProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'entriesTutorialCompletedProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'entriesTutorialCompletedProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$entriesTutorialCompletedHash();
@@ -51,8 +51,14 @@ abstract class _$EntriesTutorialCompleted extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -63,15 +69,15 @@ const manageTutorialCompletedProvider = ManageTutorialCompletedProvider._();
 final class ManageTutorialCompletedProvider
     extends $NotifierProvider<ManageTutorialCompleted, bool> {
   const ManageTutorialCompletedProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'manageTutorialCompletedProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'manageTutorialCompletedProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$manageTutorialCompletedHash();
@@ -99,8 +105,14 @@ abstract class _$ManageTutorialCompleted extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -111,15 +123,15 @@ const analysisTutorialCompletedProvider = AnalysisTutorialCompletedProvider._();
 final class AnalysisTutorialCompletedProvider
     extends $NotifierProvider<AnalysisTutorialCompleted, bool> {
   const AnalysisTutorialCompletedProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'analysisTutorialCompletedProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'analysisTutorialCompletedProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$analysisTutorialCompletedHash();
@@ -147,8 +159,14 @@ abstract class _$AnalysisTutorialCompleted extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

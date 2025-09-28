@@ -49,9 +49,7 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(
-          height: 40,
-        ),
+        const SizedBox(height: 40),
         const Header(text: "Pick your theme"),
         AnimatedSizeAndFade.showHide(
           show: !isDynamic,
@@ -87,8 +85,9 @@ class _ThemePickerState extends ConsumerState<ThemePicker> {
           title: const Text("Dark Mode"),
           value: isDark,
           onChanged: (value) {
-            ref.watch(brightProvider.notifier).state =
-                isDark ? Brightness.light : Brightness.dark;
+            ref.watch(brightProvider.notifier).state = isDark
+                ? Brightness.light
+                : Brightness.dark;
 
             setState(() {
               isDark = value;

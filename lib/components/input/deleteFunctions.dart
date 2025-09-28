@@ -12,7 +12,7 @@ SnackBar deleteSnack(
     action: SnackBarAction(
       label: "Delete",
       onPressed: () => {
-        showDialog(
+        showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text("Are you sure?"),

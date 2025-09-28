@@ -15,15 +15,15 @@ const transactionsProvider = TransactionsProvider._();
 final class TransactionsProvider
     extends $NotifierProvider<Transactions, List<Transaction>> {
   const TransactionsProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'transactionsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'transactionsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$transactionsHash();
@@ -50,11 +50,14 @@ abstract class _$Transactions extends $Notifier<List<Transaction>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<List<Transaction>, List<Transaction>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<Transaction>, List<Transaction>>,
-        List<Transaction>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<Transaction>, List<Transaction>>,
+              List<Transaction>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -65,15 +68,15 @@ const searchedTransProvider = SearchedTransProvider._();
 final class SearchedTransProvider
     extends $NotifierProvider<SearchedTrans, List<Transaction>> {
   const SearchedTransProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'searchedTransProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'searchedTransProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$searchedTransHash();
@@ -100,11 +103,14 @@ abstract class _$SearchedTrans extends $Notifier<List<Transaction>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<List<Transaction>, List<Transaction>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<Transaction>, List<Transaction>>,
-        List<Transaction>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<Transaction>, List<Transaction>>,
+              List<Transaction>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

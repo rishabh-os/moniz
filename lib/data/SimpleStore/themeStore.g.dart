@@ -14,15 +14,15 @@ const themeColorProvider = ThemeColorProvider._();
 
 final class ThemeColorProvider extends $NotifierProvider<ThemeColor, Color> {
   const ThemeColorProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'themeColorProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'themeColorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$themeColorHash();
@@ -49,8 +49,14 @@ abstract class _$ThemeColor extends $Notifier<Color> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Color, Color>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Color, Color>, Color, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Color, Color>,
+              Color,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -60,15 +66,15 @@ const brightProvider = BrightProvider._();
 
 final class BrightProvider extends $NotifierProvider<Bright, Brightness> {
   const BrightProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'brightProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'brightProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$brightHash();
@@ -95,8 +101,14 @@ abstract class _$Bright extends $Notifier<Brightness> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Brightness, Brightness>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Brightness, Brightness>, Brightness, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Brightness, Brightness>,
+              Brightness,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -106,15 +118,15 @@ const dynamicColorProvider = DynamicColorProvider._();
 
 final class DynamicColorProvider extends $NotifierProvider<DynamicColor, bool> {
   const DynamicColorProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'dynamicColorProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dynamicColorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$dynamicColorHash();
@@ -141,8 +153,14 @@ abstract class _$DynamicColor extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

@@ -12,67 +12,104 @@ class $TransactionTableTable extends TransactionTable
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _additionalInfoMeta =
-      const VerificationMeta('additionalInfo');
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _additionalInfoMeta = const VerificationMeta(
+    'additionalInfo',
+  );
   @override
   late final GeneratedColumn<String> additionalInfo = GeneratedColumn<String>(
-      'additional_info', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _categoryIDMeta =
-      const VerificationMeta('categoryID');
+    'additional_info',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _categoryIDMeta = const VerificationMeta(
+    'categoryID',
+  );
   @override
   late final GeneratedColumn<String> categoryID = GeneratedColumn<String>(
-      'category_i_d', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _accountIDMeta =
-      const VerificationMeta('accountID');
+    'category_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accountIDMeta = const VerificationMeta(
+    'accountID',
+  );
   @override
   late final GeneratedColumn<String> accountID = GeneratedColumn<String>(
-      'account_i_d', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'account_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
-      'amount', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _recordedMeta =
-      const VerificationMeta('recorded');
+    'amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _recordedMeta = const VerificationMeta(
+    'recorded',
+  );
   @override
   late final GeneratedColumn<DateTime> recorded = GeneratedColumn<DateTime>(
-      'recorded', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+    'recorded',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<GMapsPlace?, String> location =
-      GeneratedColumn<String>('location', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<GMapsPlace?>(
-              $TransactionTableTable.$converterlocationn);
+      GeneratedColumn<String>(
+        'location',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<GMapsPlace?>($TransactionTableTable.$converterlocationn);
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        title,
-        additionalInfo,
-        categoryID,
-        accountID,
-        amount,
-        recorded,
-        location
-      ];
+    id,
+    title,
+    additionalInfo,
+    categoryID,
+    accountID,
+    amount,
+    recorded,
+    location,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'transaction_table';
   @override
-  VerificationContext validateIntegrity(Insertable<Transaction> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Transaction> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -82,41 +119,53 @@ class $TransactionTableTable extends TransactionTable
     }
     if (data.containsKey('title')) {
       context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('additional_info')) {
       context.handle(
+        _additionalInfoMeta,
+        additionalInfo.isAcceptableOrUnknown(
+          data['additional_info']!,
           _additionalInfoMeta,
-          additionalInfo.isAcceptableOrUnknown(
-              data['additional_info']!, _additionalInfoMeta));
+        ),
+      );
     }
     if (data.containsKey('category_i_d')) {
       context.handle(
+        _categoryIDMeta,
+        categoryID.isAcceptableOrUnknown(
+          data['category_i_d']!,
           _categoryIDMeta,
-          categoryID.isAcceptableOrUnknown(
-              data['category_i_d']!, _categoryIDMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_categoryIDMeta);
     }
     if (data.containsKey('account_i_d')) {
       context.handle(
-          _accountIDMeta,
-          accountID.isAcceptableOrUnknown(
-              data['account_i_d']!, _accountIDMeta));
+        _accountIDMeta,
+        accountID.isAcceptableOrUnknown(data['account_i_d']!, _accountIDMeta),
+      );
     } else if (isInserting) {
       context.missing(_accountIDMeta);
     }
     if (data.containsKey('amount')) {
-      context.handle(_amountMeta,
-          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+      context.handle(
+        _amountMeta,
+        amount.isAcceptableOrUnknown(data['amount']!, _amountMeta),
+      );
     } else if (isInserting) {
       context.missing(_amountMeta);
     }
     if (data.containsKey('recorded')) {
-      context.handle(_recordedMeta,
-          recorded.isAcceptableOrUnknown(data['recorded']!, _recordedMeta));
+      context.handle(
+        _recordedMeta,
+        recorded.isAcceptableOrUnknown(data['recorded']!, _recordedMeta),
+      );
     } else if (isInserting) {
       context.missing(_recordedMeta);
     }
@@ -129,23 +178,40 @@ class $TransactionTableTable extends TransactionTable
   Transaction map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Transaction(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      additionalInfo: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}additional_info']),
-      categoryID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category_i_d'])!,
-      accountID: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}account_i_d'])!,
-      amount: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}amount'])!,
-      recorded: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}recorded'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      additionalInfo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}additional_info'],
+      ),
+      categoryID: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_i_d'],
+      )!,
+      accountID: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_i_d'],
+      )!,
+      amount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount'],
+      )!,
+      recorded: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded'],
+      )!,
       location: $TransactionTableTable.$converterlocationn.fromSql(
-          attachedDatabase.typeMapping
-              .read(DriftSqlType.string, data['${effectivePrefix}location'])),
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}location'],
+        ),
+      ),
     );
   }
 
@@ -191,12 +257,12 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     required DateTime recorded,
     this.location = const Value.absent(),
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        title = Value(title),
-        categoryID = Value(categoryID),
-        accountID = Value(accountID),
-        amount = Value(amount),
-        recorded = Value(recorded);
+  }) : id = Value(id),
+       title = Value(title),
+       categoryID = Value(categoryID),
+       accountID = Value(accountID),
+       amount = Value(amount),
+       recorded = Value(recorded);
   static Insertable<Transaction> custom({
     Expression<String>? id,
     Expression<String>? title,
@@ -221,16 +287,17 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     });
   }
 
-  TransactionTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? title,
-      Value<String?>? additionalInfo,
-      Value<String>? categoryID,
-      Value<String>? accountID,
-      Value<int>? amount,
-      Value<DateTime>? recorded,
-      Value<GMapsPlace?>? location,
-      Value<int>? rowid}) {
+  TransactionTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? title,
+    Value<String?>? additionalInfo,
+    Value<String>? categoryID,
+    Value<String>? accountID,
+    Value<int>? amount,
+    Value<DateTime>? recorded,
+    Value<GMapsPlace?>? location,
+    Value<int>? rowid,
+  }) {
     return TransactionTableCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -270,7 +337,8 @@ class TransactionTableCompanion extends UpdateCompanion<Transaction> {
     }
     if (location.present) {
       map['location'] = Variable<String>(
-          $TransactionTableTable.$converterlocationn.toSql(location.value));
+        $TransactionTableTable.$converterlocationn.toSql(location.value),
+      );
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -304,41 +372,73 @@ class $CategoriesTableTable extends CategoriesTable
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _iconCodepointMeta =
-      const VerificationMeta('iconCodepoint');
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _iconCodepointMeta = const VerificationMeta(
+    'iconCodepoint',
+  );
   @override
   late final GeneratedColumn<int> iconCodepoint = GeneratedColumn<int>(
-      'icon_codepoint', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'icon_codepoint',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
-      'color', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'color',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _orderMeta = const VerificationMeta('order');
   @override
   late final GeneratedColumn<int> order = GeneratedColumn<int>(
-      'order', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _isArchivedMeta =
-      const VerificationMeta('isArchived');
+    'order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isArchivedMeta = const VerificationMeta(
+    'isArchived',
+  );
   @override
   late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
-      'is_archived', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("is_archived" IN (0, 1))'));
+    'is_archived',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_archived" IN (0, 1))',
+    ),
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, iconCodepoint, color, order, isArchived];
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    iconCodepoint,
+    color,
+    order,
+    isArchived,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -346,8 +446,9 @@ class $CategoriesTableTable extends CategoriesTable
   static const String $name = 'categories_table';
   @override
   VerificationContext validateIntegrity(
-      Insertable<TransactionCategory> instance,
-      {bool isInserting = false}) {
+    Insertable<TransactionCategory> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -357,35 +458,44 @@ class $CategoriesTableTable extends CategoriesTable
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('icon_codepoint')) {
       context.handle(
+        _iconCodepointMeta,
+        iconCodepoint.isAcceptableOrUnknown(
+          data['icon_codepoint']!,
           _iconCodepointMeta,
-          iconCodepoint.isAcceptableOrUnknown(
-              data['icon_codepoint']!, _iconCodepointMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_iconCodepointMeta);
     }
     if (data.containsKey('color')) {
       context.handle(
-          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
     if (data.containsKey('order')) {
       context.handle(
-          _orderMeta, order.isAcceptableOrUnknown(data['order']!, _orderMeta));
+        _orderMeta,
+        order.isAcceptableOrUnknown(data['order']!, _orderMeta),
+      );
     } else if (isInserting) {
       context.missing(_orderMeta);
     }
     if (data.containsKey('is_archived')) {
       context.handle(
-          _isArchivedMeta,
-          isArchived.isAcceptableOrUnknown(
-              data['is_archived']!, _isArchivedMeta));
+        _isArchivedMeta,
+        isArchived.isAcceptableOrUnknown(data['is_archived']!, _isArchivedMeta),
+      );
     } else if (isInserting) {
       context.missing(_isArchivedMeta);
     }
@@ -398,18 +508,30 @@ class $CategoriesTableTable extends CategoriesTable
   TransactionCategory map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TransactionCategory(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      iconCodepoint: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}icon_codepoint'])!,
-      color: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      order: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
-      isArchived: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      iconCodepoint: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}icon_codepoint'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      order: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order'],
+      )!,
+      isArchived: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_archived'],
+      )!,
     );
   }
 
@@ -444,12 +566,12 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
     required int order,
     required bool isArchived,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name),
-        iconCodepoint = Value(iconCodepoint),
-        color = Value(color),
-        order = Value(order),
-        isArchived = Value(isArchived);
+  }) : id = Value(id),
+       name = Value(name),
+       iconCodepoint = Value(iconCodepoint),
+       color = Value(color),
+       order = Value(order),
+       isArchived = Value(isArchived);
   static Insertable<TransactionCategory> custom({
     Expression<String>? id,
     Expression<String>? name,
@@ -470,14 +592,15 @@ class CategoriesTableCompanion extends UpdateCompanion<TransactionCategory> {
     });
   }
 
-  CategoriesTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? name,
-      Value<int>? iconCodepoint,
-      Value<int>? color,
-      Value<int>? order,
-      Value<bool>? isArchived,
-      Value<int>? rowid}) {
+  CategoriesTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<int>? iconCodepoint,
+    Value<int>? color,
+    Value<int>? order,
+    Value<bool>? isArchived,
+    Value<int>? rowid,
+  }) {
     return CategoriesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -540,55 +663,95 @@ class $AccountsTableTable extends AccountsTable
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _iconCodepointMeta =
-      const VerificationMeta('iconCodepoint');
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _iconCodepointMeta = const VerificationMeta(
+    'iconCodepoint',
+  );
   @override
   late final GeneratedColumn<int> iconCodepoint = GeneratedColumn<int>(
-      'icon_codepoint', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'icon_codepoint',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
-      'color', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _balanceMeta =
-      const VerificationMeta('balance');
+    'color',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _balanceMeta = const VerificationMeta(
+    'balance',
+  );
   @override
   late final GeneratedColumn<int> balance = GeneratedColumn<int>(
-      'balance', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'balance',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _orderMeta = const VerificationMeta('order');
   @override
   late final GeneratedColumn<int> order = GeneratedColumn<int>(
-      'order', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _isArchivedMeta =
-      const VerificationMeta('isArchived');
+    'order',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isArchivedMeta = const VerificationMeta(
+    'isArchived',
+  );
   @override
   late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
-      'is_archived', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'CHECK ("is_archived" IN (0, 1))'));
+    'is_archived',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_archived" IN (0, 1))',
+    ),
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, name, iconCodepoint, color, balance, order, isArchived];
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    iconCodepoint,
+    color,
+    balance,
+    order,
+    isArchived,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'accounts_table';
   @override
-  VerificationContext validateIntegrity(Insertable<Account> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Account> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -598,41 +761,52 @@ class $AccountsTableTable extends AccountsTable
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('icon_codepoint')) {
       context.handle(
+        _iconCodepointMeta,
+        iconCodepoint.isAcceptableOrUnknown(
+          data['icon_codepoint']!,
           _iconCodepointMeta,
-          iconCodepoint.isAcceptableOrUnknown(
-              data['icon_codepoint']!, _iconCodepointMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_iconCodepointMeta);
     }
     if (data.containsKey('color')) {
       context.handle(
-          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
     if (data.containsKey('balance')) {
-      context.handle(_balanceMeta,
-          balance.isAcceptableOrUnknown(data['balance']!, _balanceMeta));
+      context.handle(
+        _balanceMeta,
+        balance.isAcceptableOrUnknown(data['balance']!, _balanceMeta),
+      );
     } else if (isInserting) {
       context.missing(_balanceMeta);
     }
     if (data.containsKey('order')) {
       context.handle(
-          _orderMeta, order.isAcceptableOrUnknown(data['order']!, _orderMeta));
+        _orderMeta,
+        order.isAcceptableOrUnknown(data['order']!, _orderMeta),
+      );
     } else if (isInserting) {
       context.missing(_orderMeta);
     }
     if (data.containsKey('is_archived')) {
       context.handle(
-          _isArchivedMeta,
-          isArchived.isAcceptableOrUnknown(
-              data['is_archived']!, _isArchivedMeta));
+        _isArchivedMeta,
+        isArchived.isAcceptableOrUnknown(data['is_archived']!, _isArchivedMeta),
+      );
     } else if (isInserting) {
       context.missing(_isArchivedMeta);
     }
@@ -645,20 +819,34 @@ class $AccountsTableTable extends AccountsTable
   Account map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Account(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      iconCodepoint: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}icon_codepoint'])!,
-      color: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      balance: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}balance'])!,
-      order: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}order'])!,
-      isArchived: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      iconCodepoint: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}icon_codepoint'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      balance: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}balance'],
+      )!,
+      order: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order'],
+      )!,
+      isArchived: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_archived'],
+      )!,
     );
   }
 
@@ -696,13 +884,13 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     required int order,
     required bool isArchived,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name),
-        iconCodepoint = Value(iconCodepoint),
-        color = Value(color),
-        balance = Value(balance),
-        order = Value(order),
-        isArchived = Value(isArchived);
+  }) : id = Value(id),
+       name = Value(name),
+       iconCodepoint = Value(iconCodepoint),
+       color = Value(color),
+       balance = Value(balance),
+       order = Value(order),
+       isArchived = Value(isArchived);
   static Insertable<Account> custom({
     Expression<String>? id,
     Expression<String>? name,
@@ -725,15 +913,16 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
     });
   }
 
-  AccountsTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? name,
-      Value<int>? iconCodepoint,
-      Value<int>? color,
-      Value<int>? balance,
-      Value<int>? order,
-      Value<bool>? isArchived,
-      Value<int>? rowid}) {
+  AccountsTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<int>? iconCodepoint,
+    Value<int>? color,
+    Value<int>? balance,
+    Value<int>? order,
+    Value<bool>? isArchived,
+    Value<int>? rowid,
+  }) {
     return AccountsTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -795,43 +984,48 @@ class AccountsTableCompanion extends UpdateCompanion<Account> {
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(e);
   $MyDatabaseManager get managers => $MyDatabaseManager(this);
-  late final $TransactionTableTable transactionTable =
-      $TransactionTableTable(this);
-  late final $CategoriesTableTable categoriesTable =
-      $CategoriesTableTable(this);
+  late final $TransactionTableTable transactionTable = $TransactionTableTable(
+    this,
+  );
+  late final $CategoriesTableTable categoriesTable = $CategoriesTableTable(
+    this,
+  );
   late final $AccountsTableTable accountsTable = $AccountsTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [transactionTable, categoriesTable, accountsTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    transactionTable,
+    categoriesTable,
+    accountsTable,
+  ];
 }
 
-typedef $$TransactionTableTableCreateCompanionBuilder
-    = TransactionTableCompanion Function({
-  required String id,
-  required String title,
-  Value<String?> additionalInfo,
-  required String categoryID,
-  required String accountID,
-  required int amount,
-  required DateTime recorded,
-  Value<GMapsPlace?> location,
-  Value<int> rowid,
-});
-typedef $$TransactionTableTableUpdateCompanionBuilder
-    = TransactionTableCompanion Function({
-  Value<String> id,
-  Value<String> title,
-  Value<String?> additionalInfo,
-  Value<String> categoryID,
-  Value<String> accountID,
-  Value<int> amount,
-  Value<DateTime> recorded,
-  Value<GMapsPlace?> location,
-  Value<int> rowid,
-});
+typedef $$TransactionTableTableCreateCompanionBuilder =
+    TransactionTableCompanion Function({
+      required String id,
+      required String title,
+      Value<String?> additionalInfo,
+      required String categoryID,
+      required String accountID,
+      required int amount,
+      required DateTime recorded,
+      Value<GMapsPlace?> location,
+      Value<int> rowid,
+    });
+typedef $$TransactionTableTableUpdateCompanionBuilder =
+    TransactionTableCompanion Function({
+      Value<String> id,
+      Value<String> title,
+      Value<String?> additionalInfo,
+      Value<String> categoryID,
+      Value<String> accountID,
+      Value<int> amount,
+      Value<DateTime> recorded,
+      Value<GMapsPlace?> location,
+      Value<int> rowid,
+    });
 
 class $$TransactionTableTableFilterComposer
     extends Composer<_$MyDatabase, $TransactionTableTable> {
@@ -843,31 +1037,45 @@ class $$TransactionTableTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get additionalInfo => $composableBuilder(
-      column: $table.additionalInfo,
-      builder: (column) => ColumnFilters(column));
+    column: $table.additionalInfo,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get categoryID => $composableBuilder(
-      column: $table.categoryID, builder: (column) => ColumnFilters(column));
+    column: $table.categoryID,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get accountID => $composableBuilder(
-      column: $table.accountID, builder: (column) => ColumnFilters(column));
+    column: $table.accountID,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get amount => $composableBuilder(
-      column: $table.amount, builder: (column) => ColumnFilters(column));
+    column: $table.amount,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get recorded => $composableBuilder(
-      column: $table.recorded, builder: (column) => ColumnFilters(column));
+    column: $table.recorded,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnWithTypeConverterFilters<GMapsPlace?, GMapsPlace, String>
-      get location => $composableBuilder(
-          column: $table.location,
-          builder: (column) => ColumnWithTypeConverterFilters(column));
+  get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
 }
 
 class $$TransactionTableTableOrderingComposer
@@ -880,29 +1088,44 @@ class $$TransactionTableTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get additionalInfo => $composableBuilder(
-      column: $table.additionalInfo,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.additionalInfo,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get categoryID => $composableBuilder(
-      column: $table.categoryID, builder: (column) => ColumnOrderings(column));
+    column: $table.categoryID,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get accountID => $composableBuilder(
-      column: $table.accountID, builder: (column) => ColumnOrderings(column));
+    column: $table.accountID,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get amount => $composableBuilder(
-      column: $table.amount, builder: (column) => ColumnOrderings(column));
+    column: $table.amount,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get recorded => $composableBuilder(
-      column: $table.recorded, builder: (column) => ColumnOrderings(column));
+    column: $table.recorded,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get location => $composableBuilder(
-      column: $table.location, builder: (column) => ColumnOrderings(column));
+    column: $table.location,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TransactionTableTableAnnotationComposer
@@ -921,10 +1144,14 @@ class $$TransactionTableTableAnnotationComposer
       $composableBuilder(column: $table.title, builder: (column) => column);
 
   GeneratedColumn<String> get additionalInfo => $composableBuilder(
-      column: $table.additionalInfo, builder: (column) => column);
+    column: $table.additionalInfo,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get categoryID => $composableBuilder(
-      column: $table.categoryID, builder: (column) => column);
+    column: $table.categoryID,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get accountID =>
       $composableBuilder(column: $table.accountID, builder: (column) => column);
@@ -939,24 +1166,29 @@ class $$TransactionTableTableAnnotationComposer
       $composableBuilder(column: $table.location, builder: (column) => column);
 }
 
-class $$TransactionTableTableTableManager extends RootTableManager<
-    _$MyDatabase,
-    $TransactionTableTable,
-    Transaction,
-    $$TransactionTableTableFilterComposer,
-    $$TransactionTableTableOrderingComposer,
-    $$TransactionTableTableAnnotationComposer,
-    $$TransactionTableTableCreateCompanionBuilder,
-    $$TransactionTableTableUpdateCompanionBuilder,
-    (
-      Transaction,
-      BaseReferences<_$MyDatabase, $TransactionTableTable, Transaction>
-    ),
-    Transaction,
-    PrefetchHooks Function()> {
+class $$TransactionTableTableTableManager
+    extends
+        RootTableManager<
+          _$MyDatabase,
+          $TransactionTableTable,
+          Transaction,
+          $$TransactionTableTableFilterComposer,
+          $$TransactionTableTableOrderingComposer,
+          $$TransactionTableTableAnnotationComposer,
+          $$TransactionTableTableCreateCompanionBuilder,
+          $$TransactionTableTableUpdateCompanionBuilder,
+          (
+            Transaction,
+            BaseReferences<_$MyDatabase, $TransactionTableTable, Transaction>,
+          ),
+          Transaction,
+          PrefetchHooks Function()
+        > {
   $$TransactionTableTableTableManager(
-      _$MyDatabase db, $TransactionTableTable table)
-      : super(TableManagerState(
+    _$MyDatabase db,
+    $TransactionTableTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -965,92 +1197,95 @@ class $$TransactionTableTableTableManager extends RootTableManager<
               $$TransactionTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TransactionTableTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> title = const Value.absent(),
-            Value<String?> additionalInfo = const Value.absent(),
-            Value<String> categoryID = const Value.absent(),
-            Value<String> accountID = const Value.absent(),
-            Value<int> amount = const Value.absent(),
-            Value<DateTime> recorded = const Value.absent(),
-            Value<GMapsPlace?> location = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TransactionTableCompanion(
-            id: id,
-            title: title,
-            additionalInfo: additionalInfo,
-            categoryID: categoryID,
-            accountID: accountID,
-            amount: amount,
-            recorded: recorded,
-            location: location,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String id,
-            required String title,
-            Value<String?> additionalInfo = const Value.absent(),
-            required String categoryID,
-            required String accountID,
-            required int amount,
-            required DateTime recorded,
-            Value<GMapsPlace?> location = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              TransactionTableCompanion.insert(
-            id: id,
-            title: title,
-            additionalInfo: additionalInfo,
-            categoryID: categoryID,
-            accountID: accountID,
-            amount: amount,
-            recorded: recorded,
-            location: location,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String?> additionalInfo = const Value.absent(),
+                Value<String> categoryID = const Value.absent(),
+                Value<String> accountID = const Value.absent(),
+                Value<int> amount = const Value.absent(),
+                Value<DateTime> recorded = const Value.absent(),
+                Value<GMapsPlace?> location = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransactionTableCompanion(
+                id: id,
+                title: title,
+                additionalInfo: additionalInfo,
+                categoryID: categoryID,
+                accountID: accountID,
+                amount: amount,
+                recorded: recorded,
+                location: location,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String title,
+                Value<String?> additionalInfo = const Value.absent(),
+                required String categoryID,
+                required String accountID,
+                required int amount,
+                required DateTime recorded,
+                Value<GMapsPlace?> location = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TransactionTableCompanion.insert(
+                id: id,
+                title: title,
+                additionalInfo: additionalInfo,
+                categoryID: categoryID,
+                accountID: accountID,
+                amount: amount,
+                recorded: recorded,
+                location: location,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$TransactionTableTableProcessedTableManager = ProcessedTableManager<
-    _$MyDatabase,
-    $TransactionTableTable,
-    Transaction,
-    $$TransactionTableTableFilterComposer,
-    $$TransactionTableTableOrderingComposer,
-    $$TransactionTableTableAnnotationComposer,
-    $$TransactionTableTableCreateCompanionBuilder,
-    $$TransactionTableTableUpdateCompanionBuilder,
-    (
+typedef $$TransactionTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$MyDatabase,
+      $TransactionTableTable,
       Transaction,
-      BaseReferences<_$MyDatabase, $TransactionTableTable, Transaction>
-    ),
-    Transaction,
-    PrefetchHooks Function()>;
-typedef $$CategoriesTableTableCreateCompanionBuilder = CategoriesTableCompanion
-    Function({
-  required String id,
-  required String name,
-  required int iconCodepoint,
-  required int color,
-  required int order,
-  required bool isArchived,
-  Value<int> rowid,
-});
-typedef $$CategoriesTableTableUpdateCompanionBuilder = CategoriesTableCompanion
-    Function({
-  Value<String> id,
-  Value<String> name,
-  Value<int> iconCodepoint,
-  Value<int> color,
-  Value<int> order,
-  Value<bool> isArchived,
-  Value<int> rowid,
-});
+      $$TransactionTableTableFilterComposer,
+      $$TransactionTableTableOrderingComposer,
+      $$TransactionTableTableAnnotationComposer,
+      $$TransactionTableTableCreateCompanionBuilder,
+      $$TransactionTableTableUpdateCompanionBuilder,
+      (
+        Transaction,
+        BaseReferences<_$MyDatabase, $TransactionTableTable, Transaction>,
+      ),
+      Transaction,
+      PrefetchHooks Function()
+    >;
+typedef $$CategoriesTableTableCreateCompanionBuilder =
+    CategoriesTableCompanion Function({
+      required String id,
+      required String name,
+      required int iconCodepoint,
+      required int color,
+      required int order,
+      required bool isArchived,
+      Value<int> rowid,
+    });
+typedef $$CategoriesTableTableUpdateCompanionBuilder =
+    CategoriesTableCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<int> iconCodepoint,
+      Value<int> color,
+      Value<int> order,
+      Value<bool> isArchived,
+      Value<int> rowid,
+    });
 
 class $$CategoriesTableTableFilterComposer
     extends Composer<_$MyDatabase, $CategoriesTableTable> {
@@ -1062,22 +1297,34 @@ class $$CategoriesTableTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get iconCodepoint => $composableBuilder(
-      column: $table.iconCodepoint, builder: (column) => ColumnFilters(column));
+    column: $table.iconCodepoint,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get color => $composableBuilder(
-      column: $table.color, builder: (column) => ColumnFilters(column));
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get order => $composableBuilder(
-      column: $table.order, builder: (column) => ColumnFilters(column));
+    column: $table.order,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<bool> get isArchived => $composableBuilder(
-      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+    column: $table.isArchived,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$CategoriesTableTableOrderingComposer
@@ -1090,23 +1337,34 @@ class $$CategoriesTableTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get iconCodepoint => $composableBuilder(
-      column: $table.iconCodepoint,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.iconCodepoint,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get color => $composableBuilder(
-      column: $table.color, builder: (column) => ColumnOrderings(column));
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get order => $composableBuilder(
-      column: $table.order, builder: (column) => ColumnOrderings(column));
+    column: $table.order,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<bool> get isArchived => $composableBuilder(
-      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+    column: $table.isArchived,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$CategoriesTableTableAnnotationComposer
@@ -1125,7 +1383,9 @@ class $$CategoriesTableTableAnnotationComposer
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<int> get iconCodepoint => $composableBuilder(
-      column: $table.iconCodepoint, builder: (column) => column);
+    column: $table.iconCodepoint,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
@@ -1134,27 +1394,38 @@ class $$CategoriesTableTableAnnotationComposer
       $composableBuilder(column: $table.order, builder: (column) => column);
 
   GeneratedColumn<bool> get isArchived => $composableBuilder(
-      column: $table.isArchived, builder: (column) => column);
+    column: $table.isArchived,
+    builder: (column) => column,
+  );
 }
 
-class $$CategoriesTableTableTableManager extends RootTableManager<
-    _$MyDatabase,
-    $CategoriesTableTable,
-    TransactionCategory,
-    $$CategoriesTableTableFilterComposer,
-    $$CategoriesTableTableOrderingComposer,
-    $$CategoriesTableTableAnnotationComposer,
-    $$CategoriesTableTableCreateCompanionBuilder,
-    $$CategoriesTableTableUpdateCompanionBuilder,
-    (
-      TransactionCategory,
-      BaseReferences<_$MyDatabase, $CategoriesTableTable, TransactionCategory>
-    ),
-    TransactionCategory,
-    PrefetchHooks Function()> {
+class $$CategoriesTableTableTableManager
+    extends
+        RootTableManager<
+          _$MyDatabase,
+          $CategoriesTableTable,
+          TransactionCategory,
+          $$CategoriesTableTableFilterComposer,
+          $$CategoriesTableTableOrderingComposer,
+          $$CategoriesTableTableAnnotationComposer,
+          $$CategoriesTableTableCreateCompanionBuilder,
+          $$CategoriesTableTableUpdateCompanionBuilder,
+          (
+            TransactionCategory,
+            BaseReferences<
+              _$MyDatabase,
+              $CategoriesTableTable,
+              TransactionCategory
+            >,
+          ),
+          TransactionCategory,
+          PrefetchHooks Function()
+        > {
   $$CategoriesTableTableTableManager(
-      _$MyDatabase db, $CategoriesTableTable table)
-      : super(TableManagerState(
+    _$MyDatabase db,
+    $CategoriesTableTable table,
+  ) : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -1163,86 +1434,93 @@ class $$CategoriesTableTableTableManager extends RootTableManager<
               $$CategoriesTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$CategoriesTableTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<int> iconCodepoint = const Value.absent(),
-            Value<int> color = const Value.absent(),
-            Value<int> order = const Value.absent(),
-            Value<bool> isArchived = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              CategoriesTableCompanion(
-            id: id,
-            name: name,
-            iconCodepoint: iconCodepoint,
-            color: color,
-            order: order,
-            isArchived: isArchived,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String id,
-            required String name,
-            required int iconCodepoint,
-            required int color,
-            required int order,
-            required bool isArchived,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              CategoriesTableCompanion.insert(
-            id: id,
-            name: name,
-            iconCodepoint: iconCodepoint,
-            color: color,
-            order: order,
-            isArchived: isArchived,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> iconCodepoint = const Value.absent(),
+                Value<int> color = const Value.absent(),
+                Value<int> order = const Value.absent(),
+                Value<bool> isArchived = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CategoriesTableCompanion(
+                id: id,
+                name: name,
+                iconCodepoint: iconCodepoint,
+                color: color,
+                order: order,
+                isArchived: isArchived,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                required int iconCodepoint,
+                required int color,
+                required int order,
+                required bool isArchived,
+                Value<int> rowid = const Value.absent(),
+              }) => CategoriesTableCompanion.insert(
+                id: id,
+                name: name,
+                iconCodepoint: iconCodepoint,
+                color: color,
+                order: order,
+                isArchived: isArchived,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$CategoriesTableTableProcessedTableManager = ProcessedTableManager<
-    _$MyDatabase,
-    $CategoriesTableTable,
-    TransactionCategory,
-    $$CategoriesTableTableFilterComposer,
-    $$CategoriesTableTableOrderingComposer,
-    $$CategoriesTableTableAnnotationComposer,
-    $$CategoriesTableTableCreateCompanionBuilder,
-    $$CategoriesTableTableUpdateCompanionBuilder,
-    (
+typedef $$CategoriesTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$MyDatabase,
+      $CategoriesTableTable,
       TransactionCategory,
-      BaseReferences<_$MyDatabase, $CategoriesTableTable, TransactionCategory>
-    ),
-    TransactionCategory,
-    PrefetchHooks Function()>;
-typedef $$AccountsTableTableCreateCompanionBuilder = AccountsTableCompanion
-    Function({
-  required String id,
-  required String name,
-  required int iconCodepoint,
-  required int color,
-  required int balance,
-  required int order,
-  required bool isArchived,
-  Value<int> rowid,
-});
-typedef $$AccountsTableTableUpdateCompanionBuilder = AccountsTableCompanion
-    Function({
-  Value<String> id,
-  Value<String> name,
-  Value<int> iconCodepoint,
-  Value<int> color,
-  Value<int> balance,
-  Value<int> order,
-  Value<bool> isArchived,
-  Value<int> rowid,
-});
+      $$CategoriesTableTableFilterComposer,
+      $$CategoriesTableTableOrderingComposer,
+      $$CategoriesTableTableAnnotationComposer,
+      $$CategoriesTableTableCreateCompanionBuilder,
+      $$CategoriesTableTableUpdateCompanionBuilder,
+      (
+        TransactionCategory,
+        BaseReferences<
+          _$MyDatabase,
+          $CategoriesTableTable,
+          TransactionCategory
+        >,
+      ),
+      TransactionCategory,
+      PrefetchHooks Function()
+    >;
+typedef $$AccountsTableTableCreateCompanionBuilder =
+    AccountsTableCompanion Function({
+      required String id,
+      required String name,
+      required int iconCodepoint,
+      required int color,
+      required int balance,
+      required int order,
+      required bool isArchived,
+      Value<int> rowid,
+    });
+typedef $$AccountsTableTableUpdateCompanionBuilder =
+    AccountsTableCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<int> iconCodepoint,
+      Value<int> color,
+      Value<int> balance,
+      Value<int> order,
+      Value<bool> isArchived,
+      Value<int> rowid,
+    });
 
 class $$AccountsTableTableFilterComposer
     extends Composer<_$MyDatabase, $AccountsTableTable> {
@@ -1254,25 +1532,39 @@ class $$AccountsTableTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get iconCodepoint => $composableBuilder(
-      column: $table.iconCodepoint, builder: (column) => ColumnFilters(column));
+    column: $table.iconCodepoint,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get color => $composableBuilder(
-      column: $table.color, builder: (column) => ColumnFilters(column));
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get balance => $composableBuilder(
-      column: $table.balance, builder: (column) => ColumnFilters(column));
+    column: $table.balance,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get order => $composableBuilder(
-      column: $table.order, builder: (column) => ColumnFilters(column));
+    column: $table.order,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<bool> get isArchived => $composableBuilder(
-      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+    column: $table.isArchived,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$AccountsTableTableOrderingComposer
@@ -1285,26 +1577,39 @@ class $$AccountsTableTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get iconCodepoint => $composableBuilder(
-      column: $table.iconCodepoint,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.iconCodepoint,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get color => $composableBuilder(
-      column: $table.color, builder: (column) => ColumnOrderings(column));
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get balance => $composableBuilder(
-      column: $table.balance, builder: (column) => ColumnOrderings(column));
+    column: $table.balance,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get order => $composableBuilder(
-      column: $table.order, builder: (column) => ColumnOrderings(column));
+    column: $table.order,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<bool> get isArchived => $composableBuilder(
-      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+    column: $table.isArchived,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AccountsTableTableAnnotationComposer
@@ -1323,7 +1628,9 @@ class $$AccountsTableTableAnnotationComposer
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<int> get iconCodepoint => $composableBuilder(
-      column: $table.iconCodepoint, builder: (column) => column);
+    column: $table.iconCodepoint,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
@@ -1335,23 +1642,29 @@ class $$AccountsTableTableAnnotationComposer
       $composableBuilder(column: $table.order, builder: (column) => column);
 
   GeneratedColumn<bool> get isArchived => $composableBuilder(
-      column: $table.isArchived, builder: (column) => column);
+    column: $table.isArchived,
+    builder: (column) => column,
+  );
 }
 
-class $$AccountsTableTableTableManager extends RootTableManager<
-    _$MyDatabase,
-    $AccountsTableTable,
-    Account,
-    $$AccountsTableTableFilterComposer,
-    $$AccountsTableTableOrderingComposer,
-    $$AccountsTableTableAnnotationComposer,
-    $$AccountsTableTableCreateCompanionBuilder,
-    $$AccountsTableTableUpdateCompanionBuilder,
-    (Account, BaseReferences<_$MyDatabase, $AccountsTableTable, Account>),
-    Account,
-    PrefetchHooks Function()> {
+class $$AccountsTableTableTableManager
+    extends
+        RootTableManager<
+          _$MyDatabase,
+          $AccountsTableTable,
+          Account,
+          $$AccountsTableTableFilterComposer,
+          $$AccountsTableTableOrderingComposer,
+          $$AccountsTableTableAnnotationComposer,
+          $$AccountsTableTableCreateCompanionBuilder,
+          $$AccountsTableTableUpdateCompanionBuilder,
+          (Account, BaseReferences<_$MyDatabase, $AccountsTableTable, Account>),
+          Account,
+          PrefetchHooks Function()
+        > {
   $$AccountsTableTableTableManager(_$MyDatabase db, $AccountsTableTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -1360,65 +1673,68 @@ class $$AccountsTableTableTableManager extends RootTableManager<
               $$AccountsTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$AccountsTableTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<int> iconCodepoint = const Value.absent(),
-            Value<int> color = const Value.absent(),
-            Value<int> balance = const Value.absent(),
-            Value<int> order = const Value.absent(),
-            Value<bool> isArchived = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AccountsTableCompanion(
-            id: id,
-            name: name,
-            iconCodepoint: iconCodepoint,
-            color: color,
-            balance: balance,
-            order: order,
-            isArchived: isArchived,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String id,
-            required String name,
-            required int iconCodepoint,
-            required int color,
-            required int balance,
-            required int order,
-            required bool isArchived,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AccountsTableCompanion.insert(
-            id: id,
-            name: name,
-            iconCodepoint: iconCodepoint,
-            color: color,
-            balance: balance,
-            order: order,
-            isArchived: isArchived,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> iconCodepoint = const Value.absent(),
+                Value<int> color = const Value.absent(),
+                Value<int> balance = const Value.absent(),
+                Value<int> order = const Value.absent(),
+                Value<bool> isArchived = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AccountsTableCompanion(
+                id: id,
+                name: name,
+                iconCodepoint: iconCodepoint,
+                color: color,
+                balance: balance,
+                order: order,
+                isArchived: isArchived,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                required int iconCodepoint,
+                required int color,
+                required int balance,
+                required int order,
+                required bool isArchived,
+                Value<int> rowid = const Value.absent(),
+              }) => AccountsTableCompanion.insert(
+                id: id,
+                name: name,
+                iconCodepoint: iconCodepoint,
+                color: color,
+                balance: balance,
+                order: order,
+                isArchived: isArchived,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$AccountsTableTableProcessedTableManager = ProcessedTableManager<
-    _$MyDatabase,
-    $AccountsTableTable,
-    Account,
-    $$AccountsTableTableFilterComposer,
-    $$AccountsTableTableOrderingComposer,
-    $$AccountsTableTableAnnotationComposer,
-    $$AccountsTableTableCreateCompanionBuilder,
-    $$AccountsTableTableUpdateCompanionBuilder,
-    (Account, BaseReferences<_$MyDatabase, $AccountsTableTable, Account>),
-    Account,
-    PrefetchHooks Function()>;
+typedef $$AccountsTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$MyDatabase,
+      $AccountsTableTable,
+      Account,
+      $$AccountsTableTableFilterComposer,
+      $$AccountsTableTableOrderingComposer,
+      $$AccountsTableTableAnnotationComposer,
+      $$AccountsTableTableCreateCompanionBuilder,
+      $$AccountsTableTableUpdateCompanionBuilder,
+      (Account, BaseReferences<_$MyDatabase, $AccountsTableTable, Account>),
+      Account,
+      PrefetchHooks Function()
+    >;
 
 class $MyDatabaseManager {
   final _$MyDatabase _db;

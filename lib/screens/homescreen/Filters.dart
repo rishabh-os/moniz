@@ -30,9 +30,7 @@ class _FiltersState extends ConsumerState<Filters> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(
-            height: 40,
-          ),
+          const SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: TextField(
@@ -78,11 +76,11 @@ class _FiltersState extends ConsumerState<Filters> {
                     setState(() {
                       value
                           ? ref
-                              .watch(filteredCategoriesProvider.notifier)
-                              .add(e)
+                                .watch(filteredCategoriesProvider.notifier)
+                                .add(e)
                           : ref
-                              .watch(filteredCategoriesProvider.notifier)
-                              .remove(e);
+                                .watch(filteredCategoriesProvider.notifier)
+                                .remove(e);
                     });
                   },
                   selected: ref.watch(filteredCategoriesProvider).contains(e),
@@ -100,8 +98,8 @@ class _FiltersState extends ConsumerState<Filters> {
                       value
                           ? ref.watch(filteredAccountsProvider.notifier).add(e)
                           : ref
-                              .watch(filteredAccountsProvider.notifier)
-                              .remove(e);
+                                .watch(filteredAccountsProvider.notifier)
+                                .remove(e);
                     });
                   },
                   selected: ref.watch(filteredAccountsProvider).contains(e),
@@ -135,8 +133,10 @@ class _FiltersState extends ConsumerState<Filters> {
                   ref.watch(filterQueryProvider.notifier).state = "";
                   ref.watch(filteredCategoriesProvider.notifier).state = [];
                   ref.watch(filteredAccountsProvider.notifier).state = [];
-                  ref.watch(rangeValueProvider.notifier).state =
-                      RangeValues(0, frequencyHistorgram.length.toDouble() - 1);
+                  ref.watch(rangeValueProvider.notifier).state = RangeValues(
+                    0,
+                    frequencyHistorgram.length.toDouble() - 1,
+                  );
                 },
                 icon: const Icon(Icons.undo),
                 label: const Text("Reset all"),

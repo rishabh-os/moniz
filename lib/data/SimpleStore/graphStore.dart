@@ -15,10 +15,7 @@ class GraphData extends _$GraphData {
     final List<TransactionCategory> categories = ref.read(categoriesProvider);
     final range = ref.watch(globalDateRangeProvider);
 
-    return compute(
-      getSpots,
-      GetSpotsData(transactionList, range, categories),
-    );
+    return compute(getSpots, GetSpotsData(transactionList, range, categories));
   }
 }
 
@@ -30,9 +27,7 @@ class GetSpotsData {
   GetSpotsData(this.transactionList, this.range, this.categories);
 }
 
-(List<SpendsByDay>, List<SpendsByCat>) getSpots(
-  GetSpotsData data,
-) {
+(List<SpendsByDay>, List<SpendsByCat>) getSpots(GetSpotsData data) {
   List<String> days = [];
   final numberOfDays = data.range.end.difference(data.range.start).inDays;
   days = List.generate(
@@ -71,8 +66,9 @@ class GetSpotsData {
       if (element.day == getDTString(transaction.recorded) &&
           element.category.id == transaction.categoryID &&
           transaction.amount.isNegative) {
-        element.amount +=
-            double.parse((transaction.amount.abs() / 100).toStringAsFixed(2));
+        element.amount += double.parse(
+          (transaction.amount.abs() / 100).toStringAsFixed(2),
+        );
       }
     }
   }

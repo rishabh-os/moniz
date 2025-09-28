@@ -63,9 +63,10 @@ class Transactions extends _$Transactions {
         .where(
           (element) =>
               element.recorded.isAfter(globalDateRange.start) &&
-              element.recorded.isBefore(globalDateRange.end
-                  //.add(const Duration(days: 1)
-                  ),
+              element.recorded.isBefore(
+                globalDateRange.end,
+                //.add(const Duration(days: 1)
+              ),
         )
         .toList();
     state = filteredTransactions;
@@ -117,7 +118,9 @@ class Transactions extends _$Transactions {
     final db = ref.read(dBProvider);
     state = [newTransaction, ...state];
     state.sort((a, b) => b.recorded.compareTo(a.recorded));
-    await db.into(db.transactionTable).insert(
+    await db
+        .into(db.transactionTable)
+        .insert(
           TransactionTableCompanion.insert(
             id: newTransaction.id,
             title: newTransaction.title,
@@ -137,8 +140,9 @@ class Transactions extends _$Transactions {
       for (final transaction in state)
         if (transaction.id != transactionID) transaction,
     ];
-    await db.transactionTable
-        .deleteWhere((tbl) => tbl.id.equals(transactionID));
+    await db.transactionTable.deleteWhere(
+      (tbl) => tbl.id.equals(transactionID),
+    );
   }
 }
 
@@ -156,19 +160,19 @@ class SearchedTrans extends _$SearchedTrans {
     final searchedTrans = transactions
         .where(
           (element) => filterQuery != ""
-              ? element.title
-                      .toLowerCase()
-                      .contains(filterQuery.toLowerCase()) ||
-                  // ? Return true if additionalInfo is null
-                  (element.additionalInfo
-                          ?.toLowerCase()
-                          .contains(filterQuery.toLowerCase()) ??
-                      false) ||
-                  // ? Return true if location is null
-                  (element.location?.displayName?.text
-                          ?.toLowerCase()
-                          .contains(filterQuery.toLowerCase()) ??
-                      false)
+              ? element.title.toLowerCase().contains(
+                      filterQuery.toLowerCase(),
+                    ) ||
+                    // ? Return true if additionalInfo is null
+                    (element.additionalInfo?.toLowerCase().contains(
+                          filterQuery.toLowerCase(),
+                        ) ??
+                        false) ||
+                    // ? Return true if location is null
+                    (element.location?.displayName?.text
+                            ?.toLowerCase()
+                            .contains(filterQuery.toLowerCase()) ??
+                        false)
               : true,
         )
         .where(

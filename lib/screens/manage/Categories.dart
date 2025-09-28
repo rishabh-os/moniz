@@ -48,10 +48,7 @@ class _CategoriesState extends ConsumerState<Categories> {
               key: key,
               title: Text(cat.name),
               leading: Icon(
-                IconData(
-                  cat.iconCodepoint,
-                  fontFamily: "MaterialIcons",
-                ),
+                IconData(cat.iconCodepoint, fontFamily: "MaterialIcons"),
                 color: Color(cat.color),
               ),
               trailing: Row(
@@ -78,18 +75,19 @@ class _CategoriesState extends ConsumerState<Categories> {
           openColor: Theme.of(context).colorScheme.surface,
           transitionType: ContainerTransitionType.fadeThrough,
           closedElevation: 0,
-          openShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          closedShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          openShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          closedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           closedBuilder: (context, action) => TextButton.icon(
             onPressed: action,
             icon: const Icon(Icons.add),
             label: const Text("Add Category"),
           ),
-          openBuilder: (context, action) => const AccountEditor(
-            type: "Category",
-          ),
+          openBuilder: (context, action) =>
+              const AccountEditor(type: "Category"),
         ),
       ],
     );
@@ -100,8 +98,9 @@ Widget proxyDecorator(Widget child, int index, Animation<double> animation) =>
     AnimatedBuilder(
       animation: animation,
       builder: (BuildContext context, Widget? child) {
-        final double animValue =
-            Curves.easeInOutCubicEmphasized.transform(animation.value);
+        final double animValue = Curves.easeInOutCubicEmphasized.transform(
+          animation.value,
+        );
         final double elevation = lerpDouble(1, 6, animValue)!;
         return Material(
           borderRadius: BorderRadius.circular(10),

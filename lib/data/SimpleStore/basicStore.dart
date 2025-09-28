@@ -85,13 +85,15 @@ class InitialCenter extends _$InitialCenter {
   @override
   LatLng build() {
     super.listenSelf(
-      (previous, next) => GetStorage()
-          .write("mapCenter", <double>[next.longitude, next.latitude]),
+      (previous, next) => GetStorage().write("mapCenter", <double>[
+        next.longitude,
+        next.latitude,
+      ]),
     );
     GetStorage().read("mapCenter") ??
         GetStorage().write("mapCenter", <double>[46.0748, 11.1217]);
-    final List longlat = GetStorage().read("mapCenter") as List;
-    return LatLng(longlat.last as double, longlat.first as double);
+    final List<double> longlat = GetStorage().read("mapCenter") as List<double>;
+    return LatLng(longlat.last, longlat.first);
   }
 
   @override

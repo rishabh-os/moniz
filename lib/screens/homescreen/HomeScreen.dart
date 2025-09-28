@@ -30,9 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     if (index == _selectedIndex) {
       return;
     }
-    _pageController.jumpToPage(
-      index,
-    );
+    _pageController.jumpToPage(index);
     _controller.reset();
     _controller.forward();
   }
@@ -72,9 +70,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
     _controller.forward();
     _selectedIndex = ref.read(initialPageProvider);
-    _pageController = PageController(
-      initialPage: _selectedIndex,
-    );
+    _pageController = PageController(initialPage: _selectedIndex);
     // ? It's read here and watch elsewhere because this code is executed only once while the others are part of build
     if (!ref.read(entriesTutorialCompletedProvider)) {
       Future.delayed(const Duration(milliseconds: 100), () {
@@ -93,11 +89,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       reverseDuration: const Duration(milliseconds: 200),
       switchInCurve: Curves.easeInOutCubicEmphasized.flipped,
       switchOutCurve: Curves.easeInOutCubicEmphasized,
-      child: _selectedIndex <= index
-          ? child
-          : SizedBox(
-              key: Key("$index"),
-            ),
+      child: _selectedIndex <= index ? child : SizedBox(key: Key("$index")),
     );
   }
 
@@ -121,8 +113,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             tooltip: "Filters",
             icon: const Icon(Icons.search_rounded),
             onPressed: () {
-              scaffoldKey.currentState!
-                  .showBottomSheet((context) => const Filters());
+              scaffoldKey.currentState!.showBottomSheet(
+                (context) => const Filters(),
+              );
             },
           ),
           DateSort(key: listOfKeys[2]),
@@ -154,9 +147,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               highlightElevation: 0,
               hoverElevation: 0,
               onPressed: () async {
-                await postHogCapture(
-                  eventName: "Add Entry",
-                );
+                await postHogCapture(eventName: "Add Entry");
                 openContainer();
               },
               label: const Text("New Entry"),
@@ -174,9 +165,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         onDestinationSelected: (int index) async {
           await postHogCapture(
             eventName: "Bottom nav",
-            properties: {
-              "index": navDestinations[index].label,
-            },
+            properties: {"index": navDestinations[index].label},
           );
           setState(() {
             _onItemTapped(index);
@@ -197,13 +186,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             .map(
               (e) => SlideTransition(
                 position:
-                    Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero)
-                        .animate(
-                  CurvedAnimation(
-                    parent: _controller,
-                    curve: Curves.easeInOutCubicEmphasized,
-                  ),
-                ),
+                    Tween<Offset>(
+                      begin: const Offset(0, 0.1),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(
+                        parent: _controller,
+                        curve: Curves.easeInOutCubicEmphasized,
+                      ),
+                    ),
                 child: FadeTransition(
                   opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(

@@ -14,15 +14,15 @@ const dBProvider = DBProvider._();
 
 final class DBProvider extends $NotifierProvider<DB, MyDatabase> {
   const DBProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'dBProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dBProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$dBHash();
@@ -49,8 +49,14 @@ abstract class _$DB extends $Notifier<MyDatabase> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<MyDatabase, MyDatabase>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<MyDatabase, MyDatabase>, MyDatabase, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<MyDatabase, MyDatabase>,
+              MyDatabase,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -61,15 +67,15 @@ const globalDateRangeProvider = GlobalDateRangeProvider._();
 final class GlobalDateRangeProvider
     extends $NotifierProvider<GlobalDateRange, DateTimeRange<DateTime>> {
   const GlobalDateRangeProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'globalDateRangeProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'globalDateRangeProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$globalDateRangeHash();
@@ -97,11 +103,14 @@ abstract class _$GlobalDateRange extends $Notifier<DateTimeRange<DateTime>> {
     final created = build();
     final ref =
         this.ref as $Ref<DateTimeRange<DateTime>, DateTimeRange<DateTime>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<DateTimeRange<DateTime>, DateTimeRange<DateTime>>,
-        DateTimeRange<DateTime>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<DateTimeRange<DateTime>, DateTimeRange<DateTime>>,
+              DateTimeRange<DateTime>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -112,15 +121,15 @@ const overviewIncomeProvider = OverviewIncomeProvider._();
 final class OverviewIncomeProvider
     extends $NotifierProvider<OverviewIncome, int> {
   const OverviewIncomeProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'overviewIncomeProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'overviewIncomeProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$overviewIncomeHash();
@@ -147,8 +156,14 @@ abstract class _$OverviewIncome extends $Notifier<int> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<int, int>;
-    final element = ref.element
-        as $ClassProviderElement<AnyNotifier<int, int>, int, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<int, int>,
+              int,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -159,15 +174,15 @@ const overviewExpenseProvider = OverviewExpenseProvider._();
 final class OverviewExpenseProvider
     extends $NotifierProvider<OverviewExpense, int> {
   const OverviewExpenseProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'overviewExpenseProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'overviewExpenseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$overviewExpenseHash();
@@ -194,8 +209,14 @@ abstract class _$OverviewExpense extends $Notifier<int> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<int, int>;
-    final element = ref.element
-        as $ClassProviderElement<AnyNotifier<int, int>, int, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<int, int>,
+              int,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -205,15 +226,15 @@ const graphByCatProvider = GraphByCatProvider._();
 
 final class GraphByCatProvider extends $NotifierProvider<GraphByCat, bool> {
   const GraphByCatProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'graphByCatProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'graphByCatProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$graphByCatHash();
@@ -240,8 +261,14 @@ abstract class _$GraphByCat extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -252,15 +279,15 @@ const initialCenterProvider = InitialCenterProvider._();
 final class InitialCenterProvider
     extends $NotifierProvider<InitialCenter, LatLng> {
   const InitialCenterProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'initialCenterProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'initialCenterProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$initialCenterHash();
@@ -287,8 +314,14 @@ abstract class _$InitialCenter extends $Notifier<LatLng> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<LatLng, LatLng>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<LatLng, LatLng>, LatLng, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<LatLng, LatLng>,
+              LatLng,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

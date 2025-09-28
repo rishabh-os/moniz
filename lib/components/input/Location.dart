@@ -20,7 +20,7 @@ class LocationPickerButton extends ConsumerStatefulWidget {
     required this.returnSelectedLocation,
   });
   final GMapsPlace? initialLocation;
-  final Function(GMapsPlace location) returnSelectedLocation;
+  final void Function(GMapsPlace location) returnSelectedLocation;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -45,9 +45,7 @@ class _LocationPickerButtonState extends ConsumerState<LocationPickerButton> {
           MaterialPageRoute(
             builder: (context) {
               // ? This is prop drilling and bad I know
-              return LocationPicker(
-                initialLocation: widget.initialLocation,
-              );
+              return LocationPicker(initialLocation: widget.initialLocation);
             },
           ),
         );
@@ -61,19 +59,13 @@ class _LocationPickerButtonState extends ConsumerState<LocationPickerButton> {
       label: selectedLocation == null
           ? const Text("Add Location")
           : Text(selectedLocation!.displayName!.text ?? ""),
-      icon: const Icon(
-        Icons.location_on,
-        size: 16,
-      ),
+      icon: const Icon(Icons.location_on, size: 16),
     );
   }
 }
 
 class LocationPicker extends ConsumerStatefulWidget {
-  const LocationPicker({
-    super.key,
-    required this.initialLocation,
-  });
+  const LocationPicker({super.key, required this.initialLocation});
   final GMapsPlace? initialLocation;
 
   @override
@@ -93,7 +85,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
     // ? Update stored mapCenter on search
     ref.read(initialCenterProvider.notifier).state = mapCenter;
     // ? Notice the order of lat and long smh
-    final Map locationBias = {
+    final Map<String, dynamic> locationBias = {
       "circle": {
         "center": {
           "latitude": mapCenter.latitude,
@@ -159,8 +151,10 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
     if (widget.initialLocation != null) {
       selectedLocation = widget.initialLocation;
       final Location selectedCenter = selectedLocation!.location!;
-      initialCenter =
-          LatLng(selectedCenter.latitude ?? 0, selectedCenter.longitude ?? 0);
+      initialCenter = LatLng(
+        selectedCenter.latitude ?? 0,
+        selectedCenter.longitude ?? 0,
+      );
       Future.delayed(0.ms, () {
         ref.read(initialCenterProvider.notifier).state = initialCenter;
       });
@@ -170,9 +164,7 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pick Location"),
-      ),
+      appBar: AppBar(title: const Text("Pick Location")),
       body: Stack(
         children: [
           LocationMap(
@@ -194,13 +186,10 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
                   viewLeading: IconButton(
                     onPressed: () async {
                       _searchController.closeView(_searchController.text);
-                      await Future.delayed(
-                        50.ms,
-                        () {
-                          if (!context.mounted) return;
-                          FocusScope.of(context).unfocus();
-                        },
-                      );
+                      await Future.delayed(50.ms, () {
+                        if (!context.mounted) return;
+                        FocusScope.of(context).unfocus();
+                      });
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),
@@ -211,7 +200,8 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
                         ? fetchResponse
                         : debouncedSearch;
                     final results = await switchSearch(controller.text);
-                    final List<Widget> resultList = results?.places
+                    final List<Widget> resultList =
+                        results?.places
                             ?.map(
                               (location) => resultTile(location, controller),
                             )
@@ -227,10 +217,8 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
                               "Suggestions".toUpperCase(),
                               // ? It's never not mounted, just to remove the warning
                               style: context.mounted
-                                  ? Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(fontWeight: FontWeight.bold)
+                                  ? Theme.of(context).textTheme.bodyMedium!
+                                        .copyWith(fontWeight: FontWeight.bold)
                                   : null,
                             ),
                           ),
@@ -243,21 +231,25 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
                 const SizedBox(height: 4),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    child: SelectedResult(
-                      selectedLocation: selectedLocation,
-                      ref: ref,
-                    ),
-                  )
-                      .animate(
-                        target: selectedLocation != null ? 1 : 0,
-                      )
-                      .fadeIn(duration: 250.ms, curve: Curves.easeInOutCubic)
-                      .slideY(),
+                  child:
+                      Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
+                            ),
+                            child: SelectedResult(
+                              selectedLocation: selectedLocation,
+                              ref: ref,
+                            ),
+                          )
+                          .animate(target: selectedLocation != null ? 1 : 0)
+                          .fadeIn(
+                            duration: 250.ms,
+                            curve: Curves.easeInOutCubic,
+                          )
+                          .slideY(),
                 ),
               ],
             ),
@@ -285,15 +277,12 @@ class _LocationPickerState extends ConsumerState<LocationPicker>
           selectedLocation = location;
         });
         // ? This is very hacky but none of the other solutions work so
-        await Future.delayed(
-          50.ms,
-          () {
-            if (!context.mounted) return;
-            // ? Idk why the above check doesn't work here
-            // ignore: use_build_context_synchronously
-            FocusScope.of(context).unfocus();
-          },
-        );
+        await Future.delayed(50.ms, () {
+          if (!context.mounted) return;
+          // ? Idk why the above check doesn't work here
+          // ignore: use_build_context_synchronously
+          FocusScope.of(context).unfocus();
+        });
       },
       title: Text(
         location.displayName!.text ?? "",
@@ -332,10 +321,16 @@ class MarkerW extends StatelessWidget {
                 point: LatLng(
                   selectedLocation!.location!.latitude ??
                       animatedMapController
-                          .mapController.camera.center.latitude,
+                          .mapController
+                          .camera
+                          .center
+                          .latitude,
                   selectedLocation!.location!.longitude ??
                       animatedMapController
-                          .mapController.camera.center.longitude,
+                          .mapController
+                          .camera
+                          .center
+                          .longitude,
                 ),
                 child: const MarkerIcon(),
               ),
@@ -346,10 +341,7 @@ class MarkerW extends StatelessWidget {
 }
 
 class MarkerIcon extends StatelessWidget {
-  const MarkerIcon({
-    super.key,
-    this.color,
-  });
+  const MarkerIcon({super.key, this.color});
 
   final Color? color;
 
@@ -360,10 +352,7 @@ class MarkerIcon extends StatelessWidget {
       size: 36,
       color: color ?? Theme.of(context).colorScheme.primary,
       shadows: [
-        Shadow(
-          color: Theme.of(context).colorScheme.shadow,
-          blurRadius: 1,
-        ),
+        Shadow(color: Theme.of(context).colorScheme.shadow, blurRadius: 1),
       ],
     );
   }

@@ -8,10 +8,7 @@ Future<void> postHogCapture({
   Map<String, Object>? properties,
 }) async {
   try {
-    await Posthog().capture(
-      eventName: eventName,
-      properties: properties,
-    );
+    await Posthog().capture(eventName: eventName, properties: properties);
   } on MissingPluginException {
     log("Not implemented for Linux");
   }

@@ -15,15 +15,15 @@ const accountsProvider = AccountsProvider._();
 final class AccountsProvider
     extends $NotifierProvider<Accounts, List<Account>> {
   const AccountsProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'accountsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'accountsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$accountsHash();
@@ -50,11 +50,14 @@ abstract class _$Accounts extends $Notifier<List<Account>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<List<Account>, List<Account>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<Account>, List<Account>>,
-        List<Account>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<Account>, List<Account>>,
+              List<Account>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

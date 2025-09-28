@@ -57,13 +57,12 @@ class CircularRevealClipper extends CustomClipper<Path> {
     final minRadius = this.minRadius;
     final maxRadius = this.maxRadius;
 
-    return Path()
-      ..addOval(
-        Rect.fromCircle(
-          center: center,
-          radius: lerpDouble(minRadius, maxRadius, fraction)!,
-        ),
-      );
+    return Path()..addOval(
+      Rect.fromCircle(
+        center: center,
+        radius: lerpDouble(minRadius, maxRadius, fraction)!,
+      ),
+    );
   }
 
   @override
@@ -85,19 +84,16 @@ void handleTap(GlobalKey widgetKey, BuildContext context, dynamic content) {
   final double height = MediaQuery.of(context).size.height;
   Navigator.push(
     context,
-    DeleteRoute(
+    DeleteRoute<void>(
       // * Yes I know this is bad code (nested ternaries)
       page: content.runtimeType == Transaction
           ? EntryEditor(transaction: content as Transaction)
           : content.runtimeType == TransactionCategory
-              ? AccountEditor(
-                  editedCategory: content as TransactionCategory,
-                  type: "Category",
-                )
-              : AccountEditor(
-                  editedAccount: content as Account,
-                  type: "Account",
-                ),
+          ? AccountEditor(
+              editedCategory: content as TransactionCategory,
+              type: "Category",
+            )
+          : AccountEditor(editedAccount: content as Account, type: "Account"),
       startPositionGlobal:
           // ? Convert and scale global coordinates to Alignment values
           // ? This makes the animation start from the center of the widget

@@ -24,9 +24,7 @@ class _SettingsState extends ConsumerState<Settings> {
     final bool colorMapIcons = ref.watch(colorMapIconsProvider);
     final List<String> initalPages = ["Entries", "Analysis", "Manage"];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Settings"),
-      ),
+      appBar: AppBar(title: const Text("Settings")),
       body: ListView(
         children: [
           const Header(text: "Entries"),
@@ -36,37 +34,33 @@ class _SettingsState extends ConsumerState<Settings> {
             onChanged: (e) async {
               await postHogCapture(
                 eventName: "Transaction delete confirmation",
-                properties: {
-                  "value": e,
-                },
+                properties: {"value": e},
               );
               ref.watch(transDeleteProvider.notifier).state = e;
             },
           ),
           SwitchListTile.adaptive(
-            title:
-                const Text("Show category and account chips on multiple lines"),
+            title: const Text(
+              "Show category and account chips on multiple lines",
+            ),
             value: chipsScroll,
             onChanged: (e) async {
               await postHogCapture(
                 eventName: "Chips multiline",
-                properties: {
-                  "value": e,
-                },
+                properties: {"value": e},
               );
               ref.watch(chipsMultiLineProvider.notifier).state = e;
             },
           ),
           SwitchListTile.adaptive(
-            title:
-                const Text("Show location of the transaction in the list view"),
+            title: const Text(
+              "Show location of the transaction in the list view",
+            ),
             value: showLocation,
             onChanged: (e) async {
               await postHogCapture(
                 eventName: "Show location",
-                properties: {
-                  "value": e,
-                },
+                properties: {"value": e},
               );
               ref.watch(showLocationProvider.notifier).state = e;
             },
@@ -78,9 +72,7 @@ class _SettingsState extends ConsumerState<Settings> {
             onChanged: (e) async {
               await postHogCapture(
                 eventName: "Color map icons",
-                properties: {
-                  "value": e,
-                },
+                properties: {"value": e},
               );
               ref.watch(colorMapIconsProvider.notifier).state = e;
             },
@@ -96,20 +88,13 @@ class _SettingsState extends ConsumerState<Settings> {
               onChanged: (value) async {
                 await postHogCapture(
                   eventName: "Initial page",
-                  properties: {
-                    "value": value!,
-                  },
+                  properties: {"value": value!},
                 );
-                ref.watch(initialPageProvider.notifier).state =
-                    initalPages.indexOf(value);
+                ref.watch(initialPageProvider.notifier).state = initalPages
+                    .indexOf(value);
               },
               items: initalPages
-                  .map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ),
-                  )
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                   .toList(),
             ),
           ),
@@ -119,9 +104,7 @@ class _SettingsState extends ConsumerState<Settings> {
               onSelect: (e) async {
                 await postHogCapture(
                   eventName: "Currency change",
-                  properties: {
-                    "value": e.code,
-                  },
+                  properties: {"value": e.code},
                 );
                 ref.watch(currProvider.notifier).state = e;
               },
@@ -137,9 +120,9 @@ class _SettingsState extends ConsumerState<Settings> {
                 child: Text(
                   ref.watch(currProvider).code,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
                 ),
               ),
             ),
@@ -155,9 +138,7 @@ class _SettingsState extends ConsumerState<Settings> {
           const CustomDivider(),
           ListTile(
             onTap: () async {
-              await postHogCapture(
-                eventName: "Export data",
-              );
+              await postHogCapture(eventName: "Export data");
               ref.read(dBProvider).shareDB();
             },
             title: const Text("Export data"),
@@ -165,11 +146,9 @@ class _SettingsState extends ConsumerState<Settings> {
           ),
           ListTile(
             onTap: () async {
-              await postHogCapture(
-                eventName: "Import data",
-              );
+              await postHogCapture(eventName: "Import data");
               if (!context.mounted) return;
-              showDialog(
+              showDialog<AlertDialog>(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
@@ -184,7 +163,7 @@ class _SettingsState extends ConsumerState<Settings> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          showDialog(
+                          showDialog<Dialog>(
                             context: context,
                             builder: (context) {
                               return const Dialog(
@@ -192,21 +171,21 @@ class _SettingsState extends ConsumerState<Settings> {
                                   padding: EdgeInsets.symmetric(vertical: 32),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CircularProgressIndicator(),
-                                    ],
+                                    children: [CircularProgressIndicator()],
                                   ),
                                 ),
                               );
                             },
                           );
-                          final bool imported =
-                              await ref.read(dBProvider).importDB();
+                          final bool imported = await ref
+                              .read(dBProvider)
+                              .importDB();
                           if (!context.mounted) return;
                           if (imported) {
                             await ref.read(dBProvider).close();
-                            SystemChannels.platform
-                                .invokeMethod("SystemNavigator.pop");
+                            SystemChannels.platform.invokeMethod(
+                              "SystemNavigator.pop",
+                            );
                           } else {
                             Navigator.of(context).pop();
                           }
@@ -224,7 +203,7 @@ class _SettingsState extends ConsumerState<Settings> {
           ListTile(
             title: const Text("Rerun the tutorial"),
             onTap: () {
-              showDialog(
+              showDialog<AlertDialog>(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
@@ -240,20 +219,23 @@ class _SettingsState extends ConsumerState<Settings> {
                       TextButton(
                         onPressed: () {
                           ref
-                              .read(
-                                entriesTutorialCompletedProvider.notifier,
-                              )
-                              .state = false;
+                                  .read(
+                                    entriesTutorialCompletedProvider.notifier,
+                                  )
+                                  .state =
+                              false;
                           ref
-                              .read(
-                                manageTutorialCompletedProvider.notifier,
-                              )
-                              .state = false;
+                                  .read(
+                                    manageTutorialCompletedProvider.notifier,
+                                  )
+                                  .state =
+                              false;
                           ref
-                              .read(
-                                analysisTutorialCompletedProvider.notifier,
-                              )
-                              .state = false;
+                                  .read(
+                                    analysisTutorialCompletedProvider.notifier,
+                                  )
+                                  .state =
+                              false;
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             "/welcome",
                             (route) => false,
@@ -274,18 +256,14 @@ class _SettingsState extends ConsumerState<Settings> {
 }
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({
-    super.key,
-  });
+  const CustomDivider({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Column(
       children: [
         SizedBox(height: 4),
-        Divider(
-          thickness: 2,
-        ),
+        Divider(thickness: 2),
         SizedBox(height: 4),
       ],
     );

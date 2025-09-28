@@ -14,15 +14,15 @@ const currProvider = CurrProvider._();
 
 final class CurrProvider extends $NotifierProvider<Curr, Currency> {
   const CurrProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'currProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$currHash();
@@ -49,8 +49,14 @@ abstract class _$Curr extends $Notifier<Currency> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Currency, Currency>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Currency, Currency>, Currency, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Currency, Currency>,
+              Currency,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -60,15 +66,15 @@ const transDeleteProvider = TransDeleteProvider._();
 
 final class TransDeleteProvider extends $NotifierProvider<TransDelete, bool> {
   const TransDeleteProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'transDeleteProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'transDeleteProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$transDeleteHash();
@@ -95,8 +101,14 @@ abstract class _$TransDelete extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -107,15 +119,15 @@ const chipsMultiLineProvider = ChipsMultiLineProvider._();
 final class ChipsMultiLineProvider
     extends $NotifierProvider<ChipsMultiLine, bool> {
   const ChipsMultiLineProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'chipsMultiLineProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'chipsMultiLineProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$chipsMultiLineHash();
@@ -142,8 +154,14 @@ abstract class _$ChipsMultiLine extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -153,15 +171,15 @@ const showLocationProvider = ShowLocationProvider._();
 
 final class ShowLocationProvider extends $NotifierProvider<ShowLocation, bool> {
   const ShowLocationProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'showLocationProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'showLocationProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$showLocationHash();
@@ -188,8 +206,14 @@ abstract class _$ShowLocation extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -200,15 +224,15 @@ const colorMapIconsProvider = ColorMapIconsProvider._();
 final class ColorMapIconsProvider
     extends $NotifierProvider<ColorMapIcons, bool> {
   const ColorMapIconsProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'colorMapIconsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'colorMapIconsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$colorMapIconsHash();
@@ -235,8 +259,14 @@ abstract class _$ColorMapIcons extends $Notifier<bool> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<bool, bool>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<bool, bool>, bool, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -246,15 +276,15 @@ const initialPageProvider = InitialPageProvider._();
 
 final class InitialPageProvider extends $NotifierProvider<InitialPage, int> {
   const InitialPageProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'initialPageProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'initialPageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$initialPageHash();
@@ -281,8 +311,14 @@ abstract class _$InitialPage extends $Notifier<int> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<int, int>;
-    final element = ref.element
-        as $ClassProviderElement<AnyNotifier<int, int>, int, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<int, int>,
+              int,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -292,15 +328,15 @@ const numberFProvider = NumberFProvider._();
 
 final class NumberFProvider extends $NotifierProvider<NumberF, NumberFormat> {
   const NumberFProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'numberFProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'numberFProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$numberFHash();
@@ -327,11 +363,14 @@ abstract class _$NumberF extends $Notifier<NumberFormat> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<NumberFormat, NumberFormat>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<NumberFormat, NumberFormat>,
-        NumberFormat,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<NumberFormat, NumberFormat>,
+              NumberFormat,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

@@ -9,9 +9,7 @@ class Header extends StatelessWidget {
     return Center(
       child: Text(
         text.toUpperCase(),
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.w600),
       ),
     );
   }

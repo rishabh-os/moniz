@@ -42,10 +42,7 @@ class _AccountsState extends ConsumerState<Accounts> {
           itemBuilder: (context, index) {
             final acc = accounts[index];
             final key = GlobalObjectKey(acc.id);
-            return AccountCard(
-              globalKey: key,
-              account: acc,
-            );
+            return AccountCard(globalKey: key, account: acc);
           },
         ),
         const SizedBox(height: 8),
@@ -55,18 +52,19 @@ class _AccountsState extends ConsumerState<Accounts> {
           openColor: Theme.of(context).colorScheme.surface,
           transitionType: ContainerTransitionType.fadeThrough,
           closedElevation: 0,
-          openShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          closedShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          openShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          closedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           closedBuilder: (context, action) => TextButton.icon(
             onPressed: action,
             icon: const Icon(Icons.add),
             label: const Text("Add Account"),
           ),
-          openBuilder: (context, action) => const AccountEditor(
-            type: "Account",
-          ),
+          openBuilder: (context, action) =>
+              const AccountEditor(type: "Account"),
         ),
       ],
     );

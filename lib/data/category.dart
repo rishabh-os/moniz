@@ -54,15 +54,16 @@ class Categories extends _$Categories {
 
   Future<void> loadCategories() async {
     final db = ref.read(dBProvider);
-    final List<TransactionCategory> allCategories =
-        await db.select(db.categoriesTable).get();
+    final List<TransactionCategory> allCategories = await db
+        .select(db.categoriesTable)
+        .get();
     allCategories.sort((a, b) => a.order.compareTo(b.order));
     state = allCategories;
   }
 
-  void edit(TransactionCategory editedCategory) {
+  Future<void> edit(TransactionCategory editedCategory) async {
     final db = ref.read(dBProvider);
-    db.updateCategory(editedCategory);
+    await db.updateCategory(editedCategory);
     state = [
       for (final trans in state)
         if (trans.id == editedCategory.id)
@@ -81,7 +82,9 @@ class Categories extends _$Categories {
   Future<void> add(TransactionCategory newCategory) async {
     state = [...state, newCategory];
     final db = ref.read(dBProvider);
-    await db.into(db.categoriesTable).insert(
+    await db
+        .into(db.categoriesTable)
+        .insert(
           CategoriesTableCompanion.insert(
             id: newCategory.id,
             name: newCategory.name,

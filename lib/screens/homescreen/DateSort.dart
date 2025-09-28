@@ -5,9 +5,7 @@ import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/transactions.dart";
 
 class DateSort extends ConsumerStatefulWidget {
-  const DateSort({
-    super.key,
-  });
+  const DateSort({super.key});
 
   @override
   ConsumerState<DateSort> createState() => _DateSortState();
@@ -19,10 +17,7 @@ class _DateSortState extends ConsumerState<DateSort> {
           .map(
             (e) => PopupMenuItem(
               value: e,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(e),
-              ),
+              child: Align(alignment: Alignment.centerRight, child: Text(e)),
             ),
           )
           .toList();
@@ -36,12 +31,7 @@ class _DateSortState extends ConsumerState<DateSort> {
       icon: const Icon(Icons.calendar_today_rounded),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       onSelected: (value) async {
-        postHogCapture(
-          eventName: "Date sort",
-          properties: {
-            "value": value,
-          },
-        );
+        postHogCapture(eventName: "Date sort", properties: {"value": value});
         switch (value) {
           case "Last 7 days":
             globalRange.state = DateTimeRange(
@@ -107,11 +97,12 @@ class _DateSortState extends ConsumerState<DateSort> {
             );
           case "Everything":
             // ! This throws an error on a completely empty app because there are no entries so no oldest date
-            final DateTime oldestDate = (await ref
-                    .read(transactionsProvider.notifier)
-                    .loadAllTransationsFromDB())
-                .map<DateTime>((e) => e.recorded)
-                .reduce((min, e) => e.isBefore(min) ? e : min);
+            final DateTime oldestDate =
+                (await ref
+                        .read(transactionsProvider.notifier)
+                        .loadAllTransationsFromDB())
+                    .map<DateTime>((e) => e.recorded)
+                    .reduce((min, e) => e.isBefore(min) ? e : min);
             globalRange.state = DateTimeRange(
               start: oldestDate.copyWith(
                 hour: 0,

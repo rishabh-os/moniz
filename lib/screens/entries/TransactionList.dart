@@ -27,35 +27,31 @@ class _TransactionListState extends ConsumerState<TransactionList> {
       cacheExtent: 20,
       shrinkWrap: true,
       childrenDelegate: SliverChildBuilderDelegate(
-          findChildIndexCallback: (key) {
-            final ValueKey<String> valueKey = key as ValueKey<String>;
-            final index =
-                widget.transactions.indexWhere((m) => m.id == valueKey.value);
-            return index;
-          },
-          childCount: widget.transactions.length + 1,
-          (context, index) {
-            if (index == widget.transactions.length) {
-              return const ListTile(
-                isThreeLine: true,
-                subtitle: Text(""),
-              );
-            }
-            final trans = widget.transactions[index];
+        findChildIndexCallback: (key) {
+          final ValueKey<String> valueKey = key as ValueKey<String>;
+          final index = widget.transactions.indexWhere(
+            (m) => m.id == valueKey.value,
+          );
+          return index;
+        },
+        childCount: widget.transactions.length + 1,
+        (context, index) {
+          if (index == widget.transactions.length) {
+            return const ListTile(isThreeLine: true, subtitle: Text(""));
+          }
+          final trans = widget.transactions[index];
 
-            // ? Provides space so that the FAB doesn't block the last transaction
+          // ? Provides space so that the FAB doesn't block the last transaction
 
-            return TransactionListTile(transaction: trans);
-          }),
+          return TransactionListTile(transaction: trans);
+        },
+      ),
     );
   }
 }
 
 class TransactionListTile extends ConsumerStatefulWidget {
-  const TransactionListTile({
-    super.key,
-    required this.transaction,
-  });
+  const TransactionListTile({super.key, required this.transaction});
   final Transaction transaction;
 
   @override
@@ -76,20 +72,17 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
     return InkWell(
       onTap: () => handleTap(key, context, widget.transaction),
       child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              DateFormat("EEE, d MMM yyyy K:mm a")
-                  .format(widget.transaction.recorded),
+              DateFormat(
+                "EEE, d MMM yyyy K:mm a",
+              ).format(widget.transaction.recorded),
             ),
-            const SizedBox(
-              height: 4,
-            ),
+            const SizedBox(height: 4),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -150,14 +143,8 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
                 color: Color(transCategory.color),
               ),
             ),
-            const SizedBox(
-              width: 8,
-            ),
-            Flexible(
-              child: Text(
-                widget.transaction.title,
-              ),
-            ),
+            const SizedBox(width: 8),
+            Flexible(child: Text(widget.transaction.title)),
           ],
         ),
         trailing: MoneyDisplay(

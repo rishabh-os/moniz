@@ -62,9 +62,7 @@ class Bright extends _$Bright {
 class DynamicColor extends _$DynamicColor {
   @override
   bool build() {
-    listenSelf(
-      (previous, next) => GetStorage().write("isDynamic", next),
-    );
+    listenSelf((previous, next) => GetStorage().write("isDynamic", next));
     GetStorage().read("isDynamic") ?? GetStorage().write("isDynamic", true);
     return GetStorage().read("isDynamic") as bool;
   }

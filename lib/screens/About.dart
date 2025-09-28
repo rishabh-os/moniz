@@ -25,9 +25,7 @@ class _AboutState extends State<About> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("About"),
-      ),
+      appBar: AppBar(title: const Text("About")),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView(
@@ -37,10 +35,7 @@ class _AboutState extends State<About> {
               child: Card(
                 child: Column(
                   children: [
-                    Image.asset(
-                      "assets/coin4.png",
-                      height: 100,
-                    ),
+                    Image.asset("assets/coin4.png", height: 100),
                     Text(
                       "Moniz",
                       style: Theme.of(context).textTheme.displaySmall,
@@ -55,11 +50,8 @@ class _AboutState extends State<About> {
               child: ListTile(
                 leading: const Icon(Icons.code_rounded),
                 title: const Text("Source code"),
-                onTap: () => launchUrl(
-                  Uri.parse(
-                    "https://github.com/rishabh-os/moniz",
-                  ),
-                ),
+                onTap: () =>
+                    launchUrl(Uri.parse("https://github.com/rishabh-os/moniz")),
               ),
             ),
             Card(
@@ -88,11 +80,8 @@ class _AboutState extends State<About> {
                   ),
                 ),
                 title: const Text("Rishabh Wanjari"),
-                onTap: () => launchUrl(
-                  Uri.parse(
-                    "https://github.com/rishabh-os",
-                  ),
-                ),
+                onTap: () =>
+                    launchUrl(Uri.parse("https://github.com/rishabh-os")),
               ),
             ),
           ],

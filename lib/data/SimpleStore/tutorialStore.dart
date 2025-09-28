@@ -113,10 +113,7 @@ class AnalysisTutorialCompleted extends _$AnalysisTutorialCompleted {
 
 enum Screen { entries, manage, analysis }
 
-void showTutorial(
-  BuildContext context,
-  Screen screen,
-) {
+void showTutorial(BuildContext context, Screen screen) {
   List<(GlobalKey, String, String)> targetDetails;
   switch (screen) {
     case Screen.entries:
@@ -198,9 +195,7 @@ void showTutorial(
 
   TutorialCoachMark(
     targets: targetDetails
-        .map(
-          (e) => customTarget(context, e.$1, e.$2, e.$3),
-        )
+        .map((e) => customTarget(context, e.$1, e.$2, e.$3))
         .toList(), // List<TargetFocus>
     colorShadow: Theme.of(context).colorScheme.secondaryContainer,
     hideSkip: true,

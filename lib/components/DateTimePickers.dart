@@ -7,7 +7,7 @@ class DatePicker extends StatefulWidget {
     required this.initialDate,
     required this.returnSelectedDate,
   });
-  final Function(DateTime selectedDate) returnSelectedDate;
+  final void Function(DateTime selectedDate) returnSelectedDate;
   final DateTime initialDate;
 
   @override
@@ -43,10 +43,7 @@ class _DatePickerState extends State<DatePicker> {
     // ? Returns the value whenever the widget is rebuilt
 
     return OutlinedButton.icon(
-      icon: const Icon(
-        Icons.today,
-        size: 16,
-      ),
+      icon: const Icon(Icons.today, size: 16),
       label: Text(DateFormat("EEE, d MMM yyyy").format(displayDate)),
       onPressed: () => _selectDate2(context),
     );
@@ -59,7 +56,7 @@ class TimePicker extends StatefulWidget {
     required this.initialTime,
     required this.returnSelectedTime,
   });
-  final Function(TimeOfDay selectedTime) returnSelectedTime;
+  final void Function(TimeOfDay selectedTime) returnSelectedTime;
   final TimeOfDay initialTime;
 
   @override
@@ -80,10 +77,7 @@ class _TimePickerState extends State<TimePicker> {
     // ? Returns the value whenever the widget is rebuilt
 
     return OutlinedButton.icon(
-      icon: const Icon(
-        Icons.access_time_filled,
-        size: 16,
-      ),
+      icon: const Icon(Icons.access_time_filled, size: 16),
       label: Text(
         '${selectedTime.hourOfPeriod.toString().padLeft(2, "0")}: ${selectedTime.minute.toString().padLeft(2, "0")} ${selectedTime.period.name.toUpperCase()}',
       ),

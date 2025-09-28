@@ -41,9 +41,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
             ref.read(initialCenterProvider.notifier).state = position.center;
             // ? Stop following the location on any gesture
             if (hasGesture && _alignPositionOnUpdate != AlignOnUpdate.never) {
-              setState(
-                () => _alignPositionOnUpdate = AlignOnUpdate.never,
-              );
+              setState(() => _alignPositionOnUpdate = AlignOnUpdate.never);
             }
           },
         ),
@@ -56,18 +54,12 @@ class _LocationMapState extends ConsumerState<LocationMap>
           ...widget.layers,
           // ? The underlying geolocation package doesn't support Linux
           if (!Platform.isLinux)
-            CurrentLocationLayer(
-              alignPositionOnUpdate: _alignPositionOnUpdate,
-            ),
+            CurrentLocationLayer(alignPositionOnUpdate: _alignPositionOnUpdate),
           const RichAttributionWidget(
             alignment: AttributionAlignment.bottomLeft,
             attributions: [
-              TextSourceAttribution(
-                "Mapbox",
-              ),
-              TextSourceAttribution(
-                "OpenStreetMap contributors",
-              ),
+              TextSourceAttribution("Mapbox"),
+              TextSourceAttribution("OpenStreetMap contributors"),
             ],
           ),
         ],
@@ -102,9 +94,7 @@ class _LocationMapState extends ConsumerState<LocationMap>
             child: const Icon(Icons.my_location),
             onPressed: () {
               // ? Follow location on tap
-              setState(
-                () => _alignPositionOnUpdate = AlignOnUpdate.always,
-              );
+              setState(() => _alignPositionOnUpdate = AlignOnUpdate.always);
             },
           ),
         ],

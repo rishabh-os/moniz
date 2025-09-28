@@ -5,10 +5,8 @@ import "package:moniz/data/account.dart";
 import "package:moniz/screens/manage/AccountIcon.dart";
 
 class AccountCard extends StatefulWidget {
-  const AccountCard({
-    required this.globalKey,
-    required this.account,
-  }) : super(key: globalKey);
+  const AccountCard({required this.globalKey, required this.account})
+    : super(key: globalKey);
   final GlobalKey globalKey;
   final Account account;
 
@@ -36,20 +34,14 @@ class _AccountCardState extends State<AccountCard> {
             Radius.circular(12),
           ),
         ),
-        child: AccountInfo(
-          widget: widget,
-          key: infoKey,
-        ),
+        child: AccountInfo(widget: widget, key: infoKey),
       ),
     );
   }
 }
 
 class AccountInfo extends StatelessWidget {
-  const AccountInfo({
-    super.key,
-    required this.widget,
-  });
+  const AccountInfo({super.key, required this.widget});
 
   final AccountCard widget;
 
@@ -64,10 +56,7 @@ class AccountInfo extends StatelessWidget {
               iconCodepoint: widget.account.iconCodepoint,
               showBgColor: false,
             ),
-            Text(
-              widget.account.name,
-              style: const TextStyle(fontSize: 20),
-            ),
+            Text(widget.account.name, style: const TextStyle(fontSize: 20)),
             const Expanded(child: SizedBox()),
             IconButton(
               onPressed: () =>
@@ -79,9 +68,7 @@ class AccountInfo extends StatelessWidget {
               index: widget.account.order,
               child: const Icon(Icons.drag_indicator_rounded),
             ),
-            const SizedBox(
-              width: 6,
-            ),
+            const SizedBox(width: 6),
           ],
         ),
         Padding(

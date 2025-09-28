@@ -3,10 +3,7 @@ import "package:moniz/components/ThemePicker.dart";
 // import "package:moniz/screens/Budget.dart";
 
 class DotsMenu extends StatelessWidget {
-  const DotsMenu({
-    super.key,
-    required this.scaffoldKey,
-  });
+  const DotsMenu({super.key, required this.scaffoldKey});
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -17,36 +14,32 @@ class DotsMenu extends StatelessWidget {
       onSelected: (value) {
         switch (value) {
           case "Theme":
-            scaffoldKey.currentState!
-                .showBottomSheet((context) => const ThemePicker());
+            scaffoldKey.currentState!.showBottomSheet(
+              (context) => const ThemePicker(),
+            );
           case "Settings":
             Navigator.of(context).pushNamed("/settings");
         }
       },
-      itemBuilder: (context) => {
-        "Theme": Icons.palette_rounded,
-        "Settings": Icons.settings_rounded,
-      }
-          .entries
-          .map(
-            (e) => PopupMenuItem(
-              value: e.key,
-              child: Wrap(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.zero,
-                    child: Icon(e.value),
+      itemBuilder: (context) =>
+          {"Theme": Icons.palette_rounded, "Settings": Icons.settings_rounded}
+              .entries
+              .map(
+                (e) => PopupMenuItem(
+                  value: e.key,
+                  child: Wrap(
+                    children: [
+                      Padding(padding: EdgeInsets.zero, child: Icon(e.value)),
+                      const SizedBox(width: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Text(e.key),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Text(e.key),
-                  ),
-                ],
-              ),
-            ),
-          )
-          .toList(),
+                ),
+              )
+              .toList(),
     );
   }
 }

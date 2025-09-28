@@ -18,8 +18,9 @@ class _AnalysisState extends ConsumerState<Analysis> {
   late Widget display;
   @override
   Widget build(BuildContext context) {
-    final List<GlobalKey> listOfKeys =
-        analysisTargets.map((e) => e.$1).toList();
+    final List<GlobalKey> listOfKeys = analysisTargets
+        .map((e) => e.$1)
+        .toList();
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -29,9 +30,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
             onTap: (value) async {
               await postHogCapture(
                 eventName: "Analysis Graph",
-                properties: {
-                  "value": analysisTargets[value].$2,
-                },
+                properties: {"value": analysisTargets[value].$2},
               );
             },
             tabs: [
@@ -47,8 +46,9 @@ class _AnalysisState extends ConsumerState<Analysis> {
                       }
                     });
                     ref
-                        .watch(analysisTutorialCompletedProvider.notifier)
-                        .state = true;
+                            .watch(analysisTutorialCompletedProvider.notifier)
+                            .state =
+                        true;
                   }
                 },
                 child: const Tab(icon: Icon(Icons.pie_chart_rounded)),
@@ -57,10 +57,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
                 key: listOfKeys[1],
                 icon: const Icon(Icons.bar_chart_rounded),
               ),
-              Tab(
-                key: listOfKeys[2],
-                icon: const Icon(Icons.map_rounded),
-              ),
+              Tab(key: listOfKeys[2], icon: const Icon(Icons.map_rounded)),
             ],
           ),
           const Expanded(
@@ -76,9 +73,7 @@ class _AnalysisState extends ConsumerState<Analysis> {
 }
 
 class NoData extends StatelessWidget {
-  const NoData({
-    super.key,
-  });
+  const NoData({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +81,7 @@ class NoData extends StatelessWidget {
       child: Text(
         "No data",
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 24,
-          letterSpacing: 1,
-        ),
+        style: TextStyle(fontSize: 24, letterSpacing: 1),
       ),
     );
   }

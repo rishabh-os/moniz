@@ -10,10 +10,7 @@ import "package:moniz/screens/analysis/Analysis.dart";
 class PieChartData {
   final Classifier classifier;
   double amount;
-  PieChartData({
-    required this.classifier,
-    this.amount = 0,
-  });
+  PieChartData({required this.classifier, this.amount = 0});
 
   void add(double amount) {
     this.amount += amount;
@@ -39,8 +36,9 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
     super.build(context);
     final List<Transaction> transactionList = ref.watch(searchedTransProvider);
     List<PieChartData> spendsByClassifier(bool isCat) {
-      final List<Classifier> classifierList =
-          isCat ? ref.watch(categoriesProvider) : ref.watch(accountsProvider);
+      final List<Classifier> classifierList = isCat
+          ? ref.watch(categoriesProvider)
+          : ref.watch(accountsProvider);
       final List<PieChartData> spendsByClass = [
         for (final v in classifierList) PieChartData(classifier: v),
       ];
@@ -63,7 +61,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
     Padding dropdownChoice(
       (String, String) values,
       bool choice,
-      Function(bool x) onChange,
+      void Function(bool x) onChange,
     ) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -72,7 +70,7 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
           borderRadius: BorderRadius.circular(15),
           underline: Container(),
           value: choice.toString(),
-          items: [true, false].map<DropdownMenuItem>((value) {
+          items: [true, false].map<DropdownMenuItem<String>>((value) {
             return DropdownMenuItem(
               value: value.toString(),
               child: Text(value ? values.$1 : values.$2),
@@ -120,9 +118,11 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
               const SizedBox(width: 4),
               Flexible(
                 child: MoneyDisplay(
-                    amount: int.parse(
-                        label.amount.toStringAsFixed(2).replaceAll(".", "")),
-                    fontSize: null),
+                  amount: int.parse(
+                    label.amount.toStringAsFixed(2).replaceAll(".", ""),
+                  ),
+                  fontSize: null,
+                ),
               ),
             ],
           );
@@ -141,19 +141,13 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Show",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text("Show", style: Theme.of(context).textTheme.bodyLarge),
               dropdownChoice(("Income", "Expense"), showIncome, (bool x) {
                 setState(() {
                   showIncome = x;
                 });
               }),
-              Text(
-                "by",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text("by", style: Theme.of(context).textTheme.bodyLarge),
               dropdownChoice(("Category", "Account"), showCat, (bool x) {
                 setState(() {
                   showCat = x;
@@ -170,39 +164,38 @@ class _CategoryChartState extends ConsumerState<CategoryChart>
                     data: data,
                     variables: {
                       "classifier": Variable(
-                        accessor: (Map map) => map["classifier"] as String,
+                        accessor: (Map<String, String> map) =>
+                            map["classifier"] as String,
                       ),
                       "amount": Variable(
-                        accessor: (Map map) => map["amount"] as num,
+                        accessor: (Map<String, num> map) =>
+                            map["amount"] as num,
                         scale: LinearScale(min: 0),
                       ),
                     },
-                    transforms: [
-                      Proportion(
-                        variable: "amount",
-                        as: "percent",
-                      ),
-                    ],
+                    transforms: [Proportion(variable: "amount", as: "percent")],
                     marks: [
                       IntervalMark(
                         shape: ShapeEncode(
                           value: RectShape(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(5),
+                            ),
                           ),
                         ),
                         position: Varset("percent") / Varset("classifier"),
                         color: ColorEncode(
                           variable: "classifier",
                           // ? This is needed because internally the widget needs values to be >= 2 for unknown reasons
-                          values: spends
+                          values:
+                              spends
                                       .map((e) => Color(e.classifier.color))
                                       .toList()
                                       .length >
                                   1
                               ? spends
-                                  .map((e) => Color(e.classifier.color))
-                                  .toList()
+                                    .map((e) => Color(e.classifier.color))
+                                    .toList()
                               : [
                                   spends
                                       .map((e) => Color(e.classifier.color))

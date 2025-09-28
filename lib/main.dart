@@ -26,9 +26,9 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // ? Enables the mouse to drag, makes debugging easier on Linux
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
 
 void main() async {
@@ -52,34 +52,27 @@ void main() async {
       windowManager.focus();
     });
   } else {
-// ? Posthog doesn't support Linux (for now)
+    // ? Posthog doesn't support Linux (for now)
     final config = PostHogConfig(Env.posthogApikey);
     config.debug = true;
     config.captureApplicationLifecycleEvents = true;
     config.host = "https://eu.i.posthog.com";
     await Posthog().setup(config);
   }
-  await SentryFlutter.init(
-    (options) {
-      // ? Disable sentry while developing
-      options.dsn = kDebugMode
-          ? ""
-          : "https://3e6550282cb26ab69d067815cbe9a91a@o4508771833282560.ingest.de.sentry.io/4508771834462288";
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
-      // We recommend adjusting this value in production.
-      options.tracesSampleRate = 1.0;
-      // The sampling rate for profiling is relative to tracesSampleRate
-      // Setting to 1.0 will profile 100% of sampled transactions:
-      options.profilesSampleRate = 1.0;
-      options.replay.sessionSampleRate = 1.0;
-      options.replay.onErrorSampleRate = 1.0;
-    },
-    appRunner: () => runApp(
-      const ProviderScope(
-        child: MyApp(),
-      ),
-    ),
-  );
+  await SentryFlutter.init((options) {
+    // ? Disable sentry while developing
+    options.dsn = kDebugMode
+        ? ""
+        : "https://3e6550282cb26ab69d067815cbe9a91a@o4508771833282560.ingest.de.sentry.io/4508771834462288";
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+    // We recommend adjusting this value in production.
+    options.tracesSampleRate = 1.0;
+    // The sampling rate for profiling is relative to tracesSampleRate
+    // Setting to 1.0 will profile 100% of sampled transactions:
+    options.profilesSampleRate = 1.0;
+    options.replay.sessionSampleRate = 1.0;
+    options.replay.onErrorSampleRate = 1.0;
+  }, appRunner: () => runApp(const ProviderScope(child: MyApp())));
 }
 
 class MyApp extends ConsumerStatefulWidget {
@@ -117,12 +110,9 @@ class _MyAppState extends ConsumerState<MyApp> {
               SchedulerBinding.instance.platformDispatcher.platformBrightness;
           final ColorScheme dynamicScheme =
               platformBrightness == Brightness.dark
-                  ? darkDynamic!
-                  : lightDynamic;
-          theme = ThemeData(
-            colorScheme: dynamicScheme,
-            useMaterial3: true,
-          );
+              ? darkDynamic!
+              : lightDynamic;
+          theme = ThemeData(colorScheme: dynamicScheme, useMaterial3: true);
           Future.delayed(const Duration(milliseconds: 1), () {
             ref.watch(brightProvider.notifier).state = platformBrightness;
           });
@@ -141,8 +131,9 @@ class _MyAppState extends ConsumerState<MyApp> {
           theme: theme,
           debugShowCheckedModeBanner: false,
           builder: FToastBuilder(),
-          initialRoute:
-              GetStorage().read("welcome") == null ? "/welcome" : "/home",
+          initialRoute: GetStorage().read("welcome") == null
+              ? "/welcome"
+              : "/home",
           routes: {
             "/welcome": (context) => const Welcome(),
             // ? Why not just "/"? Because that causes duplicate GlobalKeys for reasons unknown

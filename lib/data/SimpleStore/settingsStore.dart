@@ -13,9 +13,7 @@ class Curr extends _$Curr {
   @override
   Currency build() {
     // ? Only save the name of the currency
-    listenSelf(
-      (previous, next) => GetStorage().write("currency", next.code),
-    );
+    listenSelf((previous, next) => GetStorage().write("currency", next.code));
     GetStorage().read("currency") ?? GetStorage().write("currency", "INR");
     final Map<String, dynamic> m = currencies.firstWhere(
       (element) => element["code"] == GetStorage().read("currency") as String,
@@ -49,9 +47,7 @@ class TransDelete extends _$TransDelete {
 class ChipsMultiLine extends _$ChipsMultiLine {
   @override
   bool build() {
-    listenSelf(
-      (previous, next) => GetStorage().write("chipsMultiLine", next),
-    );
+    listenSelf((previous, next) => GetStorage().write("chipsMultiLine", next));
     GetStorage().read("chipsMultiLine") ??
         GetStorage().write("chipsMultiLine", true);
     return GetStorage().read("chipsMultiLine") as bool;
@@ -65,9 +61,7 @@ class ChipsMultiLine extends _$ChipsMultiLine {
 class ShowLocation extends _$ShowLocation {
   @override
   bool build() {
-    listenSelf(
-      (previous, next) => GetStorage().write("showLocation", next),
-    );
+    listenSelf((previous, next) => GetStorage().write("showLocation", next));
     GetStorage().read("showLocation") ??
         GetStorage().write("showLocation", true);
     return GetStorage().read("showLocation") as bool;
@@ -81,9 +75,7 @@ class ShowLocation extends _$ShowLocation {
 class ColorMapIcons extends _$ColorMapIcons {
   @override
   bool build() {
-    listenSelf(
-      (previous, next) => GetStorage().write("colorMapIcons", next),
-    );
+    listenSelf((previous, next) => GetStorage().write("colorMapIcons", next));
     GetStorage().read("colorMapIcons") ??
         GetStorage().write("colorMapIcons", true);
     return GetStorage().read("colorMapIcons") as bool;
@@ -97,9 +89,7 @@ class ColorMapIcons extends _$ColorMapIcons {
 class InitialPage extends _$InitialPage {
   @override
   int build() {
-    listenSelf(
-      (previous, next) => GetStorage().write("initialPage", next),
-    );
+    listenSelf((previous, next) => GetStorage().write("initialPage", next));
     GetStorage().read("initialPage") ?? GetStorage().write("initialPage", 0);
     return GetStorage().read("initialPage") as int;
   }

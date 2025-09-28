@@ -2,6 +2,7 @@
 // ignore_for_file: avoid_dynamic_calls
 // ignore_for_file: argument_type_not_assignable
 // ignore_for_file: invalid_assignment
+// ignore_for_file: inference_failure_on_untyped_parameter
 import "dart:convert";
 import "package:drift/drift.dart";
 import "package:json_annotation/json_annotation.dart" as j;
@@ -154,12 +155,15 @@ class GMapsPlace {
         addressComponents!.add(AddressComponents.fromJson(v));
       });
     }
-    plusCode =
-        json["plusCode"] != null ? PlusCode.fromJson(json["plusCode"]) : null;
-    location =
-        json["location"] != null ? Location.fromJson(json["location"]) : null;
-    viewport =
-        json["viewport"] != null ? Viewport.fromJson(json["viewport"]) : null;
+    plusCode = json["plusCode"] != null
+        ? PlusCode.fromJson(json["plusCode"])
+        : null;
+    location = json["location"] != null
+        ? Location.fromJson(json["location"])
+        : null;
+    viewport = json["viewport"] != null
+        ? Viewport.fromJson(json["viewport"])
+        : null;
     rating = json["rating"];
     googleMapsUri = json["googleMapsUri"];
     websiteUri = json["websiteUri"];
@@ -231,8 +235,9 @@ class GMapsPlace {
     data["internationalPhoneNumber"] = internationalPhoneNumber;
     data["formattedAddress"] = formattedAddress;
     if (addressComponents != null) {
-      data["addressComponents"] =
-          addressComponents!.map((v) => v.toJson()).toList();
+      data["addressComponents"] = addressComponents!
+          .map((v) => v.toJson())
+          .toList();
     }
     if (plusCode != null) {
       data["plusCode"] = plusCode!.toJson();

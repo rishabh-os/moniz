@@ -44,15 +44,8 @@ class _ManageState extends ConsumerState<Manage>
           ),
           const SizedBox(height: 10),
           const Accounts(),
-          const Divider(
-            height: 40,
-            indent: 20,
-            endIndent: 20,
-          ),
-          Header(
-            text: "Categories",
-            key: listOfKeys[1],
-          ),
+          const Divider(height: 40, indent: 20, endIndent: 20),
+          Header(text: "Categories", key: listOfKeys[1]),
           const SizedBox(height: 20),
           const Categories(),
           const SizedBox(height: 20),

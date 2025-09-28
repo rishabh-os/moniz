@@ -30,8 +30,8 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   String _accountName = "";
   int _selectedColor = Colors.blue.toARGB32();
   int _selectedIcon = Icons.abc.codePoint;
-  late Function(Account) saveAction;
-  late Function(TransactionCategory) saveCategory;
+  late Future<void> Function(Account) saveAction;
+  late Future<void> Function(TransactionCategory) saveCategory;
   List<Widget> deleteItem = [];
 
   @override
@@ -60,8 +60,9 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
         deleteItem = deleteAction(() => handleCategoryDelete());
       }
     }
-    accountNameController =
-        TextEditingController(text: _accountName == "" ? null : _accountName);
+    accountNameController = TextEditingController(
+      text: _accountName == "" ? null : _accountName,
+    );
   }
 
   Future<void> handleAccountDelete() async {
@@ -80,27 +81,21 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     if (!mounted) return;
     if (accounts.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("You can't delete the last account"),
-        ),
+        const SnackBar(content: Text("You can't delete the last account")),
       );
       return;
     }
     activeTransactions.isEmpty
         ? delete()
         : ScaffoldMessenger.of(context).showSnackBar(
-            deleteSnack(
-              context,
-              widget.type,
-              () {
-                for (final trans in transactionList) {
-                  if (trans.accountID == widget.editedAccount!.id) {
-                    ref.watch(transactionsProvider.notifier).delete(trans.id);
-                  }
-                  delete();
+            deleteSnack(context, widget.type, () {
+              for (final trans in transactionList) {
+                if (trans.accountID == widget.editedAccount!.id) {
+                  ref.watch(transactionsProvider.notifier).delete(trans.id);
                 }
-              },
-            ),
+                delete();
+              }
+            }),
           );
   }
 
@@ -121,9 +116,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
     if (!mounted) return;
     if (categories.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("You can't delete the last category"),
-        ),
+        const SnackBar(content: Text("You can't delete the last category")),
       );
       return;
     }
@@ -144,10 +137,7 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: deleteItem,
-      ),
+      appBar: AppBar(title: Text(title), actions: deleteItem),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Wrap(
@@ -191,9 +181,9 @@ class _AccountEditorState extends ConsumerState<AccountEditor> {
       floatingActionButton: SaveFAB(
         onPressed: () {
           if (_accountName == "") {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Please enter name")),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text("Please enter name")));
           } else {
             if (widget.type == "Account") {
               final String uuid = widget.editedAccount?.id ?? const Uuid().v1();

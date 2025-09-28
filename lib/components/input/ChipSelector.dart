@@ -13,7 +13,7 @@ class ChipSelector extends ConsumerStatefulWidget {
   });
   final List<Classifier> items;
   final int selection;
-  final Function(int selected) returnSelected;
+  final void Function(int selected) returnSelected;
   @override
   ConsumerState<ChipSelector> createState() => _ChipSelectorState();
 }

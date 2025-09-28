@@ -66,9 +66,9 @@ class Accounts extends _$Accounts {
     state = allAccounts;
   }
 
-  void edit(Account editedAccount) {
+  Future<void> edit(Account editedAccount) async {
     final db = ref.read(dBProvider);
-    db.updateAccount(editedAccount);
+    await db.updateAccount(editedAccount);
     state = [
       for (final acc in state)
         if (acc.id == editedAccount.id)
@@ -88,7 +88,9 @@ class Accounts extends _$Accounts {
   Future<void> add(Account newAccount) async {
     state = [...state, newAccount];
     final db = ref.read(dBProvider);
-    await db.into(db.accountsTable).insert(
+    await db
+        .into(db.accountsTable)
+        .insert(
           AccountsTableCompanion.insert(
             id: newAccount.id,
             name: newAccount.name,

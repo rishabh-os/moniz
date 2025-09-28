@@ -85,26 +85,16 @@ class _IncomeState extends ConsumerState<Income> {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      widget.icon,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
+                    Icon(widget.icon),
+                    const SizedBox(width: 4),
                     Text(
                       widget.title.toUpperCase(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 4,
-                ),
-                MoneyDisplay(
-                  amount: ref.watch(widget.amountProvider),
-                ),
+                const SizedBox(height: 4),
+                MoneyDisplay(amount: ref.watch(widget.amountProvider)),
               ],
             ),
           ),

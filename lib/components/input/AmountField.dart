@@ -8,7 +8,7 @@ class AmountField extends StatefulWidget {
     required this.amountCallback,
   });
 
-  final Function(double amount) amountCallback;
+  final void Function(double amount) amountCallback;
   final TextEditingController amountController;
 
   @override

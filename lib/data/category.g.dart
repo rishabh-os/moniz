@@ -15,15 +15,15 @@ const categoriesProvider = CategoriesProvider._();
 final class CategoriesProvider
     extends $NotifierProvider<Categories, List<TransactionCategory>> {
   const CategoriesProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'categoriesProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'categoriesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$categoriesHash();
@@ -51,11 +51,14 @@ abstract class _$Categories extends $Notifier<List<TransactionCategory>> {
     final created = build();
     final ref =
         this.ref as $Ref<List<TransactionCategory>, List<TransactionCategory>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<TransactionCategory>, List<TransactionCategory>>,
-        List<TransactionCategory>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<TransactionCategory>, List<TransactionCategory>>,
+              List<TransactionCategory>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

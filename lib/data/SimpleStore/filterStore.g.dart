@@ -14,15 +14,15 @@ const filterQueryProvider = FilterQueryProvider._();
 
 final class FilterQueryProvider extends $NotifierProvider<FilterQuery, String> {
   const FilterQueryProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'filterQueryProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'filterQueryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$filterQueryHash();
@@ -49,8 +49,14 @@ abstract class _$FilterQuery extends $Notifier<String> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<String, String>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<String, String>, String, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<String, String>,
+              String,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -61,15 +67,15 @@ const freqHistProvider = FreqHistProvider._();
 final class FreqHistProvider
     extends $NotifierProvider<FreqHist, Map<double, int>> {
   const FreqHistProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'freqHistProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'freqHistProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$freqHistHash();
@@ -96,11 +102,14 @@ abstract class _$FreqHist extends $Notifier<Map<double, int>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<Map<double, int>, Map<double, int>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<Map<double, int>, Map<double, int>>,
-        Map<double, int>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Map<double, int>, Map<double, int>>,
+              Map<double, int>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -110,15 +119,15 @@ const freqKeysProvider = FreqKeysProvider._();
 
 final class FreqKeysProvider extends $NotifierProvider<FreqKeys, List<double>> {
   const FreqKeysProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'freqKeysProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'freqKeysProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$freqKeysHash();
@@ -145,11 +154,14 @@ abstract class _$FreqKeys extends $Notifier<List<double>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<List<double>, List<double>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<double>, List<double>>,
-        List<double>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<double>, List<double>>,
+              List<double>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -160,15 +172,15 @@ const rangeValueProvider = RangeValueProvider._();
 final class RangeValueProvider
     extends $NotifierProvider<RangeValue, RangeValues> {
   const RangeValueProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'rangeValueProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'rangeValueProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$rangeValueHash();
@@ -195,8 +207,14 @@ abstract class _$RangeValue extends $Notifier<RangeValues> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<RangeValues, RangeValues>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<RangeValues, RangeValues>, RangeValues, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<RangeValues, RangeValues>,
+              RangeValues,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -207,15 +225,15 @@ const filteredCategoriesProvider = FilteredCategoriesProvider._();
 final class FilteredCategoriesProvider
     extends $NotifierProvider<FilteredCategories, List<TransactionCategory>> {
   const FilteredCategoriesProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'filteredCategoriesProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'filteredCategoriesProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$filteredCategoriesHash();
@@ -245,11 +263,14 @@ abstract class _$FilteredCategories
     final created = build();
     final ref =
         this.ref as $Ref<List<TransactionCategory>, List<TransactionCategory>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<TransactionCategory>, List<TransactionCategory>>,
-        List<TransactionCategory>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<TransactionCategory>, List<TransactionCategory>>,
+              List<TransactionCategory>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }
@@ -260,15 +281,15 @@ const filteredAccountsProvider = FilteredAccountsProvider._();
 final class FilteredAccountsProvider
     extends $NotifierProvider<FilteredAccounts, List<Account>> {
   const FilteredAccountsProvider._()
-      : super(
-          from: null,
-          argument: null,
-          retry: null,
-          name: r'filteredAccountsProvider',
-          isAutoDispose: false,
-          dependencies: null,
-          $allTransitiveDependencies: null,
-        );
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'filteredAccountsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$filteredAccountsHash();
@@ -295,11 +316,14 @@ abstract class _$FilteredAccounts extends $Notifier<List<Account>> {
   void runBuild() {
     final created = build();
     final ref = this.ref as $Ref<List<Account>, List<Account>>;
-    final element = ref.element as $ClassProviderElement<
-        AnyNotifier<List<Account>, List<Account>>,
-        List<Account>,
-        Object?,
-        Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<Account>, List<Account>>,
+              List<Account>,
+              Object?,
+              Object?
+            >;
     element.handleValue(ref, created);
   }
 }

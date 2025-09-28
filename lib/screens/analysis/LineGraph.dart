@@ -38,10 +38,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                     aspectRatio: 1.4,
                     child: Padding(
                       // ? It different to account for how it looks with the axis labels
-                      padding: const EdgeInsets.only(
-                        right: 18,
-                        left: 12,
-                      ),
+                      padding: const EdgeInsets.only(right: 18, left: 12),
                       child: LineChart(
                         data: showByCat ? data.$2 : data.$1,
                         showCat: showByCat,
@@ -50,11 +47,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                   ),
                 ],
                 error: (error, stackTrace) => <Widget>[
-                  const Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
+                  const Icon(Icons.error_outline, color: Colors.red, size: 60),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: Text("Error: $error"),
@@ -69,9 +62,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
                       child: SizedBox(
                         width: 60,
                         height: 60,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 8,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 8),
                       ),
                     ),
                     Padding(
@@ -90,11 +81,7 @@ class _LineGraphState extends ConsumerState<LineGraph> {
 }
 
 class LineChart extends ConsumerStatefulWidget {
-  const LineChart({
-    super.key,
-    required this.data,
-    required this.showCat,
-  });
+  const LineChart({super.key, required this.data, required this.showCat});
   final List<SpendsBy> data;
   final bool showCat;
 
@@ -128,8 +115,9 @@ class _LineChartState extends ConsumerState<LineChart> {
         final amount = selectedTuples.entries.first.value["amount"];
         final Offset labelOffset = anchor + const Offset(0, -30);
         final Color textColor = Theme.of(context).colorScheme.secondary;
-        final Color backgroundColor =
-            Theme.of(context).colorScheme.secondaryContainer;
+        final Color backgroundColor = Theme.of(
+          context,
+        ).colorScheme.secondaryContainer;
         Color? borderColor;
         if (widget.showCat) {
           borderColor = Color(
@@ -146,10 +134,7 @@ class _LineChartState extends ConsumerState<LineChart> {
         return [
           OvalElement(
             oval: Rect.fromCircle(center: anchor, radius: 5),
-            style: PaintStyle(
-              fillColor: textColor,
-              strokeWidth: 2,
-            ),
+            style: PaintStyle(fillColor: textColor, strokeWidth: 2),
           ),
           RectElement(
             rect: Rect.fromCenter(center: labelOffset, width: 60, height: 30),
@@ -175,14 +160,14 @@ class _LineChartState extends ConsumerState<LineChart> {
       },
     );
     final axes = [
-      AxisGuide(
+      AxisGuide<dynamic>(
         label: LabelStyle(
           offset: const Offset(-10, 30),
           rotation: -pi / 2,
           textStyle: Theme.of(context).textTheme.bodySmall,
         ),
       ),
-      AxisGuide(
+      AxisGuide<dynamic>(
         label: LabelStyle(
           offset: const Offset(-10, 0),
           textStyle: Theme.of(context).textTheme.bodySmall,
@@ -194,8 +179,9 @@ class _LineChartState extends ConsumerState<LineChart> {
         ? {
             "day": Variable(
               accessor: (spot) {
-                final String dayMonth =
-                    DateFormat("d MMM yy").format(DateTime.parse(spot.day));
+                final String dayMonth = DateFormat(
+                  "d MMM yy",
+                ).format(DateTime.parse(spot.day));
                 return dayMonth;
               },
             ),
@@ -205,26 +191,21 @@ class _LineChartState extends ConsumerState<LineChart> {
             ),
             "amount": Variable(
               accessor: (spot) => spot.amount,
-              scale: LinearScale(
-                min: 0,
-                marginMax: 0.2,
-              ),
+              scale: LinearScale(min: 0, marginMax: 0.2),
             ),
           }
         : {
             "day": Variable(
               accessor: (spot) {
-                final String dayMonth =
-                    DateFormat("d MMM yy").format(DateTime.parse(spot.day));
+                final String dayMonth = DateFormat(
+                  "d MMM yy",
+                ).format(DateTime.parse(spot.day));
                 return dayMonth;
               },
             ),
             "amount": Variable(
               accessor: (spot) => spot.amount,
-              scale: LinearScale(
-                min: 0,
-                marginMax: 0.2,
-              ),
+              scale: LinearScale(min: 0, marginMax: 0.2),
             ),
           };
 
@@ -256,10 +237,9 @@ class _LineChartState extends ConsumerState<LineChart> {
               size: SizeEncode(value: 5),
               shape: ShapeEncode(value: BasicLineShape(smooth: true)),
               color: ColorEncode(
-                value: Theme.of(context)
-                    .colorScheme
-                    .secondary
-                    .withValues(alpha: 0.8),
+                value: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: 0.8),
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
@@ -270,10 +250,9 @@ class _LineChartState extends ConsumerState<LineChart> {
             AreaMark(
               shape: ShapeEncode(value: BasicAreaShape(smooth: true)),
               color: ColorEncode(
-                value: Theme.of(context)
-                    .colorScheme
-                    .secondary
-                    .withValues(alpha: 0.2),
+                value: Theme.of(
+                  context,
+                ).colorScheme.secondary.withValues(alpha: 0.2),
               ),
               transition: Transition(
                 duration: const Duration(milliseconds: 500),
@@ -283,7 +262,7 @@ class _LineChartState extends ConsumerState<LineChart> {
             ),
           ];
     // ? Here I do some maths to scale the graph to the number of days
-    final List days = [];
+    final List<String> days = [];
     for (final element in widget.data) {
       days.add(element.day);
     }
@@ -292,10 +271,7 @@ class _LineChartState extends ConsumerState<LineChart> {
     const int cutOff = 10;
     final rectCoord = RectCoord(
       horizontalRange: nDays >= cutOff
-          ? [
-              -(1 / cutOff) * (nDays - cutOff),
-              1,
-            ]
+          ? [-(1 / cutOff) * (nDays - cutOff), 1]
           : [0, 1],
       horizontalRangeUpdater: Defaults.horizontalRangeEvent,
     );

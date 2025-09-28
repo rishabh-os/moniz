@@ -11,7 +11,7 @@ class IconPicker extends StatefulWidget {
     required this.iconCodepoint,
   });
   final int color;
-  final Function(IconData selectedColor) iconCallback;
+  final void Function(IconData selectedColor) iconCallback;
   final int iconCodepoint;
 
   @override

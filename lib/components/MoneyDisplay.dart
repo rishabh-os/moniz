@@ -29,11 +29,13 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
 
     final prettyValue = (widget.amount / 100).numeral(digits: 2);
     final String displayValue;
-    if (RegExp("[a-zA-Z]")
-            .hasMatch(prettyValue.substring(prettyValue.length - 1)) &&
+    if (RegExp(
+          "[a-zA-Z]",
+        ).hasMatch(prettyValue.substring(prettyValue.length - 1)) &&
         widget.pretty) {
-      final double numericalPart =
-          double.parse(prettyValue.substring(0, prettyValue.length - 1));
+      final double numericalPart = double.parse(
+        prettyValue.substring(0, prettyValue.length - 1),
+      );
       final String suffix = prettyValue.substring(prettyValue.length - 1);
       displayValue = "${numberFormat.format(numericalPart)}$suffix";
     } else {
@@ -48,10 +50,7 @@ class _MoneyDisplayState extends ConsumerState<MoneyDisplay> {
           color: widget.textColor,
           fontWeight: FontWeight.w600,
         );
-        final span = TextSpan(
-          text: rawValue,
-          style: style,
-        );
+        final span = TextSpan(text: rawValue, style: style);
         final painter = TextPainter(
           text: span,
           maxLines: 1,

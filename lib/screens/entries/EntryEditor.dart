@@ -16,10 +16,7 @@ import "package:moniz/data/transactions.dart";
 import "package:uuid/uuid.dart";
 
 class EntryEditor extends ConsumerStatefulWidget {
-  const EntryEditor({
-    super.key,
-    this.transaction,
-  });
+  const EntryEditor({super.key, this.transaction});
 
   final Transaction? transaction;
 
@@ -45,7 +42,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   String? _additionalInfo;
   GMapsPlace? _selectedLocation;
   late TextEditingController addInfoController;
-  late Function(Transaction transaction) saveAction;
+  late void Function(Transaction transaction) saveAction;
   List<Widget> actions = [];
 
   @override
@@ -58,9 +55,12 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       ref.read(transactionsProvider.notifier).add(transaction);
 
       // ? Update account balance on add
-      final targetAccount =
-          accounts.firstWhere((element) => element.id == transaction.accountID);
-      ref.read(accountsProvider.notifier).edit(
+      final targetAccount = accounts.firstWhere(
+        (element) => element.id == transaction.accountID,
+      );
+      ref
+          .read(accountsProvider.notifier)
+          .edit(
             targetAccount.copyWith(
               balance: targetAccount.balance + transaction.amount,
             ),
@@ -79,7 +79,9 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
           final targetAccount = accounts.firstWhere(
             (element) => element.id == widget.transaction!.accountID,
           );
-          ref.read(accountsProvider.notifier).edit(
+          ref
+              .read(accountsProvider.notifier)
+              .edit(
                 targetAccount.copyWith(
                   balance: targetAccount.balance - widget.transaction!.amount,
                 ),
@@ -87,7 +89,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
         }
 
         ref.watch(transDeleteProvider)
-            ? showDialog(
+            ? showDialog<void>(
                 context: context,
                 builder: (context) => AlertDialog(
                   // title: const Text("Are you sure?"),
@@ -138,27 +140,35 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       saveAction = (transaction) {
         ref.read(transactionsProvider.notifier).edit(transaction);
         // ? Handle all the cases when the transaction is edited
-        final targetAccount = accounts
-            .firstWhere((element) => element.id == transaction.accountID);
+        final targetAccount = accounts.firstWhere(
+          (element) => element.id == transaction.accountID,
+        );
         final oldTransaction = ref
             .read(transactionsProvider)
             .firstWhere((element) => element.id == transaction.id);
-        final oldAccount = accounts
-            .firstWhere((element) => element.id == oldTransaction.accountID);
+        final oldAccount = accounts.firstWhere(
+          (element) => element.id == oldTransaction.accountID,
+        );
         if (oldTransaction.accountID == transaction.accountID) {
           final changedAmount = transaction.amount - oldTransaction.amount;
-          ref.read(accountsProvider.notifier).edit(
+          ref
+              .read(accountsProvider.notifier)
+              .edit(
                 targetAccount.copyWith(
                   balance: targetAccount.balance + changedAmount,
                 ),
               );
         } else {
-          ref.read(accountsProvider.notifier).edit(
+          ref
+              .read(accountsProvider.notifier)
+              .edit(
                 oldAccount.copyWith(
                   balance: oldAccount.balance - oldTransaction.amount,
                 ),
               );
-          ref.read(accountsProvider.notifier).edit(
+          ref
+              .read(accountsProvider.notifier)
+              .edit(
                 targetAccount.copyWith(
                   balance: targetAccount.balance + transaction.amount,
                 ),
@@ -167,8 +177,9 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
       };
     }
     // ? The checks are to make sure the hints show up properly
-    titleController =
-        TextEditingController(text: _title == "Untitled" ? null : _title);
+    titleController = TextEditingController(
+      text: _title == "Untitled" ? null : _title,
+    );
     addInfoController = TextEditingController(
       text: _additionalInfo == "None" ? null : _additionalInfo,
     );
@@ -181,10 +192,7 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text("$appBarTitle Entry"),
-        actions: actions,
-      ),
+      appBar: AppBar(title: Text("$appBarTitle Entry"), actions: actions),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -194,37 +202,35 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
             children: [
               Wrap(
                 spacing: 8.0,
-                children: List<Widget>.generate(
-                  entryTypeStrings.length,
-                  (int index) {
-                    return Theme(
-                      data: ThemeData(
-                        useMaterial3: true,
-                        colorScheme: ref.watch(
-                          entryTypeStrings[index] == "Income"
-                              ? incomeColorSchemeProvider
-                              : expenseColorSchemeProvider,
+                children: List<Widget>.generate(entryTypeStrings.length, (
+                  int index,
+                ) {
+                  return Theme(
+                    data: ThemeData(
+                      useMaterial3: true,
+                      colorScheme: ref.watch(
+                        entryTypeStrings[index] == "Income"
+                            ? incomeColorSchemeProvider
+                            : expenseColorSchemeProvider,
+                      ),
+                    ),
+                    child: ChoiceChip.elevated(
+                      label: Text(
+                        entryTypeStrings[index].toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
-                      child: ChoiceChip.elevated(
-                        label: Text(
-                          entryTypeStrings[index].toUpperCase(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        selected: _entryType == index,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            _entryType = index;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                  growable: false,
-                ).toList(),
+                      selected: _entryType == index,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _entryType = index;
+                        });
+                      },
+                    ),
+                  );
+                }, growable: false).toList(),
               ),
               TextFormField(
                 controller: titleController,
@@ -240,8 +246,9 @@ class _EntryEditorState extends ConsumerState<EntryEditor> {
               AmountField(
                 amountController: amountController,
                 amountCallback: (amount) {
-                  _amount =
-                      int.parse(amount.toStringAsFixed(2).replaceAll(".", ""));
+                  _amount = int.parse(
+                    amount.toStringAsFixed(2).replaceAll(".", ""),
+                  );
                 },
               ),
               const Header(text: "Category"),
