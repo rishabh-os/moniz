@@ -111,7 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           IconButton.filledTonal(
             key: listOfKeys[1],
             tooltip: "Filters",
-            icon: const Icon(Icons.search_rounded),
+            icon: const Icon(Icons.filter_list_rounded),
             onPressed: () {
               scaffoldKey.currentState!.showBottomSheet(
                 (context) => const Filters(),

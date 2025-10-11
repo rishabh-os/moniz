@@ -123,9 +123,17 @@ class _FiltersState extends ConsumerState<Filters> {
                           freqKeys[rangeValues.end.toInt()].abs().toString(),
                         ),
                       )
-                    : const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Text("Not enough data to show a range slider"),
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            // ? Close enough but not quite
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Text(
+                              "Not enough data to show a range slider",
+                            ),
+                          ),
+                        ],
                       ),
               ),
               TextButton.icon(
