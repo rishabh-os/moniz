@@ -23,7 +23,7 @@ dependencies:
   flutter_animate: ^4.5.2
   flutter_compass: ^0.8.1
   flutter_iconpicker: ^4.0.1
-  flutter_map: ^8.1.1
+  flutter_map: ^8.2.2
   flutter_map_animations: ^0.9.0
   flutter_map_location_marker: ^10.1.0
   flutter_map_marker_cluster: ^8.2.0
