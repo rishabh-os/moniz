@@ -15,4 +15,11 @@
 
 </p>
 
-A simple app for keeping track of your money.
+A simple app for keeping track of where you've spent your money.
+
+### Screenshots
+
+|                                               |                                               |
+| :-------------------------------------------: | :-------------------------------------------: |
+| <img src="assets/play_store/flutter_01.png"/> | <img src="assets/play_store/flutter_02.png"/> |
+| <img src="assets/play_store/flutter_03.png"/> | <img src="assets/play_store/flutter_04.png"/> |
