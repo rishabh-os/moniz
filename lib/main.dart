@@ -6,7 +6,6 @@ import "package:flutter/material.dart";
 import "package:flutter/scheduler.dart";
 import "package:flutter_native_splash/flutter_native_splash.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:fluttertoast/fluttertoast.dart";
 import "package:get_storage/get_storage.dart";
 import "package:moniz/data/SimpleStore/basicStore.dart";
 import "package:moniz/data/SimpleStore/themeStore.dart";
@@ -119,6 +118,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         } else {
           theme = ThemeData(
             colorScheme: ColorScheme.fromSeed(
+              dynamicSchemeVariant: DynamicSchemeVariant.rainbow,
               seedColor: ref.watch(themeColorProvider),
               brightness: ref.watch(brightProvider),
             ),
@@ -130,7 +130,6 @@ class _MyAppState extends ConsumerState<MyApp> {
           title: "Moniz",
           theme: theme,
           debugShowCheckedModeBanner: false,
-          builder: FToastBuilder(),
           initialRoute: GetStorage().read<bool>("welcome") == null
               ? "/welcome"
               : "/home",

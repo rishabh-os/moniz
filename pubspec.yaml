@@ -29,7 +29,6 @@ dependencies:
   flutter_map_marker_cluster: ^8.2.0
   flutter_native_splash: ^2.4.4
   flutter_riverpod: ^3.0.0-dev.17
-  fluttertoast: ^9.0.0
   geolocator: ^14.0.0
   get_storage: ^2.1.1
   graphic: ^2.5.1

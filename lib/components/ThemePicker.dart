@@ -3,6 +3,7 @@ import "dart:io";
 import "package:animated_size_and_fade/animated_size_and_fade.dart";
 import "package:device_info_plus/device_info_plus.dart";
 import "package:flutter/material.dart";
+import "package:flutter/rendering.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:moniz/components/input/ColorPicker.dart";

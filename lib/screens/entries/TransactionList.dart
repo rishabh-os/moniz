@@ -92,8 +92,8 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
                     borderRadius: const BorderRadius.all(Radius.circular(6)),
                     color: ColorScheme.fromSeed(
                       seedColor: Color(transAccount.color),
-                      // ? The color does not update properly, that's why I need to manually specify the brightness
-                      brightness: ref.watch(brightProvider),
+                      // ? Manually specify the brightness
+                      brightness: Theme.brightnessOf(context),
                     ).primaryContainer,
                   ),
                   child: Padding(
@@ -109,11 +109,7 @@ class _TransactionListTileState extends ConsumerState<TransactionListTile> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(6)),
-                      color: ColorScheme.fromSeed(
-                        seedColor: ref.watch(themeColorProvider),
-                        // ? The color does not update properly, that's why I need to manually specify the brightness
-                        brightness: ref.watch(brightProvider),
-                      ).primaryContainer,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
